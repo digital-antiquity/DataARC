@@ -7,6 +7,56 @@ var end = 9999;
 resetGrid();
 drawGrid();
 
+var myStyle = {
+        "color": "#ff7800",
+        "weight": 5,
+        "opacity": 1
+    };
+
+var RedIcon = L.Icon.Default.extend({
+    options: {
+            iconUrl: 'marker-icon-red.png' 
+    }
+ });
+ 
+var hlayer = new L.GeoJSON(hrep, {style:myStyle,
+    onEachFeature : function(feature, layer_) {
+        layer_.on({
+            click : function(event) {
+                var ly = event.target.feature.geometry.coordinates[0];
+                map.eachLayer(function(l) {
+                    if (l._latlng != undefined) {
+                        var val = inside([l._latlng.lng, l._latlng.lat] , ly);
+                        if (val) {
+                            l.setIcon(new RedIcon());
+                        }
+                    }
+                });
+            }
+        });
+    }
+}).addTo(map);
+
+
+var inside = function (point, vs) {
+    // ray-casting algorithm based on
+    // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+    
+    var x = point[0], y = point[1];
+    
+    var inside = false;
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i][0], yi = vs[i][1];
+        var xj = vs[j][0], yj = vs[j][1];
+        
+        var intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    
+    return inside;
+};
+
 $('#timeslider').slider()
 .on('slide', function(ev){
     start = ev.value[0];
@@ -69,8 +119,8 @@ function onEachFeature(feature, layer) {
         mouseout : resetHighlight,
 //        click : clickFeature
     });
-    popupOptions = {maxWidth: 200};
-
+//    popupOptions = {maxWidth: 200};
+    
     var text = "";
     for (key in feature.properties) {
         if (feature.properties.hasOwnProperty(key) ) {        // These are explained
@@ -80,7 +130,7 @@ function onEachFeature(feature, layer) {
         }
     }
 
-    layer.bindPopup(text,popupOptions);
+    layer.bindPopup(text);
 //    console.log(feature);
 //    feature.bindPopup('A pretty CSS3 popup. <br> Easily customizable.');
 }
