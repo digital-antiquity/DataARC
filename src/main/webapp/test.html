@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="style.css" rel="stylesheet" />
+<meta charset=utf-8 />
+<title>Cytoscape.js initialisation</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="components/cytoscape/dist/cytoscape.min.js"></script>
+
+<style>
+body { 
+  font: 14px helvetica neue, helvetica, arial, sans-serif;
+}
+
+#cy {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#eat {
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  z-index: -1;
+  color: #c88;
+}
+</style>
+</head>
+<body>
+<div id="cy"></div>
+<script>
+$(function(){ // on dom ready
+
+ // photos from flickr with creative commons license
+   
+ var cy = cytoscape({
+   container: document.getElementById('cy'),
+   
+   style: cytoscape.stylesheet()
+     .selector('node')
+       .css({
+         'height': 80,
+         'width': 80,
+         'border-color': '#000',
+         'border-width': 3,
+         'border-opacity': 0.5,
+         'content': 'data(name)'
+       }).selector('node[category = "enviro"]')
+       .css({
+           'background-color': 'blue',
+           'text-outline-color': 'blue'
+         })
+       
+,
+   
+   elements: {
+     nodes: [
+{data: {id:'fish', name:'fish'}},
+{data: {id:'water quality', name:'water quality', category:'enviro' }},
+{data: {id:'erosioin', name:'erosioin', category:'enviro' }},
+{data: {id:'currents', name:'currents', category:'enviro' }},
+{data: {id:'temperature', name:'temperature', category:'enviro' }},
+{data: {id:'water mass', name:'water mass', category:'enviro' }},
+{data: {id:'food', name:'food', category:'enviro' }},
+{data: {id:'storminess', name:'storminess', category:'enviro' }},
+{data: {id:'sea ice', name:'sea ice', category:'enviro' }},
+{data: {id:'salmon', name:'salmon', category:'species' }},
+{data: {id:'trout', name:'trout', category:'species' }},
+{data: {id:'char', name:'char', category:'species' }},
+{data: {id:'flatfish', name:'flatfish', category:'species' }},
+{data: {id:'cod', name:'cod', category:'species' }},
+{data: {id:'trade', name:'trade', category:'MatCult' }},
+{data: {id:'processing', name:'processing', category:'MatCult' }},
+{data: {id:'commoditization', name:'commoditization', category:'MatCult' }},
+{data: {id:'consumption', name:'consumption', category:'MatCult' }},
+{data: {id:'reuse', name:'reuse', category:'MatCult' }},
+{data: {id:'harvesting', name:'harvesting', category:'MatCult' }},
+{data: {id:'insult', name:'insult', category:'CultCult' }},
+{data: {id:'abundance', name:'abundance', category:'CultCult' }},
+{data: {id:'weather', name:'weather', category:'CultCult' }},
+{data: {id:'death by drowning', name:'death by drowning', category:'CultCult' }},
+{data: {id:'place name', name:'place name', category:'CultCult' }}
+
+     ],
+     edges: [
+{data: {source:'fish', target:'water quality' }},
+{data: {source:'fish', target:'erosioin' }},
+{data: {source:'fish', target:'currents' }},
+{data: {source:'fish', target:'temperature' }},
+{data: {source:'fish', target:'water mass' }},
+{data: {source:'fish', target:'food' }},
+{data: {source:'fish', target:'storminess' }},
+{data: {source:'fish', target:'sea ice' }},
+{data: {source:'fish', target:'salmon' }},
+{data: {source:'fish', target:'trout' }},
+{data: {source:'fish', target:'char' }},
+{data: {source:'fish', target:'flatfish' }},
+{data: {source:'fish', target:'cod' }},
+{data: {source:'fish', target:'trade' }},
+{data: {source:'fish', target:'processing' }},
+{data: {source:'fish', target:'commoditization' }},
+{data: {source:'fish', target:'consumption' }},
+{data: {source:'fish', target:'reuse' }},
+{data: {source:'fish', target:'harvesting' }},
+{data: {source:'fish', target:'insult' }},
+{data: {source:'fish', target:'abundance' }},
+{data: {source:'fish', target:'weather' }},
+{data: {source:'fish', target:'death by drowning' }},
+{data: {source:'fish', target:'place name' }}
+     ]
+   },
+   
+   layout: {
+     name: 'concentric',
+     directed: true,
+     padding: 10
+   }
+ }); // cy init
+   
+ cy.on('tap', 'node', function(){
+   var nodes = this;
+   var tapped = nodes;
+   var food = [];
+   
+   nodes.addClass('eater');
+   
+   for(;;){
+     var connectedEdges = nodes.connectedEdges(function(){
+       return !this.target().anySame( nodes );
+     });
+     
+     var connectedNodes = connectedEdges.targets();
+     
+     Array.prototype.push.apply( food, connectedNodes );
+     
+     nodes = connectedNodes;
+     
+     if( nodes.empty() ){ break; }
+   }
+         
+   var delay = 0;
+   var duration = 500;
+   for( var i = food.length - 1; i >= 0; i-- ){ (function(){
+     var thisFood = food[i];
+     var eater = thisFood.connectedEdges(function(){
+       return this.target().same(thisFood);
+     }).source();
+             
+     thisFood.delay( delay, function(){
+       eater.addClass('eating');
+     } ).animate({
+       position: eater.position(),
+       css: {
+         'width': 10,
+         'height': 10,
+         'border-width': 0,
+         'opacity': 0
+       }
+     }, {
+       duration: duration,
+       complete: function(){
+         thisFood.remove();
+       }
+     });
+     
+     delay += duration;
+   })(); } // for
+   
+ }); // on tap
+
+ }); // on dom ready
+</script>
+</body>
+</html>

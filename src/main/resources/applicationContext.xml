@@ -1,0 +1,58 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+         http://www.springframework.org/schema/mvc
+         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+    <context:annotation-config />
+    <context:component-scan base-package="org.digitalantiquity" />
+    <context:property-placeholder location="classpath*:skope.properties,classpath*:jdbc.properties" />
+
+    <bean id="taskExecutor"
+        class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="100" />
+        <property name="maxPoolSize" value="200" />
+        <property name="WaitForTasksToCompleteOnShutdown" value="true" />
+    </bean>
+ 
+ <!-- 
+    <bean id="postgis" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        destroy-method="close" lazy-init="true">
+        <property name="driverClass" value="org.postgis.DriverWrapper" />
+        <property name="jdbcUrl" value="jdbc:postgresql_postGIS://localhost/skope" />
+        <property name="user" value="tdar" />
+        <property name="password" value="" />
+        <property name='minPoolSize' value="5" />
+        <property name='maxPoolSize' value="50" />
+        <property name='maxStatements' value='30' />
+        <property name='idleConnectionTestPeriod' value='300' />
+        <property name='preferredTestQuery' value='select 1' />
+        <property name='testConnectionOnCheckin' value='true' />
+    </bean>
+  -->   
+   <bean id="postgres" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        destroy-method="close" lazy-init="true" >
+        <property name="driverClass" value="${javax.persistence.jdbc.driver}" />
+        <property name="jdbcUrl" value="${javax.persistence.jdbc.url}" />
+        <property name="user" value="${javax.persistence.jdbc.user}" />
+        <property name="password" value="${javax.persistence.jdbc.password}" />
+        <property name='minPoolSize' value="25" />
+        <property name='maxPoolSize' value="50" />
+        <property name='maxStatements' value='30' />
+        <property name='idleConnectionTestPeriod' value='300' />
+        <property name='preferredTestQuery' value='select 1' />
+        <property name='testConnectionOnCheckin' value='true' />
+    </bean>
+
+</beans>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.1 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>${title}</title>
+<!--    <link href="<@s.url value='/styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/> -->
+    ${head}
+</head>
+<body id="page-home">
+    <div id="page">
+        <div id="header" class="clearfix">
+            <hr />
+        </div>
+        
+        <div id="content" class="clearfix">
+            <div id="main">
+            	<h3>Demo Application</h3>
+            	<div>
+            	</div>
+            	${body}
+                <hr />
+            </div>
+            
+            <!--
+            <div id="sub">
+            	<h3>Sub Content</h3>
+            </div> -->
+            
+            
+            <div id="local">
+            </div>
+            
+            
+            <div id="nav">
+                <div class="wrapper">
+                <h3>Nav. bar</h3>
+                <ul class="clearfix">
+                </ul>
+                </div>
+                <hr />
+            </div>
+        </div>
+        
+        <div id="footer" class="clearfix">
+            Footer
+        </div>
+        
+    </div>
+    
+    <div id="extra1">&nbsp;</div>
+    <div id="extra2">&nbsp;</div>
+</body>
+</html>
