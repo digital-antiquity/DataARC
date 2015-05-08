@@ -90,6 +90,7 @@ var ajax;
     },
     },
    function(sigma) {
+   //http://stackoverflow.com/questions/24643423/adding-sigma-js-navigation-buttons (for nav)
        sigma.bind('clickNode', function(e) {
             var nodeId = e.data.node.id;
             console.log(nodeId);
