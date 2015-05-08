@@ -26,5 +26,8 @@
     "bootstrap-slider": "*",
     "leaflet-pip": "~0.1.0",
     "sigma": "~1.0.3"
-  }
+  },
+    "resolutions": {
+        "d3": "3.5.5"
+    }
 }

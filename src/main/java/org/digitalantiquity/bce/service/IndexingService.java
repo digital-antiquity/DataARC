@@ -14,7 +14,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntField;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -109,25 +108,6 @@ public class IndexingService {
         return node;
     }
 
-    // private void indexRawEntriesLucene(IndexWriter writer, DocObject val) throws IOException {
-    // Coordinate coord = val.getCoord();
-    // DoubleField x = new DoubleField(IndexFields.X, coord.x, Field.Store.YES);
-    // DoubleField y = new DoubleField(IndexFields.Y, coord.y, Field.Store.YES);
-    // Field yr = new TextField(IndexFields.YEAR, StringUtils.join(val.getVals(), "|"), Field.Store.YES);
-    // TextField hash = new TextField(IndexFields.HASH, GeoHash.encodeHash(coord.y, coord.x), Field.Store.YES);
-    //
-    // Document doc = new Document();
-    // doc.add(hash);
-    // doc.add(x);
-    // doc.add(y);
-    // doc.add(yr);
-    // indexGeospatial(coord, doc);
-    // writer.addDocument(doc);
-    //
-    // }
-    //
-    //
-    //
     private IndexWriter setupLuceneIndexWriter(String indexName) throws IOException {
         Analyzer analyzer = new StandardAnalyzer();
         IndexWriterConfig iwc = new IndexWriterConfig(Version.LATEST, analyzer);
@@ -148,53 +128,5 @@ public class IndexingService {
         IndexWriter writer = new IndexWriter(dir, iwc);
         return writer;
     }
-    //
-    // /**
-    // * Create an entry in the Lucene Index for the Map of QuadMap keys to averages
-    // *
-    // * @param writer
-    // * @param valueMap
-    // * @param year
-    // * @throws IOException
-    // */
-    // public void indexByQuadMap(IndexWriter writer, JdbcTemplate jdbcTemplate, Map<String, DoubleWrapper> valueMap, int year, String rootDir) throws
-    // IOException {
-    // int count = 0;
-    // for (String key : valueMap.keySet()) {
-    // count++;
-    //
-    // if (indexUsingLucene) {
-    // StringField codeField = new StringField(IndexFields.CODE, Double.toString(val), Field.Store.YES);
-    // Document doc = new Document();
-    // if (NumberUtils.isNumber(key)) {
-    // LongField quad = new LongField(IndexFields.QUAD_, Long.parseLong(key), Field.Store.YES);
-    // doc.add(quad);
-    // } else {
-    // StringField hash = new StringField(IndexFields.HASH, key, Field.Store.YES);
-    // doc.add(hash);
-    // IntField level = new IntField(IndexFields.LEVEL, key.length(), Field.Store.YES);
-    // doc.add(level);
-    // }
-    // DoubleField x = new DoubleField(IndexFields.X, x, Field.Store.YES);
-    // DoubleField y = new DoubleField(IndexFields.Y, y, Field.Store.YES);
-    // IntField yr = new IntField(IndexFields.YEAR, year, Field.Store.NO);
-    // doc.add(codeField);
-    // doc.add(x);
-    // doc.add(y);
-    // doc.add(yr);
-    // if (count % 10_000 == 0) {
-    // logger.debug(year + ": (" + count + ")" + doc);
-    // }
-    // writer.addDocument(doc);
-    // }
-    // }
-    // }
-    //
-    // private void indexGeospatial(Coordinate coord, Document doc) {
-    // com.spatial4j.core.shape.Point shape = ctx.makePoint(coord.x, coord.y);
-    // for (IndexableField f : strategy.createIndexableFields(shape)) {
-    // doc.add(f);
-    // }
-    // }
 
 }
