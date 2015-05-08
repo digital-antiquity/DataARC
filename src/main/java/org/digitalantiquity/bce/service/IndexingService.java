@@ -3,7 +3,9 @@ package org.digitalantiquity.bce.service;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,9 +57,11 @@ public class IndexingService {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode tree = mapper.readTree(f);
             Iterator<String> iterator = tree.get("feed").get("entry").get(0).fieldNames();
+            List<String> fields = new ArrayList<>();
             while (iterator.hasNext()) {
-                logger.debug("field:{}", iterator.next());
+                fields.add(iterator.next());
             }
+            logger.debug("field:{}", fields);
             Iterator<JsonNode> elements = tree.get("feed").get("entry").elements();
             while (elements.hasNext()) {
                 JsonNode row = elements.next();
