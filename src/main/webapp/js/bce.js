@@ -1,4 +1,7 @@
-var map = L.map('map').setView([ 66.16495058  ,  -16.68273926], 3);
+var map = L.map('map').setView([ 66.16495058  ,  -16.68273926], 5);
+$("#term").keyup(function(){
+    drawGrid();
+});
 var time = 0;
 var NORTH, SOUTH, EAST, WEST;
 var grid = false;
@@ -18,20 +21,51 @@ var RedIcon = L.Icon.Default.extend({
             iconUrl: 'marker-icon-red.png' 
     }
  });
- 
+
+var BlueIcon = L.Icon.Default.extend({});
+
 var hlayer = new L.GeoJSON(hrep, {style:myStyle,
     onEachFeature : function(feature, layer_) {
         layer_.on({
             click : function(event) {
                 var ly = event.target.feature.geometry.coordinates[0];
+                var text = "";
+                var keys = {};
                 map.eachLayer(function(l) {
                     if (l._latlng != undefined) {
                         var val = inside([l._latlng.lng, l._latlng.lat] , ly);
-                        if (val) {
+                        if (val && l._icon != undefined) {
                             l.setIcon(new RedIcon());
+                            for (key in l.feature.properties) {
+                                if (l.feature.properties.hasOwnProperty(key) ) {
+                                    var val = l.feature.properties[key];
+                                    if (keys[key] == undefined) {
+                                        keys[key] = "";
+                                    }
+                                    // FIXME: hack
+                                    if (keys[key].indexOf(val)  == -1) {
+                                        console.log(keys[key]  + " ||| " + val + " : "  + keys[key].indexOf(val));
+                                        if (keys[key].length > 0) {
+                                            keys[key] = keys[key] + ", ";
+                                        }
+                                        keys[key] = keys[key] + val;
+                                    }
+                                }
+                            }                        
+                        } else {
+                            if (l._icon != undefined) {
+                                l.setIcon(new BlueIcon());
+                            }                            
                         }
                     }
                 });
+                for (key in keys) {
+                    if (keys.hasOwnProperty(key) ) {
+                        text += "<b>" + key+ ":</b> " + keys[key] + "<br/>";
+                    }
+                }
+                $("#infodetail").html(text);
+
             }
         });
     }
@@ -78,7 +112,7 @@ map.on('resize', function() {
 map.on('dragend', function() {
     drawGrid();
 });
-
+//http://nls-0.tileserver.com/NLS_API/$%7Bz%7D/$%7Bx%7D/$%7By%7D.jpg
 var tile = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     maxZoom : 17,
     attribution : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
@@ -92,15 +126,15 @@ var layer = undefined;
 
 
 function highlightFeature(e) {
-    var layer = e.target;
-//
+//    var layer = e.target;
+//    if (e.target != undefined) {
 //    layer.setStyle({
 //        weight : 5,
 //        strokeColor : '#666',
 //        dashArray : '',
 //        fillOpacity : 1
 //    });
-
+//    }
 //    console.log(layer.feature.properties);
 //    $("#info").html("temp:" + layer.feature.properties.temp);
 
@@ -117,22 +151,16 @@ function onEachFeature(feature, layer) {
     layer.on({
         mouseover : highlightFeature,
         mouseout : resetHighlight,
-//        click : clickFeature
     });
-//    popupOptions = {maxWidth: 200};
     
     var text = "";
     for (key in feature.properties) {
         if (feature.properties.hasOwnProperty(key) ) {        // These are explained
-//            if (feature.properties[key].length > 0) {
-                text += "<b>" + key+ ":</b>" + feature.properties[key] + "<br/>";
-//            }
+            text += "<b>" + key+ ":</b>" + feature.properties[key] + "<br/>";
         }
     }
 
-    layer.bindPopup(text);
-//    console.log(feature);
-//    feature.bindPopup('A pretty CSS3 popup. <br> Easily customizable.');
+    $("#infodetail").html(text);
 }
 
 function resetGrid() {
@@ -140,8 +168,6 @@ function resetGrid() {
     WEST = map.getBounds()._southWest.lng;
     SOUTH = map.getBounds()._southWest.lat;
     EAST = map.getBounds()._northEast.lng;
-    // L.marker([NORTH, WEST]).addTo(map);
-    // L.marker([SOUTH, EAST]).addTo(map);
 }
 
 function drawGrid() {
@@ -151,15 +177,9 @@ function drawGrid() {
     var lng = WEST;
     var lat_ = SOUTH;
     var lng_ = EAST;
-//    var height = Math.abs(Math.abs(lat) - Math.abs(lat_)) / detail;
-//    var width = Math.abs(Math.abs(lng) - Math.abs(lng_)) / detail;
 
     var neLat = bounds._northEast.lat;
     var swLng = bounds._southWest.lng;
-
-//    if (ajax != undefined) {
-//        ajax.abort();
-//    }
 
     var req = "/browse/json.action?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end="+ end + "&term="+ $("#term").val();
     console.log(req);
