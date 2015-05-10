@@ -468,9 +468,9 @@
 				<version>9.2.7.v20150116</version>
 				<configuration>
 					<stopKey>CTRL+C</stopKey>
-					<stopPort>8999</stopPort>
+					<stopPort>8992</stopPort>
 					<httpConnector>
-						<port>8180</port>
+						<port>8280</port>
 					</httpConnector>
 					<systemProperties>
 						<systemProperty>
