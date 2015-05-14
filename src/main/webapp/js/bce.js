@@ -1,6 +1,21 @@
 var map = L.map('map').setView([ 66.16495058  ,  -16.68273926], 5);
 $("#term").keyup(function(){
+    if ($("#term").val().length && !showAllPoints) {
+        $("#showAll").trigger("click");
+    }
     drawGrid();
+});
+
+var showAllPoints = 0;
+
+$("#showAll").click(function() {
+    if (!$("#showAll")[0].checked) {
+        showAllPoints = 0;
+    } else {
+        showAllPoints = 1;
+    }
+    changeAllOpacity();
+ 
 });
 var time = 0;
 var NORTH, SOUTH, EAST, WEST;
@@ -24,44 +39,98 @@ var RedIcon = L.Icon.Default.extend({
 
 var BlueIcon = L.Icon.Default.extend({});
 
+
+var changeAllOpacity = function() {
+    map.eachLayer(function(l) {
+        if (l._latlng) {
+            geoLayer.getLayer(l._leaflet_id).setOpacity(showAllPoints);
+        }
+    });
+}
+
+var findInside = function(ly) {
+    var points  = new Array();
+    var outside = new Array();
+    map.eachLayer(function(l) {
+        if (l._latlng != undefined) {
+            var val = inside([l._latlng.lng, l._latlng.lat] , ly);
+            if (l._icon != undefined) {
+                if (val) {
+                    points.push(l);
+                } else {
+                    outside.push(l);
+                }
+            }
+        }
+    });
+    return {"inside": points, "outside": outside};
+}
+
+
 var hlayer = new L.GeoJSON(hrep, {style:myStyle,
     onEachFeature : function(feature, layer_) {
         layer_.on({
+            mouseover : function(event) {
+                var ly = event.target.feature.geometry.coordinates[0];
+                var points = findInside(ly);
+                if (!showAllPoints) {
+                    for (var i=0; i < points.inside.length; i++) {
+                        var l_ = points.inside[i];
+                        var ll = geoLayer.getLayer(l_._leaflet_id);
+                        ll.setOpacity(1);
+                    }
+                }
+            }, 
+            mouseout : function(event) {
+                var ly = event.target.feature.geometry.coordinates[0];
+                var points = findInside(ly);
+                if (!showAllPoints) {
+                    for (var i=0; i < points.inside.length; i++) {
+                        var l_ = points.inside[i];
+                        var ll = geoLayer.getLayer(l_._leaflet_id);
+                        ll.setOpacity(0);
+                    }
+                }
+            }, 
             click : function(event) {
                 var ly = event.target.feature.geometry.coordinates[0];
                 var text = "";
                 var keys = {};
-                map.eachLayer(function(l) {
-                    if (l._latlng != undefined) {
-                        var val = inside([l._latlng.lng, l._latlng.lat] , ly);
-                        if (val && l._icon != undefined) {
-                            l.setIcon(new RedIcon());
-                            for (key in l.feature.properties) {
-                                if (l.feature.properties.hasOwnProperty(key) ) {
-                                    var val = l.feature.properties[key];
-                                    if (keys[key] == undefined) {
-                                        keys[key] = "";
-                                    }
-                                    // FIXME: hack
-                                    if (keys[key].indexOf(val)  == -1) {
-                                        console.log(keys[key]  + " ||| " + val + " : "  + keys[key].indexOf(val));
-                                        if (keys[key].length > 0) {
-                                            keys[key] = keys[key] + ", ";
-                                        }
-                                        keys[key] = keys[key] + val;
-                                    }
-                                }
-                            }                        
-                        } else {
-                            if (l._icon != undefined) {
-                                l.setIcon(new BlueIcon());
-                            }                            
+
+                var points = findInside(ly);
+                for (var i=0; i < points.inside.length; i++) {
+                    var l_ = points.inside[i];
+                    var ll = geoLayer.getLayer(l_._leaflet_id);
+                    var l = points.inside[i];
+                    l.options.opacity = 1;
+                    for (key in l.feature.properties) {
+                        if (keys[key] == undefined) {
+                            keys[key] = {};
                         }
+                        var v = l.feature.properties[key].trim();
+                        if (key == 'Sagas tags') {
+                            console.log(v);
+                        }
+                        // FIXME: hack
+                        if (keys[key].hasOwnProperty(v)) {
+                            continue;
+                        }
+                        keys[key][v] = 1;
                     }
-                });
+                }
                 for (key in keys) {
                     if (keys.hasOwnProperty(key) ) {
-                        text += "<b>" + key+ ":</b> " + keys[key] + "<br/>";
+                        var vals = keys[key];
+                        var out = "";
+                        for (val in vals) {
+                            if (vals.hasOwnProperty(val) ) {
+                                if (out.length > 0) {
+                                    out += ", ";
+                                }
+                                out += val;
+                            }
+                        }
+                        text += "<b>" + key+ ":</b> " + out+ "<br/>";
                     }
                 }
                 $("#infodetail").html(text);
@@ -122,7 +191,7 @@ var tile = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 
 tile.addTo(map);
 
-var layer = undefined;
+var geoLayer = undefined;
 
 
 function highlightFeature(e) {
@@ -144,23 +213,30 @@ function highlightFeature(e) {
 }
 
 function resetHighlight(e) {
-    layer.resetStyle(e.target);
+    geoLayer.resetStyle(e.target);
 }
 
 function onEachFeature(feature, layer) {
     layer.on({
         mouseover : highlightFeature,
         mouseout : resetHighlight,
-    });
-    
-    var text = "";
-    for (key in feature.properties) {
-        if (feature.properties.hasOwnProperty(key) ) {        // These are explained
-            text += "<b>" + key+ ":</b>" + feature.properties[key] + "<br/>";
-        }
-    }
+        click : function(e)  {
+            var feature = e.target.feature;
+            console.log(e);
+            var text = "";
+            for (key in feature.properties) {
+                if (feature.properties.hasOwnProperty(key) ) {        // These are explained
+                    text += "<b>" + key+ ":</b>" + feature.properties[key] + "<br/>";
+                }
+            }
 
-    $("#infodetail").html(text);
+            $("#infodetail").html(text);
+        }
+    });
+    if (!showAllPoints) {
+        layer.options.opacity = 0;
+    }
+//    feature.setStyle({opacity:0, fillOpacity:0});
 }
 
 function resetGrid() {
@@ -198,11 +274,11 @@ function drawGrid() {
                 var layer_ = L.geoJson(json, {
                     onEachFeature : onEachFeature
                 });
-                if (layer != undefined) {
-                    map.removeLayer(layer);
+                if (geoLayer != undefined) {
+                    map.removeLayer(geoLayer);
                 }
-                layer = layer_;
-                layer.addTo(map);
+                geoLayer = layer_;
+                geoLayer.addTo(map);
                 ajax = undefined;
                 ret.resolve(req);
             });

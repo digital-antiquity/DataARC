@@ -37,12 +37,12 @@
 <div id="status" style="font-size:10pt" class="col-md-12"></div>
 </div>
 <div class="row">
-    <div id="mapbox"  class="col-md-6">
+    <div id="mapbox"  class="col-md-8">
         <div id="map" style="height: 600px"></div>
     </div>
-    <div id="infobox" class="col-md-6">
+    <div id="infobox" class="col-md-4">
         <div id="sigma-container">
-        </div>
+        </div><button name="expand">+</button>
         <div id="infostatus"></div>
         <div id="chart"></div>
         <div id="infodetail"></div>
@@ -53,10 +53,13 @@
     <div class="col-md-12">
     <form class="form-inline">
     <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
+    <label for='showAll'><input type="checkbox" name="showAll" id="showAll" class="form-control" /> Show All Points</label>
     <span>&nbsp;Limit by year:</span>
             <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
      data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
      data-slider-handle="round">
+     <br/>
+     <img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">
     </form>
     </div>
 </div>
@@ -74,6 +77,7 @@
     <script src="js/sigma-1.0.3/sigma.min.js" type="text/javascript" language="javascript"></script>
     <script src="js/sigma-1.0.3/plugins/sigma.parsers.json.min.js" type="text/javascript" language="javascript"></script>
 
+
     <script src="js/bce.js"></script>
 <script>
 // GLOBALS:
@@ -81,24 +85,58 @@ var max = 800;
 var detail = 160;
 var shouldContinue = true;
 var ajax;
+var s;
 
+$(document).ready(function() {
 
- sigma.parsers.json('data.json', {
-    container: 'sigma-container',
-    settings: {
-      defaultNodeColor: '#ec5148'
-    },
-    },
-   function(sigma) {
-   //http://stackoverflow.com/questions/24643423/adding-sigma-js-navigation-buttons (for nav)
-       sigma.bind('clickNode', function(e) {
-            var nodeId = e.data.node.id;
-            console.log(nodeId);
-            console.log(e.data.node);
-        });    
-    });
+s = new sigma('sigma-container');
+
+s.settings({
+	  "labelThreshold": 0,
+      "hoverFontStyle": "bold",
+      "defaultEdgeType": "curve",
+      "defaultLabelColor": "#000",
+      "defaultLabelHoverColor": "#fff",
+      "defaultLabelSize": 14,
+      "activeFontStyle": "bold",
+      "fontStyle": "bold",
+      "defaultHoverLabelBGColor": "#002147",
+      "defaultLabelBGColor": "#ddd",
+
+      "minEdgeSize": 0.2,
+      "maxEdgeSize": 0.5,
+      "minNodeSize": 1,
+      "maxNodeSize": 7,
+
+      "minRatio": 0.75,
+      "maxRatio": 20
+      
+      
+      });//.graphProperties(graphProps).mouseProperties(mouseProps);
+
+s.refresh();
+
+ sigma.parsers.json('data.json', s, function() {
+    s.refresh();
+  });
     
-
+	s.refresh();
+    console.log(s.graph.nodes().length);
+    for (var i=0; i< s.graph.nodes().length; i++) {
+    	var ns = s.graph.nodes()[i]; 
+        ns.x += 10 * ns.x;
+     	ns.y += 10 * ns.y;
+	};
+	s.refresh();
+    
+    s.bind('clickNode', function(e) {
+            var node = e.data.node;
+            var nodeId = node.id;
+            var $term = $("#term");
+            $term.val(node.label);
+            $term.trigger("keyup");
+        });
+});
 </script>
 </div>
 </body>
