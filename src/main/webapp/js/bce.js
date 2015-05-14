@@ -6,6 +6,34 @@ $("#term").keyup(function(){
     drawGrid();
 });
 
+
+//http://nls-0.tileserver.com/NLS_API/$%7Bz%7D/$%7Bx%7D/$%7By%7D.jpg
+var tile = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+    maxZoom : 17,
+    attribution : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
+            + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    id : 'examples.map-i875mjb7'
+});
+
+tile.addTo(map);
+
+var rum = L.tileLayer('http://georeferencer-{s}.tileserver.com//727d3d8823d70aee89431e334ca43d042abb6961/map/cak1TkoVtiCcwmwo8mNCcg/201411241520-xOjZAY/tps/{z}/{x}/{y}.png', {
+    maxZoom : 17,
+    subdomains: '0123'
+});
+
+
+var rum2 = L.tileLayer('http://georeferencer-{s}.tileserver.com//727d3d8823d70aee89431e334ca43d042abb6961/map/FAflLWXi7TvPEgOfODdz4t/201505140124-oKHZqH/polynomial/{z}/{x}/{y}.png', {
+    maxZoom : 17,
+    subdomains: '0123'
+});
+
+
+L.control.layers({
+    'Basic Map': tile,
+    'Iceland -- Physical-Political, 1928': rum,
+    'Islande. Europe 1 bis. 1827': rum2
+}).addTo(map);
 var showAllPoints = 0;
 
 $("#showAll").click(function() {
@@ -181,15 +209,6 @@ map.on('resize', function() {
 map.on('dragend', function() {
     drawGrid();
 });
-//http://nls-0.tileserver.com/NLS_API/$%7Bz%7D/$%7Bx%7D/$%7By%7D.jpg
-var tile = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-    maxZoom : 17,
-    attribution : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
-            + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    id : 'examples.map-i875mjb7'
-});
-
-tile.addTo(map);
 
 var geoLayer = undefined;
 
