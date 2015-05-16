@@ -28,10 +28,12 @@ var rum2 = L.tileLayer('http://georeferencer-{s}.tileserver.com//727d3d8823d70ae
     subdomains: '0123'
 });
 
-
+var rumGroup = L.layerGroup([tile, rum]);
+tile.addTo(map);
 L.control.layers({
     'Basic Map': tile,
-    'Iceland -- Physical-Political, 1928': rum,
+    },{
+    'Iceland -- Physical-Political, 1928': rumGroup,
     'Islande. Europe 1 bis. 1827': rum2
 }).addTo(map);
 var showAllPoints = 0;
