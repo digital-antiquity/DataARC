@@ -57,7 +57,7 @@ drawGrid();
 
 var myStyle = {
         "color": "#ff7800",
-        "weight": 5,
+        "weight": 1,
         "opacity": 1
     };
 

@@ -64,7 +64,7 @@
     </div>
 </div>
 
-    <script src="myv.json"></script>
+    <script src="iceland.json"></script>
     <script src="components/jquery/dist/jquery.js"></script>
     <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="components/leaflet/dist/leaflet.js"></script>
