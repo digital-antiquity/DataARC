@@ -28,13 +28,34 @@ var rum2 = L.tileLayer('http://georeferencer-{s}.tileserver.com//727d3d8823d70ae
     subdomains: '0123'
 });
 
+
+var map1843 = new L.TileLayer.WMS("http://archviz.humlab.umu.se:8080/geoserver/Maps/wms",
+        {
+    layers: "1843_fornfraedafelagid",
+    format: 'image/png',
+    transparent: true,
+    attribution: ""
+});
+
+
+var gudbr = new L.TileLayer.WMS("http://archviz.humlab.umu.se:8080/geoserver/Maps/wms",
+        {
+    layers: "Gudbrandur_isn93",
+    format: 'image/png',
+    transparent: true,
+    attribution: ""
+});
+
+
 var rumGroup = L.layerGroup([tile, rum]);
 tile.addTo(map);
 L.control.layers({
     'Basic Map': tile,
     },{
     'Iceland -- Physical-Political, 1928': rumGroup,
-    'Islande. Europe 1 bis. 1827': rum2
+    'Islande. Europe 1 bis. 1827': rum2,
+    '1843 Map': map1843,
+    'Gudbrandur Map': gudbr
 }).addTo(map);
 var showAllPoints = 0;
 
@@ -103,6 +124,10 @@ var hlayer = new L.GeoJSON(hrep, {style:myStyle,
             mouseover : function(event) {
                 var ly = event.target.feature.geometry.coordinates[0];
                 var points = findInside(ly);
+                hlayer.getLayer(event.target._leaflet_id).setStyle({
+                    fillOpacity: 0.3,
+                    fillColor: '#ddd'
+                });
                 if (!showAllPoints) {
                     for (var i=0; i < points.inside.length; i++) {
                         var l_ = points.inside[i];
@@ -113,6 +138,10 @@ var hlayer = new L.GeoJSON(hrep, {style:myStyle,
             }, 
             mouseout : function(event) {
                 var ly = event.target.feature.geometry.coordinates[0];
+                hlayer.getLayer(event.target._leaflet_id).setStyle({
+                    fillOpacity:.2,
+                    fillColor:"#ff7800"
+                });
                 var points = findInside(ly);
                 if (!showAllPoints) {
                     for (var i=0; i < points.inside.length; i++) {
