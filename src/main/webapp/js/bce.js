@@ -106,6 +106,10 @@ $('#timeslider').slider().on('slide', function(ev) {
 });
 
 function highlightFeature(e) {
+    var id = e.target.parent._leaflet_id;
+    console.log(id);
+    $('#map').trigger("highlight:on",[hlayer,id]);
+//    $(e.target.parent).trigger("mouseenter");
     // var layer = e.target;
     // if (e.target != undefined) {
     // layer.setStyle({
@@ -140,9 +144,8 @@ function addPointsToMap(feature, layer) {
                     text += "<b>" + key + ":</b>" + feature.properties[key] + "<br/>";
                 }
             }
-
             $("#infodetail").html(text);
-        }
+        }        
     });
     if (!showAllPoints) {
         layer.options.opacity = 0;
@@ -190,40 +193,16 @@ function drawGrid() {
                     map.removeLayer(geoLayer);
                 }
 
-                // hlayer
-                // var pts = findInside(feature.geometry.coordinates[0]);
-                // console.log("hi" , pts);
-
                 geoLayer = layer_;
                 geoLayer.addTo(map);
                 ajax = undefined;
 
-//                hlayer.getLayers().forEach(function(layer) {
-//                    var count = 0;
-//                    var coords = layer.feature.geometry.coordinates;
-//                    if (coords.length == 1) {
-//                        geoLayer.getLayers().forEach(function(pt) {
-//                          if (inside(pt.feature.geometry.coordinates[0], coords[0])) {
-//                              console.log("hi!!!");
-//                              count++;
-//                          }
-//                      });
-//                    } else {
-//                        for (var i = 0; i < coords.length; i++) {
-//                            geoLayer.getLayers().forEach(function(pt) {
-//                              if (inside(pt.feature.geometry.coordinates[0], coords[i][0])) {
-//                                  console.log("hi");
-//                                  count++;
-//                              }
-//                          });
-//
-//                        }
-//                    }
-////                    console.log(layer._leaflet_id , count);
-//                });
-
                 hlayer.getLayers().forEach(function(pt) {
                     var pts = findInside(pt.feature.geometry.coordinates[0]);
+                    pt.inside = pts.inside;
+                    pts.inside.forEach(function(p) {
+                        p.parent = pt;
+                    });
                     if (pts.inside.length > 0) {
                         pt.setStyle({fillColor:'red',fillOpacity:1});
                     }
@@ -351,63 +330,72 @@ function setupBaseLayers() {
 
 }
 
+function mouseEnterShape(event) {
+    $("#map").trigger("highlight:on", [hlayer, event.target._leaflet_id]);
+}
+
+function mouseLeaveShape(event) {
+    $("#map").trigger("highlight:off", [hlayer, event.target._leaflet_id]);
+}
+
+function highlightShape(_leaflet_id) {
+    var layer = hlayer.getLayer(_leaflet_id);
+    var ly = layer.feature.geometry.coordinates[0];
+    var points = layer.inside;
+    layer.setStyle({
+        fillOpacity : 0.3,
+        fillColor : '#ddd'
+    });
+    if (!showAllPoints) {
+        for (var i = 0; i < points.length; i++) {
+            var l_ = points[i];
+            var ll = geoLayer.getLayer(l_._leaflet_id);
+            ll.setOpacity(1);
+        }
+    }
+}
+
+function removeShapeHighlight(_leaflet_id) {
+    var layer = hlayer.getLayer(_leaflet_id);
+    var ly = layer.feature.geometry.coordinates[0];
+
+    layer.setStyle({
+        fillOpacity : .2,
+        fillColor : "#ff7800"
+    });
+    var points = layer.inside;
+    if (!showAllPoints) {
+        for (var i = 0; i < points.length; i++) {
+            var l_ = points[i];
+            var ll = geoLayer.getLayer(l_._leaflet_id);
+            ll.setOpacity(0);
+        }
+    }
+}
+
 function setupMapShape() {
     hlayer = new L.GeoJSON(hrep, {
         style : myStyle,
         onEachFeature : function(feature, layer_) {
-
             layer_.on({
-                mouseover : function(event) {
-                    var ly = event.target.feature.geometry.coordinates[0];
-                    var points = findInside(ly);
-                    hlayer.getLayer(event.target._leaflet_id).setStyle({
-                        fillOpacity : 0.3,
-                        fillColor : '#ddd'
-                    });
-                    if (!showAllPoints) {
-                        for (var i = 0; i < points.inside.length; i++) {
-                            var l_ = points.inside[i];
-                            var ll = geoLayer.getLayer(l_._leaflet_id);
-                            ll.setOpacity(1);
-                        }
-                    }
-                },
-                mouseout : function(event) {
-                    var ly = event.target.feature.geometry.coordinates[0];
-                    hlayer.getLayer(event.target._leaflet_id).setStyle({
-                        fillOpacity : .2,
-                        fillColor : "#ff7800"
-                    });
-                    var points = findInside(ly);
-                    if (!showAllPoints) {
-                        for (var i = 0; i < points.inside.length; i++) {
-                            var l_ = points.inside[i];
-                            var ll = geoLayer.getLayer(l_._leaflet_id);
-                            ll.setOpacity(0);
-                        }
-                    }
-                },
+                mouseover: mouseEnterShape,
+                mouseout: mouseLeaveShape,
                 click : function(event) {
                     var ly = event.target.feature.geometry.coordinates[0];
                     var text = "";
                     var keys = {};
-
-                    var points = findInside(ly);
-                    for (var i = 0; i < points.inside.length; i++) {
-                        var l_ = points.inside[i];
+                    var points = event.target.inside;
+                    for (var i = 0; i < points.length; i++) {
+                        var l_ = points[i];
                         var ll = geoLayer.getLayer(l_._leaflet_id);
-                        console.log(l_._leaflet_id);
-                        var l = points.inside[i];
+                        var l = points[i];
                         l.options.opacity = 1;
                         for (key in l.feature.properties) {
                             if (keys[key] == undefined) {
                                 keys[key] = {};
                             }
                             var v = l.feature.properties[key].trim();
-                            if (key == 'Sagas tags') {
-                                console.log(v);
-                            }
-                            // FIXME: hack
+
                             if (keys[key].hasOwnProperty(v)) {
                                 continue;
                             }
@@ -435,8 +423,15 @@ function setupMapShape() {
             });
         }
     }).addTo(map);
+    
+    hlayer.getLayers().forEach(function(layer_) {
+        if (layer_._container) {
+            layer_._container._leaflet_id = layer_._leaflet_id;
+        }
+    })
 }
 
+var activeId = -1;
 function attachMapEvents() {
     // events
     // http://leafletjs.com/reference.html#events
@@ -455,6 +450,24 @@ function attachMapEvents() {
 
     map.on('click', onMapClick);
 
+    $(".leaflet-zoom-animated").on('mouseover',function() {
+        $('#map').trigger("highlight:on",[undefined,-1]);
+    });
+    $(document).on("highlight:on",function(event,layer, id) {
+        if (activeId > -1) {
+            removeShapeHighlight(activeId);
+        }
+        activeId = id;
+        if (layer == hlayer) {
+            highlightShape(id);
+        }
+    });
+    $(document).on("highlight:off",function(event,layer, id) {
+//        activeId = id;
+        if (layer == hlayer) {
+  //          removeShapeHighlight(id);
+        }
+    });
 }
 
 $(function() {
