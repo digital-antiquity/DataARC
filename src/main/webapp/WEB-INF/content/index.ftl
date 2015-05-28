@@ -28,6 +28,28 @@
     background-color:#EFEFEF;
    }
 
+
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  fill: none;
+  stroke: #bbb;
+}
+
+.nodeLabel {
+	font-size: 12px;
+	border:0;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
    </style> 
    
    </head>
@@ -41,8 +63,18 @@
         <div id="map" style="height: 600px"></div>
     </div>
     <div id="infobox" class="col-md-4">
-        <div id="sigma-container">
-        </div><button name="expand">+</button>
+        <div id="forcemap"></div>
+		<button id="zoom_in"><span class="glyphicon glyphicon-zoom-in"></span></button>
+		<button id="zoom_out"><span class="glyphicon glyphicon-zoom-out"></span></button>
+		
+		<button id="up"><span class="glyphicon glyphicon-triangle-top"></span></button>
+		<button id="down"><span class="glyphicon glyphicon-triangle-bottom"></span></button>
+		<button id="left"><span class="glyphicon glyphicon-triangle-left"></span></button>
+		<button id="right"><span class="glyphicon glyphicon-triangle-right"></span></button>
+        
+        
+        <button id="expand"><span class="glyphicon glyphicon-resize-full"></span></button>
+        <button id="contract"><span class="glyphicon glyphicon-resize-small"></span></button>
         <div id="infostatus"></div>
         <div id="chart"></div>
         <div id="infodetail"></div>
@@ -70,73 +102,17 @@
     <script src="components/leaflet/dist/leaflet.js"></script>
     <script src="components/leaflet-pip/leaflet-pip.js"></script>
     <script src="components/d3/d3.js"></script>
-    <script src="components/jquery.preload/jquery.preload.js"></script>
     <script src="components/c3/c3.js"></script>
     <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js">
     <script src="components/chroma-js/chroma.min.js"></script>
-    <script src="js/sigma-1.0.3/sigma.min.js" type="text/javascript" language="javascript"></script>
-    <script src="js/sigma-1.0.3/plugins/sigma.parsers.json.min.js" type="text/javascript" language="javascript"></script>
-
-
     <script src="js/bce.js"></script>
+    <script src="js/bce-forcemap.js"></script>
 <script>
 // GLOBALS:
 var max = 800;
 var detail = 160;
 var shouldContinue = true;
-var ajax;
-var s;
 
-$(document).ready(function() {
-
-s = new sigma('sigma-container');
-
-s.settings({
-	  "labelThreshold": 0,
-      "hoverFontStyle": "bold",
-      "defaultEdgeType": "curve",
-      "defaultLabelColor": "#000",
-      "defaultLabelHoverColor": "#fff",
-      "defaultLabelSize": 14,
-      "activeFontStyle": "bold",
-      "fontStyle": "bold",
-      "defaultHoverLabelBGColor": "#002147",
-      "defaultLabelBGColor": "#ddd",
-
-      "minEdgeSize": 0.2,
-      "maxEdgeSize": 0.5,
-      "minNodeSize": 1,
-      "maxNodeSize": 7,
-
-      "minRatio": 0.75,
-      "maxRatio": 20
-      
-      
-      });//.graphProperties(graphProps).mouseProperties(mouseProps);
-
-s.refresh();
-
- sigma.parsers.json('data.json', s, function() {
-    s.refresh();
-  });
-    
-	s.refresh();
-    console.log(s.graph.nodes().length);
-    for (var i=0; i< s.graph.nodes().length; i++) {
-    	var ns = s.graph.nodes()[i]; 
-        ns.x += 10 * ns.x;
-     	ns.y += 10 * ns.y;
-	};
-	s.refresh();
-    
-    s.bind('clickNode', function(e) {
-            var node = e.data.node;
-            var nodeId = node.id;
-            var $term = $("#term");
-            $term.val(node.label);
-            $term.trigger("keyup");
-        });
-});
 </script>
 </div>
 </body>
