@@ -55,7 +55,33 @@ function init() {
     resetGrid();
     drawGrid();
     attachMapEvents();
+    addLegend();
 }
+
+
+function addLegend() {
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 5, 10, 15, 20, 25],
+            labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="opacity: '+UNHIGHLIGHTED+'; background:' + chromaScale(grades[i] / 25).hex() + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+
+        return div;
+    };
+
+    legend.addTo(map);
+}
+
+
 
 var changeAllOpacity = function() {
     map.eachLayer(function(l) {

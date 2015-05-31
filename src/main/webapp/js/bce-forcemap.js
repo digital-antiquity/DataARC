@@ -1,12 +1,12 @@
 function getWidth() {
     width = $('#infobox').width();
-    console.log(width);
     return width;
 }
 
 var width = getWidth();
 var aspect = 500 / 950;
 var circleWidth = 5;
+var node;
 
 $(window).resize(resize);
 
@@ -23,8 +23,7 @@ function resize() {
 var color = d3.scale.category20();
 var zoom = d3.behavior.zoom().on("zoom", redraw);
 var parent = d3.select("#forcemap").append("svg:svg").attr("preserveAspectRatio", "xMidYMid").attr("width", width).attr("height", width * aspect);
-var vis = parent.attr(
-        "pointer-events", "all").append('svg:g').append('svg:g');
+var vis = parent.attr("pointer-events", "all").append('svg:g').append('svg:g');
 vis.attr("x", 0);
 vis.attr("y", 0);
 
@@ -89,33 +88,53 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
 
     var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link");
 
-    var node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node")
-    .on("mouseover", mouseOverNode)
-    .on("mouseout",mouseOutNode).call(force.drag);
+    node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
+    node.call(force.drag);
 
-    node.append("svg:circle")
-    .attr("x", function(d) { return d.x; })
-    .attr("y", function(d) { return d.y; })
-    .attr("r", circleWidth)
-    .attr("fill", function(d) {
+    node.append("svg:circle").attr("x", function(d) {
+        return d.x;
+    }).attr("y", function(d) {
+        return d.y;
+    }).attr("r", circleWidth).attr("fill", function(d) {
         return color(d.weight);
     }).on('click', nodeLabelClick);
 
-//  .attr("class","nodeLabel")
-    
-    node.append("text")
-    .text(function(d, i) { return d.name; })
-    .attr("x",            function(d, i) { if (i>0) { return circleWidth + 5; }   else { return -10 } })
-    .attr("y",            function(d, i) { if (i>0) { return circleWidth + 0 }    else { return 8 } })
-    .attr("fill","black").on('click', nodeLabelClick);
+    // .attr("class","nodeLabel")
+
+    node.append("text").text(function(d, i) {
+        return d.name;
+    }).attr("x", function(d, i) {
+        if (i > 0) {
+            return circleWidth + 5;
+        } else {
+            return -10
+        }
+    }).attr("y", function(d, i) {
+        if (i > 0) {
+            return circleWidth + 0
+        } else {
+            return 8
+        }
+    }).attr("fill", "black").on('click', nodeLabelClick);
 
     var nodelabels = vis.selectAll(".nodelabel");
-    
-    
+
     function nodeLabelClick(d) {
         var $term = $("#term");
         $term.val(d.name);
         $term.trigger("keyup");
+        var $this = d3.select(this.parentNode);
+//        whatever = $this;
+//        $this.selectAll("circle").style("visibility", "hidden");
+//        $this.style("visibility", "hidden");
+//        $this.selectAll("text").style("visibility", "hidden");
+//        d.children.forEach(function(e) {
+//            var n = d3.select(d3.select(e.parentNode).parentNode);
+//            n.style("visibility", "hidden");
+//            n.selectAll("text").style("visibility", "hidden");
+//            n.selectAll("circle").style("visibility", "hidden");
+//        });
+        force.start();
     }
 
     // http://jsfiddle.net/vfu78/16/
@@ -141,7 +160,7 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
     node.forEach(function(d) {
         if (d._children || d.children) {
             d.x = width / 2, d.y = (width * aspect) / 2;
-            d.fixed = true;
+            d.fixed = false;
         }
     });
 });
@@ -157,55 +176,33 @@ function interpolateZoom(translate, scale) {
     });
 }
 
-function mouseOverNode(d,i) {
+function mouseOverNode(d, i) {
     var $this = d3.select(this);
-        if (i>0) {
-            //CIRCLE
-            $this.selectAll("circle")
-            .transition()
-            .duration(250)
-            .style("cursor", "none")     
-            .attr("r", circleWidth + 5);
-            
-            $this.select("text")
-            .transition()
-            .style("cursor", "none")     
-            .duration(250)
-            .style("cursor", "none")     
-            .attr("font-size","1.5em")
-            .attr("x", 15 )
-            .attr("y", 5 )
-          } else {
-            //CIRCLE
-            $this.selectAll("circle")
-            .style("cursor", "none")     
+    if (i > 0) {
+        // CIRCLE
+        $this.selectAll("circle").transition().duration(250).style("cursor", "none").attr("r", circleWidth + 5);
 
-            //TEXT
-            $this.select("text")
-            .style("cursor", "none")     
-          }
+        $this.select("text").transition().style("cursor", "none").duration(250).style("cursor", "none").attr("font-size", "1.5em").attr("x", 15).attr("y", 5)
+    } else {
+        // CIRCLE
+        $this.selectAll("circle").style("cursor", "none")
+
+        // TEXT
+        $this.select("text").style("cursor", "none")
+    }
 }
 
-
-function mouseOutNode(d,i) {
+function mouseOutNode(d, i) {
     var $this = d3.select(this);
 
-    if (i>0) {
-        //CIRCLE
-        $this.selectAll("circle")
-        .transition()
-        .duration(250)
-        .attr("r", circleWidth);
+    if (i > 0) {
+        // CIRCLE
+        $this.selectAll("circle").transition().duration(250).attr("r", circleWidth);
 
-        //TEXT
-        $this.select("text")
-        .transition()
-        .duration(250)
-        .attr("font-size","1em")
-        .attr("x", 8 )
-        .attr("y", 4 )
-      }
-    };
+        // TEXT
+        $this.select("text").transition().duration(250).attr("font-size", "1em").attr("x", 8).attr("y", 4)
+    }
+};
 
 function zoomed() {
     vis.attr("transform", "translate(" + zoom.translate() + ")" + "scale(" + zoom.scale() + ")");
@@ -280,10 +277,9 @@ d3.select('#right').on("click", moveRight);
 d3.select('#zoom_in').on('click', zoomClick);
 d3.select('#zoom_out').on('click', zoomClick);
 
-
 $("#expand").click(function() {
-    var $info =$("#infobox");
-    var $map =$("#mapbox");
+    var $info = $("#infobox");
+    var $map = $("#mapbox");
     $info.removeClass("col-md-4");
     $info.addClass("col-md-8");
     $map.removeClass("col-md-8");
@@ -292,8 +288,8 @@ $("#expand").click(function() {
 });
 
 $("#contract").click(function() {
-    var $info =$("#infobox");
-    var $map =$("#mapbox");
+    var $info = $("#infobox");
+    var $map = $("#mapbox");
     $map.removeClass("col-md-4");
     $map.addClass("col-md-8");
     $info.removeClass("col-md-8");
