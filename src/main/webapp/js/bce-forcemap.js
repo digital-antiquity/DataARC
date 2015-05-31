@@ -107,7 +107,7 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
     .text(function(d, i) { return d.name; })
     .attr("x",            function(d, i) { if (i>0) { return circleWidth + 5; }   else { return -10 } })
     .attr("y",            function(d, i) { if (i>0) { return circleWidth + 0 }    else { return 8 } })
-    .attr("fill","black");
+    .attr("fill","black").on('click', nodeLabelClick);
 
     var nodelabels = vis.selectAll(".nodelabel");
     

@@ -86,7 +86,7 @@
     <div class="col-md-12">
     <form class="form-inline">
     <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
-    <label for='showAll'><input type="checkbox" name="showAll" id="showAll" class="form-control" /> Show All Points</label>
+<!--    <label for='showAll'><input type="checkbox" name="showAll" id="showAll" class="form-control" /> Show All Points</label> -->
     <span>&nbsp;Limit by year:</span>
             <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
      data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"

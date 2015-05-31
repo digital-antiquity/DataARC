@@ -9,11 +9,12 @@ var grid = false;
 var start = -9999;
 var end = 9999;
 var chromaScale;
-var showAllPoints = 0;
+var showAllPoints = 1;
 
 
 
 $("#showAll").click(function() {
+    return;
     if (!$("#showAll")[0].checked) {
         showAllPoints = 0;
     } else {
@@ -154,7 +155,7 @@ function resetGrid() {
 var circleMarkerOptions = {
         radius: 4,
         fillColor: "#006400",
-        color: "#000",
+        stroke:.1,
         weight: 1
     };
 
