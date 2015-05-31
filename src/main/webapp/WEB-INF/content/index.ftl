@@ -31,8 +31,8 @@
 
 
 .node {
-  stroke: #fff;
-  stroke-width: 1.5px;
+//  stroke: #fff;
+//  stroke-width: 1.5px;
 }
 
 .link {
@@ -42,6 +42,7 @@
 
 .nodeLabel {
 	font-size: 12px;
+	fill: black;
 	border:0;
 }
 

@@ -59,7 +59,7 @@ function init() {
 var changeAllOpacity = function() {
     map.eachLayer(function(l) {
         if (l._latlng) {
-            geoLayer.getLayer(l._leaflet_id).setOpacity(showAllPoints);
+            geoLayer.getLayer(l._leaflet_id).setStyle({fillOpacity:showAllPoints});
         }
     });
 }

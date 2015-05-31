@@ -6,6 +6,7 @@ function getWidth() {
 
 var width = getWidth();
 var aspect = 500 / 950;
+var circleWidth = 5;
 
 $(window).resize(resize);
 
@@ -88,35 +89,39 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
 
     var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link");
 
-    var node = vis.selectAll(".node").data(nds).enter().append("circle").attr("class", "node").attr("r", 5).style("fill", function(d) {
-        return color(d.weight);
-    }).call(force.drag).on('click', nodeLabelClick);
+    var node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node")
+    .on("mouseover", mouseOverNode)
+    .on("mouseout",mouseOutNode).call(force.drag);
 
+    node.append("svg:circle")
+    .attr("x", function(d) { return d.x; })
+    .attr("y", function(d) { return d.y; })
+    .attr("r", circleWidth)
+    .attr("fill", function(d) {
+        return color(d.weight);
+    }).on('click', nodeLabelClick);
+
+//  .attr("class","nodeLabel")
+    
+    node.append("text")
+    .text(function(d, i) { return d.name; })
+    .attr("x",            function(d, i) { if (i>0) { return circleWidth + 5; }   else { return -10 } })
+    .attr("y",            function(d, i) { if (i>0) { return circleWidth + 0 }    else { return 8 } })
+    .attr("fill","black");
+
+    var nodelabels = vis.selectAll(".nodelabel");
+    
+    
     function nodeLabelClick(d) {
         var $term = $("#term");
         $term.val(d.name);
         $term.trigger("keyup");
-        
-//        console.log(d.name);
     }
 
     // http://jsfiddle.net/vfu78/16/
     node.append("title").text(function(d) {
         return d.name;
     });
-
-    var nodelabels = vis.selectAll(".nodelabel").data(nds).enter().append("text").attr({
-        "x" : function(d) {
-            return d.x;
-        },
-        "y" : function(d) {
-            return d.y;
-        },
-        "class" : "nodelabel"
-    }).text(function(d) {
-        return d.name;
-    }).on('click', nodeLabelClick);
-    ;
 
     force.on("tick", function() {
         link.attr("d", function(d) {
@@ -151,6 +156,56 @@ function interpolateZoom(translate, scale) {
         };
     });
 }
+
+function mouseOverNode(d,i) {
+    var $this = d3.select(this);
+        if (i>0) {
+            //CIRCLE
+            $this.selectAll("circle")
+            .transition()
+            .duration(250)
+            .style("cursor", "none")     
+            .attr("r", circleWidth + 5);
+            
+            $this.select("text")
+            .transition()
+            .style("cursor", "none")     
+            .duration(250)
+            .style("cursor", "none")     
+            .attr("font-size","1.5em")
+            .attr("x", 15 )
+            .attr("y", 5 )
+          } else {
+            //CIRCLE
+            $this.selectAll("circle")
+            .style("cursor", "none")     
+
+            //TEXT
+            $this.select("text")
+            .style("cursor", "none")     
+          }
+}
+
+
+function mouseOutNode(d,i) {
+    var $this = d3.select(this);
+
+    if (i>0) {
+        //CIRCLE
+        $this.selectAll("circle")
+        .transition()
+        .duration(250)
+        .attr("r", circleWidth);
+
+        //TEXT
+        $this.select("text")
+        .transition()
+        .duration(250)
+        .attr("font-size","1em")
+        .attr("x", 8 )
+        .attr("y", 4 )
+      }
+    };
 
 function zoomed() {
     vis.attr("transform", "translate(" + zoom.translate() + ")" + "scale(" + zoom.scale() + ")");
@@ -191,25 +246,25 @@ function zoomClick() {
 function moveUp() {
     var x = parseInt(vis.attr('x'));
     var y = parseInt(vis.attr('y'));
-    updatePos(x, y - 20);
+    updatePos(x, y + 20);
 }
 
 function moveDown() {
     var x = parseInt(vis.attr('x'));
     var y = parseInt(vis.attr('y'));
-    updatePos(x, y + 20);
+    updatePos(x, y - 20);
 }
 
 function moveLeft() {
     var x = parseInt(vis.attr('x'));
     var y = parseInt(vis.attr('y'));
-    updatePos(x - 20, y);
+    updatePos(x + 20, y);
 }
 
 function moveRight() {
     var x = parseInt(vis.attr('x'));
     var y = parseInt(vis.attr('y'));
-    updatePos(x + 20, y);
+    updatePos(x - 20, y);
 }
 
 function updatePos(x, y) {
