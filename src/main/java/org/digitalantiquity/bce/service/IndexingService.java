@@ -94,6 +94,7 @@ public class IndexingService {
             for (String tag : StringUtils.split(get(row, "tags"), ",")) {
                 doc.add(new TextField(IndexFields.TAGS, tag, Field.Store.YES));
             }
+            doc.add(new TextField(IndexFields.TYPE, get(row, "type of site"), Field.Store.YES));
             Point shape = ctx.makePoint(getDouble(row, "Lat"), getDouble(row, "Lon"));
             for (IndexableField f : strategy.createIndexableFields(shape)) {
                 doc.add(f);

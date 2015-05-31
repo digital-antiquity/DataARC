@@ -33,7 +33,6 @@ import org.geojson.Point;
 import org.springframework.stereotype.Service;
 
 import com.spatial4j.core.context.SpatialContext;
-import com.spatial4j.core.shape.Rectangle;
 
 @Service
 public class LuceneService {
@@ -67,7 +66,7 @@ public class LuceneService {
     }
 
     public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, String term) throws IOException {
-        Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
+//        Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
         FeatureCollection fc = new FeatureCollection();
         setupReaders("bce");
         // SpatialArgs args = new SpatialArgs(SpatialOperation.IsWithin, rectangle);
@@ -88,8 +87,10 @@ public class LuceneService {
             btext.add(new TermQuery(new Term(IndexFields.WHEN, term)),Occur.SHOULD);
             btext.add(new TermQuery(new Term(IndexFields.SOURCE, term)),Occur.SHOULD);
             btext.add(new TermQuery(new Term(IndexFields.TAGS, term)),Occur.SHOULD);
+            btext.add(new TermQuery(new Term(IndexFields.TYPE, term)),Occur.SHOULD);
             bq.add(btext, Occur.MUST);
         }
+        logger.debug(bq.toString());
         TopDocs topDocs = getSearcher().search(bq, limit);
         if (topDocs.scoreDocs.length == 0) {
             return fc;

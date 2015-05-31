@@ -99,12 +99,12 @@
     <script src="iceland.json"></script>
     <script src="components/jquery/dist/jquery.js"></script>
     <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="components/chroma-js/chroma.min.js"></script>
     <script src="components/leaflet/dist/leaflet.js"></script>
     <script src="components/leaflet-pip/leaflet-pip.js"></script>
     <script src="components/d3/d3.js"></script>
     <script src="components/c3/c3.js"></script>
-    <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js">
-    <script src="components/chroma-js/chroma.min.js"></script>
+    <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
     <script src="js/bce.js"></script>
     <script src="js/bce-forcemap.js"></script>
 <script>

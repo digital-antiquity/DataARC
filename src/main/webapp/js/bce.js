@@ -3,12 +3,15 @@ var popup = L.popup();
 var geoLayer = undefined;
 var hlayer;
 var time = 0;
+var UNHIGHLIGHTED = .3;
 var NORTH, SOUTH, EAST, WEST;
 var grid = false;
 var start = -9999;
 var end = 9999;
-
+var chromaScale;
 var showAllPoints = 0;
+
+
 
 $("#showAll").click(function() {
     if (!$("#showAll")[0].checked) {
@@ -41,8 +44,10 @@ $("#term").keyup(function() {
     drawGrid();
 });
 
+
 function init() {
     map = L.map('map').setView([ 66.16495058, -16.68273926 ], 5);
+    chromaScale = chroma.scale(['white', 'red']);
     setupBaseLayers();
     setupMapShape();
 
@@ -65,7 +70,7 @@ var findInside = function(ly) {
     map.eachLayer(function(l) {
         if (l._latlng != undefined) {
             var val = inside([ l._latlng.lng, l._latlng.lat ], ly);
-            if (l._icon != undefined) {
+            if (l._icon != undefined || l._radius) {
                 if (val) {
                     points.push(l);
                 } else {
@@ -106,28 +111,15 @@ $('#timeslider').slider().on('slide', function(ev) {
 });
 
 function highlightFeature(e) {
-    var id = e.target.parent._leaflet_id;
-    console.log(id);
-    $('#map').trigger("highlight:on",[hlayer,id]);
-//    $(e.target.parent).trigger("mouseenter");
-    // var layer = e.target;
-    // if (e.target != undefined) {
-    // layer.setStyle({
-    // weight : 5,
-    // strokeColor : '#666',
-    // dashArray : '',
-    // fillOpacity : 1
-    // });
-    // }
-    // console.log(layer.feature.properties);
-    // $("#info").html("temp:" + layer.feature.properties.temp);
-
-    // if (!L.Browser.ie && !L.Browser.opera) {
-    // layer.bringToFront();
-    // }
+    if (e.target.parent) {
+        var id = e.target.parent._leaflet_id;
+        geoLayer.getLayer(e.target._leaflet_id).setStyle({fillOpacity:1});
+        $('#map').trigger("highlight:on",[hlayer,id]);
+    }
 }
 
 function resetHighlight(e) {
+    geoLayer.getLayer(e.target._leaflet_id).setStyle({fillOpacity:UNHIGHLIGHTED});
     geoLayer.resetStyle(e.target);
 }
 
@@ -141,7 +133,7 @@ function addPointsToMap(feature, layer) {
             var text = "";
             for (key in feature.properties) {
                 if (feature.properties.hasOwnProperty(key)) { // These are explained
-                    text += "<b>" + key + ":</b>" + feature.properties[key] + "<br/>";
+                    text += "<b>" + key + ": </b>" + feature.properties[key] + "<br/>";
                 }
             }
             $("#infodetail").html(text);
@@ -150,7 +142,6 @@ function addPointsToMap(feature, layer) {
     if (!showAllPoints) {
         layer.options.opacity = 0;
     }
-    // feature.setStyle({opacity:0, fillOpacity:0});
 }
 
 function resetGrid() {
@@ -160,6 +151,13 @@ function resetGrid() {
     EAST = map.getBounds()._northEast.lng;
 }
 
+var circleMarkerOptions = {
+        radius: 4,
+        fillColor: "#006400",
+        color: "#000",
+        weight: 1
+    };
+
 function drawGrid() {
 
     var bounds = map.getBounds();
@@ -168,6 +166,7 @@ function drawGrid() {
     var lat_ = SOUTH;
     var lng_ = EAST;
 
+    
     var neLat = bounds._northEast.lat;
     var swLng = bounds._southWest.lng;
 
@@ -187,7 +186,11 @@ function drawGrid() {
                                 bounds._southWest.lng + ", " + bounds._southWest.lat + ")");
                 var json = data;
                 var layer_ = L.geoJson(json, {
-                    onEachFeature : addPointsToMap
+                    onEachFeature : addPointsToMap,
+                    pointToLayer: function (feature, latlng) {
+                        //http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
+                        return L.circleMarker(latlng, circleMarkerOptions);
+                    }
                 });
                 if (geoLayer != undefined) {
                     map.removeLayer(geoLayer);
@@ -203,9 +206,9 @@ function drawGrid() {
                     pts.inside.forEach(function(p) {
                         p.parent = pt;
                     });
-                    if (pts.inside.length > 0) {
-                        pt.setStyle({fillColor:'red',fillOpacity:1});
-                    }
+
+                    var color = chromaScale(pts.inside.length / 25).hex(); // #FF7F7F
+                    pt.setStyle({fillColor: color ,fillOpacity:UNHIGHLIGHTED});
                 });
                 
                 ret.resolve(req);
@@ -343,14 +346,13 @@ function highlightShape(_leaflet_id) {
     var ly = layer.feature.geometry.coordinates[0];
     var points = layer.inside;
     layer.setStyle({
-        fillOpacity : 0.3,
-        fillColor : '#ddd'
+        fillOpacity : 0.6
     });
     if (!showAllPoints) {
         for (var i = 0; i < points.length; i++) {
             var l_ = points[i];
             var ll = geoLayer.getLayer(l_._leaflet_id);
-            ll.setOpacity(1);
+            ll.setStyle({fillOpacity:1});
         }
     }
 }
@@ -360,15 +362,14 @@ function removeShapeHighlight(_leaflet_id) {
     var ly = layer.feature.geometry.coordinates[0];
 
     layer.setStyle({
-        fillOpacity : .2,
-        fillColor : "#ff7800"
+        fillOpacity : .2
     });
     var points = layer.inside;
     if (!showAllPoints) {
         for (var i = 0; i < points.length; i++) {
             var l_ = points[i];
             var ll = geoLayer.getLayer(l_._leaflet_id);
-            ll.setOpacity(0);
+            ll.setStyle({fillOpacity:UNHIGHLIGHTED});
         }
     }
 }
@@ -414,7 +415,7 @@ function setupMapShape() {
                                     out += val;
                                 }
                             }
-                            text += "<b>" + key + ":</b> " + out + "<br/>";
+                            text += "<b>" + key + ": </b> " + out + "<br/>";
                         }
                     }
                     $("#infodetail").html(text);

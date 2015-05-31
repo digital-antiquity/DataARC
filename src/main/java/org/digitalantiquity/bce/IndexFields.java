@@ -22,5 +22,6 @@ public interface IndexFields {
     static final String END = "end";
     static final String START = "start";
     static final String SOURCE = "source";
+    static final String TYPE = "type";
 
 }
