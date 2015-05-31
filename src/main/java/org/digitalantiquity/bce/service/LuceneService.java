@@ -15,12 +15,12 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexableField;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.NumericRangeQuery;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.spatial.prefix.RecursivePrefixTreeStrategy;
 import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
@@ -42,6 +42,7 @@ public class LuceneService {
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
     private IndexReader reader;
+    private static LowercaseWhiteSpaceStandardAnalyzer analyzer = new LowercaseWhiteSpaceStandardAnalyzer();
     private IndexSearcher searcher;
 
     void setupReaders(String indexName) throws IOException {
@@ -65,7 +66,7 @@ public class LuceneService {
         this.reader = reader;
     }
 
-    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, String term) throws IOException {
+    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, String term) throws IOException, ParseException {
 //        Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
         FeatureCollection fc = new FeatureCollection();
         setupReaders("bce");
@@ -79,16 +80,22 @@ public class LuceneService {
         bq.add(endRange, Occur.MUST);
         if (StringUtils.isNotBlank(term)) {
             BooleanQuery btext = new BooleanQuery();
-            btext.add(new TermQuery(new Term(IndexFields.TITLE, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.DESCRIPTION, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.WHO, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.WHAT, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.WHERE, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.WHEN, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.SOURCE, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.TAGS, term)),Occur.SHOULD);
-            btext.add(new TermQuery(new Term(IndexFields.TYPE, term)),Occur.SHOULD);
-            bq.add(btext, Occur.MUST);
+            String[] fields =  {IndexFields.TITLE,IndexFields.DESCRIPTION, IndexFields.WHAT, IndexFields.WHEN, IndexFields.WHERE, IndexFields.WHO, IndexFields.SOURCE, IndexFields.TYPE, IndexFields.TAGS};
+            String q = "";
+            for (String field : fields ) {
+                q += field + ":\"" + term +"\" "; 
+            }
+//            btext.add(new TermQuery(new Term(IndexFields.TITLE, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.DESCRIPTION, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.WHO, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.WHAT, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.WHERE, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.WHEN, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.SOURCE, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.TAGS, term)),Occur.SHOULD);
+//            btext.add(new TermQuery(new Term(IndexFields.TYPE, term)),Occur.SHOULD);
+            QueryParser parser = new QueryParser(IndexFields.TAGS, analyzer);
+            bq.add(parser.parse(q), Occur.MUST);
         }
         logger.debug(bq.toString());
         TopDocs topDocs = getSearcher().search(bq, limit);

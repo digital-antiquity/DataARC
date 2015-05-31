@@ -9,8 +9,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
@@ -44,7 +42,8 @@ public class IndexingService {
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
-
+    private static LowercaseWhiteSpaceStandardAnalyzer analyzer = new LowercaseWhiteSpaceStandardAnalyzer();
+    
     public void index(String key) {
         File f = new File("/tmp/bceData", "json");
         try {
@@ -83,6 +82,9 @@ public class IndexingService {
             doc.add(new DoubleField(IndexFields.X, getDouble(row, "Lat"), Field.Store.YES));
             doc.add(new DoubleField(IndexFields.Y, getDouble(row, "Lon"), Field.Store.YES));
             doc.add(new TextField(IndexFields.TITLE, get(row, "title"), Field.Store.YES));
+            //    Field idField = new Field(LuceneConstants.FIELD_ID, desc.getId(), Field.Store.YES, Field.Index.ANALYZED);
+
+            doc.add(new TextField(IndexFields.TITLE, get(row, "title"), Field.Store.YES));
             doc.add(new TextField(IndexFields.DESCRIPTION, get(row, "description"), Field.Store.YES));
             doc.add(new TextField(IndexFields.COUNTRY, get(row, "country"), Field.Store.YES));
             doc.add(new TextField(IndexFields.LINK, get(row, "link"), Field.Store.YES));
@@ -94,7 +96,7 @@ public class IndexingService {
             for (String tag : StringUtils.split(get(row, "tags"), ",")) {
                 doc.add(new TextField(IndexFields.TAGS, tag, Field.Store.YES));
             }
-            doc.add(new TextField(IndexFields.TYPE, get(row, "type of site"), Field.Store.YES));
+            doc.add(new TextField(IndexFields.TYPE, get(row, "typeofsite"), Field.Store.YES));
             Point shape = ctx.makePoint(getDouble(row, "Lat"), getDouble(row, "Lon"));
             for (IndexableField f : strategy.createIndexableFields(shape)) {
                 doc.add(f);
@@ -130,7 +132,6 @@ public class IndexingService {
     }
 
     private IndexWriter setupLuceneIndexWriter(String indexName) throws IOException {
-        Analyzer analyzer = new StandardAnalyzer();
         IndexWriterConfig iwc = new IndexWriterConfig(Version.LATEST, analyzer);
 
         if (true) {
