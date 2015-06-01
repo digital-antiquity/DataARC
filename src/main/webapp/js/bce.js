@@ -472,11 +472,12 @@ function setupMapShape() {
                             }
                             groupByDate[dateKey].push(vals[i]);
                         }
+                        text +="<table class='table'>";
                         for (dateKey in groupByDate) {
                             if (!groupByDate.hasOwnProperty(dateKey)) {
                                 continue;
                             }
-                            out += "<h4>" + dateKey + "</h4>";
+                            out += "<tr><td>" + dateKey + "</td>";
                             var dateEntries = groupByDate[dateKey];
                             var fields = {};
                             // for each entry, grouped by date, combine field values in fields object
@@ -499,7 +500,8 @@ function setupMapShape() {
                                 if (!fields.hasOwnProperty(k)) {
                                     continue;
                                 }
-                                out += "<b>" + k + "</b>: ";
+//                                out += "<b>" + k + "</b>: ";
+                                out += "<td>";
                                 var values = fields[k];
                                 var count = 0;
                                 // for each value
@@ -513,10 +515,13 @@ function setupMapShape() {
                                     out += v;
                                     count++;
                                 }
-                                out += "<br/>";
+                                out += "</td>";
+//                                out += "<br/>";
                             }
+                            out += "</tr>";
                         }
                         text += out;
+                        text += "</table>";
                         text += "</div>";
                     }
                     text += "</div>";
