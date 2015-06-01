@@ -1,4 +1,5 @@
 var map;
+var activeId = -1;
 var popup = L.popup();
 var geoLayer = undefined;
 var hlayer;
@@ -438,10 +439,28 @@ function setupMapShape() {
                             keys[key].push(l.feature.properties[key]);
                         }
                     }
+                    text += '<div role="tabpanel">';
+                    text += '  <ul class="nav nav-tabs" role="tablist">';
+                    var active = 'active';
                     for (key in keys) {
                         if (!keys.hasOwnProperty(key)) {
                             continue;
                         }
+                        text += ' <li role="presentation" class="'+active+'"><a href="#'+createTabId(key)+'" aria-controls="home" role="tab" data-toggle="tab">'+key+'</a></li>';
+                        active = '';
+                    }
+                    text += "  </ul>";
+                    
+                    text += '  <div class="tab-content">';
+                    active = 'active';
+                    
+                    
+                    for (key in keys) {
+                        if (!keys.hasOwnProperty(key)) {
+                            continue;
+                        }
+                        text += '<div role="tabpanel" class="tab-pane '+active+'" id="'+createTabId(key)+'">';
+                        active = '';
                         var vals = keys[key];
                         var out = "";
                         text += "<h3>" + key + "</h3>";
@@ -459,16 +478,48 @@ function setupMapShape() {
                             }
                             out += "<h4>" + dateKey + "</h4>";
                             var dateEntries = groupByDate[dateKey];
+                            var fields = {};
+                            // for each entry, grouped by date, combine field values in fields object
                             for (var i = 0; i < dateEntries.length; i++) {
                                 for (k in dateEntries[i]) {
-                                    if (dateEntries[i].hasOwnProperty(k) && k != 'date') {
-                                        out += "<b>" + k + "</b>: " + dateEntries[i][k] + "<br/>";
+                                    if (dateEntries[i] && dateEntries[i].hasOwnProperty(k) && k != 'date' && dateEntries[i][k]) {
+                                        if (fields[k] == undefined) {
+                                            fields[k] = {};
+                                        }
+                                        // split on "," to further unify where possible
+                                        var values = dateEntries[i][k][0].split(",");
+                                        for (var j=0; j< values.length;j++) {
+                                            fields[k][values[j].trim()] = 1;
+                                        }
                                     }
                                 }
                             }
+                            // for each field
+                            for (k in fields) {
+                                if (!fields.hasOwnProperty(k)) {
+                                    continue;
+                                }
+                                out += "<b>" + k + "</b>: ";
+                                var values = fields[k];
+                                var count = 0;
+                                // for each value
+                                for (v in values) {
+                                    if (!values.hasOwnProperty(v)) {
+                                        continue;
+                                    }
+                                    if (count > 0) {
+                                        out += ", ";
+                                    }
+                                    out += v;
+                                    count++;
+                                }
+                                out += "<br/>";
+                            }
                         }
-                        text += out + "<br/>";
+                        text += out;
+                        text += "</div>";
                     }
+                    text += "</div>";
                     $("#infodetail").html(text);
 
                 }
@@ -483,7 +534,12 @@ function setupMapShape() {
     })
 }
 
-var activeId = -1;
+
+function createTabId(key) {
+    return key.replace(/(?!\w)[\x00-\xC0]/g, '');
+}
+
+
 function attachMapEvents() {
     // events
     // http://leafletjs.com/reference.html#events
