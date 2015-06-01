@@ -3,13 +3,15 @@ function getWidth() {
     return width;
 }
 
+var ordIdXref = {};
+var nds = [], lns = new Array();
+
 var width = getWidth();
 var aspect = 500 / 950;
 var circleWidth = 5;
 var node;
 var whatever;
 
-$(window).resize(resize);
 
 function resize() {
     width = getWidth();
@@ -21,21 +23,172 @@ function resize() {
     force.size([ width, height ]).resume();
 };
 
-var color = d3.scale.category20();
-var zoom = d3.behavior.zoom().on("zoom", redraw);
-var parent = d3.select("#forcemap").append("svg:svg").attr("preserveAspectRatio", "xMidYMid").attr("width", width).attr("height", width * aspect);
-var vis = parent.attr("pointer-events", "all").append('svg:g').append('svg:g');
-vis.attr("x", 0);
-vis.attr("y", 0);
+var parent, force, vis, zoom, color, root;
 
-vis.append('svg:rect').attr('fill', 'white');
+function initForceMap() {
+    zoom = d3.behavior.zoom().on("zoom", redraw);
+    color = d3.scale.category20();
+    parent = d3.select("#forcemap").append("svg:svg").attr("preserveAspectRatio", "xMidYMid").attr("width", width).attr("height", width * aspect);
+    vis = parent.attr("pointer-events", "all").append('svg:g').append('svg:g');
+    vis.attr("x", 0);
+    vis.attr("y", 0);
+    $(window).resize(resize);
+    
+    vis.append('svg:rect').attr('fill', 'white');
+    force = d3.layout.force().linkDistance(30).linkStrength(2).charge(-200).size([ width, width * aspect ]);
+    d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
+        getLeafNodes(nds, graph.mindmap.root, lns);
+        var nodes = nds.slice(0), links = [], bilinks = [];
+        nds.forEach(function(node, idx) {
+            ordIdXref[node.id] = idx;
+        });
+
+        lns.forEach(function(link) {
+            var s = nodes[ordIdXref[link.source]], t = nodes[ordIdXref[link.target]], i = {
+                weight : 0,
+                id : link.source + "--" + link.target,
+                name : 'connector'
+            }; // intermediate node
+            if (s != undefined && t != undefined) {
+                nodes.push(i);
+                links.push({
+                    source : s,
+                    target : i,
+                }, {
+                    source : i,
+                    target : t
+                });
+                bilinks.push([ s, i, t ]);
+            }
+        });
+
+        force.nodes(nodes).links(links).start();
+
+        var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id",function(l){
+            return "l-"+l[1].id;
+        });
+
+        node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id",function(d) {
+            return "n-" + d.id;
+        })
+        .on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
+        node.call(force.drag);
+
+        node.append("svg:circle").attr("x", function(d) {
+            return d.x;
+        }).attr("y", function(d) {
+            return d.y;
+        }).attr("r", circleWidth).attr("fill", function(d) {
+            return color(d.weight);
+        }).on('click', nodeLabelClick);
+
+        // .attr("class","nodeLabel")
+
+        node.append("text").text(function(d, i) {
+            return d.name;
+        }).attr("x", function(d, i) {
+            if (i > 0) {
+                return circleWidth + 5;
+            } else {
+                return -10
+            }
+        }).attr("y", function(d, i) {
+            if (i > 0) {
+                return circleWidth + 0
+            } else {
+                return 8
+            }
+        }).attr("fill", "black").on('click', nodeLabelClick);
+
+        var nodelabels = vis.selectAll(".nodelabel");
+
+        root = graph.mindmap.root;
+        root.children.forEach(function(c) {
+            c.children.forEach(function(g){
+                hideChildren(g);
+            });
+        });
+        
+        function nodeLabelClick(d) {
+            var $term = $("#term");
+            $term.val(d.name);
+            $term.trigger("keyup");
+            var $this = d3.select(this.parentNode);
+            hideChildren(d);
+            force.start();
+        }
+
+        function hideChildren(d) {
+            d.children.forEach(function(e) {
+                $("#n-"+e.id + " *").toggle();
+                $("#l-"+e.id+"--"+d.id).toggle();
+                hideChildren(e);
+            });
+
+        }
+        
+        // http://jsfiddle.net/vfu78/16/
+        node.append("title").text(function(d) {
+            return d.name;
+        });
+
+        force.on("tick", function() {
+            link.attr("d", function(d) {
+                return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+            });
+            node.attr("transform", function(d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+            nodelabels.attr("x", function(d) {
+                return d.x;
+            }).attr("y", function(d) {
+                return d.y;
+            });
+
+        });
+
+        node.forEach(function(d) {
+            if (d._children || d.children) {
+                d.x = width / 2, d.y = (width * aspect) / 2;
+                d.fixed = false;
+            }
+        });
+    });
+
+    d3.select('#up').on("click", moveUp);
+    d3.select('#down').on("click", moveDown);
+    d3.select('#left').on("click", moveLeft);
+    d3.select('#right').on("click", moveRight);
+    d3.select('#zoom_in').on('click', zoomClick);
+    d3.select('#zoom_out').on('click', zoomClick);
+
+    $("#expand").click(function() {
+        var $info = $("#infobox");
+        var $map = $("#mapbox");
+        $info.removeClass("col-md-4");
+        $info.addClass("col-md-8");
+        $map.removeClass("col-md-8");
+        $map.addClass("col-md-4");
+        resize();
+    });
+
+    $("#contract").click(function() {
+        var $info = $("#infobox");
+        var $map = $("#mapbox");
+        $map.removeClass("col-md-4");
+        $map.addClass("col-md-8");
+        $info.removeClass("col-md-8");
+        $info.addClass("col-md-4");
+        resize();
+    });
+
+}
 
 function redraw() {
     // console.log("here", d3.event.translate, d3.event.scale);
     vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
 }
 
-var force = d3.layout.force().linkDistance(30).linkStrength(2).charge(-200).size([ width, width * aspect ]);
 
 function getLeafNodes(leafNodes, obj, links) {
     if (obj.children) {
@@ -56,121 +209,7 @@ function getLeafNodes(leafNodes, obj, links) {
     }
 }
 
-var ordIdXref = {};
-var nds = [], lns = new Array();
 
-d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
-    getLeafNodes(nds, graph.mindmap.root, lns);
-    var nodes = nds.slice(0), links = [], bilinks = [];
-
-    nds.forEach(function(node, idx) {
-        ordIdXref[node.id] = idx;
-    });
-
-    lns.forEach(function(link) {
-        var s = nodes[ordIdXref[link.source]], t = nodes[ordIdXref[link.target]], i = {
-            weight : 0,
-            id : link.source + "--" + link.target,
-            name : 'connector'
-        }; // intermediate node
-        if (s != undefined && t != undefined) {
-            nodes.push(i);
-            links.push({
-                source : s,
-                target : i,
-            }, {
-                source : i,
-                target : t
-            });
-            bilinks.push([ s, i, t ]);
-        }
-    });
-
-    force.nodes(nodes).links(links).start();
-
-    var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id",function(l){
-        return "l-"+l[1].id;
-    });
-
-    node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id",function(d) {
-        return "n-" + d.id;
-    })
-    .on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
-    node.call(force.drag);
-
-    node.append("svg:circle").attr("x", function(d) {
-        return d.x;
-    }).attr("y", function(d) {
-        return d.y;
-    }).attr("r", circleWidth).attr("fill", function(d) {
-        return color(d.weight);
-    }).on('click', nodeLabelClick);
-
-    // .attr("class","nodeLabel")
-
-    node.append("text").text(function(d, i) {
-        return d.name;
-    }).attr("x", function(d, i) {
-        if (i > 0) {
-            return circleWidth + 5;
-        } else {
-            return -10
-        }
-    }).attr("y", function(d, i) {
-        if (i > 0) {
-            return circleWidth + 0
-        } else {
-            return 8
-        }
-    }).attr("fill", "black").on('click', nodeLabelClick);
-
-    var nodelabels = vis.selectAll(".nodelabel");
-
-    function nodeLabelClick(d) {
-        var $term = $("#term");
-        $term.val(d.name);
-        $term.trigger("keyup");
-        var $this = d3.select(this.parentNode);
-        hideChildren(d);
-        force.start();
-    }
-
-    function hideChildren(d) {
-        d.children.forEach(function(e) {
-            $("#n-"+e.id + " *").toggle();
-            $("#l-"+e.id+"--"+d.id).toggle();
-            hideChildren(e);
-        });
-
-    }
-    
-    // http://jsfiddle.net/vfu78/16/
-    node.append("title").text(function(d) {
-        return d.name;
-    });
-
-    force.on("tick", function() {
-        link.attr("d", function(d) {
-            return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
-        });
-        node.attr("transform", function(d) {
-            return "translate(" + d.x + "," + d.y + ")";
-        });
-        nodelabels.attr("x", function(d) {
-            return d.x;
-        }).attr("y", function(d) {
-            return d.y;
-        });
-
-    });
-
-    node.forEach(function(d) {
-        if (d._children || d.children) {
-            d.x = width / 2, d.y = (width * aspect) / 2;
-            d.fixed = false;
-        }
-    });
-});
 
 function interpolateZoom(translate, scale) {
     var self = this;
@@ -277,33 +316,6 @@ function updatePos(x, y) {
     vis.attr("transform", "translate(" + x + "," + y + ") " + "scale(" + zoom.scale() + ")");
 }
 
-d3.select('#up').on("click", moveUp);
-d3.select('#down').on("click", moveDown);
-d3.select('#left').on("click", moveLeft);
-d3.select('#right').on("click", moveRight);
-d3.select('#zoom_in').on('click', zoomClick);
-d3.select('#zoom_out').on('click', zoomClick);
-
-$("#expand").click(function() {
-    var $info = $("#infobox");
-    var $map = $("#mapbox");
-    $info.removeClass("col-md-4");
-    $info.addClass("col-md-8");
-    $map.removeClass("col-md-8");
-    $map.addClass("col-md-4");
-    resize();
-});
-
-$("#contract").click(function() {
-    var $info = $("#infobox");
-    var $map = $("#mapbox");
-    $map.removeClass("col-md-4");
-    $map.addClass("col-md-8");
-    $info.removeClass("col-md-8");
-    $info.addClass("col-md-4");
-    resize();
-});
-
 
 function hashCode(str){
     var hash = 0;
@@ -315,3 +327,7 @@ function hashCode(str){
     }
     return hash;
 }
+
+$(function() {
+    initForceMap();
+});
