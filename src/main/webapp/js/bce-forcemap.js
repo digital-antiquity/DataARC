@@ -70,13 +70,14 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
     lns.forEach(function(link) {
         var s = nodes[ordIdXref[link.source]], t = nodes[ordIdXref[link.target]], i = {
             weight : 0,
+            id : link.source + "--" + link.target,
             name : 'connector'
         }; // intermediate node
         if (s != undefined && t != undefined) {
             nodes.push(i);
             links.push({
                 source : s,
-                target : i
+                target : i,
             }, {
                 source : i,
                 target : t
@@ -87,7 +88,9 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
 
     force.nodes(nodes).links(links).start();
 
-    var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link");
+    var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id",function(l){
+        return "l-"+l[1].id;
+    });
 
     node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id",function(d) {
         return "n-" + d.id;
@@ -135,6 +138,7 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
     function hideChildren(d) {
         d.children.forEach(function(e) {
             $("#n-"+e.id + " *").toggle();
+            $("#l-"+e.id+"--"+d.id).toggle();
             hideChildren(e);
         });
 
