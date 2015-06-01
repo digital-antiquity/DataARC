@@ -89,7 +89,9 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
 
     var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link");
 
-    node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node")
+    node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id",function(d) {
+        return "n-" + d.id;
+    })
     .on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
     node.call(force.drag);
 
@@ -125,16 +127,19 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
         var $term = $("#term");
         $term.val(d.name);
         $term.trigger("keyup");
-//        var $this = d3.select(this.parentNode);
-//        d.children.forEach(function(e) {
-//            vis.select("circle").data([nds[parseInt(e.index)]] ,function(f) {return f;}).attr("visibility", "hidden");
-//            vis.selectAll("text").data([nds[parseInt(e.index)]],function(f) {return f;}).attr("display", "none");
-//        });
-//        $this.selectAll("circle").style("visibility", "hidden");
-//        $this.selectAll("text").style("visibility", "hidden");
+        var $this = d3.select(this.parentNode);
+        hideChildren(d);
         force.start();
     }
 
+    function hideChildren(d) {
+        d.children.forEach(function(e) {
+            $("#n-"+e.id + " *").toggle();
+            hideChildren(e);
+        });
+
+    }
+    
     // http://jsfiddle.net/vfu78/16/
     node.append("title").text(function(d) {
         return d.name;
@@ -294,3 +299,15 @@ $("#contract").click(function() {
     $info.addClass("col-md-4");
     resize();
 });
+
+
+function hashCode(str){
+    var hash = 0;
+    if (str.length == 0) return hash;
+    for (i = 0; i < str.length; i++) {
+        char = str.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
+}
