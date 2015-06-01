@@ -12,7 +12,6 @@ var circleWidth = 5;
 var node;
 var whatever;
 
-
 function resize() {
     width = getWidth();
     var height = width * aspect;
@@ -33,7 +32,7 @@ function initForceMap() {
     vis.attr("x", 0);
     vis.attr("y", 0);
     $(window).resize(resize);
-    
+
     vis.append('svg:rect').attr('fill', 'white');
     force = d3.layout.force().linkDistance(30).linkStrength(2).charge(-200).size([ width, width * aspect ]);
     d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
@@ -64,14 +63,13 @@ function initForceMap() {
 
         force.nodes(nodes).links(links).start();
 
-        var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id",function(l){
-            return "l-"+l[1].id;
+        var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id", function(l) {
+            return "l-" + l[1].id;
         });
 
-        node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id",function(d) {
+        node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id", function(d) {
             return "n-" + d.id;
-        })
-        .on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
+        }).on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
         node.call(force.drag);
 
         node.append("svg:circle").attr("x", function(d) {
@@ -104,29 +102,11 @@ function initForceMap() {
 
         root = graph.mindmap.root;
         root.children.forEach(function(c) {
-            c.children.forEach(function(g){
+            c.children.forEach(function(g) {
                 hideChildren(g);
             });
         });
-        
-        function nodeLabelClick(d) {
-            var $term = $("#term");
-            $term.val(d.name);
-            $term.trigger("keyup");
-            var $this = d3.select(this.parentNode);
-            hideChildren(d);
-            force.start();
-        }
 
-        function hideChildren(d) {
-            d.children.forEach(function(e) {
-                $("#n-"+e.id + " *").toggle();
-                $("#l-"+e.id+"--"+d.id).toggle();
-                hideChildren(e);
-            });
-
-        }
-        
         // http://jsfiddle.net/vfu78/16/
         node.append("title").text(function(d) {
             return d.name;
@@ -184,11 +164,30 @@ function initForceMap() {
 
 }
 
-function redraw() {
-    // console.log("here", d3.event.translate, d3.event.scale);
-    vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+function nodeLabelClick(d) {
+    if (d3.event.defaultPrevented)
+        return; // click suppressed
+    var $term = $("#term");
+    $term.val(d.name);
+    $term.trigger("keyup");
+    var $this = d3.select(this.parentNode);
+    hideChildren(d);
+    force.start();
 }
 
+function hideChildren(d) {
+    // FIXME: toggle needs to "hide" all children recursively... toggle will show grand-children if they're already hidden but parent is shown
+    d.children.forEach(function(e) {
+        $("#n-" + e.id + " *").toggle();
+        $("#l-" + e.id + "--" + d.id).toggle();
+        hideChildren(e);
+    });
+
+}
+
+function redraw() {
+    vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+}
 
 function getLeafNodes(leafNodes, obj, links) {
     if (obj.children) {
@@ -208,8 +207,6 @@ function getLeafNodes(leafNodes, obj, links) {
         links.push(link);
     }
 }
-
-
 
 function interpolateZoom(translate, scale) {
     var self = this;
@@ -316,13 +313,13 @@ function updatePos(x, y) {
     vis.attr("transform", "translate(" + x + "," + y + ") " + "scale(" + zoom.scale() + ")");
 }
 
-
-function hashCode(str){
+function hashCode(str) {
     var hash = 0;
-    if (str.length == 0) return hash;
+    if (str.length == 0)
+        return hash;
     for (i = 0; i < str.length; i++) {
         char = str.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
+        hash = ((hash << 5) - hash) + char;
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
