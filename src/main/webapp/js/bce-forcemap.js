@@ -7,6 +7,7 @@ var width = getWidth();
 var aspect = 500 / 950;
 var circleWidth = 5;
 var node;
+var whatever;
 
 $(window).resize(resize);
 
@@ -88,7 +89,8 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
 
     var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link");
 
-    node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
+    node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node")
+    .on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
     node.call(force.drag);
 
     node.append("svg:circle").attr("x", function(d) {
@@ -123,17 +125,13 @@ d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
         var $term = $("#term");
         $term.val(d.name);
         $term.trigger("keyup");
-        var $this = d3.select(this.parentNode);
-//        whatever = $this;
-//        $this.selectAll("circle").style("visibility", "hidden");
-//        $this.style("visibility", "hidden");
-//        $this.selectAll("text").style("visibility", "hidden");
+//        var $this = d3.select(this.parentNode);
 //        d.children.forEach(function(e) {
-//            var n = d3.select(d3.select(e.parentNode).parentNode);
-//            n.style("visibility", "hidden");
-//            n.selectAll("text").style("visibility", "hidden");
-//            n.selectAll("circle").style("visibility", "hidden");
+//            vis.select("circle").data([nds[parseInt(e.index)]] ,function(f) {return f;}).attr("visibility", "hidden");
+//            vis.selectAll("text").data([nds[parseInt(e.index)]],function(f) {return f;}).attr("display", "none");
 //        });
+//        $this.selectAll("circle").style("visibility", "hidden");
+//        $this.selectAll("text").style("visibility", "hidden");
         force.start();
     }
 
