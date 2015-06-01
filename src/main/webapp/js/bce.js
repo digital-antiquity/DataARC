@@ -11,8 +11,6 @@ var end = 9999;
 var chromaScale;
 var showAllPoints = 1;
 
-
-
 $("#showAll").click(function() {
     return;
     if (!$("#showAll")[0].checked) {
@@ -45,10 +43,9 @@ $("#term").keyup(function() {
     drawGrid();
 });
 
-
 function init() {
     map = L.map('map').setView([ 66.16495058, -16.68273926 ], 5);
-    chromaScale = chroma.scale(['white', 'red']);
+    chromaScale = chroma.scale([ 'white', 'red' ]);
     setupBaseLayers();
     setupMapShape();
 
@@ -58,21 +55,19 @@ function init() {
     addLegend();
 }
 
-
 function addLegend() {
-    var legend = L.control({position: 'bottomright'});
+    var legend = L.control({
+        position : 'bottomright'
+    });
 
-    legend.onAdd = function (map) {
+    legend.onAdd = function(map) {
 
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 5, 10, 15, 20, 25],
-            labels = [];
+        var div = L.DomUtil.create('div', 'info legend'), grades = [ 0, 5, 10, 15, 20, 25 ], labels = [];
 
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +=
-                '<i style="opacity: '+UNHIGHLIGHTED+'; background:' + chromaScale(grades[i] / 25).hex() + '"></i> ' +
-                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            div.innerHTML += '<i style="opacity: ' + UNHIGHLIGHTED + '; background:' + chromaScale(grades[i] / 25).hex() + '"></i> ' + grades[i] +
+                    (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
 
         return div;
@@ -81,12 +76,12 @@ function addLegend() {
     legend.addTo(map);
 }
 
-
-
 var changeAllOpacity = function() {
     map.eachLayer(function(l) {
         if (l._latlng) {
-            geoLayer.getLayer(l._leaflet_id).setStyle({fillOpacity:showAllPoints});
+            geoLayer.getLayer(l._leaflet_id).setStyle({
+                fillOpacity : showAllPoints
+            });
         }
     });
 }
@@ -140,13 +135,17 @@ $('#timeslider').slider().on('slide', function(ev) {
 function highlightFeature(e) {
     if (e.target.parent) {
         var id = e.target.parent._leaflet_id;
-        geoLayer.getLayer(e.target._leaflet_id).setStyle({fillOpacity:1});
-        $('#map').trigger("highlight:on",[hlayer,id]);
+        geoLayer.getLayer(e.target._leaflet_id).setStyle({
+            fillOpacity : 1
+        });
+        $('#map').trigger("highlight:on", [ hlayer, id ]);
     }
 }
 
 function resetHighlight(e) {
-    geoLayer.getLayer(e.target._leaflet_id).setStyle({fillOpacity:UNHIGHLIGHTED});
+    geoLayer.getLayer(e.target._leaflet_id).setStyle({
+        fillOpacity : UNHIGHLIGHTED
+    });
     geoLayer.resetStyle(e.target);
 }
 
@@ -158,13 +157,21 @@ function addPointsToMap(feature, layer) {
         click : function(e) {
             var feature = e.target.feature;
             var text = "";
+
             for (key in feature.properties) {
-                if (feature.properties.hasOwnProperty(key)) { // These are explained
-                    text += "<b>" + key + ": </b>" + feature.properties[key] + "<br/>";
+                if (!feature.properties.hasOwnProperty(key)) { // These are explained
+                    continue;
+                }
+                text += "<h3>" + key + ": </h3>";
+                var kvp = feature.properties[key];
+                for (k in kvp) {
+                    if (kvp.hasOwnProperty(k)) { // These are explained
+                        text += "<b>" + k + "</b>: " + kvp[k] + "<br/>";
+                    }
                 }
             }
             $("#infodetail").html(text);
-        }        
+        }
     });
     if (!showAllPoints) {
         layer.options.opacity = 0;
@@ -179,11 +186,11 @@ function resetGrid() {
 }
 
 var circleMarkerOptions = {
-        radius: 4,
-        fillColor: "#006400",
-        stroke:.1,
-        weight: 1
-    };
+    radius : 4,
+    fillColor : "#006400",
+    stroke : .1,
+    weight : 1
+};
 
 function drawGrid() {
 
@@ -193,7 +200,6 @@ function drawGrid() {
     var lat_ = SOUTH;
     var lng_ = EAST;
 
-    
     var neLat = bounds._northEast.lat;
     var swLng = bounds._southWest.lng;
 
@@ -214,8 +220,8 @@ function drawGrid() {
                 var json = data;
                 var layer_ = L.geoJson(json, {
                     onEachFeature : addPointsToMap,
-                    pointToLayer: function (feature, latlng) {
-                        //http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
+                    pointToLayer : function(feature, latlng) {
+                        // http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
                         return L.circleMarker(latlng, circleMarkerOptions);
                     }
                 });
@@ -235,9 +241,12 @@ function drawGrid() {
                     });
 
                     var color = chromaScale(pts.inside.length / 25).hex(); // #FF7F7F
-                    pt.setStyle({fillColor: color ,fillOpacity:UNHIGHLIGHTED});
+                    pt.setStyle({
+                        fillColor : color,
+                        fillOpacity : UNHIGHLIGHTED
+                    });
                 });
-                
+
                 ret.resolve(req);
             });
 
@@ -361,11 +370,11 @@ function setupBaseLayers() {
 }
 
 function mouseEnterShape(event) {
-    $("#map").trigger("highlight:on", [hlayer, event.target._leaflet_id]);
+    $("#map").trigger("highlight:on", [ hlayer, event.target._leaflet_id ]);
 }
 
 function mouseLeaveShape(event) {
-    $("#map").trigger("highlight:off", [hlayer, event.target._leaflet_id]);
+    $("#map").trigger("highlight:off", [ hlayer, event.target._leaflet_id ]);
 }
 
 function highlightShape(_leaflet_id) {
@@ -379,7 +388,9 @@ function highlightShape(_leaflet_id) {
         for (var i = 0; i < points.length; i++) {
             var l_ = points[i];
             var ll = geoLayer.getLayer(l_._leaflet_id);
-            ll.setStyle({fillOpacity:1});
+            ll.setStyle({
+                fillOpacity : 1
+            });
         }
     }
 }
@@ -396,7 +407,9 @@ function removeShapeHighlight(_leaflet_id) {
         for (var i = 0; i < points.length; i++) {
             var l_ = points[i];
             var ll = geoLayer.getLayer(l_._leaflet_id);
-            ll.setStyle({fillOpacity:UNHIGHLIGHTED});
+            ll.setStyle({
+                fillOpacity : UNHIGHLIGHTED
+            });
         }
     }
 }
@@ -406,8 +419,8 @@ function setupMapShape() {
         style : myStyle,
         onEachFeature : function(feature, layer_) {
             layer_.on({
-                mouseover: mouseEnterShape,
-                mouseout: mouseLeaveShape,
+                mouseover : mouseEnterShape,
+                mouseout : mouseLeaveShape,
                 click : function(event) {
                     var ly = event.target.feature.geometry.coordinates[0];
                     var text = "";
@@ -420,30 +433,41 @@ function setupMapShape() {
                         l.options.opacity = 1;
                         for (key in l.feature.properties) {
                             if (keys[key] == undefined) {
-                                keys[key] = {};
+                                keys[key] = [];
                             }
-                            var v = l.feature.properties[key].trim();
-
-                            if (keys[key].hasOwnProperty(v)) {
-                                continue;
-                            }
-                            keys[key][v] = 1;
+                            keys[key].push(l.feature.properties[key]);
                         }
                     }
                     for (key in keys) {
-                        if (keys.hasOwnProperty(key)) {
-                            var vals = keys[key];
-                            var out = "";
-                            for (val in vals) {
-                                if (vals.hasOwnProperty(val)) {
-                                    if (out.length > 0) {
-                                        out += ", ";
+                        if (!keys.hasOwnProperty(key)) {
+                            continue;
+                        }
+                        var vals = keys[key];
+                        var out = "";
+                        text += "<h3>" + key + "</h3>";
+                        var groupByDate = {};
+                        for (var i = 0; i < vals.length; i++) {
+                            var dateKey = vals[i]['date'];
+                            if (!groupByDate[dateKey]) {
+                                groupByDate[dateKey] = [];
+                            }
+                            groupByDate[dateKey].push(vals[i]);
+                        }
+                        for (dateKey in groupByDate) {
+                            if (!groupByDate.hasOwnProperty(dateKey)) {
+                                continue;
+                            }
+                            out += "<h4>" + dateKey + "</h4>";
+                            var dateEntries = groupByDate[dateKey];
+                            for (var i = 0; i < dateEntries.length; i++) {
+                                for (k in dateEntries[i]) {
+                                    if (dateEntries[i].hasOwnProperty(k) && k != 'date') {
+                                        out += "<b>" + k + "</b>: " + dateEntries[i][k] + "<br/>";
                                     }
-                                    out += val;
                                 }
                             }
-                            text += "<b>" + key + ": </b> " + out + "<br/>";
                         }
+                        text += out + "<br/>";
                     }
                     $("#infodetail").html(text);
 
@@ -451,7 +475,7 @@ function setupMapShape() {
             });
         }
     }).addTo(map);
-    
+
     hlayer.getLayers().forEach(function(layer_) {
         if (layer_._container) {
             layer_._container._leaflet_id = layer_._leaflet_id;
@@ -478,10 +502,10 @@ function attachMapEvents() {
 
     map.on('click', onMapClick);
 
-    $(".leaflet-zoom-animated").on('mouseover',function() {
-        $('#map').trigger("highlight:on",[undefined,-1]);
+    $(".leaflet-zoom-animated").on('mouseover', function() {
+        $('#map').trigger("highlight:on", [ undefined, -1 ]);
     });
-    $(document).on("highlight:on",function(event,layer, id) {
+    $(document).on("highlight:on", function(event, layer, id) {
         if (activeId > -1) {
             removeShapeHighlight(activeId);
         }
@@ -490,10 +514,10 @@ function attachMapEvents() {
             highlightShape(id);
         }
     });
-    $(document).on("highlight:off",function(event,layer, id) {
-//        activeId = id;
+    $(document).on("highlight:off", function(event, layer, id) {
+        // activeId = id;
         if (layer == hlayer) {
-  //          removeShapeHighlight(id);
+            // removeShapeHighlight(id);
         }
     });
 }

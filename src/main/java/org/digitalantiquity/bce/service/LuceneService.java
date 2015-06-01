@@ -37,6 +37,7 @@ import com.spatial4j.core.context.SpatialContext;
 @Service
 public class LuceneService {
 
+    private static final int START = 0;
     private final Logger logger = Logger.getLogger(getClass());
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
@@ -85,15 +86,6 @@ public class LuceneService {
             for (String field : fields ) {
                 q += field + ":\"" + term +"\" "; 
             }
-//            btext.add(new TermQuery(new Term(IndexFields.TITLE, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.DESCRIPTION, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.WHO, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.WHAT, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.WHERE, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.WHEN, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.SOURCE, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.TAGS, term)),Occur.SHOULD);
-//            btext.add(new TermQuery(new Term(IndexFields.TYPE, term)),Occur.SHOULD);
             QueryParser parser = new QueryParser(IndexFields.TAGS, analyzer);
             bq.add(parser.parse(q), Occur.MUST);
         }
@@ -111,11 +103,24 @@ public class LuceneService {
             org.geojson.Point key = new Point(Double.parseDouble(document.get(IndexFields.Y)), Double.parseDouble(document.get(IndexFields.X)));
             Map<String, String> valueMap = new HashMap<String, String>();
             for (IndexableField el : document.getFields()) {
-                String v = document.get(el.name());
-                if (StringUtils.isBlank(v) || el.name().equals(IndexFields.X) || el.name().equals(IndexFields.Y) || el.name().equals(IndexFields.SOURCE)) {
+                String name = el.name();
+                String v = document.get(name);
+                if (StringUtils.isBlank(v) || name.equals(IndexFields.X) || name.equals(IndexFields.Y) || 
+                        name.equals(IndexFields.COUNTRY) || 
+                        name.equals(IndexFields.SOURCE) || name.equals(IndexFields.START)) {
                     continue;
                 }
-                valueMap.put(el.name(), v);
+                
+                if (name.equals(IndexFields.END)) {
+                    String start_ = document.get(IndexFields.START);
+                    if (start_.equals("-1")) {
+                        start_ = Integer.toString(START);
+                    }
+                    valueMap.put("date",  start_ + " - " +  v);
+                    continue;
+                } 
+
+                valueMap.put(name, v);
             }
 
             if (!valMap.containsKey(key)) {
@@ -141,9 +146,7 @@ public class LuceneService {
                         second.get(fld).add(entries.get(fld));
                     }
                 }
-                for (String fld : second.keySet()) {
-                    feature.setProperty(source + " " + fld, StringUtils.join(second.get(fld), ", "));
-                }
+                feature.setProperty(source, second);
             }
             fc.add(feature);
         }
