@@ -1,0 +1,49 @@
+.slider {
+	padding-left: 40px;;
+	margin-left: 50px
+}
+
+.slider-selection {
+	background: #BABABA;
+}
+
+#sigma-container {
+	height: 300px;
+	margin: auto;
+	background-color: #EFEFEF;
+}
+
+.hiddenChildren {
+	stroke-width: 1px;
+	stroke: black;
+	stroke-opacity: 1;
+}
+
+.link {
+	fill: none;
+	stroke: #bbb;
+}
+
+.nodeLabel {
+	font-size: 12px;
+	fill: black;
+	border: 0;
+}
+
+.overlay {
+	fill: none;
+	pointer-events: all;
+}
+
+.legend {
+	line-height: 18px;
+	color: #555;
+}
+
+.legend i {
+	width: 18px;
+	height: 18px;
+	float: left;
+	margin-right: 8px;
+	opacity: 0.7;
+}

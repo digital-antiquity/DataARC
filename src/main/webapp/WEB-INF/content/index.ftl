@@ -12,61 +12,9 @@
     <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="components/c3/c3.css" />
     <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
-    
+	<link rel="stylesheet" href="css/bce.css"/>    
     <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
 
- <style>
-   
-   .slider {padding-left:40px;;margin-left:50px}
-   .slider-selection {
-        background: #BABABA;
-    }
-
-   #sigma-container {
-    height: 300px;
-    margin: auto;
-    background-color:#EFEFEF;
-   }
-
-.hiddenChildren {
-  stroke-width: 1px;
-  stroke: black;
-  stroke-opacity: 1;
-}
-
-.node {
-//  stroke: #fff;
-//  stroke-width: 1.5px;
-}
-
-.link {
-  fill: none;
-  stroke: #bbb;
-}
-
-.nodeLabel {
-	font-size: 12px;
-	fill: black;
-	border:0;
-}
-
-.overlay {
-  fill: none;
-  pointer-events: all;
-}
-
-.legend {
-    line-height: 18px;
-    color: #555;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-}
-   </style> 
    
    </head>
 <body>
@@ -77,6 +25,21 @@
 <div class="row">
     <div id="mapbox"  class="col-md-8">
         <div id="map" style="height: 600px"></div>
+        <div class="row">
+	        <div class="col-md-12">
+			    <form class="form-inline">
+				    <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
+					<!--    <label for='showAll'><input type="checkbox" name="showAll" id="showAll" class="form-control" /> Show All Points</label> -->
+				    <span>&nbsp;Limit by year:</span>
+				            <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
+				     data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
+				     data-slider-handle="round">
+				     <br/>
+				     <img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">
+			    </form>
+			</div>
+	</div>
+        
     </div>
     <div id="infobox" class="col-md-4">
         <div id="forcemap"></div>
@@ -95,20 +58,6 @@
         <div id="chart"></div>
         <div id="infodetail"></div>
     
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-    <form class="form-inline">
-    <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
-<!--    <label for='showAll'><input type="checkbox" name="showAll" id="showAll" class="form-control" /> Show All Points</label> -->
-    <span>&nbsp;Limit by year:</span>
-            <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
-     data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
-     data-slider-handle="round">
-     <br/>
-     <img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">
-    </form>
     </div>
 </div>
 
