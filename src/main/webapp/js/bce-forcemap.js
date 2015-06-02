@@ -72,7 +72,7 @@ function initForceMap() {
         }).on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
         node.call(force.drag);
 
-        node.append("svg:circle").attr("x", function(d) {
+        node.append("svg:circle").attr("class","nodeCircle").attr("x", function(d) {
             return d.x;
         }).attr("y", function(d) {
             return d.y;
@@ -103,7 +103,7 @@ function initForceMap() {
         root = graph.mindmap.root;
         root.children.forEach(function(c) {
             c.children.forEach(function(g) {
-                hideChildren(g);
+                hideChildren(g, true);
             });
         });
 
@@ -164,6 +164,7 @@ function initForceMap() {
 
 }
 
+
 function nodeLabelClick(d) {
     if (d3.event.defaultPrevented)
         return; // click suppressed
@@ -171,16 +172,48 @@ function nodeLabelClick(d) {
     $term.val(d.name);
     $term.trigger("keyup");
     var $this = d3.select(this.parentNode);
-    hideChildren(d);
+    var $el = $("#n-" + d.id + " circle");
+    var cls = $el.attr("class");
+    var className = "hiddenChildren";
+    if (cls.indexOf(className) > 0 ) {
+        removeClass($el, className);
+    } else {
+        addClass($el, className);
+    }
+    hideChildren(d, $el.attr("class").indexOf(className) > 0);
     force.start();
 }
 
-function hideChildren(d) {
+function removeClass($el, className) {
+    var cls = $el.attr("class");
+    cls = cls.replace(className,"");
+    $el.attr("class",cls);
+}
+
+function addClass($el, className) {
+    var cls = $el.attr("class");
+    cls +=  " " + className;
+    $el.attr("class",cls);
+}
+
+function hideChildren(d, hide) {
     // FIXME: toggle needs to "hide" all children recursively... toggle will show grand-children if they're already hidden but parent is shown
     d.children.forEach(function(e) {
-        $("#n-" + e.id + " *").toggle();
-        $("#l-" + e.id + "--" + d.id).toggle();
-        hideChildren(e);
+        var node = $("#n-" + e.id + " circle");
+        var text = $("#n-" + e.id + " text");
+        var path  = $("#l-" + e.id + "--" + d.id);
+        if (hide)  {
+            node.hide();
+            var className = "hiddenChildren";
+            removeClass(node,className);
+            text.hide();
+            path.hide();
+        } else {
+            node.show();
+            text.show();
+            path.show();
+        }
+        hideChildren(e, hide);
     });
 
 }

@@ -28,7 +28,11 @@
     background-color:#EFEFEF;
    }
 
-
+.hiddenChildren {
+  stroke-width: 1px;
+  stroke: black;
+  stroke-opacity: 1;
+}
 
 .node {
 //  stroke: #fff;
