@@ -465,36 +465,45 @@ function setupMapShape() {
                         var out = "";
                         text += "<h3>" + key + "</h3>";
                         var groupByDate = {};
+                        var fieldNames = {};
                         for (var i = 0; i < vals.length; i++) {
                             var dateKey = vals[i]['date'];
                             if (!groupByDate[dateKey]) {
-                                groupByDate[dateKey] = [];
+                                groupByDate[dateKey] = {};
                             }
-                            groupByDate[dateKey].push(vals[i]);
+                            var fields = groupByDate[dateKey];
+                            
+                            for (k in vals[i]) {
+                                if (vals[i] && vals[i].hasOwnProperty(k) && k != 'date' && vals[i][k]) {
+                                    if (fields[k] == undefined) {
+                                        fields[k] = {};
+                                    }
+                                    fieldNames[k] = 1;
+                                    // split on "," to further unify where possible
+                                    var values = vals[i][k][0].split(",");
+                                    for (var j=0; j< values.length;j++) {
+                                        fields[k][values[j].trim()] = 1;
+                                    }
+                                }
+                            }
+
                         }
                         text +="<table class='table'>";
+                        text += "<thead><tr>";
+                        text += "<th>Date</th>";
+                        for (name in fieldNames) {
+                            if (!fieldNames.hasOwnProperty(name)) {
+                                continue;
+                            }
+                            text += "<th>"+name+"</th>";
+                        }
+                        text += "</tr></thead>";
                         for (dateKey in groupByDate) {
                             if (!groupByDate.hasOwnProperty(dateKey)) {
                                 continue;
                             }
-                            out += "<tr><td>" + dateKey + "</td>";
-                            var dateEntries = groupByDate[dateKey];
-                            var fields = {};
-                            // for each entry, grouped by date, combine field values in fields object
-                            for (var i = 0; i < dateEntries.length; i++) {
-                                for (k in dateEntries[i]) {
-                                    if (dateEntries[i] && dateEntries[i].hasOwnProperty(k) && k != 'date' && dateEntries[i][k]) {
-                                        if (fields[k] == undefined) {
-                                            fields[k] = {};
-                                        }
-                                        // split on "," to further unify where possible
-                                        var values = dateEntries[i][k][0].split(",");
-                                        for (var j=0; j< values.length;j++) {
-                                            fields[k][values[j].trim()] = 1;
-                                        }
-                                    }
-                                }
-                            }
+                            out += "<tr><td><b>" + dateKey + "</b></td>";
+                            var fields = groupByDate[dateKey];
                             // for each field
                             for (k in fields) {
                                 if (!fields.hasOwnProperty(k)) {
