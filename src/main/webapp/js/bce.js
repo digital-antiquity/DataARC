@@ -505,13 +505,13 @@ function setupMapShape() {
                             out += "<tr><td><b>" + dateKey + "</b></td>";
                             var fields = groupByDate[dateKey];
                             // for each field
-                            for (k in fields) {
-                                if (!fields.hasOwnProperty(k)) {
+                            for (field in fields) {
+                                if (!fields.hasOwnProperty(field)) {
                                     continue;
                                 }
 //                                out += "<b>" + k + "</b>: ";
                                 out += "<td>";
-                                var values = fields[k];
+                                var values = fields[field];
                                 var count = 0;
                                 // for each value
                                 for (v in values) {
@@ -521,7 +521,11 @@ function setupMapShape() {
                                     if (count > 0) {
                                         out += ", ";
                                     }
-                                    out += v;
+                                    if (field == 'link') {
+                                        out += '<a href="'+v+'" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
+                                    } else {
+                                        out += v;
+                                    }
                                     count++;
                                 }
                                 out += "</td>";
