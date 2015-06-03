@@ -8,48 +8,21 @@
     ${head}
 </head>
 <body id="page-home">
-    <div id="page">
-        <div id="header" class="clearfix">
-            <hr />
-        </div>
-        
-        <div id="content" class="clearfix">
-            <div id="main">
-            	<h3>CyberNABO Prototype Application</h3>
-
-<p>Archaeologists draw on a wide variety of data to investigate any topic. The concept maps are intended to aid in the process of gathering together all the specialist data that may be relevant to thinking about a topic. They point first to linked topics, and then to the available data sources and key indicators within those data sources that would be relevant to that topic. The aim within the cyberNABO project is to make specialists more aware of the most relevant aspects of one another’s data to shared research questions, and to tease out how these data map together, not at the level of integrating columns or fields in a database, but at the level of bringing together different approaches to a topic and pointing to key data sources. </p>
-
-<p>Navigate the concept map by starting with a central idea, e.g. storage, branching out to different types of information that might inform on storage. For example, from storage we might branch out to consumable goods, and from consumable goods to fodder. From an environmental specialist's point of view, we might then link from fodder to insect assemblages and from there to the SEAD database and to specific species ratios.</p> 
-
-<p>Select a node to center it. Follow branches out to other topics and click on the + symbols to expand along a branch. Double click on a node to access linked URLs pointing at relevant databases and descriptions of key metrics.</p> 
-            	<div>
-            	</div>
+            <div id="main" class="container-fluid">
+	            <div class="span-md-11">
+	            	<h3>CyberNABO Prototype Application</h3>
+					<div class="well">
+						<p>Archaeologists draw on a wide variety of data to investigate any topic. The concept maps are intended to aid in the process of gathering together all the specialist data that may be relevant to thinking about a topic. They point first to linked topics, and then to the available data sources and key indicators within those data sources that would be relevant to that topic. The aim within the cyberNABO project is to make specialists more aware of the most relevant aspects of one another’s data to shared research questions, and to tease out how these data map together, not at the level of integrating columns or fields in a database, but at the level of bringing together different approaches to a topic and pointing to key data sources. </p>
+						<p>Navigate the concept map by starting with a central idea, e.g. storage, branching out to different types of information that might inform on storage. For example, from storage we might branch out to consumable goods, and from consumable goods to fodder. From an environmental specialist's point of view, we might then link from fodder to insect assemblages and from there to the SEAD database and to specific species ratios.</p> 
+						<p>Select a node to center it. Follow branches out to other topics and click on the + symbols to expand along a branch. Double click on a node to access linked URLs pointing at relevant databases and descriptions of key metrics.</p> 
+	            	</div>
+	        	</div>
+        	</div>
             	${body}
                 <hr />
-            </div>
-            
-            
-            <div id="local">
-            </div>
-            
-            
-            <div id="nav">
-                <div class="wrapper">
-                <h3>Nav. bar</h3>
-                <ul class="clearfix">
-                </ul>
-                </div>
-                <hr />
-            </div>
-        </div>
         
         <div id="footer" class="clearfix">
-            Footer
         </div>
         
-    </div>
-    
-    <div id="extra1">&nbsp;</div>
-    <div id="extra2">&nbsp;</div>
 </body>
 </html>

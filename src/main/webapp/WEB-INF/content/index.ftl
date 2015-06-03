@@ -20,9 +20,6 @@
 <body>
 <div class="container-fluid">
 <div class="row">
-<div id="status" style="font-size:10pt" class="col-md-12"></div>
-</div>
-<div class="row">
     <div id="mapbox"  class="col-md-8">
         <div id="map" style="height: 600px"></div>
         <div class="row">
@@ -35,7 +32,7 @@
 				     data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
 				     data-slider-handle="round">
 				     <br/>
-				     <img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">
+				     <!--<img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">-->
 			    </form>
 			</div>
 	</div>
