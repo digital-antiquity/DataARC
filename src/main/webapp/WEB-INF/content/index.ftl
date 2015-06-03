@@ -10,10 +10,12 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
     <link rel="stylesheet" href="components/c3/c3.css" />
     <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
 	<link rel="stylesheet" href="css/bce.css"/>    
     <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
+    <link rel='stylesheet' href='components/simile-timeline/timeline_ajax/styles/graphics.css' type='text/css' />
 
    
    </head>
@@ -33,6 +35,9 @@
 				     data-slider-handle="round">
 				     <br/>
 				     <!--<img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">-->
+			           <div id="tl" class="timeline-default" style="height: 400px;"></div>
+
+				     
 			    </form>
 			</div>
 	</div>
@@ -64,16 +69,20 @@
     <script src="components/chroma-js/chroma.min.js"></script>
     <script src="components/leaflet/dist/leaflet.js"></script>
     <script src="components/leaflet-pip/leaflet-pip.js"></script>
+    
     <script src="components/d3/d3.js"></script>
     <script src="components/c3/c3.js"></script>
     <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    
     <script src="js/bce.js"></script>
+    <script src="js/bce-timeline.js"></script>
     <script src="js/bce-forcemap.js"></script>
 <script>
 // GLOBALS:
 var max = 800;
 var detail = 160;
 var shouldContinue = true;
+
 
 </script>
 </div>
