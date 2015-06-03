@@ -160,14 +160,22 @@ function addPointsToMap(feature, layer) {
             var text = "";
 
             for (key in feature.properties) {
-                if (!feature.properties.hasOwnProperty(key)) { // These are explained
+                if (!feature.properties.hasOwnProperty(key) || key == 'source') { // These are explained
                     continue;
                 }
                 text += "<h3>" + key + ": </h3>";
                 var kvp = feature.properties[key];
-                for (k in kvp) {
-                    if (kvp.hasOwnProperty(k)) { // These are explained
-                        text += "<b>" + k + "</b>: " + kvp[k] + "<br/>";
+                for (field in kvp) {
+                    if (kvp.hasOwnProperty(field)) { // These are explained
+                        var v = kvp[field];
+                        text += "<b>" + field +"</b>:";
+                        if (field == 'link') {
+                            text += '<a href="'+v+'" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
+                        } else {
+                            text += v;
+                        }
+
+                        text += "<br/>";
                     }
                 }
             }
@@ -186,12 +194,32 @@ function resetGrid() {
     EAST = map.getBounds()._northEast.lng;
 }
 
-var circleMarkerOptions = {
-    radius : 4,
-    fillColor : "#006400",
-    stroke : .1,
-    weight : 1
-};
+function createCircleFeatureStyle(feature) {
+        var options = {
+                radius : 4,
+                stroke : .1,
+                fillColor : "#006400",
+                weight : 1
+            };
+        
+        if (feature.properties.source == 'Isleif') {
+            options.fillColor = "red";
+        }
+        if (feature.properties.source == 'Sagas') {
+            options.fillColor = "yellow";
+        }
+        if (feature.properties.source == 'PMS') {
+//            options.fillColor = "yellow";
+        }
+        if (feature.properties.source == 'NABONE') {
+//          options.fillColor = "yellow";
+      }
+        if (feature.properties.source == 'SEAD') {
+          options.fillColor = "green";
+      }
+        
+        return options;
+}
 
 function drawGrid() {
 
@@ -223,7 +251,8 @@ function drawGrid() {
                     onEachFeature : addPointsToMap,
                     pointToLayer : function(feature, latlng) {
                         // http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
-                        return L.circleMarker(latlng, circleMarkerOptions);
+                        var style = createCircleFeatureStyle(feature);
+                        return L.circleMarker(latlng, style);
                     }
                 });
                 if (geoLayer != undefined) {

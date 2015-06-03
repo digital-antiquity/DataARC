@@ -116,6 +116,14 @@ public class LuceneService {
                     if (start_.equals("-1")) {
                         start_ = Integer.toString(START);
                     }
+                    if (start_.trim().contains("-")) {
+                        start_ += " BCE ";
+                        start_ = start_.replace("-","");
+                    }
+                    if (v.trim().startsWith("-")) {
+                        v += " BCE ";
+                        v = v.replace("-","");
+                    }
                     valueMap.put("date",  start_ + " - " +  v);
                     continue;
                 } 
@@ -147,6 +155,7 @@ public class LuceneService {
                     }
                 }
                 feature.setProperty(source, second);
+                feature.setProperty("source",source);
             }
             fc.add(feature);
         }

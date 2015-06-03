@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
 	<link rel="stylesheet" href="css/bce.css"/>    
     <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
-    <link rel='stylesheet' href='components/simile-timeline/timeline_ajax/styles/graphics.css' type='text/css' />
 
    
    </head>
