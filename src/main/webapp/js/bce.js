@@ -472,7 +472,7 @@ function setupMapShape() {
                     text += '  <ul class="nav nav-tabs" role="tablist">';
                     var active = 'active';
                     for (key in keys) {
-                        if (!keys.hasOwnProperty(key)) {
+                        if (!keys.hasOwnProperty(key) || key == 'source') {
                             continue;
                         }
                         text += ' <li role="presentation" class="'+active+'"><a href="#'+createTabId(key)+'" aria-controls="home" role="tab" data-toggle="tab">'+key+'</a></li>';
@@ -485,7 +485,7 @@ function setupMapShape() {
                     
                     
                     for (key in keys) {
-                        if (!keys.hasOwnProperty(key)) {
+                        if (!keys.hasOwnProperty(key) || key == 'source') {
                             continue;
                         }
                         text += '<div role="tabpanel" class="tab-pane '+active+'" id="'+createTabId(key)+'">';
@@ -521,7 +521,7 @@ function setupMapShape() {
                         text += "<thead><tr>";
                         text += "<th>Date</th>";
                         for (name in fieldNames) {
-                            if (!fieldNames.hasOwnProperty(name)) {
+                            if (!fieldNames.hasOwnProperty(name) ) {
                                 continue;
                             }
                             text += "<th>"+name+"</th>";

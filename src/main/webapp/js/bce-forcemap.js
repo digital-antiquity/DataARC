@@ -102,9 +102,7 @@ function initForceMap() {
 
         root = graph.mindmap.root;
         root.children.forEach(function(c) {
-            c.children.forEach(function(g) {
-                hideChildren(g, true);
-            });
+                showHideBranch(c);
         });
 
         // http://jsfiddle.net/vfu78/16/
@@ -171,17 +169,26 @@ function nodeLabelClick(d) {
     var $term = $("#term");
     $term.val(d.name);
     $term.trigger("keyup");
-    var $this = d3.select(this.parentNode);
+    showHideBranch(d);
+    force.start();
+}
+
+function showHideBranch(d) {
     var $el = $("#n-" + d.id + " circle");
+    var $tx = $("#n-" + d.id + " text");
     var cls = $el.attr("class");
     var className = "hiddenChildren";
+    if (d.children && d.children.length > 0) {
     if (cls.indexOf(className) > 0 ) {
         removeClass($el, className);
+        $tx.text(d.name);
     } else {
         addClass($el, className);
+        $tx.text("+ " + d.name);
     }
     hideChildren(d, $el.attr("class").indexOf(className) > 0);
-    force.start();
+    }
+
 }
 
 function removeClass($el, className) {
