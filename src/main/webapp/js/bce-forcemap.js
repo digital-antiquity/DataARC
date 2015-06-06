@@ -23,7 +23,7 @@ function resize() {
 };
 
 var parent, force, vis, zoom, color, root;
-
+var urls_;
 function initForceMap() {
     zoom = d3.behavior.zoom().on("zoom", redraw);
     color = d3.scale.category20();
@@ -35,12 +35,26 @@ function initForceMap() {
 
     vis.append('svg:rect').attr('fill', 'white');
     force = d3.layout.force().linkDistance(30).linkStrength(2).charge(-200).size([ width, width * aspect ]);
-    d3.json("js/NABOGHEA_sheep_concept_map.json", function(error, graph) {
+    d3.json("data.json", function(error, graph) {
         getLeafNodes(nds, graph.mindmap.root, lns);
+        
+        
         var nodes = nds.slice(0), links = [], bilinks = [];
         nds.forEach(function(node, idx) {
             ordIdXref[node.id] = idx;
         });
+        
+        var urls = graph.pluginData.url;
+        urls_ = graph;
+        for (var id in urls) {
+            if (urls.hasOwnProperty(id)) {
+                if (urls[id].urls) {
+                    var node = nds[ordIdXref[id]];
+                    node.urls = urls[id].urls;
+                    console.log(node);
+                }
+            }
+        }
 
         lns.forEach(function(link) {
             var s = nodes[ordIdXref[link.source]], t = nodes[ordIdXref[link.target]], i = {
@@ -78,10 +92,12 @@ function initForceMap() {
             return d.y;
         }).attr("r", circleWidth).attr("fill", function(d) {
             return color(d.weight);
-        }).on('click', nodeLabelClick);
-
-        // .attr("class","nodeLabel")
-
+        }).on('click', nodeLabelClick)
+        .on("dblclick", function(d) { 
+            if (d.urls) {
+                $("#infodetail").html("urls:" + d.urls);
+            }
+        });
         node.append("text").text(function(d, i) {
             return d.name;
         }).attr("x", function(d, i) {
