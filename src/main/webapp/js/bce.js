@@ -199,6 +199,7 @@ function createCircleFeatureStyle(feature) {
                 radius : 4,
                 stroke : .1,
                 fillColor : "#006400",
+                fillOpacity:.8,
                 weight : 1
             };
         

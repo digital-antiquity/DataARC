@@ -11,10 +11,16 @@ var aspect = 500 / 950;
 var circleWidth = 5;
 var node;
 var whatever;
+var LINK_STRENGTH = 1;
+var LINK_DISTANCE = 8;
+
+function getHeight() {
+    return getWidth() * aspect;
+}
 
 function resize() {
     width = getWidth();
-    var height = width * aspect;
+    var height = getHeight();
     vis.attr("width", width);
     vis.attr("height", height);
     parent.attr("width", width);
@@ -22,19 +28,20 @@ function resize() {
     force.size([ width, height ]).resume();
 };
 
+var centerNode;
 var parent, force, vis, zoom, color, root;
 var urls_;
 function initForceMap() {
     zoom = d3.behavior.zoom().on("zoom", redraw);
     color = d3.scale.category20();
-    parent = d3.select("#forcemap").append("svg:svg").attr("preserveAspectRatio", "xMidYMid").attr("width", width).attr("height", width * aspect);
+    parent = d3.select("#forcemap").append("svg:svg").attr("preserveAspectRatio", "xMidYMid").attr("width", width).attr("height", getHeight());
     vis = parent.attr("pointer-events", "all").append('svg:g').append('svg:g');
     vis.attr("x", 0);
     vis.attr("y", 0);
     $(window).resize(resize);
 
     vis.append('svg:rect').attr('fill', 'white');
-    force = d3.layout.force().linkDistance(30).linkStrength(2).charge(-200).size([ width, width * aspect ]);
+    force = d3.layout.force().linkDistance(LINK_DISTANCE).linkStrength(LINK_STRENGTH).charge(-100).size([ width, getHeight() ]);
     d3.json("data.json", function(error, graph) {
         getLeafNodes(nds, graph.mindmap.root, lns);
         
@@ -51,7 +58,6 @@ function initForceMap() {
                 if (urls[id].urls) {
                     var node = nds[ordIdXref[id]];
                     node.urls = urls[id].urls;
-                    console.log(node);
                 }
             }
         }
@@ -94,8 +100,27 @@ function initForceMap() {
             return color(d.weight);
         }).on('click', nodeLabelClick)
         .on("dblclick", function(d) { 
-            if (d.urls) {
-                $("#infodetail").html("urls:" + d.urls);
+            if (d.urls && d.urls.length > 0) {
+                
+                console.log(d);
+                var html = "<b>Links for: "+d.name+"</b><ul>";
+                for (var i =0; i < d.urls.length ; i++) {
+                    var url = d.urls[i];
+                    html += "<li><a href='"+url+"' target='_blank'>" + url + "</a></li>";
+                }
+                html += "</ul>";
+                $("#infodetail").html(html);
+
+//                vis.append("g")       // attach a rectangle
+//                .attr("x", 100)         // position the left of the rectangle
+//                .attr("y", 50)          // position the top of the rectangle
+//                .attr("height", "75%")    // set the height
+//                .attr("width", "75%")     // set the width
+//                .attr("rx", 10)         // set the x corner curve radius
+//                .attr("ry", 10).
+//                append("foreignobject")
+//                .append("xhtml:body").append("xhtml:p")
+//                .append("b").text("Links:"); 
             }
         });
         node.append("text").text(function(d, i) {
@@ -126,7 +151,23 @@ function initForceMap() {
             return d.name;
         });
 
+        centerNode = nds[ordIdXref[root.id]];
         force.on("tick", function() {
+            var w_ = getWidth() / 2.5;
+            var h_ = getHeight() / 2.5;
+            if (centerNode.x < w_) {
+                centerNode.x += 1;
+            } 
+            if (centerNode.x > getWidth() - w_) {
+                centerNode.x -= 1;
+            } 
+            if (centerNode.y < h_) {
+                centerNode.y += 1;
+            } 
+            if (centerNode.y > getHeight() - h_) {
+                centerNode.y -= 1;
+            } 
+
             link.attr("d", function(d) {
                 return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
             });
@@ -143,7 +184,7 @@ function initForceMap() {
 
         node.forEach(function(d) {
             if (d._children || d.children) {
-                d.x = width / 2, d.y = (width * aspect) / 2;
+                d.x = width / 2, d.y = (getHeight()) / 2;
                 d.fixed = false;
             }
         });
@@ -185,49 +226,57 @@ function nodeLabelClick(d) {
     var $term = $("#term");
     $term.val(d.name);
     $term.trigger("keyup");
-    showHideBranch(d);
+    centerNode = d;
+    showHideBranch(d,2);
     force.start();
 }
 
-function showHideBranch(d) {
+function showHideBranch(d, depth) {
     var $el = $("#n-" + d.id + " circle");
     var $tx = $("#n-" + d.id + " text");
     var cls = $el.attr("class");
     var className = "hiddenChildren";
     if (d.children && d.children.length > 0) {
-    if (cls.indexOf(className) > 0 ) {
-        removeClass($el, className);
-        $tx.text(d.name);
-    } else {
-        addClass($el, className);
-        $tx.text("+ " + d.name);
+        if (cls.indexOf(className) > 0 ) {
+            removeClass($el, className);
+            $tx.text(d.name);
+        } else {
+            addClass($el, className);
+            $tx.text("+ " + d.name);
+        }
+        hideChildren(d, $el.attr("class").indexOf(className) > 0, depth);
     }
-    hideChildren(d, $el.attr("class").indexOf(className) > 0);
-    }
-
 }
 
 function removeClass($el, className) {
     var cls = $el.attr("class");
+    if (cls == undefined) {
+        cls = "";
+    }
     cls = cls.replace(className,"");
     $el.attr("class",cls);
 }
 
 function addClass($el, className) {
     var cls = $el.attr("class");
+    if (cls == undefined) {
+        cls = "";
+    }
     cls +=  " " + className;
     $el.attr("class",cls);
 }
 
-function hideChildren(d, hide) {
-    // FIXME: toggle needs to "hide" all children recursively... toggle will show grand-children if they're already hidden but parent is shown
+function hideChildren(d, hide, depth) {
+    if (depth == 0) {
+        return;
+    }
     d.children.forEach(function(e) {
         var node = $("#n-" + e.id + " circle");
         var text = $("#n-" + e.id + " text");
         var path  = $("#l-" + e.id + "--" + d.id);
+        var className = "hiddenChildren";
         if (hide)  {
             node.hide();
-            var className = "hiddenChildren";
             removeClass(node,className);
             text.hide();
             path.hide();
@@ -235,8 +284,14 @@ function hideChildren(d, hide) {
             node.show();
             text.show();
             path.show();
+            console.log(depth, e.children);
+            if (depth == 1 && e.children && e.children.length > 0) {
+                //removeClass(node, className);
+                addClass(node, className);
+                text.text("+ " + e.name);
+            }
         }
-        hideChildren(e, hide);
+        hideChildren(e, hide, depth -1);
     });
 
 }
@@ -310,7 +365,7 @@ function zoomed() {
 }
 
 function getCenter() {
-    return [ width / 2, (width * aspect) / 2 ];
+    return [ width / 2, (getHeight()) / 2 ];
 }
 
 function zoomClick() {
