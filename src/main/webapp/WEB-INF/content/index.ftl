@@ -76,15 +76,15 @@
         <h4 class="modal-title">Welcome to the CyberNABO Prototype</h4>
       </div>
       <div class="modal-body">
-			<p>Archaeologists draw on a wide variety of data to investigate any topic. The concept maps are intended to aid in the process of gathering together all the specialist data that may be relevant to thinking about a topic. They point first to linked topics, and then to the available data sources and key indicators within those data sources that would be relevant to that topic. The aim within the cyberNABO project is to make specialists more aware of the most relevant aspects of one another’s data to shared research questions, and to tease out how these data map together, not at the level of integrating columns or fields in a database, but at the level of bringing together different approaches to a topic and pointing to key data sources. </p>
-			<p>Navigate the concept map by starting with a central idea, e.g. storage, branching out to different types of information that might inform on storage. For example, from storage we might branch out to consumable goods, and from consumable goods to fodder. From an environmental specialist's point of view, we might then link from fodder to insect assemblages and from there to the SEAD database and to specific species ratios.</p> 
-
 				<div class="row">
 					<div class="col-md-6">
 					<b>Explore by map</b>
 	    	        </div>
 					<div class="col-md-6">
 					<b>Explore by topic</b>
+					<br/>
+			<p>Archaeologists draw on a wide variety of data to investigate any topic. The concept maps are intended to aid in the process of gathering together all the specialist data that may be relevant to thinking about a topic. They point first to linked topics, and then to the available data sources and key indicators within those data sources that would be relevant to that topic. The aim within the cyberNABO project is to make specialists more aware of the most relevant aspects of one another’s data to shared research questions, and to tease out how these data map together, not at the level of integrating columns or fields in a database, but at the level of bringing together different approaches to a topic and pointing to key data sources. </p>
+			<p>Navigate the concept map by starting with a central idea, e.g. storage, branching out to different types of information that might inform on storage. For example, from storage we might branch out to consumable goods, and from consumable goods to fodder. From an environmental specialist's point of view, we might then link from fodder to insect assemblages and from there to the SEAD database and to specific species ratios.</p> 
 	    	        </div>
 		        </div>
 				<div class="row">

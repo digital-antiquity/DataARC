@@ -289,7 +289,6 @@ function hideChildren(d, hide, depth) {
             node.show();
             text.show();
             path.show();
-//            console.log(depth, e.children);
             if (depth == 1 && e.children && e.children.length > 0) {
                 //removeClass(node, className);
                 addClass(node, className);
