@@ -244,7 +244,11 @@ function showHideBranch(d, depth) {
             addClass($el, className);
             $tx.text("+ " + d.name);
         }
-        hideChildren(d, $el.attr("class").indexOf(className) > 0, depth);
+        var hide = $el.attr("class").indexOf(className) > 0;
+        if (hide) {
+            depth = undefined;
+        }
+        hideChildren(d, hide, depth);
     }
 }
 
@@ -279,12 +283,13 @@ function hideChildren(d, hide, depth) {
             node.hide();
             removeClass(node,className);
             text.hide();
+            text.text(e.name);
             path.hide();
         } else {
             node.show();
             text.show();
             path.show();
-            console.log(depth, e.children);
+//            console.log(depth, e.children);
             if (depth == 1 && e.children && e.children.length > 0) {
                 //removeClass(node, className);
                 addClass(node, className);

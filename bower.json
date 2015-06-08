@@ -25,7 +25,8 @@
     "cytoscape": "~2.3.11",
     "seiyria-bootstrap-slider": "~4.8.1",
     "leaflet-pip": "~0.1.0",
-    "sigma": "~1.0.3"
+    "sigma": "~1.0.3",
+    "jquery-cookie":"1.4.1"
   },
     "resolutions": {
         "d3": "3.5.5"
