@@ -1,23 +1,32 @@
-function getWidth() {
-    width = $('#infobox').width();
-    return width;
-}
+/**
+ * handles the D3 topic-map / force-map
+ */
 
+
+// cross-reference object between node-ids, and entries int he nds array
 var ordIdXref = {};
 var nds = [], lns = new Array();
 
-var width = getWidth();
 var aspect = 500 / 950;
 var circleWidth = 5;
 var node;
 var whatever;
 var LINK_STRENGTH = 1;
 var LINK_DISTANCE = 8;
+var width = getWidth();
 
+//get the current width of our div
+function getWidth() {
+    width = $('#infobox').width();
+    return width;
+}
+
+// get the height of the div
 function getHeight() {
     return getWidth() * aspect;
 }
 
+// resize the SVG canvas based on the current div size
 function resize() {
     width = getWidth();
     var height = getHeight();
@@ -31,9 +40,14 @@ function resize() {
 var centerNode;
 var parent, force, vis, zoom, color, root;
 var urls_;
+// setup the force-map
+
 function initForceMap() {
+    // custom zoom handler that removes pan/scroll
     zoom = d3.behavior.zoom().on("zoom", redraw);
     color = d3.scale.category20();
+
+    // create the SVG object
     parent = d3.select("#forcemap").append("svg:svg").attr("preserveAspectRatio", "xMidYMid").attr("width", width).attr("height", getHeight());
     vis = parent.attr("pointer-events", "all").append('svg:g').append('svg:g');
     vis.attr("x", 0);
@@ -41,11 +55,16 @@ function initForceMap() {
     $(window).resize(resize);
 
     vis.append('svg:rect').attr('fill', 'white');
+
+    // initialize the force-map
     force = d3.layout.force().linkDistance(LINK_DISTANCE).linkStrength(LINK_STRENGTH).charge(-100).size([ width, getHeight() ]);
+
+    // iterate through the JSON data
     d3.json("data.json", function(error, graph) {
+        // find the leaf nodes and initialize the lns list
         getLeafNodes(nds, graph.mindmap.root, lns);
         
-        
+        // create the nds -> data lookup cross-reference
         var nodes = nds.slice(0), links = [], bilinks = [];
         nds.forEach(function(node, idx) {
             ordIdXref[node.id] = idx;
@@ -53,6 +72,7 @@ function initForceMap() {
         
         var urls = graph.pluginData.url;
         urls_ = graph;
+        // for each link, attach the links to the node object
         for (var id in urls) {
             if (urls.hasOwnProperty(id)) {
                 if (urls[id].urls) {
@@ -62,6 +82,7 @@ function initForceMap() {
             }
         }
 
+        // for each node, create the connectors
         lns.forEach(function(link) {
             var s = nodes[ordIdXref[link.source]], t = nodes[ordIdXref[link.target]], i = {
                 weight : 0,
@@ -81,17 +102,22 @@ function initForceMap() {
             }
         });
 
+        // add the nodes adn links to the forceMap
         force.nodes(nodes).links(links).start();
 
+        // create the links by adding the paths
         var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id", function(l) {
             return "l-" + l[1].id;
         });
 
+        // add the node, and handle mouse-over mouse-out, click, etc.
+        // create a custom ID based on the node-id so we can move back and forth
         node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id", function(d) {
             return "n-" + d.id;
         }).on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
         node.call(force.drag);
 
+        // create the circle of the node
         node.append("svg:circle").attr("class","nodeCircle").attr("x", function(d) {
             return d.x;
         }).attr("y", function(d) {
@@ -101,8 +127,8 @@ function initForceMap() {
         }).on('click', nodeLabelClick)
         .on("dblclick", function(d) { 
             if (d.urls && d.urls.length > 0) {
-                
-                console.log(d);
+
+                // handle double-click, show links below
                 var html = "<b>Links for: "+d.name+"</b><ul>";
                 for (var i =0; i < d.urls.length ; i++) {
                     var url = d.urls[i];
@@ -111,18 +137,10 @@ function initForceMap() {
                 html += "</ul>";
                 $("#infodetail").html(html);
 
-//                vis.append("g")       // attach a rectangle
-//                .attr("x", 100)         // position the left of the rectangle
-//                .attr("y", 50)          // position the top of the rectangle
-//                .attr("height", "75%")    // set the height
-//                .attr("width", "75%")     // set the width
-//                .attr("rx", 10)         // set the x corner curve radius
-//                .attr("ry", 10).
-//                append("foreignobject")
-//                .append("xhtml:body").append("xhtml:p")
-//                .append("b").text("Links:"); 
             }
         });
+
+        // add the text node, bind the location to the circle
         node.append("text").text(function(d, i) {
             return d.name;
         }).attr("x", function(d, i) {
@@ -142,17 +160,22 @@ function initForceMap() {
         var nodelabels = vis.selectAll(".nodelabel");
 
         root = graph.mindmap.root;
+        // hilde all of the grand-children and below
         root.children.forEach(function(c) {
                 showHideBranch(c);
         });
 
         // http://jsfiddle.net/vfu78/16/
+        // add mouse-over title
         node.append("title").text(function(d) {
             return d.name;
         });
 
+        
+        // the "tick" is the animation of each node
         centerNode = nds[ordIdXref[root.id]];
         force.on("tick", function() {
+            // try and bound the center node in the middle of the screen
             var w_ = getWidth() / 2.5;
             var h_ = getHeight() / 2.5;
             if (centerNode.x < w_) {
@@ -184,12 +207,13 @@ function initForceMap() {
 
         node.forEach(function(d) {
             if (d._children || d.children) {
-                d.x = width / 2, d.y = (getHeight()) / 2;
+//                d.x = width / 2, d.y = (getHeight()) / 2;
                 d.fixed = false;
             }
         });
     });
 
+    // bind click events
     d3.select('#up').on("click", moveUp);
     d3.select('#down').on("click", moveDown);
     d3.select('#left').on("click", moveLeft);
@@ -219,10 +243,13 @@ function initForceMap() {
 
 }
 
-
+/*
+ * Click on a node or text
+ */
 function nodeLabelClick(d) {
-    if (d3.event.defaultPrevented)
+    if (d3.event.defaultPrevented) {
         return; // click suppressed
+    }
     var $term = $("#term");
     $term.val(d.name);
     $term.trigger("keyup");
@@ -231,6 +258,10 @@ function nodeLabelClick(d) {
     force.start();
 }
 
+/*
+ * show's or hides a branch, if the child node has children, add a + if the grand-children are hidden.
+ * This method is bounded recursive if the depth is defined, otherwise, it'll iterate through the entire tree
+ */
 function showHideBranch(d, depth) {
     var $el = $("#n-" + d.id + " circle");
     var $tx = $("#n-" + d.id + " text");
@@ -244,6 +275,7 @@ function showHideBranch(d, depth) {
             addClass($el, className);
             $tx.text("+ " + d.name);
         }
+        // jquery's class manipulation doesn't wrok for SVG
         var hide = $el.attr("class").indexOf(className) > 0;
         if (hide) {
             depth = undefined;
@@ -252,6 +284,7 @@ function showHideBranch(d, depth) {
     }
 }
 
+// remove the class from the object
 function removeClass($el, className) {
     var cls = $el.attr("class");
     if (cls == undefined) {
@@ -261,6 +294,7 @@ function removeClass($el, className) {
     $el.attr("class",cls);
 }
 
+// add the class to the object
 function addClass($el, className) {
     var cls = $el.attr("class");
     if (cls == undefined) {
@@ -270,6 +304,9 @@ function addClass($el, className) {
     $el.attr("class",cls);
 }
 
+/*
+ * recursive function to show/hide the children based on the depth 
+ */
 function hideChildren(d, hide, depth) {
     if (depth == 0) {
         return;
@@ -299,11 +336,17 @@ function hideChildren(d, hide, depth) {
     });
 
 }
-
+// redraw the svg object based on the transation/scaling
 function redraw() {
     vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
 }
 
+/** 
+ * build the leaf node tree based on the json object, also create links
+ * @param leafNodes
+ * @param obj
+ * @param links
+ */
 function getLeafNodes(leafNodes, obj, links) {
     if (obj.children) {
         obj.children.forEach(function(child) {
@@ -323,6 +366,9 @@ function getLeafNodes(leafNodes, obj, links) {
     }
 }
 
+/**
+ * handle the zoom processing
+ */
 function interpolateZoom(translate, scale) {
     var self = this;
     return d3.transition().duration(350).tween("zoom", function() {
@@ -334,6 +380,11 @@ function interpolateZoom(translate, scale) {
     });
 }
 
+/**
+ * handle mouse-over by animating the text and making the node bigger
+ * @param d
+ * @param i
+ */
 function mouseOverNode(d, i) {
     var $this = d3.select(this);
     if (i > 0) {
@@ -350,6 +401,11 @@ function mouseOverNode(d, i) {
     }
 }
 
+/**
+ * handle mouse-out by returning back to default sizes
+ * @param d
+ * @param i
+ */
 function mouseOutNode(d, i) {
     var $this = d3.select(this);
 
@@ -362,6 +418,9 @@ function mouseOutNode(d, i) {
     }
 };
 
+/*
+ * more zoom handling
+ */
 function zoomed() {
     vis.attr("transform", "translate(" + zoom.translate() + ")" + "scale(" + zoom.scale() + ")");
     vis.attr("x", zoom.translate()[0]);
@@ -372,6 +431,10 @@ function getCenter() {
     return [ width / 2, (getHeight()) / 2 ];
 }
 
+/**
+ * handle the click event for the zoom buttons
+ * @returns {Boolean}
+ */
 function zoomClick() {
     var clicked = d3.event.target, direction = 1, factor = 0.2, target_zoom = 1, center = getCenter(), extent = zoom.scaleExtent(), translate = zoom
             .translate(), translate0 = [], l = [], view = {
@@ -428,17 +491,6 @@ function updatePos(x, y) {
     vis.attr("transform", "translate(" + x + "," + y + ") " + "scale(" + zoom.scale() + ")");
 }
 
-function hashCode(str) {
-    var hash = 0;
-    if (str.length == 0)
-        return hash;
-    for (i = 0; i < str.length; i++) {
-        char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32bit integer
-    }
-    return hash;
-}
 
 $(function() {
     initForceMap();
