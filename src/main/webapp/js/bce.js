@@ -522,7 +522,11 @@ function setupMapShape() {
                         text += "<thead><tr>";
                         text += "<th>Date</th>";
                         for (name in fieldNames) {
-                            if (!fieldNames.hasOwnProperty(name) ) {
+                            if (!fieldNames.hasOwnProperty(name) || name.indexOf("p_") == 0) {
+                                continue;
+                            }
+                            
+                            if (-1 == key.indexOf("NABONE") && name == 'nisp') {
                                 continue;
                             }
                             text += "<th>"+name+"</th>";
@@ -532,14 +536,19 @@ function setupMapShape() {
                             if (!groupByDate.hasOwnProperty(dateKey)) {
                                 continue;
                             }
+
                             out += "<tr><td><b>" + dateKey + "</b></td>";
                             var fields = groupByDate[dateKey];
                             // for each field
                             for (field in fields) {
-                                if (!fields.hasOwnProperty(field)) {
+                                if (!fields.hasOwnProperty(field) || field.indexOf("p_") == 0) {
                                     continue;
                                 }
-//                                out += "<b>" + k + "</b>: ";
+
+                                if (-1 == key.indexOf("NABONE") && field == 'nisp') {
+                                    continue;
+                                }
+
                                 out += "<td>";
                                 var values = fields[field];
                                 var count = 0;
@@ -565,6 +574,37 @@ function setupMapShape() {
                         }
                         text += out;
                         text += "</table>";
+                        if (key.indexOf("NABONE") == 0) {
+                            text += "<div id='radioChart'></div>";
+                            var data = [];
+                            for (field in fields) {
+                                if (!fields.hasOwnProperty(field) || field.indexOf("p_") != 0) {
+                                    continue;
+                                }
+
+                                var values = fields[field];
+                                for (v in values) {
+                                    if (!values.hasOwnProperty(v)) {
+                                        continue;
+                                    }
+                                    var name = field;
+                                    name = field.replace("p_","");
+                                    name = name.replace(/_/g, " ");
+                                    if (parseFloat(v) > 0) {
+                                        data.push([name, v]);
+                                    }
+                                }
+                            }
+                            var chartData = {
+                              bindto: "#radioChart",
+                              data: {
+                                  columns: data,
+                                  type: 'pie'
+                              }
+                            };
+                            text += "<script>c3.generate("+JSON.stringify(chartData)+");</script>";
+                            //setTimeout(function() {c3.generate(chartData);},1000);
+                        }
                         text += "</div>";
                     }
                     text += "</div>";

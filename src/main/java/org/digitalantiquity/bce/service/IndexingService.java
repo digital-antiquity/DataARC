@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FloatField;
 import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
@@ -94,6 +95,16 @@ public class IndexingService {
             doc.add(new TextField(IndexFields.WHAT, get(row, "What"), Field.Store.YES));
             doc.add(new TextField(IndexFields.WHERE, get(row, "Where"), Field.Store.YES));
             doc.add(new TextField(IndexFields.WHEN, get(row, "When"), Field.Store.YES));
+            doc.add(new IntField(IndexFields.NISP, getInt(row,"NISPtotal"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.DOM, getInt(row,"DOM"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.WHALE, getInt(row,"whale"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.SEAL, getInt(row,"seal"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.WALRUS, getInt(row,"walrus"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.DEER, getInt(row,"deer"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.OTHER_MAM, getInt(row,"othermam"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.BIRD, getInt(row,"bird"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.FISH, getInt(row,"fish"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.MOL_ARTH_GAST, getInt(row,"molarthgast"), Field.Store.YES));
             for (String tag : StringUtils.split(get(row, "tags"), ",")) {
                 doc.add(new TextField(IndexFields.TAGS, tag, Field.Store.YES));
             }
