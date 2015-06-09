@@ -16,14 +16,21 @@ import org.apache.lucene.analysis.miscellaneous.WordDelimiterFilterFactory;
 import org.apache.lucene.analysis.pattern.PatternTokenizer;
 import org.apache.lucene.util.Version;
 
+/**
+ * Creates a Lucene Analyzer that tokenizes on spaces and non-word characters, then strips out stop-words and indexes everything.
+ * 
+ * @author abrin
+ *
+ */
 public final class LowercaseWhiteSpaceStandardAnalyzer extends Analyzer {
     public static final String[] ENGLISH_STOP_WORDS = {
-        "a", "an", "and", "are", "as", "at", "be", "but", "by",
-        "for", "if", "in", "into", "is", "it",
-        "no", "not", "of", "on", "or", "such",
-        "that", "the", "their", "then", "there", "these",
-        "they", "this", "to", "was", "will", "with"
-        };
+            "a", "an", "and", "are", "as", "at", "be", "but", "by",
+            "for", "if", "in", "into", "is", "it",
+            "no", "not", "of", "on", "or", "such",
+            "that", "the", "their", "then", "there", "these",
+            "they", "this", "to", "was", "will", "with"
+    };
+
     @Override
     protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
         // TOKENIZING ON (punctuation?)(space +) (punctuation?)
@@ -47,7 +54,7 @@ public final class LowercaseWhiteSpaceStandardAnalyzer extends Analyzer {
         // SUBWORD_DELIM.
         // [Solr3.1]
         WordDelimiterFilterFactory wordFilter = new WordDelimiterFilterFactory(params);
-        
+
         LowerCaseFilter stream = new LowerCaseFilter(wordFilter.create(st));
         TrimFilter trimFilter = new TrimFilter(stream);
 

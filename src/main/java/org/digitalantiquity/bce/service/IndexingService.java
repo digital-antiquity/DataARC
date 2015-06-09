@@ -35,8 +35,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spatial4j.core.context.SpatialContext;
 import com.spatial4j.core.shape.Point;
 
+/**
+ * The Indexing service takes the Google Spreadsheet and indexes it using Lucene with the Geospatial extensions
+ * 
+ * @author abrin
+ *
+ */
 @Service
 public class IndexingService {
+
+    public static final String INDEX_DIR = "indexes/";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -44,7 +52,12 @@ public class IndexingService {
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
     private static LowercaseWhiteSpaceStandardAnalyzer analyzer = new LowercaseWhiteSpaceStandardAnalyzer();
-    
+
+    /**
+     * Builds the index
+     * 
+     * @param key
+     */
     public void index(String key) {
         File f = new File("/tmp/bceData", "json");
         try {
@@ -56,12 +69,16 @@ public class IndexingService {
             writer.commit();
             ObjectMapper mapper = new ObjectMapper();
             JsonNode tree = mapper.readTree(f);
+            // iterating over the Google Spreadsheet and get the list of fields
             Iterator<String> iterator = tree.get("feed").get("entry").get(0).fieldNames();
             List<String> fields = new ArrayList<>();
             while (iterator.hasNext()) {
                 fields.add(iterator.next());
             }
+
             logger.debug("field:{}", fields);
+
+            // iterate over each row
             Iterator<JsonNode> elements = tree.get("feed").get("entry").elements();
             while (elements.hasNext()) {
                 JsonNode row = elements.next();
@@ -75,6 +92,13 @@ public class IndexingService {
         }
     }
 
+    /**
+     * Index a row of the google spreadsheet
+     * 
+     * @param writer
+     * @param row
+     * @throws IOException
+     */
     private void indexRow(IndexWriter writer, JsonNode row) throws IOException {
         try {
             Document doc = new Document();
@@ -83,7 +107,7 @@ public class IndexingService {
             doc.add(new DoubleField(IndexFields.X, getDouble(row, "Lat"), Field.Store.YES));
             doc.add(new DoubleField(IndexFields.Y, getDouble(row, "Lon"), Field.Store.YES));
             doc.add(new TextField(IndexFields.TITLE, get(row, "title"), Field.Store.YES));
-            //    Field idField = new Field(LuceneConstants.FIELD_ID, desc.getId(), Field.Store.YES, Field.Index.ANALYZED);
+            // Field idField = new Field(LuceneConstants.FIELD_ID, desc.getId(), Field.Store.YES, Field.Index.ANALYZED);
 
             doc.add(new TextField(IndexFields.TITLE, get(row, "title"), Field.Store.YES));
             doc.add(new TextField(IndexFields.FUNCTION, get(row, "functionofsite"), Field.Store.YES));
@@ -95,20 +119,24 @@ public class IndexingService {
             doc.add(new TextField(IndexFields.WHAT, get(row, "What"), Field.Store.YES));
             doc.add(new TextField(IndexFields.WHERE, get(row, "Where"), Field.Store.YES));
             doc.add(new TextField(IndexFields.WHEN, get(row, "When"), Field.Store.YES));
-            doc.add(new IntField(IndexFields.NISP, getInt(row,"NISPtotal"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.DOM, getInt(row,"DOM"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.WHALE, getInt(row,"whale"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.SEAL, getInt(row,"seal"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.WALRUS, getInt(row,"walrus"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.DEER, getInt(row,"deer"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.OTHER_MAM, getInt(row,"othermam"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.BIRD, getInt(row,"bird"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.FISH, getInt(row,"fish"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.MOL_ARTH_GAST, getInt(row,"molarthgast"), Field.Store.YES));
+            doc.add(new IntField(IndexFields.NISP, getInt(row, "NISPtotal"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.DOM, getInt(row, "DOM"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.WHALE, getInt(row, "whale"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.SEAL, getInt(row, "seal"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.WALRUS, getInt(row, "walrus"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.DEER, getInt(row, "deer"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.OTHER_MAM, getInt(row, "othermam"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.BIRD, getInt(row, "bird"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.FISH, getInt(row, "fish"), Field.Store.YES));
+            doc.add(new FloatField(IndexFields.MOL_ARTH_GAST, getInt(row, "molarthgast"), Field.Store.YES));
+
+            // index tags as keywords
             for (String tag : StringUtils.split(get(row, "tags"), ",")) {
                 doc.add(new TextField(IndexFields.TAGS, tag, Field.Store.YES));
             }
             doc.add(new TextField(IndexFields.TYPE, get(row, "typeofsite"), Field.Store.YES));
+
+            // create a "Point" based on the LatLong and index it
             Point shape = ctx.makePoint(getDouble(row, "Lat"), getDouble(row, "Lon"));
             for (IndexableField f : strategy.createIndexableFields(shape)) {
                 doc.add(f);
@@ -119,6 +147,13 @@ public class IndexingService {
         }
     }
 
+    /**
+     * Simplifies the process of getting a text node from the google Spreadsheet
+     * 
+     * @param row
+     * @param string
+     * @return
+     */
     private String get(JsonNode row, String string) {
         JsonNode node = row.get("gsx$" + string.toLowerCase());
         if (node != null) {
@@ -127,6 +162,13 @@ public class IndexingService {
         return "";
     }
 
+    /**
+     * Simplifies getting a Double from the google spreadsheet
+     * 
+     * @param row
+     * @param string
+     * @return
+     */
     private Double getDouble(JsonNode row, String string) {
         JsonNode node = row.get("gsx$" + string.toLowerCase());
         if (node != null) {
@@ -135,6 +177,13 @@ public class IndexingService {
         return -1d;
     }
 
+    /**
+     * Simplifies getting an integer from the google spreadsheet
+     * 
+     * @param row
+     * @param string
+     * @return
+     */
     private Integer getInt(JsonNode row, String string) {
         JsonNode node = row.get("gsx$" + string.toLowerCase());
         if (node != null) {
@@ -150,7 +199,7 @@ public class IndexingService {
             iwc.setOpenMode(OpenMode.CREATE);
         }
 
-        File path = new File("indexes/" + indexName);
+        File path = new File(INDEX_DIR + indexName);
         path.mkdirs();
         Directory dir = FSDirectory.open(path);
         IndexWriter writer = new IndexWriter(dir, iwc);

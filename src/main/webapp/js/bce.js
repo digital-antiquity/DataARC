@@ -233,7 +233,7 @@ function drawGrid() {
     var neLat = bounds._northEast.lat;
     var swLng = bounds._southWest.lng;
 
-    var req = "/browse/json.action?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
+    var req = "/browse/json?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
             "&term=" + $("#term").val();
     console.log(req);
     var ret = $.Deferred();

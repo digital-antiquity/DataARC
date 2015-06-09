@@ -15,8 +15,6 @@
  */
 package org.digitalantiquity.bce.action;
 
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
@@ -25,21 +23,24 @@ import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+/**
+ * This class simply returns an empty page for the homepage, it does nothing special.
+ * 
+ * @author abrin
+ *
+ */
 @Component
 @Scope("prototype")
 public class IndexAction extends ActionSupport {
 
     private static final long serialVersionUID = 6357271605459841569L;
 
-    
     private final Logger logger = Logger.getLogger(getClass());
-
 
     @Action(value = "index", results = {
             @Result(name = SUCCESS, location = "index.ftl", type = "freemarker")
     })
-
-    public String execute() throws SQLException {
+    public String execute() {
         return SUCCESS;
     }
 

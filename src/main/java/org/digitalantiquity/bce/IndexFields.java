@@ -1,5 +1,11 @@
 package org.digitalantiquity.bce;
 
+/**
+ * FIeld Name constants
+ * 
+ * @author abrin
+ *
+ */
 public interface IndexFields {
     static final String YEAR = "year";
     static final String GRID_CODE = "GRID_CODE";

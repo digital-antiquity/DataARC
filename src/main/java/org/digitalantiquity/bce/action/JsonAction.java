@@ -32,6 +32,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ActionSupport;
 
+/**
+ * This action returns JSON that feeds the BCC Prototype, it's designed to take a bounding box (lat/lng), a search term, and a year, and do a lucene search
+ * based on this and return a set of GeoJSON results that are serialized to JSON via JAXB.
+ * 
+ * @author abrin
+ *
+ */
 @Component
 @Scope("prototype")
 public class JsonAction extends ActionSupport {
@@ -43,6 +50,7 @@ public class JsonAction extends ActionSupport {
     @Autowired
     private transient LuceneService luceneService;
 
+    /** defaults **/
     private Double x1 = -66.005859375;
     private Double x2 = -124.716798875;
     private Double y1 = 24.17431945794909;
@@ -53,16 +61,21 @@ public class JsonAction extends ActionSupport {
     private Integer start = -9999;
     private Integer end = 9999;
     private String term;
+
     @Action(value = "json", results = {
             @Result(name = SUCCESS, type = "stream", params = { "contentType", "application/json", "inputName", "stream" })
     })
     public String execute() throws SQLException {
         try {
             logger.debug(String.format("start (%s,%s) x(%s,%s)", x1, y1, x2, y2));
+            // get results
             FeatureCollection featureList = luceneService.search(x1, y1, x2, y2, getStart(), getEnd(), term);
             logger.debug("done search");
+            
+            // convert to JSON String
             json = new ObjectMapper().writeValueAsString(featureList);
             logger.debug("results: " + featureList.getFeatures().size());
+            // write out to stream
             stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
             logger.debug("end");
         } catch (Exception e) {
