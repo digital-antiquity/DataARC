@@ -1,3 +1,7 @@
+/**
+ * This script focuses on the inititalization and setup of the Leaflet Maps API and the general interactions with the maps.
+ */
+
 var map;
 var activeId = -1;
 var popup = L.popup();
@@ -12,17 +16,7 @@ var end = 9999;
 var chromaScale;
 var showAllPoints = 1;
 
-$("#showAll").click(function() {
-    return;
-    if (!$("#showAll")[0].checked) {
-        showAllPoints = 0;
-    } else {
-        showAllPoints = 1;
-    }
-    changeAllOpacity();
-
-});
-
+// default style for map objects
 var myStyle = {
     "color" : "#ff7800",
     "weight" : 1,
@@ -37,16 +31,16 @@ var RedIcon = L.Icon.Default.extend({
 
 var BlueIcon = L.Icon.Default.extend({});
 
-$("#term").keyup(function() {
-    if ($("#term").val().length && !showAllPoints) {
-        $("#showAll").trigger("click");
-    }
-    drawGrid();
-});
-
+/**
+ * Initialize the Map.
+ */
 function init() {
+    // create the map and center it around Iceland
     map = L.map('map').setView([ 66.16495058, -16.68273926 ], 5);
+
+    // setup a color scale for the legend
     chromaScale = chroma.scale([ 'white', 'red' ]);
+
     setupBaseLayers();
     setupMapShape();
 
@@ -56,12 +50,17 @@ function init() {
     addLegend();
 }
 
+/**
+ * Add the legend to the map
+ */
 function addLegend() {
+
     var legend = L.control({
         position : 'bottomright'
     });
 
     legend.onAdd = function(map) {
+        // for ranges between 0 & 25, add labels
 
         var div = L.DomUtil.create('div', 'info legend'), grades = [ 0, 5, 10, 15, 20, 25 ], labels = [];
 
@@ -77,6 +76,9 @@ function addLegend() {
     legend.addTo(map);
 }
 
+/**
+ * For each layer of the map, change the opacity based on whether we show points or not (this works for all things with an _latlng (e.g. points)
+ */
 var changeAllOpacity = function() {
     map.eachLayer(function(l) {
         if (l._latlng) {
@@ -86,7 +88,9 @@ var changeAllOpacity = function() {
         }
     });
 }
-
+/**
+ * FInds all points inside a shape. It then returns two arrays, one for the points inside, one for those outside.
+ */
 var findInside = function(ly) {
     var points = new Array();
     var outside = new Array();
@@ -108,6 +112,9 @@ var findInside = function(ly) {
     };
 }
 
+/**
+ * For a point and a list of points, return whether the point is inside that shape
+ */
 var inside = function(point, vs) {
     // ray-casting algorithm based on
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
@@ -127,12 +134,10 @@ var inside = function(point, vs) {
     return inside;
 };
 
-$('#timeslider').slider().on('slide', function(ev) {
-    start = ev.value[0];
-    end = ev.value[1];
-    drawGrid();
-});
-
+/**
+ * Event capture for when a feature is moused-over, it throws a custom event that allows us to handle mouse-over of layered objects without causing focus to be
+ * lost or for the screen to flicker
+ */
 function highlightFeature(e) {
     if (e.target.parent) {
         var id = e.target.parent._leaflet_id;
@@ -143,6 +148,11 @@ function highlightFeature(e) {
     }
 }
 
+/**
+ * Sets the opacity/highlight back to normal
+ * 
+ * @param e
+ */
 function resetHighlight(e) {
     geoLayer.getLayer(e.target._leaflet_id).setStyle({
         fillOpacity : UNHIGHLIGHTED
@@ -150,8 +160,15 @@ function resetHighlight(e) {
     geoLayer.resetStyle(e.target);
 }
 
+/**
+ * for each feature, add it to the map, also setup the click event which shows detail in the #infodetail div
+ * 
+ * @param feature
+ * @param layer
+ */
 function addPointsToMap(feature, layer) {
 
+    // setup events
     layer.on({
         mouseover : highlightFeature,
         mouseout : resetHighlight,
@@ -159,18 +176,20 @@ function addPointsToMap(feature, layer) {
             var feature = e.target.feature;
             var text = "";
 
+            // for each "source" in the result, we'll add a heading and then print the results
             for (key in feature.properties) {
                 if (!feature.properties.hasOwnProperty(key) || key == 'source') { // These are explained
                     continue;
                 }
                 text += "<h3>" + key + ": </h3>";
                 var kvp = feature.properties[key];
+                // add a list of the field/value pairs
                 for (field in kvp) {
                     if (kvp.hasOwnProperty(field)) { // These are explained
                         var v = kvp[field];
-                        text += "<b>" + field +"</b>:";
+                        text += "<b>" + field + "</b>:";
                         if (field == 'link') {
-                            text += '<a href="'+v+'" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
+                            text += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
                         } else {
                             text += v;
                         }
@@ -186,7 +205,9 @@ function addPointsToMap(feature, layer) {
         layer.options.opacity = 0;
     }
 }
-
+/**
+ * as the window moves around the map, reset the four corners that we track
+ */
 function resetGrid() {
     NORTH = map.getBounds()._northEast.lat;
     WEST = map.getBounds()._southWest.lng;
@@ -194,34 +215,45 @@ function resetGrid() {
     EAST = map.getBounds()._northEast.lng;
 }
 
+/**
+ * Create a circle feature (point) on the map
+ * 
+ * @param feature
+ * @returns {___anonymous6102_6225}
+ */
 function createCircleFeatureStyle(feature) {
-        var options = {
-                radius : 4,
-                stroke : .1,
-                fillColor : "#006400",
-                fillOpacity:.8,
-                weight : 1
-            };
-        
-        if (feature.properties.source == 'Isleif') {
-            options.fillColor = "red";
-        }
-        if (feature.properties.source == 'Sagas') {
-            options.fillColor = "yellow";
-        }
-        if (feature.properties.source == 'PMS') {
-//            options.fillColor = "yellow";
-        }
-        if (feature.properties.source == 'NABONE') {
-//          options.fillColor = "yellow";
-      }
-        if (feature.properties.source == 'SEAD') {
-          options.fillColor = "green";
-      }
-        
-        return options;
+    var options = {
+        radius : 4,
+        stroke : .1,
+        fillColor : "#006400",
+        fillOpacity : .8,
+        weight : 1
+    };
+
+    if (feature.properties.source == 'Isleif') {
+        options.fillColor = "red";
+    }
+    if (feature.properties.source == 'Sagas') {
+        options.fillColor = "yellow";
+    }
+    if (feature.properties.source == 'PMS') {
+        // options.fillColor = "yellow";
+    }
+    if (feature.properties.source == 'NABONE') {
+        // options.fillColor = "yellow";
+    }
+    if (feature.properties.source == 'SEAD') {
+        options.fillColor = "green";
+    }
+
+    return options;
 }
 
+/**
+ * Sends a JSON request to the server, gets the results and re-draws the results
+ * 
+ * @returns
+ */
 function drawGrid() {
 
     var bounds = map.getBounds();
@@ -233,6 +265,7 @@ function drawGrid() {
     var neLat = bounds._northEast.lat;
     var swLng = bounds._southWest.lng;
 
+    // construct a GET/JSON request
     var req = "/browse/json?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
             "&term=" + $("#term").val();
     console.log(req);
@@ -242,44 +275,45 @@ function drawGrid() {
 
     ajax.success(function(data) {
         shouldContinue = true;
-    }).then(
-            function(data) {
-                $("#status").html(
-                        "timeCode:" + time + " zoom: " + map.getZoom() + " (" + bounds._northEast.lng + ", " + bounds._northEast.lat + ") x (" +
-                                bounds._southWest.lng + ", " + bounds._southWest.lat + ")");
-                var json = data;
-                var layer_ = L.geoJson(json, {
-                    onEachFeature : addPointsToMap,
-                    pointToLayer : function(feature, latlng) {
-                        // http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
-                        var style = createCircleFeatureStyle(feature);
-                        return L.circleMarker(latlng, style);
-                    }
-                });
-                if (geoLayer != undefined) {
-                    map.removeLayer(geoLayer);
-                }
+    }).then(function(data) {
+        // initialize the GeoJSON layer
+        var layer_ = L.geoJson(data, {
+            onEachFeature : addPointsToMap,
+            pointToLayer : function(feature, latlng) {
+                // http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
+                // setup each point
+                var style = createCircleFeatureStyle(feature);
+                return L.circleMarker(latlng, style);
+            }
+        });
 
-                geoLayer = layer_;
-                geoLayer.addTo(map);
-                ajax = undefined;
+        // swap the layers out
+        if (geoLayer != undefined) {
+            map.removeLayer(geoLayer);
+        }
 
-                hlayer.getLayers().forEach(function(pt) {
-                    var pts = findInside(pt.feature.geometry.coordinates[0]);
-                    pt.inside = pts.inside;
-                    pts.inside.forEach(function(p) {
-                        p.parent = pt;
-                    });
+        geoLayer = layer_;
+        geoLayer.addTo(map);
+        ajax = undefined;
 
-                    var color = chromaScale(pts.inside.length / 25).hex(); // #FF7F7F
-                    pt.setStyle({
-                        fillColor : color,
-                        fillOpacity : UNHIGHLIGHTED
-                    });
-                });
-
-                ret.resolve(req);
+        // for each layer, pre-calculate the points inside (we will re-use it)
+        hlayer.getLayers().forEach(function(pt) {
+            var pts = findInside(pt.feature.geometry.coordinates[0]);
+            pt.inside = pts.inside;
+            pts.inside.forEach(function(p) {
+                p.parent = pt;
             });
+
+            // set the color based on the # of items
+            var color = chromaScale(pts.inside.length / 25).hex(); // #FF7F7F
+            pt.setStyle({
+                fillColor : color,
+                fillOpacity : UNHIGHLIGHTED
+            });
+        });
+
+        ret.resolve(req);
+    });
 
     return ret;
 }
@@ -288,55 +322,31 @@ function clickFeature(e) {
     var layer = e.target;
     var l1 = layer._latlngs[0];
     var l2 = layer._latlngs[2];
-
 }
 
-function getDetail(l1, l2) {
-    var req = "/browse/detail.action?x1=" + l1.lng + "&y2=" + l2.lat + "&x2=" + l2.lng + "&y1=" + l1.lat + "&zoom=" + map.getZoom() + "&cols=" + detail;
-    console.log(req);
-    var ret = $.Deferred();
-    ajax = $.getJSON(req);
-
-    ajax.success(function(data) {
-    }).then(
-            function(data) {
-                $("#infostatus").html("<h3>details</h3>");
-                var json = data;
-                data.unshift("data");
-                var chart = c3.generate({
-                    data : {
-                        columns : [ data ],
-                        type : 'bar'
-                    },
-                    bar : {
-                        width : {
-                            ratio : 0.5
-                        // this makes bar width 50% of length between ticks
-                        }
-                    },
-                    subchart : {
-                        show : true
-                    }
-                });
-
-                $("#infodetail").html(
-                        "<p>" + "timeCode:" + time + " zoom: " + map.getZoom() + " (" + l1.lng + ", " + l1.lat + ") x (" + l2.lng + ", " + l2.lat + ")</p>");
-                ret.resolve(req);
-            });
-
-}
+/**
+ * Sets the time-silder time
+ * 
+ * @param year
+ */
 
 function setTime(year) {
     time = year;
     $("#time").html("year:" + year);
 }
 
+/**
+ * reset everything
+ */
 function reset() {
     setTime(0);
     shouldContinue = true;
     drawGrid();
 }
 
+/*
+ * debug
+ */
 function onMapClick(e) {
     if (drawGrid === true) {
         popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(map);
@@ -345,6 +355,9 @@ function onMapClick(e) {
     }
 }
 
+/**
+ * loads and sets-up base layers for the map.
+ */
 function setupBaseLayers() {
 
     // http://nls-0.tileserver.com/NLS_API/$%7Bz%7D/$%7Bx%7D/$%7By%7D.jpg
@@ -400,14 +413,29 @@ function setupBaseLayers() {
 
 }
 
+/**
+ * Trigger highlight event
+ * 
+ * @param event
+ */
 function mouseEnterShape(event) {
     $("#map").trigger("highlight:on", [ hlayer, event.target._leaflet_id ]);
 }
 
+/**
+ * Trigger unhighlight event
+ * 
+ * @param event
+ */
 function mouseLeaveShape(event) {
     $("#map").trigger("highlight:off", [ hlayer, event.target._leaflet_id ]);
 }
 
+/**
+ * highlights the shape on mouse-over
+ * 
+ * @param _leaflet_id
+ */
 function highlightShape(_leaflet_id) {
     var layer = hlayer.getLayer(_leaflet_id);
     var ly = layer.feature.geometry.coordinates[0];
@@ -426,6 +454,11 @@ function highlightShape(_leaflet_id) {
     }
 }
 
+/**
+ * removes shape highlight on mouse-out
+ * 
+ * @param _leaflet_id
+ */
 function removeShapeHighlight(_leaflet_id) {
     var layer = hlayer.getLayer(_leaflet_id);
     var ly = layer.feature.geometry.coordinates[0];
@@ -445,6 +478,9 @@ function removeShapeHighlight(_leaflet_id) {
     }
 }
 
+/**
+ * Loads the Hrepprurs or shapes based from the custom GeoJson objects.
+ */
 function setupMapShape() {
     hlayer = new L.GeoJSON(hrep, {
         style : myStyle,
@@ -453,10 +489,13 @@ function setupMapShape() {
                 mouseover : mouseEnterShape,
                 mouseout : mouseLeaveShape,
                 click : function(event) {
+                    // this shows the #infodetail window
+
                     var ly = event.target.feature.geometry.coordinates[0];
                     var text = "";
                     var keys = {};
                     var points = event.target.inside;
+                    // for each point, aggregate the data by "source"
                     for (var i = 0; i < points.length; i++) {
                         var l_ = points[i];
                         var ll = geoLayer.getLayer(l_._leaflet_id);
@@ -469,6 +508,8 @@ function setupMapShape() {
                             keys[key].push(l.feature.properties[key]);
                         }
                     }
+
+                    // for each "source," create a tab-panel
                     text += '<div role="tabpanel">';
                     text += '  <ul class="nav nav-tabs" role="tablist">';
                     var active = 'active';
@@ -476,33 +517,37 @@ function setupMapShape() {
                         if (!keys.hasOwnProperty(key) || key == 'source') {
                             continue;
                         }
-                        text += ' <li role="presentation" class="'+active+'"><a href="#'+createTabId(key)+'" aria-controls="home" role="tab" data-toggle="tab">'+key+'</a></li>';
+                        text += ' <li role="presentation" class="' + active + '"><a href="#' + createTabId(key) +
+                                '" aria-controls="home" role="tab" data-toggle="tab">' + key + '</a></li>';
                         active = '';
                     }
                     text += "  </ul>";
-                    
+
                     text += '  <div class="tab-content">';
                     active = 'active';
-                    
-                    
+
+                    // create each "tab"
                     for (key in keys) {
                         if (!keys.hasOwnProperty(key) || key == 'source') {
                             continue;
                         }
-                        text += '<div role="tabpanel" class="tab-pane '+active+'" id="'+createTabId(key)+'">';
+                        text += '<div role="tabpanel" class="tab-pane ' + active + '" id="' + createTabId(key) + '">';
                         active = '';
                         var vals = keys[key];
                         var out = "";
                         text += "<h3>" + key + "</h3>";
                         var groupByDate = {};
                         var fieldNames = {};
+                        // for each value, aggregate field/value pairs by date
                         for (var i = 0; i < vals.length; i++) {
                             var dateKey = vals[i]['date'];
                             if (!groupByDate[dateKey]) {
                                 groupByDate[dateKey] = {};
                             }
                             var fields = groupByDate[dateKey];
-                            
+
+                            // create a field{fieldName}[valueList] object
+
                             for (k in vals[i]) {
                                 if (vals[i] && vals[i].hasOwnProperty(k) && k != 'date' && vals[i][k]) {
                                     if (fields[k] == undefined) {
@@ -511,35 +556,39 @@ function setupMapShape() {
                                     fieldNames[k] = 1;
                                     // split on "," to further unify where possible
                                     var values = vals[i][k][0].split(",");
-                                    for (var j=0; j< values.length;j++) {
+                                    for (var j = 0; j < values.length; j++) {
                                         fields[k][values[j].trim()] = 1;
                                     }
                                 }
                             }
-
                         }
-                        text +="<table class='table'>";
+
+                        // create table header with a list of fields
+                        text += "<table class='table'>";
                         text += "<thead><tr>";
                         text += "<th>Date</th>";
                         for (name in fieldNames) {
+                            // skip the p_ fields which are used for a pie chart
                             if (!fieldNames.hasOwnProperty(name) || name.indexOf("p_") == 0) {
                                 continue;
                             }
-                            
+
                             if (-1 == key.indexOf("NABONE") && name == 'nisp') {
                                 continue;
                             }
-                            text += "<th>"+name+"</th>";
+                            text += "<th>" + name + "</th>";
                         }
                         text += "</tr></thead>";
                         for (dateKey in groupByDate) {
                             if (!groupByDate.hasOwnProperty(dateKey)) {
                                 continue;
                             }
-
+                            // print the date
                             out += "<tr><td><b>" + dateKey + "</b></td>";
                             var fields = groupByDate[dateKey];
                             // for each field
+
+                            // for each field, print the values, skip NABONE special p_ fields unless you're printing NABONE
                             for (field in fields) {
                                 if (!fields.hasOwnProperty(field) || field.indexOf("p_") == 0) {
                                     continue;
@@ -552,7 +601,7 @@ function setupMapShape() {
                                 out += "<td>";
                                 var values = fields[field];
                                 var count = 0;
-                                // for each value
+                                // for each value, print it, for a link, create the actual link
                                 for (v in values) {
                                     if (!values.hasOwnProperty(v)) {
                                         continue;
@@ -561,19 +610,20 @@ function setupMapShape() {
                                         out += ", ";
                                     }
                                     if (field == 'link') {
-                                        out += '<a href="'+v+'" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
+                                        out += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
                                     } else {
                                         out += v;
                                     }
                                     count++;
                                 }
                                 out += "</td>";
-//                                out += "<br/>";
                             }
                             out += "</tr>";
                         }
                         text += out;
                         text += "</table>";
+
+                        // for NABONE, create the pie-chart based on the values
                         if (key.indexOf("NABONE") == 0) {
                             text += "<div id='radioChart'></div>";
                             var data = [];
@@ -588,22 +638,22 @@ function setupMapShape() {
                                         continue;
                                     }
                                     var name = field;
-                                    name = field.replace("p_","");
+                                    name = field.replace("p_", "");
                                     name = name.replace(/_/g, " ");
                                     if (parseFloat(v) > 0) {
-                                        data.push([name, v]);
+                                        data.push([ name, v ]);
                                     }
                                 }
                             }
                             var chartData = {
-                              bindto: "#radioChart",
-                              data: {
-                                  columns: data,
-                                  type: 'pie'
-                              }
+                                bindto : "#radioChart",
+                                data : {
+                                    columns : data,
+                                    type : 'pie'
+                                }
                             };
-                            text += "<script>c3.generate("+JSON.stringify(chartData)+");</script>";
-                            //setTimeout(function() {c3.generate(chartData);},1000);
+                            // we need a slight delay here to register the #radioChart div in the DOM
+                            text += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
                         }
                         text += "</div>";
                     }
@@ -615,6 +665,8 @@ function setupMapShape() {
         }
     }).addTo(map);
 
+    // we make our lives a lot easier if we set the ID on the leaflet object that matches the leaflet id, so we can switch quickly between the leaflet object
+    // and the html object
     hlayer.getLayers().forEach(function(layer_) {
         if (layer_._container) {
             layer_._container._leaflet_id = layer_._leaflet_id;
@@ -622,33 +674,40 @@ function setupMapShape() {
     })
 }
 
-
+/** cleanup and create the tableId */
 function createTabId(key) {
     return key.replace(/(?!\w)[\x00-\xC0]/g, '');
 }
 
-
+/** binds events */
 function attachMapEvents() {
-    // events
     // http://leafletjs.com/reference.html#events
+
+    // zoom
     map.on('zoomend', function() {
         resetGrid();
         drawGrid();
     });
 
+    // resize the screen
     map.on('resize', function() {
         drawGrid();
     });
 
+    // drag object
     map.on('dragend', function() {
         drawGrid();
     });
 
+    // click on map
     map.on('click', onMapClick);
 
+    // mouseover of leaflet created layer
     $(".leaflet-zoom-animated").on('mouseover', function() {
         $('#map').trigger("highlight:on", [ undefined, -1 ]);
     });
+
+    // custom highlight event
     $(document).on("highlight:on", function(event, layer, id) {
         if (activeId > -1) {
             removeShapeHighlight(activeId);
@@ -658,14 +717,45 @@ function attachMapEvents() {
             highlightShape(id);
         }
     });
+
+    // custom highlight-off event
     $(document).on("highlight:off", function(event, layer, id) {
         // activeId = id;
         if (layer == hlayer) {
             // removeShapeHighlight(id);
         }
     });
+
+    // show-all button
+    $("#showAll").click(function() {
+        return;
+        if (!$("#showAll")[0].checked) {
+            showAllPoints = 0;
+        } else {
+            showAllPoints = 1;
+        }
+        changeAllOpacity();
+
+    });
+
+    // input box for search, bind keyup
+    $("#term").keyup(function() {
+        if ($("#term").val().length && !showAllPoints) {
+            $("#showAll").trigger("click");
+        }
+        drawGrid();
+    });
+
+    // change the time-slider
+    $('#timeslider').slider().on('slide', function(ev) {
+        start = ev.value[0];
+        end = ev.value[1];
+        drawGrid();
+    });
+
 }
 
+// init on load
 $(function() {
     init();
 });

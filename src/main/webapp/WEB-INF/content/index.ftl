@@ -4,19 +4,17 @@
 	
 	<!DOCTYPE html>
 <html>
-<head>
-    <title> Prototype</title>
-    <meta charset="utf-8" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
-    <link rel="stylesheet" href="components/c3/c3.css" />
-    <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
-	<link rel="stylesheet" href="css/bce.css"/>    
-    <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
-
-   
+    <head>
+        <title>CyberNABO Prototype</title>
+        <meta charset="utf-8" />
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
+        <link rel="stylesheet" href="components/c3/c3.css" />
+        <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+    	<link rel="stylesheet" href="css/bce.css"/>    
+        <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
    </head>
 <body>
 <div class="container-fluid">
@@ -27,7 +25,6 @@
 	        <div class="col-md-12">
 			    <form class="form-inline">
 				    <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
-					<!--    <label for='showAll'><input type="checkbox" name="showAll" id="showAll" class="form-control" /> Show All Points</label> -->
 				    <span>&nbsp;Limit by year:</span>
 				            <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
 				     data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
