@@ -25,10 +25,10 @@
 	        <div class="col-md-12">
 			    <form class="form-inline">
 				    <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
-				    <span>&nbsp;Limit by year:</span>
+				    <span class='slider-span'>&nbsp;Limit by year:</span> <b>0</b> 
 				            <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
 				     data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
-				     data-slider-handle="round">
+				     data-slider-handle="round"> <b>2016</b>
 				     <br/>
 				     <!--<img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">-->
 			           <div id="tl" class="timeline-default" style="height: 400px;"></div>
@@ -58,7 +58,11 @@
         <button title='contract' class="btn btn-default" id="contract"><span class="glyphicon glyphicon-resize-small"></span></button>
         </div>
         </div>
-        <div id="infostatus"></div>
+        <br/>
+        <div id="infostatus">
+        <h4>Detail Info Box</h4>
+        <p><b>Click</b> on a point on the map, a region, or a node in the topic map to see details about that concept or point here.</p>
+        </div>
         <div id="chart"></div>
         <div id="infodetail"></div>
     
@@ -74,22 +78,34 @@
       </div>
       <div class="modal-body">
 				<div class="row">
-					<div class="col-md-6">
-					<b>Explore by map</b>
-	    	        </div>
-					<div class="col-md-6">
-					<b>Explore by topic</b>
-					<br/>
-			<p>Archaeologists draw on a wide variety of data to investigate any topic. The concept maps are intended to aid in the process of gathering together all the specialist data that may be relevant to thinking about a topic. They point first to linked topics, and then to the available data sources and key indicators within those data sources that would be relevant to that topic. The aim within the cyberNABO project is to make specialists more aware of the most relevant aspects of one another’s data to shared research questions, and to tease out how these data map together, not at the level of integrating columns or fields in a database, but at the level of bringing together different approaches to a topic and pointing to key data sources. </p>
-			<p>Navigate the concept map by starting with a central idea, e.g. storage, branching out to different types of information that might inform on storage. For example, from storage we might branch out to consumable goods, and from consumable goods to fodder. From an environmental specialist's point of view, we might then link from fodder to insect assemblages and from there to the SEAD database and to specific species ratios.</p> 
-	    	        </div>
-		        </div>
-				<div class="row">
 					<div class="col-md-12">
 	    		      <img src="images/preview-small.png"/>
 	    	        </div>
 		       </div>
-		<br/>
+				<div class="row">
+					<div class="col-md-6">
+					<b>Explore by Map</b>
+					<p style="font-size:90%">The map provides a more traditional view of the data and data sources. Exploring the map provides a visual overview of where data exists 
+					and how it overlaps. Points show specific areas of interest or data collection from a single source, while regions are highlighted based on the
+					number of points that they contain.</p>
+					<p style="font-size:90%">Clicking on a point or a region will show data collected in the info box on the right. </p>
+	    	        </div>
+					<div class="col-md-6">
+					<b>Explore by Topic</b>
+					<br/>
+			<p style="font-size:90%">Archaeologists draw on a wide variety of data to investigate any topic. The concept maps are intended to aid in the
+    		 process of gathering together all the specialist data that may be relevant to a topic. They point first
+    		 to linked topics, and then to the available data sources and key indicators that would be
+		     relevant. The aim is to make specialists more aware of the most relevant
+    		 aspects of one another’s data to shared research questions, and to tease out how these data map together, not at
+    		 the level of integrating columns or fields in a database, but at the level of bringing together different approaches 
+    		 to a topic and pointing to key data sources. </p>
+    		<p style="font-size:90%">Start with a central idea, e.g. <i>storage</i>, branching out to different types of information
+    		 that might inform on <i>storage</i>. For example, from <i>storage</i> we might branch out to <i>consumable goods</i>, and from <i>consumable good</i>s
+    		 to <i>fodder</i>.<!-- From an environmental specialist's point of view, we might then link from fodder to insect assemblages and 
+    		 from there to the SEAD database and to specific species ratios.--></p> 
+	    	        </div>
+		        </div>
 
       </div>
       <div class="modal-footer">

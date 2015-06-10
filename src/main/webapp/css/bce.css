@@ -1,4 +1,4 @@
-.slider {
+.slider-span {
 	padding-left: 40px;;
 	margin-left: 50px
 }
@@ -48,4 +48,13 @@
 	float: left;
 	margin-right: 8px;
 	opacity: 0.7;
+}
+
+#forcemap {
+    overflow:hidden;
+}
+
+#infostatus, #forcemap {
+    border:1px solid #CCC;
+    padding: 5px;
 }

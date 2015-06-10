@@ -74,6 +74,27 @@ function addLegend() {
     };
 
     legend.addTo(map);
+
+
+    var legend2 = L.control({
+        position : 'topright'
+    });
+
+    legend2.onAdd = function(map) {
+        // for ranges between 0 & 25, add labels
+
+        var div2 = L.DomUtil.create('div', 'info legend'), colors = [ 'Sead', 'PMS', 'Sagas','Isleif', 'NABONE' ];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < colors.length; i++) {
+            div2.innerHTML += '<div ><i style="opacity: ' + UNHIGHLIGHTED + '; background:' +colorLookup(colors[i])+'"></i> ' + colors[i] + "</div> ";
+        }
+        console.log(div2);
+
+        return div2;
+    };
+
+    legend2.addTo(map);
 }
 
 /**
@@ -225,28 +246,34 @@ function createCircleFeatureStyle(feature) {
     var options = {
         radius : 4,
         stroke : .1,
-        fillColor : "#006400",
         fillOpacity : .8,
         weight : 1
     };
 
-    if (feature.properties.source == 'Isleif') {
-        options.fillColor = "red";
-    }
-    if (feature.properties.source == 'Sagas') {
-        options.fillColor = "yellow";
-    }
-    if (feature.properties.source == 'PMS') {
-        // options.fillColor = "yellow";
-    }
-    if (feature.properties.source == 'NABONE') {
-        // options.fillColor = "yellow";
-    }
-    if (feature.properties.source == 'SEAD') {
-        options.fillColor = "green";
-    }
-
+    var color = colorLookup(feature.properties.source);
+    options.fillColor = color;
+    
     return options;
+}
+
+function colorLookup(color) {
+    var color_ = color.toUpperCase();
+    if (color_ == 'ISLEIF') {
+        return  "red";
+    }
+    if (color_ == 'SAGAS') {
+        return  "yellow";
+    }
+    if (color_ == 'PMS') {
+         return  "darkblue";
+    }
+    if (color_ == 'NABONE') {
+         return  "BlueViolet";
+    }
+    if (color_ == 'SEAD') {
+        return  "darkgreen";
+    }
+    return "#006400";
 }
 
 /**
