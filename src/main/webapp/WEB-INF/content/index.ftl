@@ -63,8 +63,10 @@
         </div>
         <div id="chart"></div>
         <div id="infodetail">
+            <div id="infoabout">
             <h4>Detail Info Box</h4>
             <p><b>Click</b> on a point on the map, a region, or a node in the topic map to see details about that concept or point here.</p>
+            </div>
         </div>
     
     </div>

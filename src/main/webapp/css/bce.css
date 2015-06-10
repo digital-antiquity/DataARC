@@ -54,7 +54,7 @@
     overflow:hidden;
 }
 
-#infostatus, #forcemap {
+#infoabout, #forcemap {
     border:1px solid #CCC;
     padding: 5px;
 }
