@@ -206,17 +206,18 @@ function addPointsToMap(feature, layer) {
                 var kvp = feature.properties[key];
                 // add a list of the field/value pairs
                 for (field in kvp) {
-                    if (kvp.hasOwnProperty(field)) { // These are explained
-                        var v = kvp[field];
-                        text += "<b>" + field + "</b>:";
-                        if (field == 'link') {
-                            text += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
-                        } else {
-                            text += v;
-                        }
-
-                        text += "<br/>";
+                    if (field.startsWith('p_') || !kvp.hasOwnProperty(field)) {
+                        continue;
                     }
+                    var v = kvp[field];
+                    text += "<b>" + field + "</b>:";
+                    if (field == 'link') {
+                        text += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
+                    } else {
+                        text += v;
+                    }
+
+                    text += "<br/>";
                 }
             }
             $("#infodetail").html(text);
