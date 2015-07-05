@@ -89,7 +89,6 @@ function addLegend() {
         for (var i = 0; i < colors.length; i++) {
             div2.innerHTML += '<div ><i style="opacity: ' + UNHIGHLIGHTED + '; background:' +colorLookup(colors[i])+'"></i> ' + colors[i] + "</div> ";
         }
-        console.log(div2);
 
         return div2;
     };
@@ -563,12 +562,10 @@ function featureToTable(points) {
         text += '<div role="tabpanel" class="tab-pane ' + active + '" id="' + createTabId(key) + '">';
         active = '';
         var vals = keys[key];
-//        var out = "";
         text += "<h3>" + key + "</h3>";
         var groupByDate = {};
         var fieldNames = {};
         // for each value, aggregate field/value pairs by date
-//        var fields = groupByDate[dateKey];
         consolidateValues(vals, groupByDate, fieldNames);
 
         // create table header with a list of fields
@@ -713,12 +710,14 @@ function createCustomGraphs(key, fields) {
                 rotated: true,
                 x: {
                     type: 'category',
-                    categories: ["SampleCODE", "Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"]
+                    categories: ["Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"]
                 }
             }
         };
         // we need a slight delay here to register the #radioChart div in the DOM
-        txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
+        if (data.length > 0) {
+            txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
+        }
     }
 
     // for NABONE, create the pie-chart based on the values
@@ -751,12 +750,13 @@ function createCustomGraphs(key, fields) {
             }
         };
         // we need a slight delay here to register the #radioChart div in the DOM
-        txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
+        if (data.length > 0) {
+            txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
+        }
     }
     if (key.indexOf("SEAD") == 0 || key.indexOf("NABONE") == 0) {
         txt +="</td></tr>";
     }
-    console.log(txt);
     return txt;
 }
 
