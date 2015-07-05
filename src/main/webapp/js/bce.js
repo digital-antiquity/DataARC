@@ -670,13 +670,13 @@ function writeTableBody(groupByDate) {
             out += "</td>";
         }
         out += "</tr>";
-        out += createCustomGraphs(key, fields);
+        out += createCustomGraphs(key, fields['_data']);
 
     }
     return out;
 }
 
-function createCustomGraphs(key, fields) {
+function createCustomGraphs(key, input) {
     var txt = "";
     if (key.indexOf("SEAD") == 0 || key.indexOf("NABONE") == 0) {
         txt ="<tr><td></td><td colspan=10>";
@@ -685,8 +685,8 @@ function createCustomGraphs(key, fields) {
     if (key.indexOf("SEAD") == 0) {
         txt += "<div id='barChart' style='height:400px'></div>";
         var data = [];
-        for (v in fields['_data']) {
-            if (!fields['_data'].hasOwnProperty(v)) {
+        for (v in input) {
+            if (!input.hasOwnProperty(v)) {
                 continue;
             }
             var jd = JSON.parse(v);
@@ -724,24 +724,20 @@ function createCustomGraphs(key, fields) {
     if (key.indexOf("NABONE") == 0) {
         txt += "<div id='radioChart'></div>";
         var data = [];
-        for (field in fields) {
-            if (!fields.hasOwnProperty(field) || field.indexOf("_") != 0) {
+        for (v in input) {
+            if (!input.hasOwnProperty(v)) {
                 continue;
             }
-
-            var values = fields[field];
-            for (v in values) {
-                if (!values.hasOwnProperty(v)) {
-                    continue;
-                }
-                var name = field;
-                name = field.replace("_", "");
-                name = name.replace(/_/g, " ");
-                if (parseFloat(v) > 0) {
-                    data.push([ name, v ]);
+            var jd = JSON.parse(v);
+            var percLabels = ["Dom %","Whale %","Seal %","Walrus %","Deer %","Other mam %","Bird %","Fish %","Mol Arth Gast %"];
+            for (var i=0; i < percLabels.length; i++) {
+                var val = parseFloat(jd['perc'][i]);
+                if (val > 0) {
+                    data.push([percLabels[i],val]);
                 }
             }
         }
+
         var chartData = {
             bindto : "#radioChart",
             data : {

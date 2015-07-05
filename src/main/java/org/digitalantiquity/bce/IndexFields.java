@@ -31,15 +31,5 @@ public interface IndexFields {
     static final String TYPE = "type";
     static final String FUNCTION = "function";
     static final String NISP = "nisp";
-    static final String MOL_ARTH_GAST = "_mol_arth_gast";
-    static final String FISH = "_fish";
     static final String DATA = "_data";
-    static final String BIRD = "_bird";
-    static final String OTHER_MAM = "_other_mam";
-    static final String DEER = "_deer";
-    static final String WALRUS = "_walrus";
-    static final String SEAL = "_seal";
-    static final String WHALE = "_whale";
-    static final String DOM = "_dom";
-
 }

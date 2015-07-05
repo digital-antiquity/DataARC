@@ -121,15 +121,6 @@ public class IndexingService {
             doc.add(new TextField(IndexFields.WHERE, get(row, "Where"), Field.Store.YES));
             doc.add(new TextField(IndexFields.WHEN, get(row, "When"), Field.Store.YES));
             doc.add(new IntField(IndexFields.NISP, getInt(row, "NISPtotal"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.DOM, getInt(row, "DOM"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.WHALE, getInt(row, "whale"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.SEAL, getInt(row, "seal"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.WALRUS, getInt(row, "walrus"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.DEER, getInt(row, "deer"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.OTHER_MAM, getInt(row, "othermam"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.BIRD, getInt(row, "bird"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.FISH, getInt(row, "fish"), Field.Store.YES));
-            doc.add(new FloatField(IndexFields.MOL_ARTH_GAST, getInt(row, "molarthgast"), Field.Store.YES));
 
             // index tags as keywords
             for (String tag : StringUtils.split(get(row, "tags"), ",")) {

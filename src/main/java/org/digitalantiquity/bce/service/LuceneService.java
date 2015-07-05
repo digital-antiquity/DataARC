@@ -157,9 +157,6 @@ public class LuceneService {
                             second.put(fld, new HashSet<String>());
                         }
                         second.get(fld).add(entries.get(fld));
-                        if (fld.equals("_data")) {
-                            logger.debug(entries.get(fld));
-                        }
                     }
                 }
                 feature.setProperty(source, second);
