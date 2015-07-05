@@ -110,6 +110,7 @@ public class IndexingService {
             // Field idField = new Field(LuceneConstants.FIELD_ID, desc.getId(), Field.Store.YES, Field.Index.ANALYZED);
 
             doc.add(new TextField(IndexFields.TITLE, get(row, "title"), Field.Store.YES));
+            doc.add(new TextField(IndexFields.DATA,  get(row, "data"), Field.Store.YES));
             doc.add(new TextField(IndexFields.FUNCTION, get(row, "functionofsite"), Field.Store.YES));
             doc.add(new TextField(IndexFields.DESCRIPTION, get(row, "description"), Field.Store.YES));
             doc.add(new TextField(IndexFields.COUNTRY, get(row, "country"), Field.Store.YES));

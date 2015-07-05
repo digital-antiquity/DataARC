@@ -196,30 +196,8 @@ function addPointsToMap(feature, layer) {
         click : function(e) {
             var feature = e.target.feature;
             var text = "";
-
-            // for each "source" in the result, we'll add a heading and then print the results
-            for (key in feature.properties) {
-                if (!feature.properties.hasOwnProperty(key) || key == 'source') { // These are explained
-                    continue;
-                }
-                text += "<h3>" + key + ": </h3>";
-                var kvp = feature.properties[key];
-                // add a list of the field/value pairs
-                for (field in kvp) {
-                    if (field.startsWith('p_') || !kvp.hasOwnProperty(field)) {
-                        continue;
-                    }
-                    var v = kvp[field];
-                    text += "<b>" + field + "</b>:";
-                    if (field == 'link') {
-                        text += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
-                    } else {
-                        text += v;
-                    }
-
-                    text += "<br/>";
-                }
-            }
+            var points = [feature];
+            var text = featureToTable(points);
             $("#infodetail").html(text);
         }
     });
@@ -520,172 +498,7 @@ function setupMapShape() {
                     // this shows the #infodetail window
 
                     var ly = event.target.feature.geometry.coordinates[0];
-                    var text = "";
-                    var keys = {};
-                    var points = event.target.inside;
-                    // for each point, aggregate the data by "source"
-                    for (var i = 0; i < points.length; i++) {
-                        var l_ = points[i];
-                        var ll = geoLayer.getLayer(l_._leaflet_id);
-                        var l = points[i];
-                        l.options.opacity = 1;
-                        for (key in l.feature.properties) {
-                            if (keys[key] == undefined) {
-                                keys[key] = [];
-                            }
-                            keys[key].push(l.feature.properties[key]);
-                        }
-                    }
-
-                    // for each "source," create a tab-panel
-                    text += '<div role="tabpanel">';
-                    text += '  <ul class="nav nav-tabs" role="tablist">';
-                    var active = 'active';
-                    for (key in keys) {
-                        if (!keys.hasOwnProperty(key) || key == 'source') {
-                            continue;
-                        }
-                        text += ' <li role="presentation" class="' + active + '"><a href="#' + createTabId(key) +
-                                '" aria-controls="home" role="tab" data-toggle="tab">' + key + '</a></li>';
-                        active = '';
-                    }
-                    text += "  </ul>";
-
-                    text += '  <div class="tab-content">';
-                    active = 'active';
-
-                    // create each "tab"
-                    for (key in keys) {
-                        if (!keys.hasOwnProperty(key) || key == 'source') {
-                            continue;
-                        }
-                        text += '<div role="tabpanel" class="tab-pane ' + active + '" id="' + createTabId(key) + '">';
-                        active = '';
-                        var vals = keys[key];
-                        var out = "";
-                        text += "<h3>" + key + "</h3>";
-                        var groupByDate = {};
-                        var fieldNames = {};
-                        // for each value, aggregate field/value pairs by date
-                        for (var i = 0; i < vals.length; i++) {
-                            var dateKey = vals[i]['date'];
-                            if (!groupByDate[dateKey]) {
-                                groupByDate[dateKey] = {};
-                            }
-                            var fields = groupByDate[dateKey];
-
-                            // create a field{fieldName}[valueList] object
-
-                            for (k in vals[i]) {
-                                if (vals[i] && vals[i].hasOwnProperty(k) && k != 'date' && vals[i][k]) {
-                                    if (fields[k] == undefined) {
-                                        fields[k] = {};
-                                    }
-                                    fieldNames[k] = 1;
-                                    // split on "," to further unify where possible
-                                    var values = vals[i][k][0].split(",");
-                                    for (var j = 0; j < values.length; j++) {
-                                        fields[k][values[j].trim()] = 1;
-                                    }
-                                }
-                            }
-                        }
-
-                        // create table header with a list of fields
-                        text += "<table class='table'>";
-                        text += "<thead><tr>";
-                        text += "<th>Date</th>";
-                        for (name in fieldNames) {
-                            // skip the p_ fields which are used for a pie chart
-                            if (!fieldNames.hasOwnProperty(name) || name.indexOf("p_") == 0) {
-                                continue;
-                            }
-
-                            if (-1 == key.indexOf("NABONE") && name == 'nisp') {
-                                continue;
-                            }
-                            text += "<th>" + name + "</th>";
-                        }
-                        text += "</tr></thead>";
-                        for (dateKey in groupByDate) {
-                            if (!groupByDate.hasOwnProperty(dateKey)) {
-                                continue;
-                            }
-                            // print the date
-                            out += "<tr><td><b>" + dateKey + "</b></td>";
-                            var fields = groupByDate[dateKey];
-                            // for each field
-
-                            // for each field, print the values, skip NABONE special p_ fields unless you're printing NABONE
-                            for (field in fields) {
-                                if (!fields.hasOwnProperty(field) || field.indexOf("p_") == 0) {
-                                    continue;
-                                }
-
-                                if (-1 == key.indexOf("NABONE") && field == 'nisp') {
-                                    continue;
-                                }
-
-                                out += "<td>";
-                                var values = fields[field];
-                                var count = 0;
-                                // for each value, print it, for a link, create the actual link
-                                for (v in values) {
-                                    if (!values.hasOwnProperty(v)) {
-                                        continue;
-                                    }
-                                    if (count > 0) {
-                                        out += ", ";
-                                    }
-                                    if (field == 'link') {
-                                        out += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
-                                    } else {
-                                        out += v;
-                                    }
-                                    count++;
-                                }
-                                out += "</td>";
-                            }
-                            out += "</tr>";
-                        }
-                        text += out;
-                        text += "</table>";
-
-                        // for NABONE, create the pie-chart based on the values
-                        if (key.indexOf("NABONE") == 0) {
-                            text += "<div id='radioChart'></div>";
-                            var data = [];
-                            for (field in fields) {
-                                if (!fields.hasOwnProperty(field) || field.indexOf("p_") != 0) {
-                                    continue;
-                                }
-
-                                var values = fields[field];
-                                for (v in values) {
-                                    if (!values.hasOwnProperty(v)) {
-                                        continue;
-                                    }
-                                    var name = field;
-                                    name = field.replace("p_", "");
-                                    name = name.replace(/_/g, " ");
-                                    if (parseFloat(v) > 0) {
-                                        data.push([ name, v ]);
-                                    }
-                                }
-                            }
-                            var chartData = {
-                                bindto : "#radioChart",
-                                data : {
-                                    columns : data,
-                                    type : 'pie'
-                                }
-                            };
-                            // we need a slight delay here to register the #radioChart div in the DOM
-                            text += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
-                        }
-                        text += "</div>";
-                    }
-                    text += "</div>";
+                    var text = featureToTable(event.target.inside);
                     $("#infodetail").html(text);
 
                 }
@@ -700,6 +513,251 @@ function setupMapShape() {
             layer_._container._leaflet_id = layer_._leaflet_id;
         }
     })
+}
+
+function featureToTable(points) {
+    var keys = {};
+    // for each point, aggregate the data by "source"
+    for (var i = 0; i < points.length; i++) {
+        var l_ = points[i];
+        var ll = geoLayer.getLayer(l_._leaflet_id);
+        var l = points[i];
+        var props = l.properties;
+        if (props == undefined) {
+            props = l.feature.properties;
+            if (l.options != undefined) {
+                l.options.opacity = 1;
+            }
+        }
+
+        for (key in props) {
+            if (keys[key] == undefined) {
+                keys[key] = [];
+            }
+            keys[key].push(props[key]);
+        }
+    }
+
+    // for each "source," create a tab-panel
+    var text = '<div role="tabpanel">';
+    text += '  <ul class="nav nav-tabs" role="tablist">';
+    var active = 'active';
+    for (key in keys) {
+        if (!keys.hasOwnProperty(key) || key == 'source') {
+            continue;
+        }
+        text += ' <li role="presentation" class="' + active + '"><a href="#' + createTabId(key) +
+                '" aria-controls="home" role="tab" data-toggle="tab">' + key + '</a></li>';
+        active = '';
+    }
+    text += "  </ul>";
+
+    text += '  <div class="tab-content">';
+    active = 'active';
+
+    // create each "tab"
+    for (key in keys) {
+        if (!keys.hasOwnProperty(key) || key == 'source') {
+            continue;
+        }
+        text += '<div role="tabpanel" class="tab-pane ' + active + '" id="' + createTabId(key) + '">';
+        active = '';
+        var vals = keys[key];
+//        var out = "";
+        text += "<h3>" + key + "</h3>";
+        var groupByDate = {};
+        var fieldNames = {};
+        // for each value, aggregate field/value pairs by date
+//        var fields = groupByDate[dateKey];
+        consolidateValues(vals, groupByDate, fieldNames);
+
+        // create table header with a list of fields
+        text += "<table class='table'>";
+        text += writeTableHeader(fieldNames);
+        text += writeTableBody(groupByDate);
+        text += "</table>";
+        text += "</div>";
+    }
+    text += "</div>";
+    return text;
+}
+
+function consolidateValues(vals, groupByDate, fieldNames) {
+    for (var i = 0; i < vals.length; i++) {
+        var dateKey = vals[i]['date'];
+        if (!groupByDate[dateKey]) {
+            groupByDate[dateKey] = {};
+        }
+        var fields = groupByDate[dateKey];
+
+        // create a field{fieldName}[valueList] object
+
+        for (k in vals[i]) {
+            if (vals[i] && vals[i].hasOwnProperty(k) && k != 'date' && vals[i][k]) {
+                if (fields[k] == undefined) {
+                    fields[k] = {};
+                }
+                fieldNames[k] = 1;
+                // split on "," to further unify where possible
+                var value = vals[i][k][0];
+                if (k != "_data") {
+                    var values = value.split(",");
+                    for (var j = 0; j < values.length; j++) {
+                        fields[k][values[j].trim()] = 1;
+                    }
+                } else {
+                    fields[k][value] = 1;
+                }
+            }
+        }
+    }
+}
+
+function writeTableHeader(fieldNames) {
+    var text = "<thead><tr>";
+    text += "<th>Date</th>";
+    for (name in fieldNames) {
+        // skip the p_ fields which are used for a pie chart
+        if (!fieldNames.hasOwnProperty(name) || name.indexOf("_") == 0) {
+            continue;
+        }
+
+        if (-1 == key.indexOf("NABONE") && name == 'nisp') {
+            continue;
+        }
+        text += "<th>" + name + "</th>";
+    }
+    text += "</tr></thead>";
+ return text;
+}
+
+function writeTableBody(groupByDate) {
+    var out = "";
+    for (dateKey in groupByDate) {
+        if (!groupByDate.hasOwnProperty(dateKey)) {
+            continue;
+        }
+        // print the date
+        out += "<tr><td><b>" + dateKey + "</b></td>";
+        var fields = groupByDate[dateKey];
+        // for each field
+
+        // for each field, print the values, skip NABONE special p_ fields unless you're printing NABONE
+        for (field in fields) {
+            if (!fields.hasOwnProperty(field) || field.indexOf("_") == 0) {
+                continue;
+            }
+
+            if (-1 == key.indexOf("NABONE") && field == 'nisp') {
+                continue;
+            }
+
+            out += "<td>";
+            var values = fields[field];
+            var count = 0;
+            // for each value, print it, for a link, create the actual link
+            for (v in values) {
+                if (!values.hasOwnProperty(v)) {
+                    continue;
+                }
+                if (count > 0) {
+                    out += ", ";
+                }
+                if (field == 'link') {
+                    out += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';
+                } else {
+                    out += v;
+                }
+                count++;
+            }
+            out += "</td>";
+        }
+        out += "</tr>";
+        out += createCustomGraphs(key, fields);
+
+    }
+    return out;
+}
+
+function createCustomGraphs(key, fields) {
+    var txt = "";
+    if (key.indexOf("SEAD") == 0 || key.indexOf("NABONE") == 0) {
+        txt ="<tr><td></td><td colspan=10>";
+    }
+
+    if (key.indexOf("SEAD") == 0) {
+        txt += "<div id='barChart' style='height:400px'></div>";
+        var data = [];
+        for (v in fields['_data']) {
+            if (!fields['_data'].hasOwnProperty(v)) {
+                continue;
+            }
+            var jd = JSON.parse(v);
+            for (site in jd) {
+                if (!jd.hasOwnProperty(site)) {
+                    continue;
+                }
+                var samples = jd[site];
+                for (var c =0; c < samples.length; c++) {
+                    data.push(samples[c]);
+                }
+            }
+        }
+        var chartData = {
+            bindto : "#barChart",
+            data : {
+                columns : data,
+                type : 'bar'
+            },
+            axis: {
+                rotated: true,
+                x: {
+                    type: 'category',
+                    categories: ["SampleCODE", "Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"]
+                }
+            }
+        };
+        // we need a slight delay here to register the #radioChart div in the DOM
+        txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
+    }
+
+    // for NABONE, create the pie-chart based on the values
+    if (key.indexOf("NABONE") == 0) {
+        txt += "<div id='radioChart'></div>";
+        var data = [];
+        for (field in fields) {
+            if (!fields.hasOwnProperty(field) || field.indexOf("_") != 0) {
+                continue;
+            }
+
+            var values = fields[field];
+            for (v in values) {
+                if (!values.hasOwnProperty(v)) {
+                    continue;
+                }
+                var name = field;
+                name = field.replace("_", "");
+                name = name.replace(/_/g, " ");
+                if (parseFloat(v) > 0) {
+                    data.push([ name, v ]);
+                }
+            }
+        }
+        var chartData = {
+            bindto : "#radioChart",
+            data : {
+                columns : data,
+                type : 'pie'
+            }
+        };
+        // we need a slight delay here to register the #radioChart div in the DOM
+        txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
+    }
+    if (key.indexOf("SEAD") == 0 || key.indexOf("NABONE") == 0) {
+        txt +="</td></tr>";
+    }
+    console.log(txt);
+    return txt;
 }
 
 /** cleanup and create the tableId */
