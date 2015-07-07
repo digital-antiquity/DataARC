@@ -685,26 +685,32 @@ function createCustomGraphs(key, input) {
     if (key.indexOf("SEAD") == 0) {
         txt += "<div id='barChart' style='height:400px'></div>";
         var data = [];
+        var grouping = [];
         for (v in input) {
             if (!input.hasOwnProperty(v)) {
                 continue;
             }
             var jd = JSON.parse(v);
+            var categories = ["Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"];
             for (site in jd) {
                 if (!jd.hasOwnProperty(site)) {
                     continue;
                 }
                 var samples = jd[site];
-                for (var c =0; c < samples.length; c++) {
-                    data.push(samples[c]);
+                
+                for (var s =0; s < samples.length; s++) {
+                    grouping.push(samples[s][0]);
+                    data.push(samples[s]);
                 }
             }
         }
+        console.log(grouping);
         var chartData = {
             bindto : "#barChart",
             data : {
                 columns : data,
-                type : 'bar'
+                type : 'bar',
+                groups: [grouping]
             },
             axis: {
                 rotated: true,
