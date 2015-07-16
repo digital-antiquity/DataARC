@@ -685,38 +685,63 @@ function createCustomGraphs(key, input) {
     if (key.indexOf("SEAD") == 0) {
         txt += "<div id='barChart' style='height:400px'></div>";
         var data = [];
+        var sampleLabels = [];
         var grouping = [];
+        var categories = ["Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"];
         for (v in input) {
             if (!input.hasOwnProperty(v)) {
                 continue;
             }
             var jd = JSON.parse(v);
-            var categories = ["Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"];
             for (site in jd) {
                 if (!jd.hasOwnProperty(site)) {
                     continue;
                 }
                 var samples = jd[site];
                 
-                for (var s =0; s < samples.length; s++) {
-                    grouping.push(samples[s][0]);
-                    data.push(samples[s]);
+                for (var s=0;s<samples.length;s++) {
+                    sampleLabels.push(samples[s][0]);
                 }
+                for (var c =0 ; c < categories.length; c++) {
+                    data[c] = [];
+                    
+                    var total = 0.0;
+                    for (var s =0; s < samples.length; s++) {
+                        total += parseFloat(samples[s][c]);
+                    }
+
+                    console.log(categories[c] +" total:" + total);
+                    if (!(total > 0.0)) {
+                        categories.splice(c,1);
+                        continue;
+                    }
+                    for (var s =1; s <= samples.length; s++) {
+                        if (s == 1) {
+                            data[c][0] = categories[c];
+                        } 
+                            data[c][s] = samples[s-1][c];
+//                        grouping.push(categories);
+ //                       data.push(samples[s]);
+                    }
+                    
+                }
+                
             }
         }
-        console.log(grouping);
+        console.log(sampleLabels);
+        console.log(data);
         var chartData = {
             bindto : "#barChart",
             data : {
                 columns : data,
                 type : 'bar',
-                groups: [grouping]
+                groups: [categories]
             },
             axis: {
                 rotated: true,
                 x: {
                     type: 'category',
-                    categories: ["Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"]
+                    categories: sampleLabels
                 }
             }
         };
