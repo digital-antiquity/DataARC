@@ -13,7 +13,7 @@
         <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
         <link rel="stylesheet" href="components/c3/c3.css" />
         <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
-    	<link rel="stylesheet" href="css/bce.css"/>    
+    	<link rel="stylesheet" href="css/nabo.css"/>    
         <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
    </head>
 <body>
@@ -129,9 +129,10 @@
     <script src="components/c3/c3.js"></script>
     <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
     
-    <script src="js/bce.js"></script>
-    <script src="js/bce-timeline.js"></script>
-    <script src="js/bce-forcemap.js"></script>
+    <script src="js/nabo.js"></script>
+    <script src="js/nabo-custom-graphs.js"></script>
+    <script src="js/nabo-timeline.js"></script>
+    <script src="js/nabo-forcemap.js"></script>
 <script>
 // GLOBALS:
 var max = 800;
