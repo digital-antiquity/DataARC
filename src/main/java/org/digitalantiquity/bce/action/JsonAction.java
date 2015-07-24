@@ -70,14 +70,14 @@ public class JsonAction extends ActionSupport {
             logger.debug(String.format("start (%s,%s) x(%s,%s)", x1, y1, x2, y2));
             // get results
             FeatureCollection featureList = luceneService.search(x1, y1, x2, y2, getStart(), getEnd(), term);
-            logger.debug("done search");
+            logger.trace("done search");
             
             // convert to JSON String
             json = new ObjectMapper().writeValueAsString(featureList);
             logger.debug("results: " + featureList.getFeatures().size());
             // write out to stream
             stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
-            logger.debug("end");
+            logger.trace("end");
         } catch (Exception e) {
             logger.error(e, e);
         }

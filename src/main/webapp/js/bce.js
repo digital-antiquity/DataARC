@@ -687,7 +687,8 @@ function createCustomGraphs(key, input) {
         var data = [];
         var sampleLabels = [];
         var grouping = [];
-        var categories = ["Total NSpec", "Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"];
+        var categories = ["Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"];
+        var ignore = [];
         for (v in input) {
             if (!input.hasOwnProperty(v)) {
                 continue;
@@ -704,30 +705,34 @@ function createCustomGraphs(key, input) {
                 }
                 for (var c =0 ; c < categories.length; c++) {
                     data[c] = [];
-                    
+                    var cat = categories[c];
+                    // we need to add one to make space for the label at the beginning
+                    var catSampleOffset = c+1;
                     var total = 0.0;
+                    // test each category to see what actually needs to be displayed
                     for (var s =0; s < samples.length; s++) {
-                        total += parseFloat(samples[s][c]);
+                        total += parseFloat(samples[s][catSampleOffset]);
                     }
-
-                    console.log(categories[c] +" total:" + total);
+                    console.log(cat +" total:" + total);
+                    // skip category entries that have no values
                     if (!(total > 0.0)) {
-                        categories.splice(c,1);
+                        ignore.push(cat);
                         continue;
                     }
-                    for (var s =1; s <= samples.length; s++) {
-                        if (s == 1) {
-                            data[c][0] = categories[c];
+                    // buiild the actual output array per category
+                    for (var s =0; s < samples.length; s++) {
+                        if (s == 0) {
+                            data[c][0] = cat;
                         } 
-                            data[c][s] = samples[s-1][c];
-//                        grouping.push(categories);
- //                       data.push(samples[s]);
+                        data[c][s+1] = samples[s][catSampleOffset];
                     }
                     
                 }
                 
             }
         }
+        categories = $(categories).not(ignore).get();
+        console.log("filtered:", categories);
         console.log(sampleLabels);
         console.log(data);
         var chartData = {
