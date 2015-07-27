@@ -60,7 +60,7 @@ function initForceMap() {
     force = d3.layout.force().linkDistance(LINK_DISTANCE).linkStrength(LINK_STRENGTH).charge(-100).size([ width, getHeight() ]);
 
     // iterate through the JSON data
-    d3.json("data.json", function(error, graph) {
+    d3.json("https://doc-14-14-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/r9r1sic4d7q6uf468hmsqmqejneinmhn/1438005600000/14322003643371225676/*/0BzJ1GHjxZTUDTHY5OXA3bzFhSVk?e=download", function(error, graph) {
         // find the leaf nodes and initialize the lns list
         getLeafNodes(nds, graph.mindmap.root, lns);
         
