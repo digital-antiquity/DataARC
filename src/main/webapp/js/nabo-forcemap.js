@@ -2,7 +2,6 @@
  * handles the D3 topic-map / force-map
  */
 
-
 // cross-reference object between node-ids, and entries int he nds array
 var ordIdXref = {};
 var nds = [], lns = new Array();
@@ -10,12 +9,11 @@ var nds = [], lns = new Array();
 var aspect = 500 / 950;
 var circleWidth = 5;
 var node;
-var whatever;
-var LINK_STRENGTH = 1;
+var LINK_STRENGTH = 1.2;
 var LINK_DISTANCE = 8;
 var width = getWidth();
 
-//get the current width of our div
+// get the current width of our div
 function getWidth() {
     width = $('#infobox').width();
     return width;
@@ -41,6 +39,7 @@ var centerNode;
 var parent, force, vis, zoom, color, root;
 var urls_;
 // setup the force-map
+var doc;
 
 function initForceMap() {
     // custom zoom handler that removes pan/scroll
@@ -57,37 +56,33 @@ function initForceMap() {
     vis.append('svg:rect').attr('fill', 'white');
 
     // initialize the force-map
-    force = d3.layout.force().linkDistance(LINK_DISTANCE).linkStrength(LINK_STRENGTH).charge(-100).size([ width, getHeight() ]);
-
+    force = d3.layout.force().linkDistance(LINK_DISTANCE).linkStrength(LINK_STRENGTH).charge(
+            function(d){
+                var charge = -200;
+                if (d.index === 0) charge = 20 * charge;
+                return charge;
+            }
+    ).size([ width, getHeight() ]);
     // iterate through the JSON data
-    d3.json("https://doc-14-14-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/r9r1sic4d7q6uf468hmsqmqejneinmhn/1438005600000/14322003643371225676/*/0BzJ1GHjxZTUDTHY5OXA3bzFhSVk?e=download", function(error, graph) {
+
+    d3.xml("landscape_gisli.xgml", function(error, graph) {
         // find the leaf nodes and initialize the lns list
-        getLeafNodes(nds, graph.mindmap.root, lns);
-        
+        doc = graph;
+        getLeafNodes(nds, graph, lns);
+
         // create the nds -> data lookup cross-reference
         var nodes = nds.slice(0), links = [], bilinks = [];
         nds.forEach(function(node, idx) {
             ordIdXref[node.id] = idx;
         });
-        
-        var urls = graph.pluginData.url;
-        urls_ = graph;
-        // for each link, attach the links to the node object
-        for (var id in urls) {
-            if (urls.hasOwnProperty(id)) {
-                if (urls[id].urls) {
-                    var node = nds[ordIdXref[id]];
-                    node.urls = urls[id].urls;
-                }
-            }
-        }
+
 
         // for each node, create the connectors
         lns.forEach(function(link) {
             var s = nodes[ordIdXref[link.source]], t = nodes[ordIdXref[link.target]], i = {
-                weight : 0,
+                weight : 1,
                 id : link.source + "--" + link.target,
-                name : 'connector'
+                name : link.name
             }; // intermediate node
             if (s != undefined && t != undefined) {
                 nodes.push(i);
@@ -106,9 +101,30 @@ function initForceMap() {
         force.nodes(nodes).links(links).start();
 
         // create the links by adding the paths
-        var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id", function(l) {
+        var paths = vis.selectAll(".link").data(bilinks).enter();
+//        paths.append("text")
+//        .attr("class", "link-label pth")
+//        .attr("font-family", "Arial, Helvetica, sans-serif")
+//        .attr("fill", "Black")
+//        .attr("dy","-1em")
+//        .style("font", "normal 12px Arial")
+//        .append("textPath")
+//        .style("text-anchor", "middle").
+//        attr("xlink:href",function(d){
+//            return "#l-" + d[1].id;
+//        }).
+//        attr("startOffset","50%").
+//        text(function(d){return d[1].name});
+        paths.append("path").attr("class", "link pth").attr("id", function(l) {
             return "l-" + l[1].id;
         });
+        paths.append("g").append("text").attr("class", "linkLabel").attr("x",function(d){
+            return (d[0].x + d[2].x ) /2;
+        }).attr("y",function(d){
+            return (d[0].y + d[2].y ) /2;
+        })
+        .text(function(d) {return d[1].name});
+        var link = vis.selectAll("path").data(bilinks).enter();
 
         // add the node, and handle mouse-over mouse-out, click, etc.
         // create a custom ID based on the node-id so we can move back and forth
@@ -118,21 +134,20 @@ function initForceMap() {
         node.call(force.drag);
 
         // create the circle of the node
-        node.append("svg:circle").attr("class","nodeCircle").attr("x", function(d) {
+        node.append("svg:circle").attr("class", "nodeCircle").attr("x", function(d) {
             return d.x;
         }).attr("y", function(d) {
             return d.y;
         }).attr("r", circleWidth).attr("fill", function(d) {
             return color(d.weight);
-        }).on('click', nodeLabelClick)
-        .on("dblclick", function(d) { 
+        }).on('click', nodeLabelClick).on("dblclick", function(d) {
             if (d.urls && d.urls.length > 0) {
 
                 // handle double-click, show links below
-                var html = "<b>Links for: "+d.name+"</b><ul>";
-                for (var i =0; i < d.urls.length ; i++) {
+                var html = "<b>Links for: " + d.name + "</b><ul>";
+                for (var i = 0; i < d.urls.length; i++) {
                     var url = d.urls[i];
-                    html += "<li><a href='"+url+"' target='_blank'>" + url + "</a></li>";
+                    html += "<li><a href='" + url + "' target='_blank'>" + url + "</a></li>";
                 }
                 html += "</ul>";
                 $("#infodetail").html(html);
@@ -159,11 +174,11 @@ function initForceMap() {
 
         var nodelabels = vis.selectAll(".nodelabel");
 
-        root = graph.mindmap.root;
-        // hilde all of the grand-children and below
-        root.children.forEach(function(c) {
-                showHideBranch(c);
-        });
+//        root = nds;
+//        // hilde all of the grand-children and below
+//        root.children.forEach(function(c) {
+//            showHideBranch(c);
+//        });
 
         // http://jsfiddle.net/vfu78/16/
         // add mouse-over title
@@ -171,29 +186,34 @@ function initForceMap() {
             return d.name;
         });
 
-        
         // the "tick" is the animation of each node
-        centerNode = nds[ordIdXref[root.id]];
+        centerNode = nds[0];
         force.on("tick", function() {
             // try and bound the center node in the middle of the screen
             var w_ = getWidth() / 2.5;
             var h_ = getHeight() / 2.5;
             if (centerNode.x < w_) {
                 centerNode.x += 1;
-            } 
+            }
             if (centerNode.x > getWidth() - w_) {
                 centerNode.x -= 1;
-            } 
+            }
             if (centerNode.y < h_) {
                 centerNode.y += 1;
-            } 
+            }
             if (centerNode.y > getHeight() - h_) {
                 centerNode.y -= 1;
-            } 
+            }
 
-            link.attr("d", function(d) {
-                return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+            vis.selectAll(".pth").attr("d", function(d) {
+              return "M" + d[0].x + "," + d[0].y + "S" + d[1].x + "," + d[1].y + " " + d[2].x + "," + d[2].y;
+          });
+            vis.selectAll(".linkLabel").attr("x", function(d){
+                return ((d[0].x + d[2].x) /2); 
+            }).attr("y", function(d){
+                return ((d[0].y + d[2].y)/2 ) ;
             });
+
             node.attr("transform", function(d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
@@ -207,7 +227,7 @@ function initForceMap() {
 
         node.forEach(function(d) {
             if (d._children || d.children) {
-//                d.x = width / 2, d.y = (getHeight()) / 2;
+                // d.x = width / 2, d.y = (getHeight()) / 2;
                 d.fixed = false;
             }
         });
@@ -254,13 +274,13 @@ function nodeLabelClick(d) {
     $term.val(d.name);
     $term.trigger("keyup");
     centerNode = d;
-    showHideBranch(d,2);
+    showHideBranch(d, 2);
     force.start();
 }
 
 /*
- * show's or hides a branch, if the child node has children, add a + if the grand-children are hidden.
- * This method is bounded recursive if the depth is defined, otherwise, it'll iterate through the entire tree
+ * show's or hides a branch, if the child node has children, add a + if the grand-children are hidden. This method is bounded recursive if the depth is defined,
+ * otherwise, it'll iterate through the entire tree
  */
 function showHideBranch(d, depth) {
     var $el = $("#n-" + d.id + " circle");
@@ -268,7 +288,7 @@ function showHideBranch(d, depth) {
     var cls = $el.attr("class");
     var className = "hiddenChildren";
     if (d.children && d.children.length > 0) {
-        if (cls.indexOf(className) > 0 ) {
+        if (cls.indexOf(className) > 0) {
             removeClass($el, className);
             $tx.text(d.name);
         } else {
@@ -290,8 +310,8 @@ function removeClass($el, className) {
     if (cls == undefined) {
         cls = "";
     }
-    cls = cls.replace(className,"");
-    $el.attr("class",cls);
+    cls = cls.replace(className, "");
+    $el.attr("class", cls);
 }
 
 // add the class to the object
@@ -300,12 +320,12 @@ function addClass($el, className) {
     if (cls == undefined) {
         cls = "";
     }
-    cls +=  " " + className;
-    $el.attr("class",cls);
+    cls += " " + className;
+    $el.attr("class", cls);
 }
 
 /*
- * recursive function to show/hide the children based on the depth 
+ * recursive function to show/hide the children based on the depth
  */
 function hideChildren(d, hide, depth) {
     if (depth == 0) {
@@ -314,11 +334,11 @@ function hideChildren(d, hide, depth) {
     d.children.forEach(function(e) {
         var node = $("#n-" + e.id + " circle");
         var text = $("#n-" + e.id + " text");
-        var path  = $("#l-" + e.id + "--" + d.id);
+        var path = $("#l-" + e.id + "--" + d.id);
         var className = "hiddenChildren";
-        if (hide)  {
+        if (hide) {
             node.hide();
-            removeClass(node,className);
+            removeClass(node, className);
             text.hide();
             text.text(e.name);
             path.hide();
@@ -327,12 +347,12 @@ function hideChildren(d, hide, depth) {
             text.show();
             path.show();
             if (depth == 1 && e.children && e.children.length > 0) {
-                //removeClass(node, className);
+                // removeClass(node, className);
                 addClass(node, className);
                 text.text("+ " + e.name);
             }
         }
-        hideChildren(e, hide, depth -1);
+        hideChildren(e, hide, depth - 1);
     });
 
 }
@@ -341,29 +361,75 @@ function redraw() {
     vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
 }
 
-/** 
+function getEdges(edgeList, doc) {
+    var objects = doc.getElementsByName("edge");
+    for ( var i in objects) {
+        if (!objects.hasOwnProperty(i)) {
+            continue;
+        }
+        var obj = {};
+        var node = objects[i];
+        for ( var j in node.childNodes) {
+            if (!node.childNodes.hasOwnProperty(j)) {
+                continue;
+            }
+            var attr = node.childNodes[j];
+            if (attr.tagName == undefined || attr.tagName != 'attribute') {
+                continue;
+            }
+
+            var key = attr.getAttribute('key');
+            var val = attr.textContent;
+            if (key == 'source') {
+                obj.source = val;
+            }
+            if (key == 'target') {
+                obj.target = val;
+            }
+            if (key == 'label') {
+                obj.name = val;
+            }
+        }
+        edgeList.push(obj);
+    }
+}
+
+/**
  * build the leaf node tree based on the json object, also create links
+ * 
  * @param leafNodes
  * @param obj
  * @param links
  */
-function getLeafNodes(leafNodes, obj, links) {
-    if (obj.children) {
-        obj.children.forEach(function(child) {
-            getLeafNodes(leafNodes, child, links)
-        });
-    }
-    if (obj.id) {
-        obj["weight"] = 1;
-        obj['name'] = obj.text.caption;
+function getLeafNodes(leafNodes, doc, links) {
+    var objects = doc.getElementsByName("node");
+    for ( var i in objects) {
+        if (!objects.hasOwnProperty(i)) {
+            continue;
+        }
+        var obj = {weight:1};
+        var node = objects[i];
+        for ( var j in node.childNodes) {
+            if (!node.childNodes.hasOwnProperty(j)) {
+                continue;
+            }
+            var attr = node.childNodes[j];
+            if (attr.tagName == undefined || attr.tagName != 'attribute') {
+                continue;
+            }
+
+            var key = attr.getAttribute('key');
+            var val = attr.textContent;
+            if (key == 'id') {
+                obj.id = val;
+            }
+            if (key == 'label') {
+                obj.name = val;
+            }
+        }
         leafNodes.push(obj);
-        var link = {
-            source : obj.id,
-            target : obj.parentId,
-            weight : 1
-        };
-        links.push(link);
     }
+    getEdges(links, doc);
 }
 
 /**
@@ -382,6 +448,7 @@ function interpolateZoom(translate, scale) {
 
 /**
  * handle mouse-over by animating the text and making the node bigger
+ * 
  * @param d
  * @param i
  */
@@ -403,6 +470,7 @@ function mouseOverNode(d, i) {
 
 /**
  * handle mouse-out by returning back to default sizes
+ * 
  * @param d
  * @param i
  */
@@ -433,6 +501,7 @@ function getCenter() {
 
 /**
  * handle the click event for the zoom buttons
+ * 
  * @returns {Boolean}
  */
 function zoomClick() {
@@ -490,7 +559,6 @@ function updatePos(x, y) {
     vis.attr('y', y);
     vis.attr("transform", "translate(" + x + "," + y + ") " + "scale(" + zoom.scale() + ")");
 }
-
 
 $(function() {
     initForceMap();

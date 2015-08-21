@@ -366,11 +366,13 @@ function onMapClick(e) {
 function setupBaseLayers() {
 
     // http://nls-0.tileserver.com/NLS_API/$%7Bz%7D/$%7Bx%7D/$%7By%7D.jpg
-    var tile = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+//    L.tileLayer('https://{s}.tiles.mapbox.com/v4/<your mapid>/{z}/{x}/{y}.png?access_token=<your access token>').addTo(map);
+    var tile = L.tileLayer('https://{s}.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={token}', {
         maxZoom : 17,
         attribution : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
                 + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        id : 'examples.map-i875mjb7'
+        id : 'abrin.n80ipon2',
+        token: "pk.eyJ1IjoiYWJyaW4iLCJhIjoiNzNlMWRhMDQ1MTBlYzAwMmRiOTRhNzYxMTY2NDY1MTMifQ.ZDirx5xDnYHsAo7kxAI13g"
     });
 
     tile.addTo(map);
