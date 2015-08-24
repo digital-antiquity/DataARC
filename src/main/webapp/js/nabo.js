@@ -602,7 +602,7 @@ function consolidateValues(vals, groupByDate, fieldNames) {
                 fieldNames[k] = 1;
                 // split on "," to further unify where possible
                 var value = vals[i][k][0];
-                if (k != "_data") {
+                if (k != "_data" && k != 'description') {
                     var values = value.split(",");
                     for (var j = 0; j < values.length; j++) {
                         fields[k][values[j].trim()] = 1;
@@ -663,7 +663,11 @@ function writeTableBody(groupByDate) {
                     continue;
                 }
                 if (count > 0) {
-                    out += ", ";
+                    if (field == 'description') {
+                        out += "<br><br>";
+                    } else {
+                        out += ", ";
+                    }
                 }
                 if (field == 'link') {
                     out += '<a href="' + v + '" target="_blank"><span class="glyphicon glyphicon-link"></span></a>';

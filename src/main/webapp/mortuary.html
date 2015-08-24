@@ -22,13 +22,15 @@ $.getJSON(url, function(data) {
 
     data.feed.entry.forEach(function(entry){
         var key = getQueryString('id');
-        if (entry.gsx$gravecode.$t == key) {
+        if (entry.gsx$gravegoodsid.$t == key) {
             for (key in labels) {
-                if(!labels.hasOwnProperty(key) || key == 'content') {
+                if(!labels.hasOwnProperty(key) || key.indexOf("$") == -1) {
                     continue;
                 }
                 if (labels[key] && labels[key].$t) {
-                    $(document.body).append("<p><b>" + labels[key].$t + "</b>:" +entry[key].$t +"</p>");
+                	var val = entry[key].$t;
+         	
+                    $(document.body).append("<p><b>" + labels[key].$t + "</b>:" + val +"</p>");
                     }
                 }
             }
