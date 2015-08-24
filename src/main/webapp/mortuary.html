@@ -1,0 +1,43 @@
+<html>
+<body>
+
+    <script src="components/jquery/dist/jquery.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script charset="UTF-8">
+
+function getQueryString(key) {  
+    return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+  }  
+
+  // Would write the value of the QueryString-variable called name to the console  
+  console.log(getQueryString("name")); 
+
+$(document).ready(function() {
+    
+var url = "https://spreadsheets.google.com/feeds/list/1rg91Il25w18A-7rjW_duwP40QZUFU6j74R9QBEgK0sM/1/public/values?alt=json";
+$.getJSON(url, function(data) {
+    console.log(data);
+    var labels = data.feed.entry[0];
+
+    data.feed.entry.forEach(function(entry){
+        var key = getQueryString('id');
+        if (entry.gsx$gravecode.$t == key) {
+            for (key in labels) {
+                if(!labels.hasOwnProperty(key) || key == 'content') {
+                    continue;
+                }
+                if (labels[key] && labels[key].$t) {
+                    $(document.body).append("<p><b>" + labels[key].$t + "</b>:" +entry[key].$t +"</p>");
+                    }
+                }
+            }
+        });
+    
+});
+
+});
+
+</script>
+</body>
+</html>
