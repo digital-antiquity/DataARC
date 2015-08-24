@@ -10,7 +10,7 @@ var aspect = 500 / 950;
 var circleWidth = 5;
 var node;
 var LINK_STRENGTH = 1.2;
-var LINK_DISTANCE = 8;
+var LINK_DISTANCE = 50;
 var width = getWidth();
 
 // get the current width of our div
@@ -84,10 +84,14 @@ function initForceMap() {
                 id : link.source + "--" + link.target,
                 name : link.name
             }; // intermediate node
+            if (s && s.children && s.children.length) {
+                i.weight = s.children.length * 5;
+            }
+            
             if (s != undefined && t != undefined) {
                 if (s.id != t.id) {
                 s.children.push(t);
-                t.children.push(s);
+//                t.children.push(s);
                 }
                 nodes.push(i);
                 links.push({
@@ -161,7 +165,7 @@ function initForceMap() {
             } else {
                 return 8
             }
-        }).attr("fill", "black").on('click', nodeLabelClick);
+        }).attr("fill", "black").attr("text-align","middle").on('click', nodeLabelClick);
 
         var nodelabels = vis.selectAll(".nodelabel");
 
@@ -208,6 +212,7 @@ function initForceMap() {
                 return ((d[0].y + d[2].y)/2 ) ;
             });
 
+            
             node.attr("transform", function(d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
@@ -286,9 +291,9 @@ function showHideBranch(d, depth, seen) {
         seen = new Array();
     }
     
-    if ($.inArray(d.id, seen)) {
-        return;
-    }
+//    if ($.inArray(d.id, seen)) {
+//        return;
+//    }
     seen.push(d.id);
     if (d.children && d.children.length > 0) {
         if (cls.indexOf(className) > 0) {
@@ -343,9 +348,9 @@ function hideChildren(d, hide, depth, seen) {
         var text = $("#n-" + e.id + " text");
         var path = $("#l-" + e.id + "--" + d.id);
         var className = "hiddenChildren";
-        if ($.inArray(e.id, seen)) {
-            next;
-        }
+//        if ($.inArray(e.id, seen)) {
+//            next;
+//        }
         seen.push(e.id);
         
         if (hide) {

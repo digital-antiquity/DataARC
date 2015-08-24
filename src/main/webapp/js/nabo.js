@@ -83,7 +83,7 @@ function addLegend() {
     legend2.onAdd = function(map) {
         // for ranges between 0 & 25, add labels
 
-        var div2 = L.DomUtil.create('div', 'info legend'), colors = [ 'Sead', 'PMS', 'Sagas','Isleif', 'NABONE','tDAR','Site Database' ];
+        var div2 = L.DomUtil.create('div', 'info legend'), colors = [ 'Sead', 'PMS', 'Sagas','Isleif', 'NABONE','tDAR','Site Database','Mortuary' ];
 
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < colors.length; i++) {
@@ -241,6 +241,9 @@ function colorLookup(color) {
     }
     if (color_ == 'SAGAS') {
         return  "yellow";
+    }
+    if (color_ == 'MORTUARY') {
+        return  "black";
     }
     if (color_ == 'PMS') {
          return  "darkblue";

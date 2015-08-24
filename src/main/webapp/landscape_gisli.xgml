@@ -10,8 +10,8 @@
 			<attribute key="id" type="int">0</attribute>
 			<attribute key="label" type="String">agricultural landscape</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">397.7392127527297</attribute>
-				<attribute key="y" type="double">107.70117187500003</attribute>
+				<attribute key="x" type="double">1023.9548561509362</attribute>
+				<attribute key="y" type="double">1748.373073750321</attribute>
 				<attribute key="w" type="double">130.736328125</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -27,29 +27,10 @@
 		</section>
 		<section name="node">
 			<attribute key="id" type="int">1</attribute>
-			<attribute key="label" type="String">landscape</attribute>
-			<section name="graphics">
-				<attribute key="x" type="double">397.7392127527297</attribute>
-				<attribute key="y" type="double">15.0</attribute>
-				<attribute key="w" type="double">68.708984375</attribute>
-				<attribute key="h" type="double">30.0</attribute>
-				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
-				<attribute key="fill" type="String">#FF9900</attribute>
-				<attribute key="hasOutline" type="boolean">false</attribute>
-			</section>
-			<section name="LabelGraphics">
-				<attribute key="text" type="String">landscape</attribute>
-				<attribute key="fontSize" type="int">12</attribute>
-				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model"/>
-			</section>
-		</section>
-		<section name="node">
-			<attribute key="id" type="int">2</attribute>
 			<attribute key="label" type="String">agricultural building</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">397.7392127527297</attribute>
-				<attribute key="y" type="double">200.40234375000006</attribute>
+				<attribute key="x" type="double">794.2340617158831</attribute>
+				<attribute key="y" type="double">746.1601973526895</attribute>
 				<attribute key="w" type="double">117.39453125</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -64,11 +45,11 @@
 			</section>
 		</section>
 		<section name="node">
-			<attribute key="id" type="int">3</attribute>
+			<attribute key="id" type="int">2</attribute>
 			<attribute key="label" type="String">hay rick hollow</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">671.1679236902298</attribute>
-				<attribute key="y" type="double">312.1035156250001</attribute>
+				<attribute key="x" type="double">765.2702674331897</attribute>
+				<attribute key="y" type="double">1255.7643571864762</attribute>
 				<attribute key="w" type="double">92.697265625</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -83,11 +64,11 @@
 			</section>
 		</section>
 		<section name="node">
-			<attribute key="id" type="int">4</attribute>
+			<attribute key="id" type="int">3</attribute>
 			<attribute key="label" type="String">hay rick</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">567.1474158777298</attribute>
-				<attribute key="y" type="double">312.1035156250001</attribute>
+				<attribute key="x" type="double">679.788042138118</attribute>
+				<attribute key="y" type="double">1225.61999274448</attribute>
 				<attribute key="w" type="double">55.34375</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -102,11 +83,11 @@
 			</section>
 		</section>
 		<section name="node">
-			<attribute key="id" type="int">5</attribute>
+			<attribute key="id" type="int">4</attribute>
 			<attribute key="label" type="String">hay store</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">487.7392127527297</attribute>
-				<attribute key="y" type="double">312.1035156250001</attribute>
+				<attribute key="x" type="double">458.0884379365071</attribute>
+				<attribute key="y" type="double">1111.5361120681944</attribute>
 				<attribute key="w" type="double">63.359375</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -121,11 +102,11 @@
 			</section>
 		</section>
 		<section name="node">
-			<attribute key="id" type="int">6</attribute>
+			<attribute key="id" type="int">5</attribute>
 			<attribute key="label" type="String">barn</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">407.0507361902297</attribute>
-				<attribute key="y" type="double">312.1035156250001</attribute>
+				<attribute key="x" type="double">368.4091175356634</attribute>
+				<attribute key="y" type="double">511.4000684411949</attribute>
 				<attribute key="w" type="double">38.017578125</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -140,11 +121,11 @@
 			</section>
 		</section>
 		<section name="node">
-			<attribute key="id" type="int">7</attribute>
+			<attribute key="id" type="int">6</attribute>
 			<attribute key="label" type="String">sheep/goat shelter</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">159.15034556522974</attribute>
-				<attribute key="y" type="double">385.8046875000001</attribute>
+				<attribute key="x" type="double">1313.9433370422596</attribute>
+				<attribute key="y" type="double">150.23507975970574</attribute>
 				<attribute key="w" type="double">112.736328125</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -159,11 +140,30 @@
 			</section>
 		</section>
 		<section name="node">
+			<attribute key="id" type="int">7</attribute>
+			<attribute key="label" type="String">sheep/goat shed</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1538.6327565236775</attribute>
+				<attribute key="y" type="double">500.9595926240836</attribute>
+				<attribute key="w" type="double">102.740234375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">sheep/goat shed</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
 			<attribute key="id" type="int">8</attribute>
 			<attribute key="label" type="String">agricultural building - ovicaprine</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">147.28120494022977</attribute>
-				<attribute key="y" type="double">293.1035156250001</attribute>
+				<attribute key="x" type="double">1252.7854058315309</attribute>
+				<attribute key="y" type="double">440.7932057818648</attribute>
 				<attribute key="w" type="double">182.755859375</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
@@ -179,26 +179,729 @@
 		</section>
 		<section name="node">
 			<attribute key="id" type="int">9</attribute>
-			<attribute key="label" type="String">sheep/goat shed</attribute>
+			<attribute key="label" type="String">stable complex</attribute>
 			<section name="graphics">
-				<attribute key="x" type="double">7.412064315229742</attribute>
-				<attribute key="y" type="double">385.8046875000001</attribute>
-				<attribute key="w" type="double">102.740234375</attribute>
+				<attribute key="x" type="double">283.3049925659516</attribute>
+				<attribute key="y" type="double">889.7188228111095</attribute>
+				<attribute key="w" type="double">94.0390625</attribute>
 				<attribute key="h" type="double">30.0</attribute>
 				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
 				<attribute key="fill" type="String">#FF9900</attribute>
 				<attribute key="hasOutline" type="boolean">false</attribute>
 			</section>
 			<section name="LabelGraphics">
-				<attribute key="text" type="String">sheep/goat shed</attribute>
+				<attribute key="text" type="String">stable complex</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">10</attribute>
+			<attribute key="label" type="String">cultivated area</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1522.6073212107747</attribute>
+				<attribute key="y" type="double">1651.9383684566149</attribute>
+				<attribute key="w" type="double">92.046875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">cultivated area</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">11</attribute>
+			<attribute key="label" type="String">akur</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1354.953522410834</attribute>
+				<attribute key="y" type="double">1510.718157974083</attribute>
+				<attribute key="w" type="double">37.34375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">akur</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">12</attribute>
+			<attribute key="label" type="String">other garden</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1746.550930597224</attribute>
+				<attribute key="y" type="double">1796.9310277234692</attribute>
+				<attribute key="w" type="double">82.05078125</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">other garden</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">13</attribute>
+			<attribute key="label" type="String">kalgarour</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1668.6022588961555</attribute>
+				<attribute key="y" type="double">1438.6526344743595</attribute>
+				<attribute key="w" type="double">64.02734375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">kalgarour</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">14</attribute>
+			<attribute key="label" type="String">Tun</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1411.5208326261643</attribute>
+				<attribute key="y" type="double">1855.3657344587766</attribute>
+				<attribute key="w" type="double">34.677734375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">Tun</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">15</attribute>
+			<attribute key="label" type="String">outhouse</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">644.7013120334823</attribute>
+				<attribute key="y" type="double">262.2664846125824</attribute>
+				<attribute key="w" type="double">63.376953125</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">outhouse</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">16</attribute>
+			<attribute key="label" type="String">agricultural building - ovine</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1388.6704220059785</attribute>
+				<attribute key="y" type="double">1017.8379935557211</attribute>
+				<attribute key="w" type="double">156.74609375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">agricultural building - ovine</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">17</attribute>
+			<attribute key="label" type="String">lamb house</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1406.8779681374738</attribute>
+				<attribute key="y" type="double">1284.2217347569651</attribute>
+				<attribute key="w" type="double">76.0390625</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">lamb house</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">18</attribute>
+			<attribute key="label" type="String">ram shed</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1568.3281390935567</attribute>
+				<attribute key="y" type="double">827.8334481619659</attribute>
+				<attribute key="w" type="double">64.021484375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">ram shed</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">19</attribute>
+			<attribute key="label" type="String">sheep house</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1288.4210913254776</attribute>
+				<attribute key="y" type="double">767.3438656835365</attribute>
+				<attribute key="w" type="double">82.724609375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">sheep house</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">20</attribute>
+			<attribute key="label" type="String">sheep shelter</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1645.4617849853098</attribute>
+				<attribute key="y" type="double">1106.5809642164081</attribute>
+				<attribute key="w" type="double">86.046875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">sheep shelter</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">21</attribute>
+			<attribute key="label" type="String">sheep winter house</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1124.8602484743228</attribute>
+				<attribute key="y" type="double">1130.9296445446093</attribute>
+				<attribute key="w" type="double">118.068359375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">sheep winter house</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">22</attribute>
+			<attribute key="label" type="String">veening fold</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1057.5441243631158</attribute>
+				<attribute key="y" type="double">294.0892062385997</attribute>
+				<attribute key="w" type="double">78.716796875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">veening fold</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">23</attribute>
+			<attribute key="label" type="String">night field</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1305.2874142806481</attribute>
+				<attribute key="y" type="double">669.8459709666361</attribute>
+				<attribute key="w" type="double">65.369140625</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">night field</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">24</attribute>
+			<attribute key="label" type="String">animal fold</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1036.3421263519535</attribute>
+				<attribute key="y" type="double">1206.7876144704703</attribute>
+				<attribute key="w" type="double">72.03125</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal fold</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">25</attribute>
+			<attribute key="label" type="String">agricultural building - fowl</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">849.7439091196942</attribute>
+				<attribute key="y" type="double">214.85011754087964</attribute>
+				<attribute key="w" type="double">149.3984375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">agricultural building - fowl</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">26</attribute>
+			<attribute key="label" type="String">goose trap</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">682.9524270954257</attribute>
+				<attribute key="y" type="double">15.0</attribute>
+				<attribute key="w" type="double">70.70703125</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">goose trap</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">27</attribute>
+			<attribute key="label" type="String">chicken coop</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1054.5992457590307</attribute>
+				<attribute key="y" type="double">43.88136546263172</attribute>
+				<attribute key="w" type="double">84.04296875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">chicken coop</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">28</attribute>
+			<attribute key="label" type="String">agricultural building - equine</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">450.9081061153288</attribute>
+				<attribute key="y" type="double">326.69172392119935</attribute>
+				<attribute key="w" type="double">164.09375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">agricultural building - equine</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">29</attribute>
+			<attribute key="label" type="String">stable</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">485.2796114604307</attribute>
+				<attribute key="y" type="double">71.45325398607065</attribute>
+				<attribute key="w" type="double">46.021484375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">stable</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">30</attribute>
+			<attribute key="label" type="String">horse shelter</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">179.61584617527842</attribute>
+				<attribute key="y" type="double">290.1583464684031</attribute>
+				<attribute key="w" type="double">83.369140625</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">horse shelter</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">31</attribute>
+			<attribute key="label" type="String">agricultural building - caprine</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">335.3967865308475</attribute>
+				<attribute key="y" type="double">1036.612366800173</attribute>
+				<attribute key="w" type="double">167.416015625</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">agricultural building - caprine</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">32</attribute>
+			<attribute key="label" type="String">goat shed</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">109.53064778936323</attribute>
+				<attribute key="y" type="double">1179.589656462907</attribute>
+				<attribute key="w" type="double">66.7109375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">goat shed</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">33</attribute>
+			<attribute key="label" type="String">agricultural building - canine</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">541.8801262321685</attribute>
+				<attribute key="y" type="double">1224.7819308491644</attribute>
+				<attribute key="w" type="double">163.419921875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">agricultural building - canine</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">34</attribute>
+			<attribute key="label" type="String">dog kennel</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">416.8398801481262</attribute>
+				<attribute key="y" type="double">1461.9368586011528</attribute>
+				<attribute key="w" type="double">72.716796875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">dog kennel</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">35</attribute>
+			<attribute key="label" type="String">agricultural building - bovine</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">259.0842102504786</attribute>
+				<attribute key="y" type="double">666.3109080268293</attribute>
+				<attribute key="w" type="double">163.419921875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">agricultural building - bovine</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">36</attribute>
+			<attribute key="label" type="String">milking pen</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">37.3486328125</attribute>
+				<attribute key="y" type="double">818.6515100271517</attribute>
+				<attribute key="w" type="double">74.697265625</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">milking pen</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">37</attribute>
+			<attribute key="label" type="String">byre</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">116.08376461589796</attribute>
+				<attribute key="y" type="double">458.1701630755599</attribute>
+				<attribute key="w" type="double">37.34375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">byre</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">38</attribute>
+			<attribute key="label" type="String">imagined landscape</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">856.7306997986756</attribute>
+				<attribute key="y" type="double">2365.4068676661414</attribute>
+				<attribute key="w" type="double">120.740234375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">imagined landscape</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">39</attribute>
+			<attribute key="label" type="String">supernatural place</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">759.2122951079417</attribute>
+				<attribute key="y" type="double">2735.4004720512858</attribute>
+				<attribute key="w" type="double">112.73046875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">supernatural place</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">40</attribute>
+			<attribute key="label" type="String">Draugur / Haunted Place / Ghost</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">432.31786304626644</attribute>
+				<attribute key="y" type="double">2702.2248257832516</attribute>
+				<attribute key="w" type="double">188.09375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">Draugur / Haunted Place / Ghost</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">41</attribute>
+			<attribute key="label" type="String">Huldufolk / Elf</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">986.9717792958562</attribute>
+				<attribute key="y" type="double">2572.7557439336015</attribute>
+				<attribute key="w" type="double">88.033203125</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">Huldufolk / Elf</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">42</attribute>
+			<attribute key="label" type="String">Skrimsli / Monster</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">645.07454583613</attribute>
+				<attribute key="y" type="double">3001.373534888091</attribute>
+				<attribute key="w" type="double">109.34375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">Skrimsli / Monster</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">43</attribute>
+			<attribute key="label" type="String">Troll</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">673.8826782737946</attribute>
+				<attribute key="y" type="double">2493.1757417977847</attribute>
+				<attribute key="w" type="double">37.33203125</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">Troll</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">44</attribute>
+			<attribute key="label" type="String">Alagablettur / Cursed Spot</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">953.6087949681</attribute>
+				<attribute key="y" type="double">2885.8005796620428</attribute>
+				<attribute key="w" type="double">154.748046875</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">Alagablettur / Cursed Spot</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">45</attribute>
+			<attribute key="label" type="String">landscape</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">917.003003564425</attribute>
+				<attribute key="y" type="double">2036.4169449615633</attribute>
+				<attribute key="w" type="double">68.708984375</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">landscape</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+			</section>
+		</section>
+		<section name="node">
+			<attribute key="id" type="int">46</attribute>
+			<attribute key="label" type="String">47</attribute>
+			<section name="graphics">
+				<attribute key="x" type="double">1856.5</attribute>
+				<attribute key="y" type="double">15.0</attribute>
+				<attribute key="w" type="double">45.0</attribute>
+				<attribute key="h" type="double">30.0</attribute>
+				<attribute key="customconfiguration" type="String">BevelNode3</attribute>
+				<attribute key="fill" type="String">#FF9900</attribute>
+				<attribute key="hasOutline" type="boolean">false</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">47</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
 				<attribute key="model"/>
 			</section>
 		</section>
 		<section name="edge">
-			<attribute key="source" type="int">1</attribute>
-			<attribute key="target" type="int">0</attribute>
+			<attribute key="source" type="int">0</attribute>
+			<attribute key="target" type="int">45</attribute>
 			<attribute key="label" type="String">collects agricultural activities</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -209,13 +912,13 @@
 				<attribute key="text" type="String">collects agricultural activities</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">shead</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">1</attribute>
-			<attribute key="target" type="int">2</attribute>
+			<attribute key="target" type="int">0</attribute>
 			<attribute key="label" type="String">concentrates activities</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -226,13 +929,30 @@
 				<attribute key="text" type="String">concentrates activities</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">shead</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">2</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">producing hay</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">producing hay</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">3</attribute>
-			<attribute key="target" type="int">2</attribute>
+			<attribute key="target" type="int">1</attribute>
 			<attribute key="label" type="String">producing hay</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -243,13 +963,13 @@
 				<attribute key="text" type="String">producing hay</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">stail</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">4</attribute>
-			<attribute key="target" type="int">2</attribute>
+			<attribute key="target" type="int">1</attribute>
 			<attribute key="label" type="String">producing hay</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -260,65 +980,47 @@
 				<attribute key="text" type="String">producing hay</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">stail</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">5</attribute>
-			<attribute key="target" type="int">2</attribute>
+			<attribute key="target" type="int">1</attribute>
 			<attribute key="label" type="String">producing hay</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
 				<attribute key="fill" type="String">#000000</attribute>
 				<attribute key="targetArrow" type="String">standard</attribute>
-				<section name="Line">
-					<section name="point">
-						<attribute key="x" type="double">487.7392127527297</attribute>
-						<attribute key="y" type="double">312.1035156250001</attribute>
-					</section>
-					<section name="point">
-						<attribute key="x" type="double">487.7392127527297</attribute>
-						<attribute key="y" type="double">246.75292968750009</attribute>
-					</section>
-					<section name="point">
-						<attribute key="x" type="double">397.7392127527297</attribute>
-						<attribute key="y" type="double">246.75292968750009</attribute>
-					</section>
-					<section name="point">
-						<attribute key="x" type="double">397.7392127527297</attribute>
-						<attribute key="y" type="double">200.40234375000006</attribute>
-					</section>
-				</section>
 			</section>
 			<section name="LabelGraphics">
 				<attribute key="text" type="String">producing hay</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">shead</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">6</attribute>
-			<attribute key="target" type="int">2</attribute>
-			<attribute key="label" type="String">producing hay</attribute>
+			<attribute key="target" type="int">8</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
 				<attribute key="fill" type="String">#000000</attribute>
 				<attribute key="targetArrow" type="String">standard</attribute>
 			</section>
 			<section name="LabelGraphics">
-				<attribute key="text" type="String">producing hay</attribute>
+				<attribute key="text" type="String">animal husbandry</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">shead</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">7</attribute>
-			<attribute key="target" type="int">2</attribute>
+			<attribute key="target" type="int">8</attribute>
 			<attribute key="label" type="String">animal husbandry</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -329,13 +1031,30 @@
 				<attribute key="text" type="String">animal husbandry</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">stail</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">8</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">specialization</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">specialization</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">9</attribute>
-			<attribute key="target" type="int">8</attribute>
+			<attribute key="target" type="int">1</attribute>
 			<attribute key="label" type="String">animal husbandry</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -346,38 +1065,604 @@
 				<attribute key="text" type="String">animal husbandry</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">shead</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
 		<section name="edge">
-			<attribute key="source" type="int">8</attribute>
-			<attribute key="target" type="int">7</attribute>
-			<attribute key="label" type="String">designating activity for a place</attribute>
+			<attribute key="source" type="int">10</attribute>
+			<attribute key="target" type="int">0</attribute>
+			<attribute key="label" type="String">delimits \ creates part of</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
 				<attribute key="fill" type="String">#000000</attribute>
 				<attribute key="targetArrow" type="String">standard</attribute>
 			</section>
 			<section name="LabelGraphics">
-				<attribute key="text" type="String">designating activity for a place</attribute>
+				<attribute key="text" type="String">delimits \ creates part of</attribute>
 				<attribute key="fontSize" type="int">12</attribute>
 				<attribute key="fontName" type="String">Dialog</attribute>
-				<attribute key="model" type="String">six_pos</attribute>
-				<attribute key="position" type="String">shead</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
 		</section>
-<!--		<section name="edge">
-			<attribute key="source" type="int">8</attribute>
-			<attribute key="target" type="int">8</attribute>
+		<section name="edge">
+			<attribute key="source" type="int">11</attribute>
+			<attribute key="target" type="int">10</attribute>
+			<attribute key="label" type="String">outfield cultivation</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
 				<attribute key="fill" type="String">#000000</attribute>
 				<attribute key="targetArrow" type="String">standard</attribute>
 			</section>
-			<section name="edgeAnchor">
-				<attribute key="xSource" type="double">-0.6925217627127559</attribute>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">outfield cultivation</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
 			</section>
-		</section>-->
-	</section> 
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">12</attribute>
+			<attribute key="target" type="int">10</attribute>
+			<attribute key="label" type="String">horticulture \ gardening</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">horticulture \ gardening</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">13</attribute>
+			<attribute key="target" type="int">10</attribute>
+			<attribute key="label" type="String">horticulture \ gardening</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">horticulture \ gardening</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">14</attribute>
+			<attribute key="target" type="int">10</attribute>
+			<attribute key="label" type="String">homefield cultivation</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">homefield cultivation</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">15</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">ad hoc activities</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">ad hoc activities</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">16</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">specialization</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">specialization</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">17</attribute>
+			<attribute key="target" type="int">16</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">18</attribute>
+			<attribute key="target" type="int">16</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">19</attribute>
+			<attribute key="target" type="int">16</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">20</attribute>
+			<attribute key="target" type="int">16</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">21</attribute>
+			<attribute key="target" type="int">16</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">22</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">23</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">24</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">25</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">specialization</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">specialization</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">26</attribute>
+			<attribute key="target" type="int">25</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">27</attribute>
+			<attribute key="target" type="int">25</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">28</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">specialization</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">specialization</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">29</attribute>
+			<attribute key="target" type="int">28</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">30</attribute>
+			<attribute key="target" type="int">28</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">31</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">specialization</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">specialization</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">32</attribute>
+			<attribute key="target" type="int">31</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">33</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">specialization</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">specialization</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">34</attribute>
+			<attribute key="target" type="int">33</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">35</attribute>
+			<attribute key="target" type="int">1</attribute>
+			<attribute key="label" type="String">specialization</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">specialization</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">36</attribute>
+			<attribute key="target" type="int">35</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">37</attribute>
+			<attribute key="target" type="int">35</attribute>
+			<attribute key="label" type="String">animal husbandry</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">animal husbandry</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">38</attribute>
+			<attribute key="target" type="int">45</attribute>
+			<attribute key="label" type="String">collects ideas about the landscape</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">collects ideas about the landscape</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">39</attribute>
+			<attribute key="target" type="int">38</attribute>
+			<attribute key="label" type="String">puts a place to an idea or story</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">puts a place to an idea or story</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">40</attribute>
+			<attribute key="target" type="int">39</attribute>
+			<attribute key="label" type="String">occupies and creates a</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">occupies and creates a</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">41</attribute>
+			<attribute key="target" type="int">39</attribute>
+			<attribute key="label" type="String">occupies and creates a</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">occupies and creates a</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">42</attribute>
+			<attribute key="target" type="int">39</attribute>
+			<attribute key="label" type="String">occupies and creates a</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">occupies and creates a</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">43</attribute>
+			<attribute key="target" type="int">39</attribute>
+			<attribute key="label" type="String">occupies and creates a</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">occupies and creates a</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+		<section name="edge">
+			<attribute key="source" type="int">44</attribute>
+			<attribute key="target" type="int">39</attribute>
+			<attribute key="label" type="String">is a kind of</attribute>
+			<section name="graphics">
+				<attribute key="type" type="String">bezier</attribute>
+				<attribute key="fill" type="String">#000000</attribute>
+				<attribute key="targetArrow" type="String">standard</attribute>
+			</section>
+			<section name="LabelGraphics">
+				<attribute key="text" type="String">is a kind of</attribute>
+				<attribute key="fontSize" type="int">12</attribute>
+				<attribute key="fontName" type="String">Dialog</attribute>
+				<attribute key="model"/>
+				<attribute key="position"/>
+			</section>
+		</section>
+	</section>
 </section>

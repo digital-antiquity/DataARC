@@ -28,6 +28,7 @@
 	font-size: 12px;
 	fill: black;
 	border: 0;
+	text-anchor:middle;
 }
 
 .overlay {
@@ -57,4 +58,9 @@
 #infoabout, #forcemap {
     border:1px solid #CCC;
     padding: 5px;
+}
+
+.linkLabel {
+    fill: #CCC;
+    text-anchor:middle;
 }
