@@ -379,13 +379,16 @@ function redraw() {
 }
 
 function getEdges(edgeList, doc) {
-    var objects = doc.getElementsByName("edge");
+    var objects = doc.getElementsByTagName("section");
     for ( var i in objects) {
         if (!objects.hasOwnProperty(i)) {
             continue;
         }
         var obj = {};
         var node = objects[i];
+        if (node.getAttribute("name") != 'edge') {
+            continue;
+        }
         for ( var j in node.childNodes) {
             if (!node.childNodes.hasOwnProperty(j)) {
                 continue;
@@ -419,13 +422,17 @@ function getEdges(edgeList, doc) {
  * @param links
  */
 function getLeafNodes(leafNodes, doc, links) {
-    var objects = doc.getElementsByName("node");
+    var objects = doc.getElementsByTagName("section");
     for ( var i in objects) {
         if (!objects.hasOwnProperty(i)) {
             continue;
         }
-        var obj = {weight:1,children:[]};
+
         var node = objects[i];
+        if (node.getAttribute("name") != 'node') {
+            continue;
+        }
+        var obj = {weight:1,children:[]};
         for ( var j in node.childNodes) {
             if (!node.childNodes.hasOwnProperty(j)) {
                 continue;
