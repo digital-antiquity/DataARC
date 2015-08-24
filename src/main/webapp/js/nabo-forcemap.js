@@ -85,6 +85,10 @@ function initForceMap() {
                 name : link.name
             }; // intermediate node
             if (s != undefined && t != undefined) {
+                if (s.id != t.id) {
+                s.children.push(t);
+                t.children.push(s);
+                }
                 nodes.push(i);
                 links.push({
                     source : s,
@@ -102,19 +106,6 @@ function initForceMap() {
 
         // create the links by adding the paths
         var paths = vis.selectAll(".link").data(bilinks).enter();
-//        paths.append("text")
-//        .attr("class", "link-label pth")
-//        .attr("font-family", "Arial, Helvetica, sans-serif")
-//        .attr("fill", "Black")
-//        .attr("dy","-1em")
-//        .style("font", "normal 12px Arial")
-//        .append("textPath")
-//        .style("text-anchor", "middle").
-//        attr("xlink:href",function(d){
-//            return "#l-" + d[1].id;
-//        }).
-//        attr("startOffset","50%").
-//        text(function(d){return d[1].name});
         paths.append("path").attr("class", "link pth").attr("id", function(l) {
             return "l-" + l[1].id;
         });
@@ -174,11 +165,14 @@ function initForceMap() {
 
         var nodelabels = vis.selectAll(".nodelabel");
 
-//        root = nds;
-//        // hilde all of the grand-children and below
-//        root.children.forEach(function(c) {
-//            showHideBranch(c);
-//        });
+        root = nds[1];
+        // hide all of the grand-children and below
+        
+        console.log(root);
+        root.children.forEach(function(c) {
+            console.log(c);
+            showHideBranch(c);
+        });
 
         // http://jsfiddle.net/vfu78/16/
         // add mouse-over title
@@ -282,11 +276,20 @@ function nodeLabelClick(d) {
  * show's or hides a branch, if the child node has children, add a + if the grand-children are hidden. This method is bounded recursive if the depth is defined,
  * otherwise, it'll iterate through the entire tree
  */
-function showHideBranch(d, depth) {
+function showHideBranch(d, depth, seen) {
     var $el = $("#n-" + d.id + " circle");
     var $tx = $("#n-" + d.id + " text");
     var cls = $el.attr("class");
     var className = "hiddenChildren";
+    console.log("showHide:" + d.id + " " + d.name + " " + d.children.length);
+    if (seen == undefined) {
+        seen = new Array();
+    }
+    
+    if ($.inArray(d.id, seen)) {
+        return;
+    }
+    seen.push(d.id);
     if (d.children && d.children.length > 0) {
         if (cls.indexOf(className) > 0) {
             removeClass($el, className);
@@ -300,7 +303,7 @@ function showHideBranch(d, depth) {
         if (hide) {
             depth = undefined;
         }
-        hideChildren(d, hide, depth);
+        hideChildren(d, hide, depth, seen);
     }
 }
 
@@ -327,15 +330,24 @@ function addClass($el, className) {
 /*
  * recursive function to show/hide the children based on the depth
  */
-function hideChildren(d, hide, depth) {
+function hideChildren(d, hide, depth, seen) {
     if (depth == 0) {
         return;
     }
+    if (seen == undefined) {
+        seen = new Array();
+    }
+    
     d.children.forEach(function(e) {
         var node = $("#n-" + e.id + " circle");
         var text = $("#n-" + e.id + " text");
         var path = $("#l-" + e.id + "--" + d.id);
         var className = "hiddenChildren";
+        if ($.inArray(e.id, seen)) {
+            next;
+        }
+        seen.push(e.id);
+        
         if (hide) {
             node.hide();
             removeClass(node, className);
@@ -352,7 +364,7 @@ function hideChildren(d, hide, depth) {
                 text.text("+ " + e.name);
             }
         }
-        hideChildren(e, hide, depth - 1);
+        hideChildren(e, hide, depth - 1, seen);
     });
 
 }
@@ -407,7 +419,7 @@ function getLeafNodes(leafNodes, doc, links) {
         if (!objects.hasOwnProperty(i)) {
             continue;
         }
-        var obj = {weight:1};
+        var obj = {weight:1,children:[]};
         var node = objects[i];
         for ( var j in node.childNodes) {
             if (!node.childNodes.hasOwnProperty(j)) {
@@ -427,7 +439,9 @@ function getLeafNodes(leafNodes, doc, links) {
                 obj.name = val;
             }
         }
-        leafNodes.push(obj);
+        if (obj.name != undefined) {
+            leafNodes.push(obj);
+        }
     }
     getEdges(links, doc);
 }

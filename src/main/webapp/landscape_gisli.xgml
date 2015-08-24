@@ -197,8 +197,8 @@
 			</section>
 		</section>
 		<section name="edge">
-			<attribute key="source" type="int">0</attribute>
-			<attribute key="target" type="int">1</attribute>
+			<attribute key="source" type="int">1</attribute>
+			<attribute key="target" type="int">0</attribute>
 			<attribute key="label" type="String">collects agricultural activities</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -214,8 +214,8 @@
 			</section>
 		</section>
 		<section name="edge">
-			<attribute key="source" type="int">2</attribute>
-			<attribute key="target" type="int">0</attribute>
+			<attribute key="source" type="int">1</attribute>
+			<attribute key="target" type="int">2</attribute>
 			<attribute key="label" type="String">concentrates activities</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -318,7 +318,7 @@
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">7</attribute>
-			<attribute key="target" type="int">8</attribute>
+			<attribute key="target" type="int">2</attribute>
 			<attribute key="label" type="String">animal husbandry</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -352,7 +352,7 @@
 		</section>
 		<section name="edge">
 			<attribute key="source" type="int">8</attribute>
-			<attribute key="target" type="int">2</attribute>
+			<attribute key="target" type="int">7</attribute>
 			<attribute key="label" type="String">designating activity for a place</attribute>
 			<section name="graphics">
 				<attribute key="type" type="String">bezier</attribute>
@@ -367,7 +367,7 @@
 				<attribute key="position" type="String">shead</attribute>
 			</section>
 		</section>
-		<section name="edge">
+<!--		<section name="edge">
 			<attribute key="source" type="int">8</attribute>
 			<attribute key="target" type="int">8</attribute>
 			<section name="graphics">
@@ -378,6 +378,6 @@
 			<section name="edgeAnchor">
 				<attribute key="xSource" type="double">-0.6925217627127559</attribute>
 			</section>
-		</section>
-	</section>
+		</section>-->
+	</section> 
 </section>

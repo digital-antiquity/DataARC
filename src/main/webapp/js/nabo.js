@@ -372,7 +372,7 @@ function setupBaseLayers() {
         attribution : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
                 + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
         id : 'abrin.n80ipon2',
-        token: "pk.eyJ1IjoiYWJyaW4iLCJhIjoiNzNlMWRhMDQ1MTBlYzAwMmRiOTRhNzYxMTY2NDY1MTMifQ.ZDirx5xDnYHsAo7kxAI13g"
+        token: "pk.eyJ1IjoiYWJyaW4iLCJhIjoiMGM2OTlmNjU4MzI4NzAzZWU1Nzc0Y2IwODk2OWNjZDQifQ.yO-4vMyb9c46hq4Z2JXt8w"
     });
 
     tile.addTo(map);
