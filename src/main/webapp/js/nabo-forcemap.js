@@ -386,9 +386,16 @@ function getEdges(edgeList, doc) {
         }
         var obj = {};
         var node = objects[i];
-        if (node.getAttribute("name") != 'edge') {
+
+        console.log(typeof node.getAttribute === 'function');
+        if (node == undefined) {
             continue;
         }
+        
+        if (typeof node.getAttribute !== 'function' || node.getAttribute("name") != 'edge') {
+            continue;
+        }
+
         for ( var j in node.childNodes) {
             if (!node.childNodes.hasOwnProperty(j)) {
                 continue;
@@ -429,9 +436,15 @@ function getLeafNodes(leafNodes, doc, links) {
         }
 
         var node = objects[i];
-        if (node.getAttribute("name") != 'node') {
+        console.log(typeof node.getAttribute === 'function');
+        if (node == undefined) {
             continue;
         }
+        
+        if (typeof node.getAttribute !== 'function' || node.getAttribute("name") != 'node') {
+            continue;
+        }
+
         var obj = {weight:1,children:[]};
         for ( var j in node.childNodes) {
             if (!node.childNodes.hasOwnProperty(j)) {
