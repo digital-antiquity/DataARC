@@ -1,5 +1,12 @@
 <html>
+<head>
+        <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
 <body>
+
+<div class="container-fluid col-lg-12">
+<h1>Iceland Mortuary Database</h1>
+</div>
 
     <script src="components/jquery/dist/jquery.js"></script>
     <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -19,7 +26,7 @@ var url = "https://spreadsheets.google.com/feeds/list/1rg91Il25w18A-7rjW_duwP40Q
 $.getJSON(url, function(data) {
     console.log(data);
     var labels = data.feed.entry[0];
-
+    var $body = $(".container-fluid");
     data.feed.entry.forEach(function(entry){
         var key = getQueryString('id');
         if (entry.gsx$gravegoodsid.$t == key) {
@@ -30,7 +37,7 @@ $.getJSON(url, function(data) {
                 if (labels[key] && labels[key].$t) {
                 	var val = entry[key].$t;
          	
-                    $(document.body).append("<p><b>" + labels[key].$t + "</b>:" + val +"</p>");
+                    $body.append("<p><b>" + labels[key].$t + "</b>:" + val +"</p>");
                     }
                 }
             }
