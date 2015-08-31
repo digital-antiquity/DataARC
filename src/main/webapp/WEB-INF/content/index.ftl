@@ -144,6 +144,11 @@ if (!cookieValue) {
 	$('#intro-modal').modal();
 }
 </script>
+<br><br>
+<ul>
+    <li><a href="?oldjson">View "Success" Topic Map</a></li>
+    <li><a href="?">View "Landscape" Topic Map</a></li>
+<ul>
 </div>
 </body>
 </html>
