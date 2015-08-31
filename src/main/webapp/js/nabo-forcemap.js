@@ -109,7 +109,7 @@ function initForceMapJSON() {
 
         // create the links by adding the paths
         var link = vis.selectAll(".link").data(bilinks).enter().append("path").attr("class", "link").attr("id", function(l) {
-            return "l-" + l[1].id;
+            return "p-" + l[1].id;
         });
 
         // add the node, and handle mouse-over mouse-out, click, etc.
@@ -279,7 +279,7 @@ function getJsonLeafNodes(leafNodes, obj, links) {
 	
 
 
-function initForceMap() {
+function initForceMapXml() {
   // custom zoom handler that removes pan/scroll
     zoom = d3.behavior.zoom().on("zoom", redraw);
     color = d3.scale.category20();
@@ -328,8 +328,8 @@ function initForceMap() {
             
             if (s != undefined && t != undefined) {
                 if (s.id != t.id) {
-                s.children.push(t);
-//                t.children.push(s);
+                  s.children.push(t);
+                  t.children.push(s);
                 }
                 nodes.push(i);
                 links.push({
@@ -343,18 +343,23 @@ function initForceMap() {
             }
         });
 
-        // add the nodes adn links to the forceMap
+        root = nds[45];
+		applyNodeOrder(root);
+
+        // add the nodes adn links to the forceMxap
         force.nodes(nodes).links(links).start();
 
         // create the links by adding the paths
         var paths = vis.selectAll(".link").data(bilinks).enter();
         paths.append("path").attr("class", "link pth").attr("id", function(l) {
-            return "l-" + l[1].id;
+            return "p-" + l[1].id;
         });
         paths.append("g").append("text").attr("class", "linkLabel").attr("x",function(d){
             return (d[0].x + d[2].x ) /2;
         }).attr("y",function(d){
             return (d[0].y + d[2].y ) /2;
+        }).attr("id", function(d) {
+        	return "l-" + d[1].id;
         })
         .text(function(d) {return d[1].name});
         var link = vis.selectAll("path").data(bilinks).enter();
@@ -365,6 +370,7 @@ function initForceMap() {
             return "n-" + d.id;
         }).on("mouseover", mouseOverNode).on("mouseout", mouseOutNode);
         node.call(force.drag);
+
 
         // create the circle of the node
         node.append("svg:circle").attr("class", "nodeCircle").attr("x", function(d) {
@@ -406,24 +412,21 @@ function initForceMap() {
         }).attr("fill", "black").attr("text-align","middle").on('click', nodeLabelClick);
 
         var nodelabels = vis.selectAll(".nodelabel");
-//		console.log(nds);
-        root = nds[1];
-        // hide all of the grand-children and below
-        
-  //      console.log(root);
-        root.children.forEach(function(c) {
-            console.log(c);
-            showHideBranch(c);
-        });
+
+
+
+		root.children.forEach(function(d) {
+			showHideBranch(d);
+		});
+//		showHideBranch(root);
 
         // http://jsfiddle.net/vfu78/16/
         // add mouse-over title
         node.append("title").text(function(d) {
             return d.name;
         });
-
+		centerNode = root;
         // the "tick" is the animation of each node
-        centerNode = nds[0];
         force.on("tick", function() {
             // try and bound the center node in the middle of the screen
             var w_ = getWidth() / 2.5;
@@ -472,6 +475,15 @@ function initForceMap() {
 	bindClickEvents();
 
 }
+var order = 0;
+function applyNodeOrder(n) {
+	if (n.order != undefined) {
+		return;
+	}
+	order++;
+	n.order = order;
+	n.children.forEach(applyNodeOrder);
+}
 
 /*
  * Click on a node or text
@@ -498,22 +510,28 @@ function showHideBranch(d, depth) {
     var cls = $el.attr("class");
     var className = "hiddenChildren";
     if (d.children && d.children.length > 0) {
-        if (cls.indexOf(className) > 0 ) {
+        var hide = hasClass($el, className);
+        if (hide) {
             removeClass($el, className);
             $tx.text(d.name);
         } else {
             addClass($el, className);
             $tx.text("+ " + d.name);
-        }
-        // jquery's class manipulation doesn't wrok for SVG
-        var hide = $el.attr("class").indexOf(className) > 0;
-        if (hide) {
             depth = undefined;
         }
-        hideChildren(d, hide, depth);
+
+		// invert hide on child
+        hideChildren(d, !hide, depth);
     }
 }
 
+function hasClass($el, className) {
+	var cls = $el.attr("class");
+	if (cls && cls.indexOf(className) > -1) {
+		return true;
+	}
+	return false;
+}
 // remove the class from the object
 function removeClass($el, className) {
     var cls = $el.attr("class");
@@ -538,23 +556,32 @@ function addClass($el, className) {
  * recursive function to show/hide the children based on the depth 
  */
 function hideChildren(d, hide, depth) {
+//		console.log("hideChildren::", d, hide, depth)
     if (depth == 0) {
         return;
     }
     d.children.forEach(function(e) {
         var node = $("#n-" + e.id + " circle");
         var text = $("#n-" + e.id + " text");
-        var path  = $("#l-" + e.id + "--" + d.id);
+        var link = $("#l-" + e.id + "--" + d.id);
+        var path  = $("#p-" + e.id + "--" + d.id);
         var className = "hiddenChildren";
+
+		if (!isNaN(e.order) && parseInt(e.order) < parseInt(d.order)) {
+			return;
+		}
+
         if (hide)  {
             node.hide();
             removeClass(node,className);
             text.hide();
+            link.hide();
             text.text(e.name);
             path.hide();
         } else {
             node.show();
             text.show();
+            link.show();
             path.show();
             if (depth == 1 && e.children && e.children.length > 0) {
                 //removeClass(node, className);
@@ -803,6 +830,10 @@ $(function() {
     if (location.search && location.search.toLowerCase().indexOf("oldjson") > -1) {
         initForceMapJSON();
     } else {
-        initForceMap();
+        initForceMapXml();
     }
+	
+	if (location.search && location.search.toLowerCase().indexOf("expand=forcemap") > -1) {
+		$("#expand").click();
+	}
 });
