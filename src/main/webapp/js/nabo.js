@@ -1,5 +1,5 @@
 /**
- * This script focuses on the inititalization and setup of the Leaflet Maps API and the general interactions with the maps.
+ * This script focuses on the initialization and setup of the Leaflet Maps API and the general interactions with the maps.
  */
 
 var map;
