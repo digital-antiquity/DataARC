@@ -569,6 +569,8 @@ function hideChildren(d, hide, depth) {
         var text = $("#n-" + e.id + " text");
         var link = $("#l-" + e.id + "--" + d.id);
         var path  = $("#p-" + e.id + "--" + d.id);
+        var link_ = $("#l-" + d.id + "--" + e.id);
+        var path_  = $("#p-" + d.id + "--" + e.id);
         var className = "hiddenChildren";
 
 		if (!isNaN(e.order) && parseInt(e.order) < parseInt(d.order)) {
@@ -579,14 +581,18 @@ function hideChildren(d, hide, depth) {
             node.hide();
             removeClass(node,className);
             text.hide();
-            link.hide();
             text.text(e.name);
+            link.hide();
             path.hide();
+            link_.hide();
+            path_.hide();
         } else {
             node.show();
             text.show();
             link.show();
             path.show();
+            link_.show();
+            path_.show();
             if (depth == 1 && e.children && e.children.length > 0) {
                 //removeClass(node, className);
                 addClass(node, className);
