@@ -310,8 +310,12 @@ function initForceMapXml() {
 
         // create the nds -> data lookup cross-reference
         var nodes = nds.slice(0), links = [], bilinks = [];
+        var rootIdx = -1;
         nds.forEach(function(node, idx) {
             ordIdXref[node.id] = idx;
+            if (node.name == 'landscape') {
+                rootIdx = idx;
+            }
         });
 
 
@@ -343,7 +347,7 @@ function initForceMapXml() {
             }
         });
 
-        root = nds[45];
+        root = nds[rootIdx];
 		applyNodeOrder(root);
 
         // add the nodes adn links to the forceMxap
