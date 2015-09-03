@@ -117,7 +117,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-    <script src="iceland.json"></script>
+    <script src="data/iceland.json"></script>
     <script src="components/jquery/dist/jquery.js"></script>
     <script src="components/jquery-cookie/jquery.cookie.js"></script>
     <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>

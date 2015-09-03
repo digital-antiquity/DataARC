@@ -62,7 +62,7 @@ function initForceMapJSON() {
     force = d3.layout.force().linkDistance(LINK_DISTANCE).linkStrength(LINK_STRENGTH).charge(-100).size([ width, getHeight() ]);
 
     // iterate through the JSON data
-    d3.json("success.json", function(error, graph) {
+    d3.json("data/success.json", function(error, graph) {
         // find the leaf nodes and initialize the lns list
         getJsonLeafNodes(nds, graph.mindmap.root, lns);
         
@@ -303,7 +303,7 @@ function initForceMapXml() {
     ).size([ width, getHeight() ]);
     // iterate through the JSON data
 
-    d3.xml("landscape_gisli.xgml", function(error, graph) {
+    d3.xml("data/landscape_gisli.xgml", function(error, graph) {
         // find the leaf nodes and initialize the lns list
         doc = graph;
         getLeafNodes(nds, graph, lns);
