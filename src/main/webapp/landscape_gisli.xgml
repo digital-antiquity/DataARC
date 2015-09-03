@@ -1088,7 +1088,7 @@
             </section>
         </section>
         <section name="edge">
-            <attribute key="source" type="int">1</attribute>
+            <attribute key="source" type="int">45</attribute>
             <attribute key="target" type="int">0</attribute>
             <attribute key="label" type="String">concentrates activities</attribute>
             <section name="graphics">
@@ -1836,8 +1836,8 @@
             </section>
         </section>
         <section name="edge">
-            <attribute key="source" type="int">45</attribute>
-            <attribute key="target" type="int">1</attribute>
+            <attribute key="source" type="int">1</attribute>
+            <attribute key="target" type="int">45</attribute>
             <attribute key="label" type="String">collects</attribute>
             <section name="graphics">
                 <attribute key="type" type="String">bezier</attribute>
