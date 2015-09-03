@@ -357,7 +357,8 @@ function initForceMapXml() {
         var paths = vis.selectAll(".link").data(bilinks).enter();
         paths.append("path").attr("class", "link pth").attr("id", function(l) {
             return "p-" + l[1].id;
-        });
+        }).attr("marker-end", function(d) { return "url(#arrow-" + d.id + ")"; });
+;
         paths.append("g").append("text").attr("class", "linkLabel").attr("x",function(d){
             return (d[0].x + d[2].x ) /2;
         }).attr("y",function(d){
@@ -368,6 +369,16 @@ function initForceMapXml() {
         .text(function(d) {return d[1].name});
         var link = vis.selectAll("path").data(bilinks).enter();
 
+        paths.append("marker")
+        .attr("id", function(d) { return "arrow-" + d.id; })
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 15)
+        .attr("refY", -1.5)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+      .append("path")
+        .attr("d", "M0,-5L10,0L0,5");
         // add the node, and handle mouse-over mouse-out, click, etc.
         // create a custom ID based on the node-id so we can move back and forth
         node = vis.selectAll("circle.node").data(nds).enter().append("g").attr("class", "node").attr("id", function(d) {
