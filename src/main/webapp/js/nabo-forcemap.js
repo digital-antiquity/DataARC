@@ -433,7 +433,6 @@ function initForceMapXml() {
 		root.children.forEach(function(d) {
 			showHideBranch(d);
 		});
-//		showHideBranch(root);
 
         // http://jsfiddle.net/vfu78/16/
         // add mouse-over title
@@ -604,7 +603,15 @@ function hideChildren(d, hide, depth) {
             path.show();
             link_.show();
             path_.show();
-            if (depth == 1 && e.children && e.children.length > 0) {
+            var hasChildren = -1;
+            e.children.forEach(function(n) {
+                if (e.order < n.order) {
+                    hasChildren = 1;
+                    return;
+                }
+            });
+            
+            if (depth == 1 && ((e.children && e.children.length > 0) || (e.order > -1 && hasChildren > -1))) {
                 //removeClass(node, className);
                 addClass(node, className);
                 text.text("+ " + e.name);

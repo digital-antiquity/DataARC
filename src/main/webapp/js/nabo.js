@@ -275,10 +275,10 @@ function drawGrid() {
 
     var neLat = bounds._northEast.lat;
     var swLng = bounds._southWest.lng;
-
+    var term = $("#term").val();
     // construct a GET/JSON request
     var req = "/browse/json?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
-            "&term=" + $("#term").val();
+            "&term=" + term;
     console.log(req);
     var ret = $.Deferred();
     ajax = $.getJSON(req);
@@ -297,7 +297,8 @@ function drawGrid() {
                 return L.circleMarker(latlng, style);
             }
         });
-
+//        map.fitBounds(layer_.getBounds());
+ 
         // swap the layers out
         if (geoLayer != undefined) {
             map.removeLayer(geoLayer);
