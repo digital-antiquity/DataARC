@@ -20,6 +20,35 @@ function createCustomGraphs(key, input) {
 }
 
 function createNaboneGraph(key, input) {
+    var txt1 = "<div id='radioChart1'></div>";
+    var data1 = [];
+    for (v in input) {
+        if (!input.hasOwnProperty(v)) {
+            continue;
+        }
+        var jd = JSON.parse(v);
+        var percLabels = ["Dom %","Whale %","Seal %","Walrus %","Caribou %" , "Other mam %" ,"Bird %" , "Fish %", "Mol Arth Gast %"];
+        for (var i=0; i < percLabels.length; i++) {
+            var val = parseFloat(jd['perc'][i]);
+            if (val > 0) {
+                data1.push([percLabels[i],val]);
+            }
+        }
+    }
+
+    var chartData1 = {
+        bindto : "#radioChart1",
+        data : {
+            columns : data1,
+            type : 'pie'
+        }
+    };
+    // we need a slight delay here to register the #radioChart div in the DOM
+    if (data1.length > 0) {
+        txt1 += "<script>c3.generate(" + JSON.stringify(chartData1) + ");</script>";
+    }
+
+    
     var txt = "<div id='radioChart'></div>";
     var data = [];
     for (v in input) {
@@ -27,7 +56,7 @@ function createNaboneGraph(key, input) {
             continue;
         }
         var jd = JSON.parse(v);
-        var percLabels = ["Dom %","Whale %","Seal %","Walrus %","Deer %","Other mam %","Bird %","Fish %","Mol Arth Gast %"];
+        var percLabels = ["Bos dom %", "Canis dom %", "Sus dom %",  "Equ dom %",  " Cap dom %",  "Ovi dom %", "Ovca dom %", "Felis dom %"];
         for (var i=0; i < percLabels.length; i++) {
             var val = parseFloat(jd['perc'][i]);
             if (val > 0) {
@@ -47,7 +76,7 @@ function createNaboneGraph(key, input) {
     if (data.length > 0) {
         txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
     }
-    return txt;
+    return txt + txt1;
 }
 
 
