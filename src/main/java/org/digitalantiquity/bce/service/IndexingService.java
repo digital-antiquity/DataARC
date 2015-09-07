@@ -120,7 +120,7 @@ public class IndexingService {
             doc.add(new TextField(IndexFields.WHAT, get(row, "What"), Field.Store.YES));
             doc.add(new TextField(IndexFields.WHERE, get(row, "Where"), Field.Store.YES));
             doc.add(new TextField(IndexFields.WHEN, get(row, "When"), Field.Store.YES));
-            doc.add(new IntField(IndexFields.NISP, getInt(row, "NISPtotal"), Field.Store.YES));
+            doc.add(new IntField(IndexFields.NISP, getInt(row, "NISP"), Field.Store.YES));
 
             // index tags as keywords
             for (String tag : StringUtils.split(get(row, "tags"), ",")) {

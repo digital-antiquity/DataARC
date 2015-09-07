@@ -19,17 +19,17 @@ function createCustomGraphs(key, input) {
     return txt;
 }
 
-function createNaboneGraph(key, input) {
-    var txt1 = "<div id='radioChart1'></div>";
+function writePieChart(id, percLabels, pkey, input) {
+    console.log(id);
+    var txt1 = "<div id='" + id +"'></div>";
     var data1 = [];
     for (v in input) {
         if (!input.hasOwnProperty(v)) {
             continue;
         }
         var jd = JSON.parse(v);
-        var percLabels = ["Dom %","Whale %","Seal %","Walrus %","Caribou %" , "Other mam %" ,"Bird %" , "Fish %", "Mol Arth Gast %"];
         for (var i=0; i < percLabels.length; i++) {
-            var val = parseFloat(jd['perc'][i]);
+            var val = parseFloat(jd[pkey][i]);
             if (val > 0) {
                 data1.push([percLabels[i],val]);
             }
@@ -37,7 +37,7 @@ function createNaboneGraph(key, input) {
     }
 
     var chartData1 = {
-        bindto : "#radioChart1",
+        bindto : "#" + id,
         data : {
             columns : data1,
             type : 'pie'
@@ -47,36 +47,23 @@ function createNaboneGraph(key, input) {
     if (data1.length > 0) {
         txt1 += "<script>c3.generate(" + JSON.stringify(chartData1) + ");</script>";
     }
+    return txt1;
+}
 
+var counter= 0;
+function createNaboneGraph(key, input) {
+    var id = "radioChart" + counter;
+    var percLabels = ["Dom %","Whale %","Seal %","Walrus %","Caribou %" , "Other mam %" ,"Bird %" , "Fish %", "Mol Arth Gast %"];
+    var pkey = 'perc';
+    var txt = writePieChart(id,percLabels,pkey,input);
     
-    var txt = "<div id='radioChart'></div>";
-    var data = [];
-    for (v in input) {
-        if (!input.hasOwnProperty(v)) {
-            continue;
-        }
-        var jd = JSON.parse(v);
-        var percLabels = ["Bos dom %", "Canis dom %", "Sus dom %",  "Equ dom %",  " Cap dom %",  "Ovi dom %", "Ovca dom %", "Felis dom %"];
-        for (var i=0; i < percLabels.length; i++) {
-            var val = parseFloat(jd['perc'][i]);
-            if (val > 0) {
-                data.push([percLabels[i],val]);
-            }
-        }
-    }
-
-    var chartData = {
-        bindto : "#radioChart",
-        data : {
-            columns : data,
-            type : 'pie'
-        }
-    };
-    // we need a slight delay here to register the #radioChart div in the DOM
-    if (data.length > 0) {
-        txt += "<script>c3.generate(" + JSON.stringify(chartData) + ");</script>";
-    }
-    return txt + txt1;
+    var domPercLabels = ["Bos dom %", "Canis dom %", "Sus dom %",  "Equ dom %",  " Cap dom %",  "Ovi dom %", "Ovca dom %", "Felis dom %"];
+    var dkey = "domPerc";
+    counter++;
+    id = "radioChart" + counter;
+    txt += writePieChart(id,domPercLabels,dkey,input);
+    counter++;
+    return txt;
 }
 
 
