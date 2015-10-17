@@ -20,7 +20,7 @@ function createCustomGraphs(key, input) {
 }
 
 function writePieChart(id, percLabels, pkey, input) {
-    console.log(id);
+//    console.log(id);
     var txt1 = "<div id='" + id +"'></div>";
     var data1 = [];
     for (v in input) {
@@ -54,6 +54,7 @@ var counter= 0;
 function createNaboneGraph(key, input) {
     var id = "radioChart" + counter;
     var percLabels = ["Dom %","Whale %","Seal %","Walrus %","Caribou %" , "Other mam %" ,"Bird %" , "Fish %", "Mol Arth Gast %"];
+    console.log(key, input);
     var pkey = 'perc';
     var txt = writePieChart(id,percLabels,pkey,input);
     
@@ -98,7 +99,7 @@ function createSeadGraph(key, input) {
                 for (var s =0; s < samples.length; s++) {
                     total += parseFloat(samples[s][catSampleOffset]);
                 }
-                console.log(cat +" total:" + total);
+//                console.log(cat +" total:" + total);
                 // skip category entries that have no values
                 if (!(total > 0.0)) {
                     ignore.push(cat);
@@ -117,7 +118,7 @@ function createSeadGraph(key, input) {
         }
     }
     categories = $(categories).not(ignore).get();
-    console.log("filtered:", categories);
+//    console.log("filtered:", categories);
     var chartData = {
         bindto : "#barChart",
         data : {

@@ -648,7 +648,7 @@ function getLeafNodes(leafNodes, doc, links) {
         }
 
         var node = objects[i];
-        console.log(typeof node.getAttribute === 'function');
+//        console.log(typeof node.getAttribute === 'function');
         if (node == undefined) {
             continue;
         }
@@ -694,7 +694,7 @@ function getEdges(edgeList, doc) {
         var obj = {};
         var node = objects[i];
 
-        console.log(typeof node.getAttribute === 'function');
+//        console.log(typeof node.getAttribute === 'function');
         if (node == undefined) {
             continue;
         }

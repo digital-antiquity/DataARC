@@ -15,6 +15,7 @@ var start = -9999;
 var end = 9999;
 var chromaScale;
 var showAllPoints = 1;
+var srcs = {};
 
 // default style for map objects
 var myStyle = {
@@ -83,17 +84,22 @@ function addLegend() {
     legend2.onAdd = function(map) {
         // for ranges between 0 & 25, add labels
 
-        var div2 = L.DomUtil.create('div', 'info legend'), colors = [ 'Sead', 'PMS', 'Sagas','Isleif', 'NABONE','tDAR','Site Database','Mortuary', "Farm Histories"];
-
+        var div2 = L.DomUtil.create('div', 'info legend');
+        
         // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < colors.length; i++) {
-            div2.innerHTML += '<div ><i style="opacity: ' + UNHIGHLIGHTED + '; background:' +colorLookup(colors[i])+'"></i> ' + colors[i] + "</div> ";
-        }
+        for (source in sources) {
+            if (!sources.hasOwnProperty(source)) {
+                continue;
+            }
+            div2.innerHTML += '<div ><i style="opacity: ' + UNHIGHLIGHTED + '; background:' +sources[source].color +'"></i> ' +
+            "<input type=checkbox name=source value=" + source +" checked> " + sources[source].name + "</div> ";
+        };
 
         return div2;
     };
 
     legend2.addTo(map);
+    $(".legend input[type=checkbox]").click(drawGrid);
 }
 
 /**
@@ -236,26 +242,10 @@ function createCircleFeatureStyle(feature) {
 
 function colorLookup(color) {
     var color_ = color.toUpperCase();
-    if (color_ == 'ISLEIF') {
-        return  "red";
-    }
-    if (color_ == 'SAGAS') {
-        return  "yellow";
-    }
-    if (color_ == 'MORTUARY') {
-        return  "black";
-    }
-    if (color_ == 'FARM HISTORIES') {
-        return  "black";
-    }
-    if (color_ == 'PMS') {
-         return  "darkblue";
-    }
-    if (color_ == 'NABONE') {
-         return  "BlueViolet";
-    }
-    if (color_ == 'SEAD') {
-        return  "darkgreen";
+    if (sources[color_] != undefined) {
+        return sources[color_].color;
+    } else {
+        console.log(color_);
     }
     return "#006400";
 }
@@ -288,13 +278,24 @@ function drawGrid() {
         shouldContinue = true;
     }).then(function(data) {
         // initialize the GeoJSON layer
+        var showSources = $(".legend input:checked").map(function() {
+            return this.value;
+        }).get();
         var layer_ = L.geoJson(data, {
             onEachFeature : addPointsToMap,
             pointToLayer : function(feature, latlng) {
                 // http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
                 // setup each point
+                var src = feature.properties.source.toUpperCase();
+                srcs[src] = 1;
+                var match = $.inArray(src, showSources);
                 var style = createCircleFeatureStyle(feature);
-                return L.circleMarker(latlng, style);
+                if (!match || match == -1) {
+                    style.fillOpacity = 0;
+                    style.stroke =0;
+                }
+                var marker = L.circleMarker(latlng, style);
+                return marker;
             }
         });
 //        map.fitBounds(layer_.getBounds());
@@ -318,6 +319,7 @@ function drawGrid() {
 
             // set the color based on the # of items
             var color = chromaScale(pts.inside.length / 25).hex(); // #FF7F7F
+            
             pt.setStyle({
                 fillColor : color,
                 fillOpacity : UNHIGHLIGHTED

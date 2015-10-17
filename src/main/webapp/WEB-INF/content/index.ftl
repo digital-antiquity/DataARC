@@ -138,6 +138,20 @@
 var max = 800;
 var detail = 160;
 var shouldContinue = true;
+
+var sources = {
+	"ISLEIF"           : { name: 'ISLEIF', color: "red" },
+	"SAGAS"            : { name: 'Sagas' , color: "yellow"},
+	"SANDAY"           : { name: 'Sanday' , color: "lightgreen"},
+	"MORTUARY"         : { name: "Mortuary Database" , color: "black" },
+	"FARM HISTORIES"   : { name: "Farm Histories", color : "brown" },
+	"EXCAVATED SITE DB": {name: "Excavated Site DB", color:"orange"},
+	"PMS"              : { name: "NABO PMS", color: 'darkblue' },
+    "NABONE"           : { name: "NABONE", color: 'BlueViolet'},
+	"SEAD"             : { name: "SEAD", color: "darkgreen"},
+	"TDAR"             : { name: "tDAR", color: "darkred"}
+};
+
 var cookieValue = $.cookie("test");
 if (!cookieValue) {
 	$.cookie("test", 1);
