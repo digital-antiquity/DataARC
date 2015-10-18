@@ -92,14 +92,24 @@ function addLegend() {
                 continue;
             }
             div2.innerHTML += '<div ><i style="opacity: ' + UNHIGHLIGHTED + '; background:' +sources[source].color +'"></i> ' +
-            "<input type=checkbox name=source value=" + source +" checked> " + sources[source].name + "</div> ";
+            "<input class=typeselect type=checkbox name=source id='c"+source+"' value=" + source +" checked><label for='c"+source+"'> &nbsp; " + sources[source].name + "</label></div> ";
         };
+        div2.innerHTML += '<div ><i style="background:white"></i> ' +
+        "<input type=checkbox name=source id='sall'> Select All</div> ";
 
         return div2;
     };
 
     legend2.addTo(map);
-    $(".legend input[type=checkbox]").click(drawGrid);
+    $(".typeselect").click(drawGrid);
+    
+    $("#sall").click(function(){
+        if ($(".typeselect:not(:checked)").length == 0) {
+            $(".typeselect").prop('checked',false);
+        } else {
+            $(".typeselect").prop('checked',true);
+        }
+    });
 }
 
 /**
