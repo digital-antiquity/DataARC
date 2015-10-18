@@ -40,6 +40,10 @@
         
     </div>
     <div id="infobox" class="col-md-4">
+    <ul class="nav nav-tabs">
+	  <li role="presentation" id="successTab" class=""><a href="?oldjson">Success</a></li>
+	  <li role="presentation" id="landscapeTab" class=""><a href="?">Landscape</a></li>
+	</ul>
         <div id="forcemap"></div>
         <div><p><small>Select a node to center it. Click on the + symbols to expand along a branch. Double click on a node to access linked URLs pointing at relevant databases and descriptions of key metrics.</small></p></div>
 	<div class="btn-toolbar" role="toolbar">
@@ -157,12 +161,22 @@ if (!cookieValue) {
 	$.cookie("test", 1);
 	$('#intro-modal').modal();
 }
+
+$(function() {
+    if (location.search && location.search.toLowerCase().indexOf("oldjson") > -1) {
+        initForceMapJSON();
+		$("#successTab").addClass("active");
+    } else {
+		$("#landscapeTab").addClass("active");
+        initForceMapXml();
+    }
+	
+	if (location.search && location.search.toLowerCase().indexOf("expand=forcemap") > -1) {
+		$("#expand").click();
+	}
+});
+
 </script>
-<br><br>
-<ul>
-    <li><a href="?oldjson">View "Success" Topic Map</a></li>
-    <li><a href="?">View "Landscape" Topic Map</a></li>
-<ul>
 </div>
 </body>
 </html>

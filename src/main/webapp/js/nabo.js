@@ -262,6 +262,9 @@ function drawGrid() {
     var lng = WEST;
     var lat_ = SOUTH;
     var lng_ = EAST;
+    var showSources = $(".legend input:checked").map(function() {
+        return this.value;
+    }).get();
 
     var neLat = bounds._northEast.lat;
     var swLng = bounds._southWest.lng;
@@ -269,6 +272,9 @@ function drawGrid() {
     // construct a GET/JSON request
     var req = "/browse/json?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
             "&term=" + term;
+    for (var i=0; i < showSources.length; i++) {
+        req += "&types="+ showSources[i];
+    }
     console.log(req);
     var ret = $.Deferred();
     ajax = $.getJSON(req);
@@ -278,9 +284,6 @@ function drawGrid() {
         shouldContinue = true;
     }).then(function(data) {
         // initialize the GeoJSON layer
-        var showSources = $(".legend input:checked").map(function() {
-            return this.value;
-        }).get();
         var layer_ = L.geoJson(data, {
             onEachFeature : addPointsToMap,
             pointToLayer : function(feature, latlng) {
@@ -290,10 +293,6 @@ function drawGrid() {
                 srcs[src] = 1;
                 var match = $.inArray(src, showSources);
                 var style = createCircleFeatureStyle(feature);
-                if (!match || match == -1) {
-                    style.fillOpacity = 0;
-                    style.stroke =0;
-                }
                 var marker = L.circleMarker(latlng, style);
                 return marker;
             }
@@ -457,7 +456,7 @@ function highlightShape(_leaflet_id) {
     var ly = layer.feature.geometry.coordinates[0];
     var points = layer.inside;
     layer.setStyle({
-        fillOpacity : 0.6
+        weight : 3
     });
     if (!showAllPoints) {
         for (var i = 0; i < points.length; i++) {
@@ -480,7 +479,7 @@ function removeShapeHighlight(_leaflet_id) {
     var ly = layer.feature.geometry.coordinates[0];
 
     layer.setStyle({
-        fillOpacity : .2
+        weight : .5
     });
     var points = layer.inside;
     if (!showAllPoints) {

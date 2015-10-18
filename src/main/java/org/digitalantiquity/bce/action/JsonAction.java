@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -61,6 +62,7 @@ public class JsonAction extends ActionSupport {
     private Integer start = -9999;
     private Integer end = 9999;
     private String term;
+    private List<String> types;
 
     @Action(value = "json", results = {
             @Result(name = SUCCESS, type = "stream", params = { "contentType", "application/json", "inputName", "stream" })
@@ -69,7 +71,7 @@ public class JsonAction extends ActionSupport {
         try {
             logger.debug(String.format("start (%s,%s) x(%s,%s)", x1, y1, x2, y2));
             // get results
-            FeatureCollection featureList = luceneService.search(x1, y1, x2, y2, getStart(), getEnd(), term);
+            FeatureCollection featureList = luceneService.search(x1, y1, x2, y2, getStart(), getEnd(), getTypes(), term);
             logger.trace("done search");
             
             // convert to JSON String
@@ -154,6 +156,14 @@ public class JsonAction extends ActionSupport {
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
 }

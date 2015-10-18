@@ -31,6 +31,7 @@ import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.geojson.Point;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.spatial4j.core.context.SpatialContext;
 
@@ -72,12 +73,13 @@ public class LuceneService {
      * @param y2
      * @param start
      * @param end
+     * @param list 
      * @param term
      * @return
      * @throws IOException
      * @throws ParseException
      */
-    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, String term) throws IOException, ParseException {
+    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, List<String> types, String term) throws IOException, ParseException {
         // Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
         FeatureCollection fc = new FeatureCollection();
         setupReaders("bce");
@@ -86,6 +88,7 @@ public class LuceneService {
         int limit = 1_000_000;
 
         BooleanQuery bq = createDateRangeQueryPart(start, end);
+        appendTypes(types, bq);
         appendKeywordSearch(term, bq);
         logger.debug(bq.toString());
         TopDocs topDocs = getSearcher().search(bq, limit);
@@ -181,6 +184,18 @@ public class LuceneService {
                 q += field + ":\"" + term + "\" ";
             }
             QueryParser parser = new QueryParser(IndexFields.TAGS, analyzer);
+            bq.add(parser.parse(q), Occur.MUST);
+        }
+    }
+
+    private void appendTypes(List<String> terms, BooleanQuery bq) throws ParseException {
+        if (!CollectionUtils.isEmpty(terms)) {
+            String q = IndexFields.SOURCE + ":(";
+            for (String term : terms) {
+                q += "\"" + term + "\" ";
+            }
+            q += ") ";
+            QueryParser parser = new QueryParser(IndexFields.SOURCE, analyzer);
             bq.add(parser.parse(q), Occur.MUST);
         }
     }

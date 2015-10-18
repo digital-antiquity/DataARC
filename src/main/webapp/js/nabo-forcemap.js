@@ -852,16 +852,3 @@ function updatePos(x, y) {
     vis.attr('y', y);
     vis.attr("transform", "translate(" + x + "," + y + ") " + "scale(" + zoom.scale() + ")");
 }
-
-
-$(function() {
-    if (location.search && location.search.toLowerCase().indexOf("oldjson") > -1) {
-        initForceMapJSON();
-    } else {
-        initForceMapXml();
-    }
-	
-	if (location.search && location.search.toLowerCase().indexOf("expand=forcemap") > -1) {
-		$("#expand").click();
-	}
-});
