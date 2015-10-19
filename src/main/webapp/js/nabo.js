@@ -280,7 +280,7 @@ function drawGrid() {
     var swLng = bounds._southWest.lng;
     var term = $("#term").val();
     // construct a GET/JSON request
-    var req = "/browse/json?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
+    var req = "json?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
             "&term=" + term;
     for (var i=0; i < showSources.length; i++) {
         req += "&types="+ showSources[i];
