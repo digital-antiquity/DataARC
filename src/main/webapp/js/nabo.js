@@ -16,7 +16,6 @@ var end = 9999;
 var chromaScale;
 var showAllPoints = 1;
 var srcs = {};
-var cluster = false;
 // default style for map objects
 var myStyle = {
     "color" : "#ff7800",
@@ -195,11 +194,17 @@ function resetHighlight(e) {
     geoLayer.getLayer(e.target._leaflet_id).setStyle({
         fillOpacity : UNHIGHLIGHTED
     });
-    geoLayer.resetStyle(e.target);
-}
+    try {
+        geoLayer.resetStyle(e.target);
+    } catch (e) {}
+ }
 
 
 var markers;
+
+function cluster() {
+    return $("#cluster:checked").length > 0;
+}
 
 /**
  * for each feature, add it to the map, also setup the click event which shows detail in the #infodetail div
@@ -208,7 +213,7 @@ var markers;
  * @param layer
  */
 function addPointsToMap(feature, layer) {
-    if (cluster) {
+    if (cluster()) {
         markers.addLayer(layer);
     }
     // setup events
@@ -301,7 +306,7 @@ function drawGrid() {
         shouldContinue = true;
     }).then(function(data) {
         // initialize the GeoJSON layer
-        if (cluster) {
+        if (cluster()) {
             if (markers) {
                 map.removeLayer(markers);
             }
@@ -325,8 +330,9 @@ function drawGrid() {
         if (geoLayer != undefined) {
             map.removeLayer(geoLayer);
         }
-        if (cluster) {
+        if (cluster()) {
             map.addLayer(markers);
+            geoLayer = markers;
         } else {
         geoLayer = layer_;
         geoLayer.addTo(map);
@@ -558,7 +564,11 @@ function featureToTable(points) {
         var l = points[i];
         var props = l.properties;
         if (props == undefined) {
-            props = l.feature.properties;
+            if (l.feature && l.feature.properties) {
+                props = l.feature.properties;
+            } else {
+                props =[];
+            }
             if (l.options != undefined) {
                 l.options.opacity = 1;
             }
@@ -794,6 +804,8 @@ function attachMapEvents() {
         end = ev.value[1];
         drawGrid();
     });
+    
+   $('#cluster').click(drawGrid);
 
 }
 

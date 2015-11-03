@@ -32,6 +32,7 @@
 				            <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
 				     data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
 				     data-slider-handle="round"> <b>2016</b>
+				     <span class="">&nbsp;&nbsp;&nbsp;<input id="cluster" type="checkbox">&nbsp;<label for="cluster">cluster results?</label></span>
 				     <br/>
 				     <!--<img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">-->
 			           <div id="tl" class="timeline-default" style="height: 400px;"></div>

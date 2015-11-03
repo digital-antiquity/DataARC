@@ -124,7 +124,7 @@ public class IndexingService {
 
             // index tags as keywords
             for (String tag : StringUtils.split(get(row, "tags"), ",")) {
-                doc.add(new TextField(IndexFields.TAGS, tag, Field.Store.YES));
+                doc.add(new TextField(IndexFields.TAGS, tag.trim(), Field.Store.YES));
             }
             doc.add(new TextField(IndexFields.TYPE, get(row, "typeofsite"), Field.Store.YES));
 
