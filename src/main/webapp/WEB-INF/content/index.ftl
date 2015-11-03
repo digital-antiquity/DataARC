@@ -15,6 +15,9 @@
         <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
     	<link rel="stylesheet" href="css/nabo.css"/>    
         <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.Default.css" />
+
    </head>
 <body>
 <div class="container-fluid">
@@ -132,6 +135,7 @@
     <script src="components/d3/d3.js"></script>
     <script src="components/c3/c3.js"></script>
     <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    <script src="components/leaflet-cluster/dist/leaflet.markercluster.js"></script>
     
     <script src="js/nabo.js"></script>
     <script src="js/nabo-custom-graphs.js"></script>

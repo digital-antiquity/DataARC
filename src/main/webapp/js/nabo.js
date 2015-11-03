@@ -16,7 +16,7 @@ var end = 9999;
 var chromaScale;
 var showAllPoints = 1;
 var srcs = {};
-
+var cluster = true;
 // default style for map objects
 var myStyle = {
     "color" : "#ff7800",
@@ -196,6 +196,9 @@ function resetHighlight(e) {
     geoLayer.resetStyle(e.target);
 }
 
+
+var markers;
+
 /**
  * for each feature, add it to the map, also setup the click event which shows detail in the #infodetail div
  * 
@@ -203,7 +206,9 @@ function resetHighlight(e) {
  * @param layer
  */
 function addPointsToMap(feature, layer) {
-
+    if (cluster) {
+        markers.addLayer(layer);
+    }
     // setup events
     layer.on({
         mouseover : highlightFeature,
@@ -294,6 +299,12 @@ function drawGrid() {
         shouldContinue = true;
     }).then(function(data) {
         // initialize the GeoJSON layer
+        if (cluster) {
+            if (markers) {
+                map.removeLayer(markers);
+            }
+            markers = L.markerClusterGroup();
+        }
         var layer_ = L.geoJson(data, {
             onEachFeature : addPointsToMap,
             pointToLayer : function(feature, latlng) {
@@ -301,7 +312,6 @@ function drawGrid() {
                 // setup each point
                 var src = feature.properties.source.toUpperCase();
                 srcs[src] = 1;
-                var match = $.inArray(src, showSources);
                 var style = createCircleFeatureStyle(feature);
                 var marker = L.circleMarker(latlng, style);
                 return marker;
@@ -313,9 +323,12 @@ function drawGrid() {
         if (geoLayer != undefined) {
             map.removeLayer(geoLayer);
         }
-
+        if (cluster) {
+            map.addLayer(markers);
+        } else {
         geoLayer = layer_;
         geoLayer.addTo(map);
+        }
         ajax = undefined;
 
         // for each layer, pre-calculate the points inside (we will re-use it)
