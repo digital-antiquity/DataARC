@@ -177,9 +177,11 @@ var inside = function(point, vs) {
 function highlightFeature(e) {
     if (e.target.parent) {
         var id = e.target.parent._leaflet_id;
-        geoLayer.getLayer(e.target._leaflet_id).setStyle({
-            fillOpacity : 1
-        });
+        if (geoLayer) {
+            geoLayer.getLayer(e.target._leaflet_id).setStyle({
+                fillOpacity : 1
+            });
+        }
         $('#map').trigger("highlight:on", [ hlayer, id ]);
     }
 }
@@ -190,10 +192,12 @@ function highlightFeature(e) {
  * @param e
  */
 function resetHighlight(e) {
-    geoLayer.getLayer(e.target._leaflet_id).setStyle({
-        fillOpacity : UNHIGHLIGHTED
-    });
-    geoLayer.resetStyle(e.target);
+    if (geoLayer) {
+        geoLayer.getLayer(e.target._leaflet_id).setStyle({
+            fillOpacity : UNHIGHLIGHTED
+        });
+        geoLayer.resetStyle(e.target);
+    }
 }
 
 
