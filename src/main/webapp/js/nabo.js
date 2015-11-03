@@ -16,7 +16,7 @@ var end = 9999;
 var chromaScale;
 var showAllPoints = 1;
 var srcs = {};
-var cluster = true;
+var cluster = false;
 // default style for map objects
 var myStyle = {
     "color" : "#ff7800",
@@ -192,12 +192,10 @@ function highlightFeature(e) {
  * @param e
  */
 function resetHighlight(e) {
-    if (geoLayer) {
-        geoLayer.getLayer(e.target._leaflet_id).setStyle({
-            fillOpacity : UNHIGHLIGHTED
-        });
-        geoLayer.resetStyle(e.target);
-    }
+    geoLayer.getLayer(e.target._leaflet_id).setStyle({
+        fillOpacity : UNHIGHLIGHTED
+    });
+    geoLayer.resetStyle(e.target);
 }
 
 
