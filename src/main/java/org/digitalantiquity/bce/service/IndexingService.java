@@ -101,11 +101,18 @@ public class IndexingService {
      */
     private void indexRow(IndexWriter writer, JsonNode row) throws IOException {
         try {
+            Double lat = getDouble(row, "Lat");
+            Double lon = getDouble(row, "Lon");
+            logger.debug("[" + lat + ", " + lon + "]");
+            if (lat == 0 && lon == 0) {
+                return;
+            }
+            
             Document doc = new Document();
             doc.add(new IntField(IndexFields.START, getInt(row, "start"), Field.Store.YES));
             doc.add(new IntField(IndexFields.END, getInt(row, "end"), Field.Store.YES));
-            doc.add(new DoubleField(IndexFields.X, getDouble(row, "Lat"), Field.Store.YES));
-            doc.add(new DoubleField(IndexFields.Y, getDouble(row, "Lon"), Field.Store.YES));
+            doc.add(new DoubleField(IndexFields.X, lat, Field.Store.YES));
+            doc.add(new DoubleField(IndexFields.Y, lon, Field.Store.YES));
             doc.add(new TextField(IndexFields.TITLE, get(row, "title"), Field.Store.YES));
             // Field idField = new Field(LuceneConstants.FIELD_ID, desc.getId(), Field.Store.YES, Field.Index.ANALYZED);
 //            doc.add(new TextField(IndexFields.TAGS, get(row, "tags"), Field.Store.YES));
@@ -129,7 +136,7 @@ public class IndexingService {
             doc.add(new TextField(IndexFields.TYPE, get(row, "typeofsite"), Field.Store.YES));
 
             // create a "Point" based on the LatLong and index it
-            Point shape = ctx.makePoint(getDouble(row, "Lat"), getDouble(row, "Lon"));
+            Point shape = ctx.makePoint(lat, lon);
             for (IndexableField f : strategy.createIndexableFields(shape)) {
                 doc.add(f);
             }
