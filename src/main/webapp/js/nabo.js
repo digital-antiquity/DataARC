@@ -206,6 +206,66 @@ function cluster() {
     return $("#cluster:checked").length > 0;
 }
 
+
+
+L.Icon.MarkerCluster = L.Icon.extend({
+    options: {
+        iconSize: new L.Point(48, 48),
+        className: 'prunecluster leaflet-markercluster-icon'
+    },
+    createIcon: function () {
+        // based on L.Icon.Canvas from shramov/leaflet-plugins (BSD licence)
+        var e = document.createElement('canvas');
+        this._setIconStyles(e, 'icon');
+        var s = this.options.iconSize;
+        e.width = s.x;
+        e.height = s.y;
+        this.draw(e.getContext('2d'), s.x, s.y);
+        return e;
+    },
+    createShadow: function () {
+        return null;
+    },
+    draw: function(canvas, width, height) {
+        var lol = 0;
+        var pi2 = Math.PI * 2;
+        var start = 0;
+        var i =0;
+        for (category in sources) {
+            if (!sources.hasOwnProperty(category)) {
+                continue;
+            }
+            i++;
+            var size = this.stats[category] / this.population;
+//            console.log(i + " : " + this.stats[i] + " : " + this.population + " : " + size);
+            if (size > 0) {
+                canvas.beginPath();
+                var angle = Math.PI/4*i;
+                var posx = Math.cos(angle) * 18, posy = Math.sin(angle) * 18;
+                var xa = 0, xb = 1, ya = 4, yb = 8;
+                // var r = ya + (size - xa) * ((yb - ya) / (xb - xa));
+                var r = ya + size * (yb - ya);
+                //canvas.moveTo(posx, posy);
+                canvas.arc(24+posx,24+posy, r, 0, pi2);
+                canvas.fillStyle = sources[category].color;
+                canvas.fill();
+                canvas.closePath();
+            }
+        }
+        canvas.beginPath();
+        canvas.fillStyle = 'white';
+        canvas.arc(24, 24, 16, 0, Math.PI*2);
+        canvas.fill();
+        canvas.closePath();
+        canvas.fillStyle = '#555';
+        canvas.textAlign = 'center';
+        canvas.textBaseline = 'middle';
+        canvas.font = 'bold 12px sans-serif';
+        canvas.fillText(this.population, 24, 24, 48);
+    }
+});
+
+
 /**
  * for each feature, add it to the map, also setup the click event which shows detail in the #infodetail div
  * 
@@ -214,24 +274,48 @@ function cluster() {
  */
 function addPointsToMap(feature, layer) {
     if (cluster()) {
-        markers.addLayer(layer);
-    }
+//        markers.addLayer(layer);
+//        console.log(feature.geometry);
+        var ll = feature.geometry.coordinates;
+        var marker = new PruneCluster.Marker(ll[1],ll[0]);
+        marker.category = feature.properties.source.toUpperCase();
+//        var _c = feature.properties.source.toUpperCase();
+//        if (sources[_c]) {
+//            marker.category = sources[_c].idx;
+//        }
+
+//        marker.data.icon = L.icon(...);  // See http://leafletjs.com/reference.html#icon
+//        var style = createCircleFeatureStyle(feature);
+//        marker.data.icon = L.circleMarker(ll, style);
+        marker.properties = feature.properties;
+        marker.click= _clickMarkerDetail;
+        markers.RegisterMarker(marker);
+    } else {
     // setup events
     layer.on({
         mouseover : highlightFeature,
         mouseout : resetHighlight,
-        click : function(e) {
-            var feature = e.target.feature;
-            var text = "";
-            var points = [feature];
-            var text = featureToTable(points);
-            $("#infodetail").html(text);
-        }
+        click : _clickMarkerDetail
     });
+    }
     if (!showAllPoints) {
         layer.options.opacity = 0;
     }
 }
+
+
+function _clickMarkerDetail(e) {
+        var feature = e.target.feature;
+        var text = "";
+        console.log(e);
+        if (!feature) {
+            feature = e.target;
+        }
+        var points = [feature];
+        var text = featureToTable(points);
+        $("#infodetail").html(text);
+}
+
 /**
  * as the window moves around the map, reset the four corners that we track
  */
@@ -310,7 +394,46 @@ function drawGrid() {
             if (markers) {
                 map.removeLayer(markers);
             }
-            markers = L.markerClusterGroup();
+            markers = new PruneClusterForLeaflet(60);
+            markers.BuildLeafletClusterIcon = function(cluster) {
+                var e = new L.Icon.MarkerCluster();
+                e.stats = cluster.stats;
+                e.population = cluster.population;
+                return e;
+            };
+            
+            markers.BuildLeafletCluster = function (cluster, position) {
+                var m = new L.Marker(position, {
+                    icon: markers.BuildLeafletClusterIcon(cluster)
+                  });
+
+                  m.on('click', function() {
+                      var markersArea = markers.Cluster.FindMarkersInArea(cluster.bounds);
+                      console.log(markersArea);
+                      var text = featureToTable(markersArea);
+                      $("#infodetail").html(text);
+                  });
+                  
+                  return m;
+            };
+            
+            markers.BuildLeafletMarker = function(marker, position) {
+                var m = new L.CircleMarker(position);
+                m.setOpacity = L.Util.falseFn; // a fake setOpacity method
+                this.PrepareLeafletMarker(m, marker);
+                return m;
+            }
+
+            markers.PrepareLeafletMarker  = function(leafletMarker, data) {
+                leafletMarker.setRadius(12);
+                if (data && data.properties && data.properties.source) {
+                    var style = createCircleFeatureStyle(data);
+                    leafletMarker.setStyle(style);
+                    leafletMarker.on("click", _clickMarkerDetail); 
+                }
+                leafletMarker.properties = data.properties;
+                // and other properties
+            }
         }
         var layer_ = L.geoJson(data, {
             onEachFeature : addPointsToMap,
@@ -560,7 +683,7 @@ function featureToTable(points) {
     // for each point, aggregate the data by "source"
     for (var i = 0; i < points.length; i++) {
         var l_ = points[i];
-        var ll = geoLayer.getLayer(l_._leaflet_id);
+//        var ll = geoLayer.getLayer(l_._leaflet_id);
         var l = points[i];
         var props = l.properties;
         if (props == undefined) {

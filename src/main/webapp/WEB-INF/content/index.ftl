@@ -15,8 +15,9 @@
         <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
     	<link rel="stylesheet" href="css/nabo.css"/>    
         <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
-        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.css" />
-        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.Default.css" />
+<!--        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.Default.css" />-->
+        <link rel="stylesheet" href="components/prune-cluster/dist/LeafletStyleSheet.css" />
 
    </head>
 <body>
@@ -136,7 +137,8 @@
     <script src="components/d3/d3.js"></script>
     <script src="components/c3/c3.js"></script>
     <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
-    <script src="components/leaflet-cluster/dist/leaflet.markercluster.js"></script>
+    <!-- <script src="components/leaflet-cluster/dist/leaflet.markercluster.js"></script> -->
+    <script src="components/prune-cluster/dist/PruneCluster.js"></script>
     
     <script src="js/nabo.js"></script>
     <script src="js/nabo-custom-graphs.js"></script>
@@ -149,16 +151,16 @@ var detail = 160;
 var shouldContinue = true;
 
 var sources = {
-	"ISLEIF"           : { name: 'ISLEIF', color: "red" },
-	"SAGAS"            : { name: 'Sagas' , color: "yellow"},
-	"SANDAY"           : { name: 'Sanday' , color: "lightgreen"},
-	"MORTUARY"         : { name: "Mortuary Database" , color: "black" },
-	"FARM HISTORIES"   : { name: "Farm Histories", color : "brown" },
-	"EXCAVATED SITE DB": {name: "Excavated Site DB", color:"orange"},
-	"PMS"              : { name: "NABO PMS", color: 'darkblue' },
-    "NABONE"           : { name: "NABONE", color: 'BlueViolet'},
-	"SEAD"             : { name: "SEAD", color: "darkgreen"},
-	"TDAR"             : { name: "tDAR", color: "darkred"}
+	"ISLEIF"           : { name: 'ISLEIF', color: "red", idx:0 },
+	"SAGAS"            : { name: 'Sagas' , color: "yellow", idx:1},
+	"SANDAY"           : { name: 'Sanday' , color: "lightgreen", idx:2},
+	"MORTUARY"         : { name: "Mortuary Database" , color: "black" , idx:3},
+	"FARM HISTORIES"   : { name: "Farm Histories", color : "brown", idx:4 },
+	"EXCAVATED SITE DB": {name: "Excavated Site DB", color:"orange", idx:5},
+	"PMS"              : { name: "NABO PMS", color: 'darkblue' , idx:6},
+    "NABONE"           : { name: "NABONE", color: 'BlueViolet', idx:7},
+	"SEAD"             : { name: "SEAD", color: "darkgreen", idx:8},
+	"TDAR"             : { name: "tDAR", color: "darkred", idx:9}
 };
 
 var cookieValue = $.cookie("test");

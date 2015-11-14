@@ -18,6 +18,7 @@
     "jquery": "~2.1.3",
     "leaflet": "~0.7.3",
     "leaflet-cluster": "https://github.com/Leaflet/Leaflet.markercluster.git#v0.4.0-hotfix.1 ",
+    "prune-cluster": "https://github.com/SINTEF-9012/PruneCluster.git#1.0.0",
     "chroma-js": "~0.6.1",
     "d3": "~3.5.5",
     "bootstrap": "~3.3.2",
