@@ -18,6 +18,7 @@ public class SourceDao {
         manager.persist(entry);        
     }
  
+//SELECT DISTINCT "data"->'properties'->>'source' from source_data;
     
     
 }
