@@ -17,8 +17,9 @@ puts '{
   "features": ['
 
 json = JSON.parse(text)
+first = true
 json.each do |entry|
-  tmp = JSON.parse('{"type":"Feature","geometry":{"type":"Point","coordinates":[]},"properties":{}}')
+  tmp = JSON.parse('{"type":"Feature","geometry":{"type":"Point"},"properties":{}}')
   lat = nil
   lon = nil
   entry.each_pair do |k, v|
@@ -88,9 +89,17 @@ json.each do |entry|
     end
    tmp["properties"][k] = v
   end
-  tmp['geometry']['coordinates'] = [lat,lon]
-  puts tmp.to_json
-  puts ","
+  if (lat == "----------" || lat == "----")
+    next
+  end
+  unless (lat.nil? && lon.nil?)
+    tmp['geometry']['coordinates'] = [lat,lon]
+  end
+  unless first
+    puts ","
+  end
+  first = false
+  puts JSON.pretty_generate(tmp)
 #    entry.do_something
 end
 
