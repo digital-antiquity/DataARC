@@ -11,6 +11,7 @@
               <column name="id" autoIncrement="true" type="bigserial" />
               <column name="data" type="json" />
 			  <column name="source" type="varchar(255)"/>
-			  <column name="date_created" type="timestamp" default="now()" />
+			  <column name="date_created" type="timestamp" defaultValue="now()" />
+          </createTable>
       </changeSet>
 </databaseChangeLog>
