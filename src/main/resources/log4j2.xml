@@ -7,7 +7,7 @@
     </Appenders>
     <Loggers>
         <Logger name="org.dataarc" level="debug">
-            <AppenderRef ref="STDOUT" />
+<!--             <AppenderRef ref="STDOUT" /> -->
         </Logger>
         <Root level="info">
             <AppenderRef ref="STDOUT" />
