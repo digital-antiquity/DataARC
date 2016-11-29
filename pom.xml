@@ -129,7 +129,11 @@
             <artifactId>liquibase-core</artifactId>
             <version>3.5.3</version>
         </dependency>
-        
+        <dependency>
+            <groupId>com.github.lonnyj</groupId>
+            <artifactId>liquibase-spatial</artifactId>
+            <version>1.2.1</version>
+        </dependency>
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

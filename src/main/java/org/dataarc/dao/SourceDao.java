@@ -17,6 +17,13 @@ public class SourceDao {
     public void save(DataEntry entry) {
         manager.persist(entry);        
     }
+
+    @Transactional(readOnly=false)
+    public void truncate() {
+        manager.createQuery("delete from DataEntry").executeUpdate();
+        // TODO Auto-generated method stub
+        
+    }
  
 //SELECT DISTINCT "data"->'properties'->>'source' from source_data;
     
