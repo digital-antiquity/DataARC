@@ -59,7 +59,7 @@ json.each do |entry|
             domPerc[item] = members[i]
           end
           tmp["properties"]['perc'] = perc
-          tmp["properties"]['domPerc'] = perc
+          tmp["properties"]['domPerc'] = domPerc
         else 
           json_.each_pair do |kk,vv|
             vv.each_with_index do |vvv,i|
@@ -93,7 +93,7 @@ json.each do |entry|
     next
   end
   unless (lat.nil? && lon.nil?)
-    tmp['geometry']['coordinates'] = [lat,lon]
+    tmp['geometry']['coordinates'] = [lon,lat]
   end
   unless first
     puts ","
