@@ -1,6 +1,5 @@
-package org.digitalantiquity.bce.service;
+package org.dataarc.core.legacy.search;
 
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -32,9 +31,10 @@ public final class LowercaseWhiteSpaceStandardAnalyzer extends Analyzer {
     };
 
     @Override
-    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+    protected TokenStreamComponents createComponents(String fieldName) {
+        
         // TOKENIZING ON (punctuation?)(space +) (punctuation?)
-        Tokenizer st = new PatternTokenizer(reader, Pattern.compile("((^|\\W|\\_)?(\\s+)(\\W|\\_|$)?)"), -1);
+        Tokenizer st = new PatternTokenizer( Pattern.compile("((^|\\W|\\_)?(\\s+)(\\W|\\_|$)?)"), -1);
         // FIXME: this still lets things like "carp)" through as well as "carp" - it'd be better if the latter was the only thing
 
         // http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters

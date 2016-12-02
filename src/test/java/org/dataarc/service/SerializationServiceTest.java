@@ -2,9 +2,10 @@ package org.dataarc.service;
 
 import java.io.IOException;
 
-import org.dataarc.query.FilterQuery;
-import org.dataarc.query.MatchType;
-import org.dataarc.query.QueryPart;
+import org.dataarc.core.query.FilterQuery;
+import org.dataarc.core.query.MatchType;
+import org.dataarc.core.query.QueryPart;
+import org.dataarc.core.service.SerializationService;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,8 @@
-package org.dataarc.service;
+package org.dataarc.core.service;
 
 import java.io.IOException;
 
-import org.dataarc.query.FilterQuery;
+import org.dataarc.core.query.FilterQuery;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

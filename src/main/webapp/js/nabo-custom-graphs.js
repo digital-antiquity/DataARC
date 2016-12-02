@@ -19,22 +19,13 @@ function createCustomGraphs(key, input) {
     return txt;
 }
 
-function writePieChart(id, percLabels, pkey, input) {
+function writePieChart(id, pkey, input) {
 //    console.log(id);
     var txt1 = "<div id='" + id +"'></div>";
     var data1 = [];
-    for (v in input) {
-        if (!input.hasOwnProperty(v)) {
-            continue;
-        }
-        var jd = JSON.parse(v);
-        for (var i=0; i < percLabels.length; i++) {
-            var val = parseFloat(jd[pkey][i]);
-            if (val > 0) {
-                data1.push([percLabels[i],val]);
-            }
-        }
-    }
+    $.each(input, function(k,v) {
+        data1.push([k,v]);
+    });
 
     var chartData1 = {
         bindto : "#" + id,
@@ -51,18 +42,21 @@ function writePieChart(id, percLabels, pkey, input) {
 }
 
 var counter= 0;
-function createNaboneGraph(key, input) {
+function createNaboneGraph(key, input_) {
+    var input;
+    $.each(input_, function(k,v) {
+        input = JSON.parse(k);
+    });
+    console.log(input);
     var id = "radioChart" + counter;
-    var percLabels = ["Dom %","Whale %","Seal %","Walrus %","Caribou %" , "Other mam %" ,"Bird %" , "Fish %", "Mol Arth Gast %"];
     console.log(key, input);
     var pkey = 'perc';
-    var txt = writePieChart(id,percLabels,pkey,input);
+    var txt = writePieChart(id,pkey,input.perc);
     
-    var domPercLabels = ["Bos dom %", "Canis dom %", "Sus dom %",  "Equ dom %",  " Cap dom %",  "Ovi dom %", "Ovca dom %", "Felis dom %"];
     var dkey = "domPerc";
     counter++;
     id = "radioChart" + counter;
-    txt += writePieChart(id,domPercLabels,dkey,input);
+    txt += writePieChart(id,dkey,input.domPerc);
     counter++;
     return txt;
 }
@@ -75,50 +69,46 @@ function createSeadGraph(key, input) {
     var grouping = [];
     var categories = ["Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"];
     var ignore = [];
+    var cats = {};
     for (v in input) {
         if (!input.hasOwnProperty(v)) {
             continue;
         }
-        var jd = JSON.parse(v);
+        var jd = JSON.parse(v).samples;
+        console.log(jd);
+        var num =0;
         for (site in jd) {
             if (!jd.hasOwnProperty(site)) {
                 continue;
             }
             var samples = jd[site];
-            
-            for (var s=0;s<samples.length;s++) {
-                sampleLabels.push(samples[s][0]);
-            }
-            for (var c =0 ; c < categories.length; c++) {
-                data[c] = [];
-                var cat = categories[c];
-                // we need to add one to make space for the label at the beginning
-                var catSampleOffset = c+1;
-                var total = 0.0;
-                // test each category to see what actually needs to be displayed
-                for (var s =0; s < samples.length; s++) {
-                    total += parseFloat(samples[s][catSampleOffset]);
-                }
-//                console.log(cat +" total:" + total);
-                // skip category entries that have no values
-                if (!(total > 0.0)) {
-                    ignore.push(cat);
-                    continue;
-                }
-                // buiild the actual output array per category
-                for (var s =0; s < samples.length; s++) {
-                    if (s == 0) {
-                        data[c][0] = cat;
-                    } 
-                    data[c][s+1] = samples[s][catSampleOffset];
-                }
+            console.log(site);
+            console.log(samples);
+            for (var i=0; i < samples.length; i++) {
+                $.each(samples[i], function(k, vv) {
+//                    console.log(k,vv);
+                    if (k == 'Sample') {
+                        sampleLabels.push(vv);
+                    } else {
+                        var cat = k;
+                        var val = parseFloat(vv);
+                        if (cats[cat] == undefined) {
+                            cats[cat] = [];
+                        }
+                        cats[cat].push(val);
+                    }
+                });
                 
             }
-            
+            num++;
+            for (var c =0 ; c < categories.length; c++) {
+                var cat = categories[c];
+                var out = [cat];
+                out = out.concat(cats[cat]);
+                data[c] = out;
+            }
         }
     }
-    categories = $(categories).not(ignore).get();
-//    console.log("filtered:", categories);
     var chartData = {
         bindto : "#barChart",
         data : {

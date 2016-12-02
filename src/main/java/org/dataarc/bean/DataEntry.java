@@ -25,8 +25,8 @@ public class DataEntry extends AbstractPersistable {
     }
 
     public DataEntry(String source, String data) {
-        this.source = source;
-        this.data = data;
+        this.setSource(source);
+        this.setData(data);
     }
 
     @Column(name="date_start")
@@ -57,6 +57,22 @@ public class DataEntry extends AbstractPersistable {
 
     public void setStart(Integer start) {
         this.start = start;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Column

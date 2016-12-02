@@ -274,29 +274,19 @@ L.Icon.MarkerCluster = L.Icon.extend({
  */
 function addPointsToMap(feature, layer) {
     if (cluster()) {
-//        markers.addLayer(layer);
-//        console.log(feature.geometry);
         var ll = feature.geometry.coordinates;
         var marker = new PruneCluster.Marker(ll[1],ll[0]);
         marker.category = feature.properties.source.toUpperCase();
-//        var _c = feature.properties.source.toUpperCase();
-//        if (sources[_c]) {
-//            marker.category = sources[_c].idx;
-//        }
-
-//        marker.data.icon = L.icon(...);  // See http://leafletjs.com/reference.html#icon
-//        var style = createCircleFeatureStyle(feature);
-//        marker.data.icon = L.circleMarker(ll, style);
         marker.properties = feature.properties;
         marker.click= _clickMarkerDetail;
         markers.RegisterMarker(marker);
     } else {
-    // setup events
-    layer.on({
-        mouseover : highlightFeature,
-        mouseout : resetHighlight,
-        click : _clickMarkerDetail
-    });
+        // setup events
+        layer.on({
+            mouseover : highlightFeature,
+            mouseout : resetHighlight,
+            click : _clickMarkerDetail
+        });
     }
     if (!showAllPoints) {
         layer.options.opacity = 0;

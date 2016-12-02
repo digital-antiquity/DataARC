@@ -1,4 +1,6 @@
-package org.dataarc.dao;
+package org.dataarc.core.dao;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +25,10 @@ public class SourceDao {
         manager.createQuery("delete from DataEntry").executeUpdate();
         // TODO Auto-generated method stub
         
+    }
+
+    public List<DataEntry> findAll() {
+        return manager.createQuery("from DataEntry", DataEntry.class).getResultList();
     }
  
 //SELECT DISTINCT "data"->'properties'->>'source' from source_data;

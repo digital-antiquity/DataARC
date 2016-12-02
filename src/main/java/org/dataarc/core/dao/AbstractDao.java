@@ -1,4 +1,4 @@
-package org.dataarc.dao;
+package org.dataarc.core.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

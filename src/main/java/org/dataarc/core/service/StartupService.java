@@ -1,8 +1,9 @@
-package org.digitalantiquity.bce.service;
+package org.dataarc.core.service;
 
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.dataarc.core.legacy.search.IndexingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class StartupService implements ApplicationListener<ContextRefreshedEvent> {
 
-    private static final String GOOGLE_SPREADSHEET_ID = "googleSpreadsheetId";
 
     private final Logger logger = Logger.getLogger(getClass());
 
@@ -31,7 +31,7 @@ public class StartupService implements ApplicationListener<ContextRefreshedEvent
     // get the spreadsheet id, and re-index on startup
     @Override
     public void onApplicationEvent(ContextRefreshedEvent arg0) {
-        indexingService.index(myProperties.getProperty(GOOGLE_SPREADSHEET_ID, "13w7auynGOgYUkLaD7fAMw_--m_a0DrmDqK1ImhtYgoQ"));
+        indexingService.reindex();
     }
 
 }

@@ -3,6 +3,7 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	
 	<!DOCTYPE html>
+<meta charset="utf-8">
 <html>
     <head>
         <title>CyberNABO Prototype</title>
@@ -134,7 +135,7 @@
     <script src="components/leaflet/dist/leaflet.js"></script>
     <script src="components/leaflet-pip/leaflet-pip.js"></script>
     
-    <script src="components/d3/d3.js"></script>
+    <script charset="utf-8" src="components/d3/d3.js"></script>
     <script src="components/c3/c3.js"></script>
     <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
     <!-- <script src="components/leaflet-cluster/dist/leaflet.markercluster.js"></script> -->

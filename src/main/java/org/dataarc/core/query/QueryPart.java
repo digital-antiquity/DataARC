@@ -1,4 +1,4 @@
-package org.dataarc.query;
+package org.dataarc.core.query;
 
 public class QueryPart {
 

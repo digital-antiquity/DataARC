@@ -1,11 +1,11 @@
-package org.dataarc.service;
+package org.dataarc.core.service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
 import org.dataarc.bean.DataEntry;
-import org.dataarc.dao.SourceDao;
+import org.dataarc.core.dao.SourceDao;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.geojson.GeoJsonObject;

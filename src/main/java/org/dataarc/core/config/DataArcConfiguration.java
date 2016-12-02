@@ -1,4 +1,4 @@
-package org.dataarc.config;
+package org.dataarc.core.config;
 
 import java.util.Properties;
 
@@ -23,7 +23,7 @@ import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "org.dataarc" },
+@ComponentScan(basePackages = { "org.dataarc.core" },
         excludeFilters = {
                 @Filter(type = FilterType.ASSIGNABLE_TYPE,
                         value = {
@@ -54,7 +54,7 @@ public class DataArcConfiguration {
         dataSource.setPassword("");
         return dataSource;
     }
-    
+
     @Bean
     public SpringLiquibase getLiquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();
@@ -63,7 +63,7 @@ public class DataArcConfiguration {
         liquibase.setContexts("test, production");
         return liquibase;
     }
-    
+
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();

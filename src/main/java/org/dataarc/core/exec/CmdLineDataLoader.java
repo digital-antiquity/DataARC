@@ -1,6 +1,6 @@
-package org.dataarc.exec;
+package org.dataarc.core.exec;
 
-import org.dataarc.service.ImportService;
+import org.dataarc.core.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package org.dataarc.service;
 
-import org.dataarc.config.DataArcConfiguration;
-import org.dataarc.dao.QueryDao;
+import org.dataarc.core.config.DataArcConfiguration;
+import org.dataarc.core.dao.QueryDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

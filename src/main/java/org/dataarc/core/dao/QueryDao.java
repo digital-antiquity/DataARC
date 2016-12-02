@@ -1,4 +1,4 @@
-package org.dataarc.dao;
+package org.dataarc.core.dao;
 
 import java.util.HashMap;
 import java.util.List;

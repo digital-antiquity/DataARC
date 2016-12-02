@@ -1,4 +1,4 @@
-package org.digitalantiquity.bce;
+package org.dataarc.core.legacy.search;
 
 /**
  * FIeld Name constants

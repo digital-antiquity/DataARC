@@ -1,6 +1,6 @@
-package org.dataarc.service;
+package org.dataarc.core.service;
 
-import org.dataarc.dao.QueryDao;
+import org.dataarc.core.dao.QueryDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
