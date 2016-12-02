@@ -13,11 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class AbstractServiceTest {
     
     @Autowired
-    private QueryDao queryDao;
+    public QueryDao queryDao;
     
-    @Test
-    public void testQuery() {
-        queryDao.getDistinctValues("source");
-    }
 
 }
