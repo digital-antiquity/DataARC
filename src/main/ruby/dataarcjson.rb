@@ -43,6 +43,7 @@ json.each do |entry|
       v_ = v_.gsub(/,\[\[/,",[")
       json_ = JSON.parse(v_)
 
+      ## IF NABONE
       if (json_.kind_of?(Hash))
         if (json_.has_key?("perc") && json_.has_key?("domPerc"))
           ## cleanup nabone
@@ -69,6 +70,8 @@ json.each do |entry|
               # puts "#{members}"
               instruments = ["Sample","Aquatics", "Carrion", "Disturbed/arable", "Dung/foul habitats", "Ectoparasite", "General synanthropic", "Halotolerant", "Heathland & moorland", "Indicators: Coniferous", "Indicators: Deciduous", "Indicators: Dung", "Indicators: Standing water", "Meadowland", "Mould beetles", "Open wet habitats", "Pasture/Dung", "Sandy/dry disturbed/arable", "Stored grain pest", "Wetlands/marshes", "Wood and trees"]
               instruments.each_with_index do |itm,j|
+                members[j] = "S" + members[j] if (itm == "Sample" && members[j][0] == 'A')
+                # puts members[j] if (itm == "Sample")
                 cleaned[itm] = members[j]
               end
               cleaned['SiteCode'] = kk
@@ -77,9 +80,11 @@ json.each do |entry|
               sites.push(cleaned)
             end
           end
-          puts sites
-          puts "\n"
-          tmp['properties']['samples'] = sites
+          tmp['properties']['Samples'] = sites
+          # puts json_
+          # IF SEAD
+          # json_ = v.gsub(/\"AMP/,"\"SAMP")
+#          tmp['properties']['samples'] = json_
         end
 
         

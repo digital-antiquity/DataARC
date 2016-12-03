@@ -1,5 +1,6 @@
 package org.dataarc.core.exec;
 
+import org.apache.commons.lang.StringUtils;
 import org.dataarc.core.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,12 +17,16 @@ public class CmdLineDataLoader extends AbstractDataLoader {
         final AnnotationConfigApplicationContext applicationContext = getAnnotationConfigContext();
         CmdLineDataLoader commandline = new CmdLineDataLoader();
         applicationContext.getAutowireCapableBeanFactory().autowireBean(commandline);
-        commandline.load();
+        String path = "src/main/data/dataarc-geojson.json";
+        if (args != null && args.length > 0 && StringUtils.isNotBlank(args[0])) {
+            path = args[0];
+        }
+        commandline.load(path);
         applicationContext.close();
     }
 
-    private void load() {
-        importService.loadData("src/main/data/dataarc-geojson.json");
+    private void load(String path) {
+        importService.loadData(path);
     }
 
 }
