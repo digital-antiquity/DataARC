@@ -61,6 +61,7 @@ json.each do |entry|
           tmp["properties"]['perc'] = perc
           tmp["properties"]['domPerc'] = domPerc
         else 
+          sites = [];
           json_.each_pair do |kk,vv|
             vv.each_with_index do |vvv,i|
               cleaned = {}
@@ -70,12 +71,15 @@ json.each do |entry|
               instruments.each_with_index do |itm,j|
                 cleaned[itm] = members[j]
               end
+              cleaned['SiteCode'] = kk
               # puts cleaned
               vv[i] = cleaned
+              sites.push(cleaned)
             end
           end
-          # puts json_
-          tmp['properties']['samples'] = json_
+          puts sites
+          puts "\n"
+          tmp['properties']['samples'] = sites
         end
 
         
