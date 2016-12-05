@@ -6,20 +6,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.dataarc.util.StringJsonUserType;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import com.vividsolutions.jts.geom.Point;
 
 @Entity
 @Table(name="source_data")
-@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
+//@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
 public class DataEntry extends AbstractPersistable {
 
-    @Column(columnDefinition = "geometry(Point,4326)")
-    private Point position;
+//    @Column(columnDefinition = "geometry(Point,4326)")
+    private transient Point position;
     
     public DataEntry() {
     }
@@ -76,7 +73,7 @@ public class DataEntry extends AbstractPersistable {
     }
 
     @Column
-    @Type(type="StringJsonObject")
+//    @Type(type="StringJsonObject")
     private String data;
 
     @Column
