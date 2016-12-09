@@ -1,4 +1,6 @@
-[
+{
+  "type": "FeatureCollection",
+  "features": [
 {
   "type": "Feature",
   "geometry": {
@@ -88837,4 +88839,4 @@
     "NISP": 232
   }
 }
-]
+]}

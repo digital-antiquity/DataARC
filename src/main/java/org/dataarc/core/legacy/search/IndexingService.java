@@ -25,6 +25,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.SourceDao;
 import org.dataarc.core.service.SerializationService;
+import org.dataarc.core.service.SourceRepository;
 import org.geojson.Feature;
 import org.locationtech.spatial4j.context.SpatialContext;
 import org.locationtech.spatial4j.shape.Point;
@@ -59,6 +60,9 @@ public class IndexingService {
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
     private static LowercaseWhiteSpaceStandardAnalyzer analyzer = new LowercaseWhiteSpaceStandardAnalyzer();
 
+    @Autowired
+    SourceRepository repository;
+    
     /**
      * Builds the index
      * 
@@ -69,7 +73,7 @@ public class IndexingService {
             IndexWriter writer = setupLuceneIndexWriter("bce");
             writer.deleteAll();
             writer.commit();
-            List<DataEntry> entries = sourceDao.findAll();
+            List<DataEntry> entries = repository.findAll();
             for (DataEntry entry : entries) {
                 indexRow(writer, new ObjectMapper().readValue(entry.getData(), Feature.class));
             }

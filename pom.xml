@@ -119,7 +119,12 @@
             <version>3.2.2</version>
         </dependency>
 
-        <dependency>
+      <dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-mongodb</artifactId>
+    <version>1.9.5.RELEASE</version>
+</dependency>
+                <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>

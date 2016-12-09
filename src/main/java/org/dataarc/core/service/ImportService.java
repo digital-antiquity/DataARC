@@ -12,6 +12,7 @@ import org.geojson.GeoJsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +28,22 @@ public class ImportService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private SourceDao sourceDao;
+//    @Autowired
+//    private SourceDao sourceDao;
 
+
+    @Autowired
+    private SourceRepository repository;
+
+    @Autowired
+    private MongoTemplate template;
+    
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     @Transactional(readOnly = false)
     public void loadData(String filename) {
         try {
-            sourceDao.truncate();
+            repository.deleteAll();
             FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(filename), FeatureCollection.class);
             for (Iterator<Feature> iterator = featureCollection.getFeatures().iterator(); iterator.hasNext();) {
                 Feature feature = iterator.next();
@@ -46,6 +54,8 @@ public class ImportService {
                 entry.setEnd(parseIntProperty(feature.getProperties().get("End")));
                 entry.setStart(parseIntProperty(feature.getProperties().get("Start")));
                 GeoJsonObject geometry = feature.getGeometry();
+//                template.save(feature, "dataEntry");
+                entry.setProperties(feature.getProperties());
                 if (geometry instanceof org.geojson.Point) {
                     org.geojson.Point point_ = (org.geojson.Point) geometry;
                     if (point_.getCoordinates() != null) {
@@ -55,7 +65,7 @@ public class ImportService {
                         entry.setPosition(point);
                     }
                 }
-                sourceDao.save(entry);
+                repository.save(entry);
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block

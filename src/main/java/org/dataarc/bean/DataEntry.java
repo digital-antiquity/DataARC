@@ -1,25 +1,29 @@
 package org.dataarc.bean;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import com.vividsolutions.jts.geom.Point;
 
-@Entity
-@Table(name="source_data")
+//@Entity
+//@Table(name="source_data")
 //@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
-public class DataEntry extends AbstractPersistable {
+public class DataEntry {
 
 //    @Column(columnDefinition = "geometry(Point,4326)")
+    @Transient
     private transient Point position;
     
     public DataEntry() {
     }
+    
+    @Id
+    public String id;
 
     public DataEntry(String source, String data) {
         this.setSource(source);
@@ -72,6 +76,14 @@ public class DataEntry extends AbstractPersistable {
         this.data = data;
     }
 
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
     @Column
 //    @Type(type="StringJsonObject")
     private String data;
@@ -81,6 +93,8 @@ public class DataEntry extends AbstractPersistable {
 
     @Column(name="date_created", nullable=false)
     private Date dateCreated;
+    private Map<String, Object> properties;
+
     
     
     
