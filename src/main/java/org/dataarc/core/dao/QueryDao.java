@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.dataarc.core.service.SourceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +20,16 @@ public class QueryDao extends AbstractDao {
     // http://stormatics.com/howto-use-json-functionality-in-postgresql/
     // https://www.postgresql.org/docs/current/static/datatype-json.html
 
+    @Autowired
+    SourceRepository repository;
+    
+    @Autowired
+    MongoTemplate template;
+    
     public Map<String, Long> getDistinctValues(String fieldName) {
         String sql = "SELECT \"data\"->'properties'->>'" + fieldName + "', count(id) from source_data group by 1";
         logger.debug(sql);
+        template.executeCommand(String.format("%s.myCollection.distinct(\"%s\")","dataEntry",fieldName));
         Query query = getManager().createNativeQuery(sql);
         Map<String,Long> map = new HashMap<>();
         List resultList = query.getResultList();
