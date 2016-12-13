@@ -29,7 +29,7 @@ import com.mongodb.MongoClient;
 @Configuration
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 @EnableTransactionManagement
-@EnableMongoRepositories(basePackages = "org.dataarc.core")
+@EnableMongoRepositories(basePackages = {"org.dataarc.core.dao.mongo", "org.dataarc.core.service.mongo"})
 @ComponentScan(basePackages = { "org.dataarc.core" },
         excludeFilters = {
                 @Filter(type = FilterType.ASSIGNABLE_TYPE,

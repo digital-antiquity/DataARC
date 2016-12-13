@@ -2,7 +2,6 @@ package org.dataarc.core.legacy.search;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.SourceDao;
 import org.dataarc.core.service.SerializationService;
-import org.dataarc.core.service.SourceRepository;
+import org.dataarc.core.service.mongo.SourceRepository;
 import org.geojson.Feature;
 import org.locationtech.spatial4j.context.SpatialContext;
 import org.locationtech.spatial4j.shape.Point;
