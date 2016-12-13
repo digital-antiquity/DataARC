@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.ogm.jpa.HibernateOgmPersistence;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoClientFactoryBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -25,7 +25,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mongodb.MongoClient;
-import com.opensymphony.xwork2.inject.Inject;
 
 @Configuration
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
@@ -50,23 +49,24 @@ public class DataArcConfiguration {
     @Resource
     private Environment env;
 
-    @Bean(name = "mongoEntityManager")
-    public LocalContainerEntityManagerFactoryBean mongoEntityManager() throws Throwable {
-        Map<String, Object> properties = new HashMap<String, Object>();
-        properties.put("javax.persistence.transactionType", "resource_local");
-        properties.put("hibernate.ogm.datastore.provider", "mongodb");
-        properties.put("hibernate.ogm.datastore.host", env.getProperty(DB_HOST, LOCALHOST));
-        properties.put("hibernate.ogm.datastore.port", env.getProperty(DB_PORT, Integer.class, _27017));
-        properties.put("hibernate.ogm.datastore.database", DATABASE_NAME);
-        properties.put("hibernate.ogm.datastore.create_database", "true");
-
-        LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
-        entityManager.setPackagesToScan("org.dataarc.bean");
-        entityManager.setPersistenceUnitName("mongoPersistenceUnit");
-        entityManager.setJpaPropertyMap(properties);
-        entityManager.setPersistenceProviderClass(HibernateOgmPersistence.class);
-        return entityManager;
-    }
+    
+//    @Bean(name = "mongoEntityManager")
+//    public LocalContainerEntityManagerFactoryBean mongoEntityManager() throws Throwable {
+//        Map<String, Object> properties = new HashMap<String, Object>();
+//        properties.put("javax.persistence.transactionType", "resource_local");
+//        properties.put("hibernate.ogm.datastore.provider", "mongodb");
+//        properties.put("hibernate.ogm.datastore.host", env.getProperty(DB_HOST, LOCALHOST));
+//        properties.put("hibernate.ogm.datastore.port", env.getProperty(DB_PORT, Integer.class, _27017));
+//        properties.put("hibernate.ogm.datastore.database", DATABASE_NAME);
+//        properties.put("hibernate.ogm.datastore.create_database", "true");
+//
+//        LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
+//        entityManager.setPackagesToScan("org.dataarc.bean");
+//        entityManager.setPersistenceUnitName("mongoPersistenceUnit");
+//        entityManager.setJpaPropertyMap(properties);
+//        entityManager.setPersistenceProviderClass(HibernateOgmPersistence.class);
+//        return entityManager;
+//    }
 
     @Bean
     public MongoDbFactory mongoDbFactory() throws Exception {
@@ -93,15 +93,15 @@ public class DataArcConfiguration {
     // return new MongoTemplate(mongo().getObject(), env.getProperty(DB_NAME));
     // }
 
-    @Bean(name = "mongoTransactionManager")
-    public PlatformTransactionManager transactionManager() throws Throwable {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(mongoEntityManager().getObject());
-        return transactionManager;
-    }
+//    @Bean(name = "mongoTransactionManager")
+//    public PlatformTransactionManager transactionManager() throws Throwable {
+//        JpaTransactionManager transactionManager = new JpaTransactionManager();
+//        transactionManager.setEntityManagerFactory(mongoEntityManager().getObject());
+//        return transactionManager;
+//    }
 
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
+//    @Bean
+//    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+//        return new PersistenceExceptionTranslationPostProcessor();
+//    }
 }

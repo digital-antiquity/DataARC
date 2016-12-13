@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,24 +24,20 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 @Service
-@Transactional
+//@Transactional
 public class ImportService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
-
-//    @Autowired
-//    private SourceDao sourceDao;
-
 
     @Autowired
     private SourceRepository repository;
 
     @Autowired
     private MongoTemplate template;
-    
+
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-    @Transactional(readOnly = false)
+//    @Transactional(readOnly = false)
     public void loadData(String filename) {
         try {
             repository.deleteAll();
@@ -52,17 +49,17 @@ public class ImportService {
                 String json = new ObjectMapper().writeValueAsString(feature);
                 DataEntry entry = new DataEntry(source, json);
                 entry.setEnd(parseIntProperty(feature.getProperties().get("End")));
+                 entry.setTitle((String) feature.getProperties().get("Title"));
                 entry.setStart(parseIntProperty(feature.getProperties().get("Start")));
                 GeoJsonObject geometry = feature.getGeometry();
-//                template.save(feature, "dataEntry");
+                // template.save(feature, "dataEntry");
                 entry.setProperties(feature.getProperties());
                 if (geometry instanceof org.geojson.Point) {
                     org.geojson.Point point_ = (org.geojson.Point) geometry;
                     if (point_.getCoordinates() != null) {
                         double latitude = point_.getCoordinates().getLatitude();
                         double longitude = point_.getCoordinates().getLongitude();
-                        Point point = geometryFactory.createPoint(new Coordinate(longitude, latitude));
-                        entry.setPosition(point);
+                        entry.setPosition(new GeoJsonPoint(longitude,latitude));
                     }
                 }
                 repository.save(entry);

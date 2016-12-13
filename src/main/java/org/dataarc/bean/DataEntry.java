@@ -7,6 +7,7 @@ import javax.persistence.Column;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -15,13 +16,11 @@ import com.vividsolutions.jts.geom.Point;
 //@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
 public class DataEntry {
 
-//    @Column(columnDefinition = "geometry(Point,4326)")
-    @Transient
-    private transient Point position;
-    
+    private GeoJsonPoint position;
+
     public DataEntry() {
     }
-    
+
     @Id
     public String id;
 
@@ -30,19 +29,21 @@ public class DataEntry {
         this.setData(data);
     }
 
-    @Column(name="date_start")
+    @Column(name = "date_start")
     private Integer start;
-    @Column(name="date_end")
+    @Column(name = "date_end")
     private Integer end;
+
+    @Column(name = "title")
+    private String title;
     
-    public Point getPosition() {
+    public GeoJsonPoint getPosition() {
         return position;
     }
 
-    public void setPosition(Point position) {
+    public void setPosition(GeoJsonPoint position) {
         this.position = position;
     }
-
 
     public Integer getEnd() {
         return end;
@@ -85,17 +86,27 @@ public class DataEntry {
     }
 
     @Column
-//    @Type(type="StringJsonObject")
+    // @Type(type="StringJsonObject")
     private String data;
 
     @Column
     private String source;
 
-    @Column(name="date_created", nullable=false)
+    @Column(name = "date_created", nullable = false)
     private Date dateCreated;
     private Map<String, Object> properties;
 
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s (%s)", source, title, id);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    };
 }
