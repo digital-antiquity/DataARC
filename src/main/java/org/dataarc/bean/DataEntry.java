@@ -3,19 +3,16 @@ package org.dataarc.bean;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
-import org.dataarc.util.StringJsonUserType;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import com.vividsolutions.jts.geom.Point;
 
-@Entity
-@Table(name="source_data")
-@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
+//@Entity
+//@Table(name="source_data")
+//@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
+@SolrDocument
 public class DataEntry extends AbstractPersistable {
 
     @Column(columnDefinition = "geometry(Point,4326)")

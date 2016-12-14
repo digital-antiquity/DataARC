@@ -17,7 +17,6 @@
         <geotools.version>12.1</geotools.version>
         <postgresql.jdbc.version>9.4.1212</postgresql.jdbc.version>
         <hibernate.version>5.2.4.Final</hibernate.version>
-        <lucene.version>6.3.0</lucene.version>
     </properties>
 
     <dependencyManagement>
@@ -26,13 +25,6 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
                 <version>${spring.framework.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-bom</artifactId>
-                <version>${struts2.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -83,23 +75,26 @@
             <!-- LICENSE: BSD -->
         </dependency>
 
-        <!-- Struts 2 -->
+        <!-- https://mvnrepository.com/artifact/org.apache.solr/solr-solrj -->
         <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts2-core</artifactId>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>6.3.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.solr/solr -->
         <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts2-convention-plugin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts2-sitemesh-plugin</artifactId>
+            <artifactId>solr-solrj</artifactId>
+            <groupId>org.apache.solr</groupId>
+            <version>6.3.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts2-spring-plugin</artifactId>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-solr</artifactId>
+            <version>2.0.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -143,6 +138,15 @@
             <artifactId>liquibase-spatial</artifactId>
             <version>1.2.1</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/opensymphony/sitemesh -->
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+
+
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -221,13 +225,13 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
-		<!-- https://mvnrepository.com/artifact/org.locationtech.spatial4j/spatial4j -->
-		<dependency>
-		    <groupId>org.locationtech.spatial4j</groupId>
-		    <artifactId>spatial4j</artifactId>
-		    <version>0.6</version>
-		</dependency>
-        
+        <!-- https://mvnrepository.com/artifact/org.locationtech.spatial4j/spatial4j -->
+        <dependency>
+            <groupId>org.locationtech.spatial4j</groupId>
+            <artifactId>spatial4j</artifactId>
+            <version>0.6</version>
+        </dependency>
+
 
         <dependency>
             <groupId>de.grundid.opendatalab</groupId>
@@ -357,21 +361,17 @@
         <dependency>
             <artifactId>solr-solrj</artifactId>
             <groupId>org.apache.solr</groupId>
-            <version>${lucene.version}</version>
+            <version>6.3.0</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <artifactId>solr-core</artifactId>
             <groupId>org.apache.solr</groupId>
-            <version>${lucene.version}</version>
+            <version>6.3.0</version>
             <type>jar</type>
             <scope>compile</scope>
             <exclusions>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
                 <exclusion>
                     <artifactId>log4j</artifactId>
                     <groupId>log4j</groupId>
@@ -389,17 +389,17 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>${lucene.version}</version>
+            <version>6.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
-            <version>${lucene.version}</version>
+            <version>6.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>${lucene.version}</version>
+            <version>6.3.0</version>
         </dependency>
 
         <!-- logging -->
@@ -558,7 +558,14 @@
 
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
