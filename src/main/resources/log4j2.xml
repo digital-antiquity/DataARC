@@ -9,7 +9,7 @@
         <Logger name="org.dataarc" level="debug">
 <!--             <AppenderRef ref="STDOUT" /> -->
         </Logger>
-        <Root level="info">
+        <Root level="warn">
             <AppenderRef ref="STDOUT" />
         </Root>
     </Loggers>

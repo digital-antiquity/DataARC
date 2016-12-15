@@ -40,8 +40,8 @@ public class QueryServiceTest extends AbstractServiceTest {
     @Test
     public void testComplex() throws IOException {
         FilterQuery fq = new FilterQuery();
-        fq.getConditions().add(new QueryPart("source", "SEAD", MatchType.CONTAINS));
-        fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.EQUALS));
+        fq.getConditions().add(new QueryPart("source", "SEAD", MatchType.EQUALS));
+        fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE", MatchType.CONTAINS));
         Page<DataEntry> results = queryDao.getMatchingRows(fq);
         results.forEach(r -> {
             logger.debug("{}", r);

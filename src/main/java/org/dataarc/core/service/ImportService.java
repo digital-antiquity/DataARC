@@ -72,18 +72,15 @@ public class ImportService {
                 }
 
                 String json = new ObjectMapper().writeValueAsString(properties);
-                logger.debug(json);
+                if (json.contains("properties")) {
+                    logger.debug(">>>> " + json);
+                }
                 ContentStreamUpdateRequest request = new ContentStreamUpdateRequest("/update/json/docs");
                 request.setParam("json.command", "false");
                 request.setParam("split", "/");
 
                 request.addContentStream(new ContentStreamBase.StringStream(json));
                 getQueryResponse(request);
-
-                // DataEntry entry = new DataEntry(source, json);
-                // entry.setEnd(parseIntProperty(feature.getProperties().get("End")));
-                // entry.setStart(parseIntProperty(feature.getProperties().get("Start")));
-                // entry.setProperties(feature.getProperties());
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
