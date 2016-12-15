@@ -37,18 +37,16 @@ public class SolrDao {
     public Map<String, Long> getDistinctValues(String fieldName) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.addFacetField(fieldName);
+        solrQuery.setQuery("*:*");
         logger.debug("{}", solrQuery);
         QueryResponse query = solrTemplate.getSolrClient().query(solrQuery);
-        logger.debug("facet {}", query.getFacetField(fieldName));
         Map<String, Long> out = new HashMap<>();
         query.getFacetField(fieldName).getValues().forEach(count -> {
             out.put(count.getName(), count.getCount());
 
         });
+        logger.debug("{}", out);
         return out;
     }
-
-    
-
 
 }

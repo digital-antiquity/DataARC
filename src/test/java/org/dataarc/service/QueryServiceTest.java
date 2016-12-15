@@ -1,7 +1,6 @@
 package org.dataarc.service;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.dataarc.bean.DataEntry;
@@ -41,7 +40,7 @@ public class QueryServiceTest extends AbstractServiceTest {
     public void testComplex() throws IOException {
         FilterQuery fq = new FilterQuery();
         fq.getConditions().add(new QueryPart("source", "SEAD", MatchType.EQUALS));
-        fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE", MatchType.CONTAINS));
+        fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
         Page<DataEntry> results = queryDao.getMatchingRows(fq);
         results.forEach(r -> {
             logger.debug("{}", r);

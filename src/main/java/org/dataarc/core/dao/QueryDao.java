@@ -1,10 +1,7 @@
 package org.dataarc.core.dao;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.dataarc.bean.DataEntry;
@@ -78,7 +75,7 @@ public class QueryDao extends AbstractDao {
         q.addCriteria(group);
         logger.debug("{}", q.getCriteria().toString());
         Page<DataEntry> find = solrTemplate.queryForPage(q, DataEntry.class);
-        logger.debug("{}", find);
+        logger.debug("{} ({} total records) ", find, find.getTotalElements());
         return find;
     }
     
