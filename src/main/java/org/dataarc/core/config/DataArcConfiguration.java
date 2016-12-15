@@ -60,14 +60,14 @@ public class DataArcConfiguration {
     SolrClient solrClient() throws FileNotFoundException {
 
         // env.getProperty(DB_HOST, LOCALHOST)
-        String solrHome = ResourceUtils.getURL("classpath:solr").getPath();
-        CoreContainer container = CoreContainer.createAndLoad(new File(solrHome + "/solr.xml").toPath());
+        String solrHome = ResourceUtils.getURL("src/main/resources/solr").getPath();
+        CoreContainer container = CoreContainer.createAndLoad(new File(solrHome).toPath());
 
-        return new EmbeddedSolrServer(container, null);
+        return new EmbeddedSolrServer(container, "dataArc");
     }
 
     @Bean
-    public SolrOperations solrTemplate() throws FileNotFoundException {
+    public SolrTemplate solrTemplate() throws FileNotFoundException {
         return new SolrTemplate(solrClient());
     }
 

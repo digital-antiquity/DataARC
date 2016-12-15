@@ -1,10 +1,13 @@
 package org.dataarc.bean;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 
+import org.apache.solr.client.solrj.beans.Field;
 import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import com.vividsolutions.jts.geom.Point;
@@ -13,9 +16,14 @@ import com.vividsolutions.jts.geom.Point;
 //@Table(name="source_data")
 //@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
 @SolrDocument
-public class DataEntry extends AbstractPersistable {
+public class DataEntry  {
 
+    @Id
+    @Field
+    private String id;
+    
     @Column(columnDefinition = "geometry(Point,4326)")
+    @Field
     private Point position;
     
     public DataEntry() {
@@ -27,7 +35,10 @@ public class DataEntry extends AbstractPersistable {
     }
 
     @Column(name="date_start")
+    @Field
     private Integer start;
+
+    @Field
     @Column(name="date_end")
     private Integer end;
     
@@ -72,14 +83,35 @@ public class DataEntry extends AbstractPersistable {
         this.data = data;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Map<String,Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String,Object> properties) {
+        this.properties = properties;
+    }
+
     @Column
     @Type(type="StringJsonObject")
     private String data;
 
+    @Field
+    private Map<String,Object> properties;
+
     @Column
+    @Field
     private String source;
 
     @Column(name="date_created", nullable=false)
+    @Field
     private Date dateCreated;
     
     

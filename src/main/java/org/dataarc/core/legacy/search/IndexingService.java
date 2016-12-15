@@ -24,6 +24,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.SourceDao;
+import org.dataarc.core.query.solr.SourceRepository;
 import org.dataarc.core.service.SerializationService;
 import org.geojson.Feature;
 import org.locationtech.spatial4j.context.SpatialContext;
@@ -47,7 +48,7 @@ public class IndexingService {
     public static final String INDEX_DIR = "indexes/";
 
     @Autowired
-    SourceDao sourceDao;
+    SourceRepository sourceRepository;
 
     @Autowired
     SerializationService serializationService;
@@ -69,7 +70,7 @@ public class IndexingService {
             IndexWriter writer = setupLuceneIndexWriter("bce");
             writer.deleteAll();
             writer.commit();
-            List<DataEntry> entries = sourceDao.findAll();
+            Iterable<DataEntry> entries = sourceRepository.findAll();
             for (DataEntry entry : entries) {
                 indexRow(writer, new ObjectMapper().readValue(entry.getData(), Feature.class));
             }
