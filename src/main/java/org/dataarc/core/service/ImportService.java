@@ -72,9 +72,8 @@ public class ImportService {
                 }
 
                 String json = new ObjectMapper().writeValueAsString(properties);
-//                logger.debug(json);
-                ContentStreamUpdateRequest request = new ContentStreamUpdateRequest(
-                        "/update/json/docs");
+                logger.debug(json);
+                ContentStreamUpdateRequest request = new ContentStreamUpdateRequest("/update/json/docs");
                 request.setParam("json.command", "false");
                 request.setParam("split", "/");
 

@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DataArcConfiguration.class})
 public class AbstractServiceTest {
     
+    
+    
     @Autowired
     public QueryDao queryDao;
     
