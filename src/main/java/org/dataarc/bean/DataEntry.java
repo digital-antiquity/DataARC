@@ -4,9 +4,14 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.apache.solr.client.solrj.beans.Field;
+import org.dataarc.util.StringJsonUserType;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 

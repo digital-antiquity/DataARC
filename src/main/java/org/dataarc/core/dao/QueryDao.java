@@ -8,6 +8,7 @@ import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.Operator;
 import org.dataarc.core.query.QueryPart;
+import org.dataarc.core.query.solr.SolrDao;
 import org.dataarc.core.query.solr.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

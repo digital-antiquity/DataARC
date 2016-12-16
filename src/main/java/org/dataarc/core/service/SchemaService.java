@@ -2,7 +2,7 @@ package org.dataarc.core.service;
 
 import java.util.Map;
 
-import org.dataarc.core.dao.SolrDao;
+import org.dataarc.core.query.solr.SolrDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
