@@ -12,10 +12,10 @@ text = File.read('/Users/abrin/Dropbox (ASU)/dataarc.json')
 # obj = JSON::Stream::Parser.parse(json)
 require 'json'
 
-puts '{
-  "type": "FeatureCollection",
-  "features": ['
-
+# puts '{
+#   "type": "FeatureCollection",
+#   "features": ['
+puts '['
 json = JSON.parse(text)
 first = true
 json.each do |entry|
@@ -112,5 +112,5 @@ json.each do |entry|
 #    entry.do_something
 end
 
-puts ']}'
+puts ']'
 

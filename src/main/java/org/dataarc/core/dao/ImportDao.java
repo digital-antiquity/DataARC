@@ -14,5 +14,17 @@ public interface ImportDao {
     void enhanceProperties(Feature feature, Map<String, Object> properties);
 
     Iterable<DataEntry> findAll();
-    
+
+
+    public default Integer parseIntProperty(Object object) {
+        if (object == null) {
+            return null;
+        }
+        if (object instanceof Integer) {
+            return (Integer) object;
+        }
+        String tmp = (String) object;
+        return Integer.parseInt(tmp);
+    }
+
 }

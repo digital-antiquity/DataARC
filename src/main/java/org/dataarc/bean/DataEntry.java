@@ -1,58 +1,49 @@
 package org.dataarc.bean;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
-import org.apache.solr.client.solrj.beans.Field;
-import org.dataarc.util.StringJsonUserType;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 import com.vividsolutions.jts.geom.Point;
 
-@Entity
-@Table(name="source_data")
-@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
-//@SolrDocument
-public class DataEntry  extends AbstractPersistable {
+//@Entity
+//@Table(name="source_data")
+//@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
+public class DataEntry {
 
-//    @Id
-//    @Field
-//    private String id;
-    
-    @Column(columnDefinition = "geometry(Point,4326)")
-    @Field
-    private Point position;
-    
+    private GeoJsonPoint position;
+
     public DataEntry() {
     }
+
+    @Id
+    public String id;
 
     public DataEntry(String source, String data) {
         this.setSource(source);
         this.setData(data);
     }
 
-    @Column(name="date_start")
-    @Field
+    @Column(name = "date_start")
     private Integer start;
-
-    @Field
-    @Column(name="date_end")
+    @Column(name = "date_end")
     private Integer end;
+
+    @Column(name = "title")
+    private String title;
     
-    public Point getPosition() {
+    public GeoJsonPoint getPosition() {
         return position;
     }
 
-    public void setPosition(Point position) {
+    public void setPosition(GeoJsonPoint position) {
         this.position = position;
     }
-
 
     public Integer getEnd() {
         return end;
@@ -86,18 +77,36 @@ public class DataEntry  extends AbstractPersistable {
         this.data = data;
     }
 
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
     @Column
-    @Type(type="StringJsonObject")
+    // @Type(type="StringJsonObject")
     private String data;
 
     @Column
-    @Field
     private String source;
 
-    @Column(name="date_created", nullable=false)
-    @Field
+    @Column(name = "date_created", nullable = false)
     private Date dateCreated;
-    
-    
-    
+    private Map<String, Object> properties;
+
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s (%s)", source, title, id);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    };
 }

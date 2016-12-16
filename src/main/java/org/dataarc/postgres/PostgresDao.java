@@ -44,22 +44,22 @@ public class PostgresDao implements ImportDao {
 
     @Override
     public void load(Feature feature, Map<String, Object> properties) throws Exception {
-        String source = (String) properties.get("source");
-        String json = new ObjectMapper().writeValueAsString(feature);
-        DataEntry entry = new DataEntry(source, json);
-        entry.setEnd(parseIntProperty(feature.getProperties().get("End")));
-        entry.setStart(parseIntProperty(feature.getProperties().get("Start")));
-        GeoJsonObject geometry = feature.getGeometry();
-        if (geometry instanceof org.geojson.Point) {
-            org.geojson.Point point_ = (org.geojson.Point) geometry;
-            if (point_.getCoordinates() != null) {
-                double latitude = point_.getCoordinates().getLatitude();
-                double longitude = point_.getCoordinates().getLongitude();
-                Point point = geometryFactory.createPoint(new Coordinate(longitude, latitude));
-                entry.setPosition(point);
-            }
-        }
-        manager.persist(entry);
+//        String source = (String) properties.get("source");
+//        String json = new ObjectMapper().writeValueAsString(feature);
+//        DataEntry entry = new DataEntry(source, json);
+//        entry.setEnd(parseIntProperty(feature.getProperties().get("End")));
+//        entry.setStart(parseIntProperty(feature.getProperties().get("Start")));
+//        GeoJsonObject geometry = feature.getGeometry();
+//        if (geometry instanceof org.geojson.Point) {
+//            org.geojson.Point point_ = (org.geojson.Point) geometry;
+//            if (point_.getCoordinates() != null) {
+//                double latitude = point_.getCoordinates().getLatitude();
+//                double longitude = point_.getCoordinates().getLongitude();
+//                Point point = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+//                entry.setPosition(point);
+//            }
+//        }
+//        manager.persist(entry);
 
     }
 
@@ -69,16 +69,6 @@ public class PostgresDao implements ImportDao {
 
     }
 
-    private Integer parseIntProperty(Object object) {
-        if (object == null) {
-            return null;
-        }
-        if (object instanceof Integer) {
-            return (Integer) object;
-        }
-        String tmp = (String) object;
-        return Integer.parseInt(tmp);
-    }
 
     public Map<String, Long> getDistinctValues(String source, String fieldName) {
         // TODO Auto-generated method stub

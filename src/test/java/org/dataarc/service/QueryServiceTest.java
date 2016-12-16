@@ -42,7 +42,7 @@ public class QueryServiceTest extends AbstractServiceTest {
         FilterQuery fq = new FilterQuery();
         fq.getConditions().add(new QueryPart("source", "SEAD", MatchType.EQUALS));
         fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
-        Page<DataEntry> results = queryService.getMatchingRows("SEAD",fq);
+        Iterable<DataEntry> results = queryService.getMatchingRows("SEAD",fq);
         results.forEach(r -> {
             logger.debug("{}", r);
         });

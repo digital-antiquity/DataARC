@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.core.CoreContainer;
-import org.dataarc.solr.SolrDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -21,8 +20,11 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.solr.core.SolrTemplate;
-import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -32,13 +34,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.ResourceUtils;
 
-import liquibase.integration.spring.SpringLiquibase;
+import com.mongodb.MongoClient;
 
 @Configuration
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 @EnableTransactionManagement
 //@EnableSolrRepositories(multicoreSupport = true, basePackages= "org.dataarc.core.query.solr")
 
-@ComponentScan(basePackages = { "org.dataarc.core" , "org.dataarc.postgres"},
+
+@EnableMongoRepositories(basePackages = {"org.dataarc.mongo"})
+@ComponentScan(basePackages = { "org.dataarc.core" , "org.dataarc.mongo"},
         excludeFilters = {
                 @Filter(type = FilterType.ASSIGNABLE_TYPE,
                         value = {
@@ -74,6 +79,7 @@ public class DataArcConfiguration {
         return new SolrTemplate(solrClient());
     }
 
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -96,15 +102,14 @@ public class DataArcConfiguration {
         dataSource.setPassword("");
         return dataSource;
     }
+    
 
-    @Bean
-    public SpringLiquibase getLiquibase() {
-        SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource());
-        liquibase.setChangeLog("classpath:changelog.xml");
-        liquibase.setContexts("test, production");
-        return liquibase;
+    Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", org.hibernate.spatial.dialect.postgis.PostgisDialect.class.getName());
+        return properties;
     }
+    
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
@@ -119,9 +124,59 @@ public class DataArcConfiguration {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    Properties additionalProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", org.hibernate.spatial.dialect.postgis.PostgisDialect.class.getName());
-        return properties;
+
+//    @Bean(name = "mongoEntityManager")
+//    public LocalContainerEntityManagerFactoryBean mongoEntityManager() throws Throwable {
+//        Map<String, Object> properties = new HashMap<String, Object>();
+//        properties.put("javax.persistence.transactionType", "resource_local");
+//        properties.put("hibernate.ogm.datastore.provider", "mongodb");
+//        properties.put("hibernate.ogm.datastore.host", env.getProperty(DB_HOST, LOCALHOST));
+//        properties.put("hibernate.ogm.datastore.port", env.getProperty(DB_PORT, Integer.class, _27017));
+//        properties.put("hibernate.ogm.datastore.database", DATABASE_NAME);
+//        properties.put("hibernate.ogm.datastore.create_database", "true");
+//
+//        LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
+//        entityManager.setPackagesToScan("org.dataarc.bean");
+//        entityManager.setPersistenceUnitName("mongoPersistenceUnit");
+//        entityManager.setJpaPropertyMap(properties);
+//        entityManager.setPersistenceProviderClass(HibernateOgmPersistence.class);
+//        return entityManager;
+//    }
+
+    @Bean
+    public MongoDbFactory mongoDbFactory() throws Exception {
+        return new SimpleMongoDbFactory(new MongoClient(), env.getProperty(DB_NAME, DATABASE_NAME));
     }
+
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
+        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
+        return mongoTemplate;
+
+    }
+
+    // @Bean
+    // public MongoClientFactoryBean mongo() {
+    // MongoClientFactoryBean facgtory = new MongoClientFactoryBean();
+    // facgtory.setHost(env.getProperty(DB_HOST, LOCALHOST));
+    // facgtory.setPort(env.getProperty(DB_PORT, Integer.class, _27017));
+    // return facgtory;
+    // }
+    //
+    // @Bean
+    // public MongoTemplate mongoTemplate() throws Exception {
+    // return new MongoTemplate(mongo().getObject(), env.getProperty(DB_NAME));
+    // }
+
+//    @Bean(name = "mongoTransactionManager")
+//    public PlatformTransactionManager transactionManager() throws Throwable {
+//        JpaTransactionManager transactionManager = new JpaTransactionManager();
+//        transactionManager.setEntityManagerFactory(mongoEntityManager().getObject());
+//        return transactionManager;
+//    }
+
+//    @Bean
+//    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+//        return new PersistenceExceptionTranslationPostProcessor();
+//    }
 }

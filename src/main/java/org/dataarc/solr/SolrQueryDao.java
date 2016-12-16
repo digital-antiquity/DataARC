@@ -39,7 +39,7 @@ public class SolrQueryDao extends AbstractDao implements QueryDao {
     }
 
     @Override
-    public Page<DataEntry> getMatchingRows(String source, FilterQuery fq) {
+    public Iterable<DataEntry> getMatchingRows(String source, FilterQuery fq) {
         Query q = new SimpleQuery();
         Criteria group = new Criteria("source").is(source);
 

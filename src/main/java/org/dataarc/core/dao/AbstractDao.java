@@ -12,15 +12,15 @@ public abstract class AbstractDao {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     
-    @PersistenceContext
-    private EntityManager manager;
+//    @PersistenceContext
+//    private EntityManager manager;
 
-    public EntityManager getManager() {
-        return manager;
-    }
-
-    public void setManager(EntityManager manager) {
-        this.manager = manager;
-    }
+//    public EntityManager getManager() {
+//        return manager;
+//    }
+//
+//    public void setManager(EntityManager manager) {
+//        this.manager = manager;
+//    }
 
 }
