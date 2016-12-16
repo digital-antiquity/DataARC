@@ -7,8 +7,9 @@ public abstract class AbstractDataLoader {
 
     protected static AnnotationConfigApplicationContext getAnnotationConfigContext() {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        applicationContext.getEnvironment().setActiveProfiles("mongo");
+
         applicationContext.register(DataArcConfiguration.class);
-//        applicationContext
         applicationContext.refresh();
         applicationContext.start();
         return applicationContext;
