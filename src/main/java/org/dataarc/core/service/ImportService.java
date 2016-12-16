@@ -1,18 +1,25 @@
 package org.dataarc.core.service;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.AbstractUpdateRequest;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.response.UpdateResponse;
-import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.util.ContentStreamBase;
 import org.dataarc.core.dao.QueryDao;
 import org.dataarc.core.query.solr.SourceRepository;
+import org.dataarc.util.FieldDataCollector;
+import org.dataarc.util.ObjectTraversalUtil;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.geojson.GeoJsonObject;
@@ -45,6 +52,8 @@ public class ImportService {
 
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
+    Map<String,FieldDataCollector> collectors = new HashMap<>();
+    
     // @Transactional(readOnly = false)
     public void loadData(String filename) {
         sourceRepository.deleteAll();
@@ -55,6 +64,10 @@ public class ImportService {
                 // logger.debug("feature: {}", feature);
                 // String source = (String) feature.getProperties().get("source");
                 Map<String, Object> properties = feature.getProperties();
+                String schema = (String)properties.get("source");
+                collectors.putIfAbsent(schema, new FieldDataCollector(schema));
+                FieldDataCollector collector = collectors.get(schema);
+                ObjectTraversalUtil.traverse(properties, collector);
                 GeoJsonObject geometry = feature.getGeometry();
                 if (geometry instanceof org.geojson.Point) {
                     org.geojson.Point point_ = (org.geojson.Point) geometry;
@@ -89,14 +102,13 @@ public class ImportService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        try {
-            queryDao.getDistinctValues("source");
-        } catch (SolrServerException | IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        for (FieldDataCollector collector : collectors.values()) {
+            String name = collector.getSchemaName();
+            collector.getFields().forEach(field -> {
+                logger.debug("{} {} ({})", name, field, collector.getType(field));
+                
+            });
         }
-
     }
 
     private void getQueryResponse(AbstractUpdateRequest request)

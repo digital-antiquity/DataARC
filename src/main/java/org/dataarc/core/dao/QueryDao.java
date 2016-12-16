@@ -34,15 +34,14 @@ public class QueryDao extends AbstractDao {
     @Autowired
     SolrDao solrDao;
 
-    public Map<String, Long> getDistinctValues(String fieldName) throws SolrServerException, IOException {
-        return solrDao.getDistinctValues(fieldName);
+    public Map<String, Long> getDistinctValues(String source, String fieldName) throws SolrServerException, IOException {
+        return solrDao.getDistinctValues(source, fieldName);
     }
 
+    public Page<DataEntry> getMatchingRows(String source, FilterQuery fq) {
+        Query q = new SimpleQuery();
+        Criteria group = new Criteria("source").is(source);
 
-    public Page<DataEntry> getMatchingRows(FilterQuery fq) {
-        Query q = new SimpleQuery(); 
-        Criteria group = new Criteria();
-        
         for (QueryPart part : fq.getConditions()) {
             Criteria where = new Criteria(part.getFieldName());
             logger.debug("{}", part);
@@ -50,9 +49,9 @@ public class QueryDao extends AbstractDao {
                 case CONTAINS:
                     where = where.contains(part.getValue());
                     break;
-//                case DOES_NOT_EQUAL:
-//                    where.is(part.getValue());
-//                    break;
+                // case DOES_NOT_EQUAL:
+                // where.is(part.getValue());
+                // break;
                 case EQUALS:
                     where = where.is(part.getValue());
                     break;
@@ -65,7 +64,7 @@ public class QueryDao extends AbstractDao {
                 default:
                     break;
             }
-           logger.debug("{}", where);
+            logger.debug("{}", where);
             if (fq.getOperator() == Operator.AND) {
                 group = group.and(where);
             } else {
@@ -78,6 +77,5 @@ public class QueryDao extends AbstractDao {
         logger.debug("{} ({} total records) ", find, find.getTotalElements());
         return find;
     }
-    
 
 }

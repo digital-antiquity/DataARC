@@ -2,12 +2,12 @@ package org.dataarc.service;
 
 import java.io.IOException;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.dataarc.bean.DataEntry;
-import org.dataarc.core.dao.SolrDao;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.MatchType;
 import org.dataarc.core.query.QueryPart;
+import org.dataarc.core.service.QueryService;
+import org.dataarc.core.service.SchemaService;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,21 +19,24 @@ public class QueryServiceTest extends AbstractServiceTest {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private SolrDao solrDao;
+    private QueryService queryService;
 
+    @Autowired
+    private SchemaService schemaService;
+    
     @Test
-    public void getSchema() throws SolrServerException, IOException {
-        solrDao.getSchema();
+    public void getSchema() throws Exception {
+        schemaService.getSchema();
     }
 
     @Test
-    public void testQuery() throws SolrServerException, IOException {
-        queryDao.getDistinctValues("source");
+    public void testQuery() throws Exception {
+        queryService.getDistinctValues("NABONE", "Start");
     }
 
     @Test
-    public void testSubQuery() throws SolrServerException, IOException {
-        queryDao.getDistinctValues("sites.Sample");
+    public void testSubQuery() throws Exception {
+        queryService.getDistinctValues("SEAD", "sites.Sample");
     }
 
     @Test
@@ -41,7 +44,7 @@ public class QueryServiceTest extends AbstractServiceTest {
         FilterQuery fq = new FilterQuery();
         fq.getConditions().add(new QueryPart("source", "SEAD", MatchType.EQUALS));
         fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
-        Page<DataEntry> results = queryDao.getMatchingRows(fq);
+        Page<DataEntry> results = queryService.getMatchingRows("SEAD",fq);
         results.forEach(r -> {
             logger.debug("{}", r);
         });
