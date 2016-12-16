@@ -18,8 +18,8 @@ public class ImportDataService {
 
     }
 
-    public void load(Map<String, Object> properties) throws Exception {
-        importDao.load(properties);
+    public void load(Feature feature, Map<String, Object> properties) throws Exception {
+        importDao.load(feature, properties);
     }
 
     public void enhanceProperties(Feature feature, Map<String, Object> properties) {

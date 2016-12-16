@@ -11,15 +11,16 @@ import javax.sql.DataSource;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.core.CoreContainer;
+import org.dataarc.solr.SolrDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.data.solr.core.SolrOperations;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -35,15 +36,17 @@ import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @EnableTransactionManagement
-@EnableSolrRepositories(multicoreSupport = true, basePackages= "org.dataarc.core.query.solr")
-@ComponentScan(basePackages = { "org.dataarc.core" },
+//@EnableSolrRepositories(multicoreSupport = true, basePackages= "org.dataarc.core.query.solr")
+
+@ComponentScan(basePackages = { "org.dataarc.core" , "org.dataarc.postgres"},
         excludeFilters = {
                 @Filter(type = FilterType.ASSIGNABLE_TYPE,
                         value = {
-                                DataArcConfiguration.class
-                        })
+                                DataArcConfiguration.class,
+                        }),
         })
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class DataArcConfiguration {
 
     private static final int _27017 = 27017;

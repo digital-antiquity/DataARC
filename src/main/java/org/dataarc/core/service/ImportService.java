@@ -44,7 +44,7 @@ public class ImportService {
                 importDataService.enhanceProperties(feature, properties);
                 FieldDataCollector collector = collectors.get(schema);
                 ObjectTraversalUtil.traverse(properties, collector);
-                importDataService.load(properties);
+                importDataService.load(feature, properties);
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block

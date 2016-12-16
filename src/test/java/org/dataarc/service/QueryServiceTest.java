@@ -1,7 +1,5 @@
 package org.dataarc.service;
 
-import java.io.IOException;
-
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.MatchType;
@@ -26,7 +24,7 @@ public class QueryServiceTest extends AbstractServiceTest {
     
     @Test
     public void getSchema() throws Exception {
-        schemaService.getSchema();
+        schemaService.getSchema("");
     }
 
     @Test
@@ -40,7 +38,7 @@ public class QueryServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testComplex() throws IOException {
+    public void testComplex() throws Exception {
         FilterQuery fq = new FilterQuery();
         fq.getConditions().add(new QueryPart("source", "SEAD", MatchType.EQUALS));
         fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));

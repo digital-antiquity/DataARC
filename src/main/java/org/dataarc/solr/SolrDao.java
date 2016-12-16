@@ -1,7 +1,8 @@
-package org.dataarc.core.query.solr;
+package org.dataarc.solr;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -78,7 +79,7 @@ public class SolrDao implements ImportDao {
     }
 
     @Override
-    public void load(Map<String, Object> properties) throws Exception {
+    public void load(Feature feature, Map<String, Object> properties) throws Exception {
         
         String json = new ObjectMapper().writeValueAsString(properties);
         ContentStreamUpdateRequest request = new ContentStreamUpdateRequest("/update/json/docs");
@@ -109,5 +110,10 @@ public class SolrDao implements ImportDao {
             }
         }
         
+    }
+
+    @Override
+    public Iterable<DataEntry> findAll() {
+        return sourceRepository.findAll();
     }
 }

@@ -2,9 +2,7 @@ package org.dataarc.core.legacy.search;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,8 +21,7 @@ import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.dataarc.bean.DataEntry;
-import org.dataarc.core.dao.SourceDao;
-import org.dataarc.core.query.solr.SourceRepository;
+import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.service.SerializationService;
 import org.geojson.Feature;
 import org.locationtech.spatial4j.context.SpatialContext;
@@ -48,7 +45,7 @@ public class IndexingService {
     public static final String INDEX_DIR = "indexes/";
 
     @Autowired
-    SourceRepository sourceRepository;
+    ImportDao sourceDao;
 
     @Autowired
     SerializationService serializationService;
@@ -70,7 +67,7 @@ public class IndexingService {
             IndexWriter writer = setupLuceneIndexWriter("bce");
             writer.deleteAll();
             writer.commit();
-            Iterable<DataEntry> entries = sourceRepository.findAll();
+            Iterable<DataEntry> entries = sourceDao.findAll();
             for (DataEntry entry : entries) {
                 indexRow(writer, new ObjectMapper().readValue(entry.getData(), Feature.class));
             }
