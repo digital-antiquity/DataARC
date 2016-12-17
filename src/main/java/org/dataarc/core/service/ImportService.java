@@ -57,6 +57,7 @@ public class ImportService {
             String name = collector.getSchemaName();
             collector.getFields().forEach(field -> {
                 logger.debug("{} {} ({})", name, field, collector.getType(field));
+                logger.debug("\t{}", collector.getUniqueValues(field));
 
             });
         }
