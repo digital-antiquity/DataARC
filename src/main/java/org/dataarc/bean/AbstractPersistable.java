@@ -28,7 +28,7 @@ public abstract class AbstractPersistable {
      * hibernate+postgres, i.e., one sequence table per entity type
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = -1L;
 
     @XmlAttribute(name = "id")

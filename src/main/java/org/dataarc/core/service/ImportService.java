@@ -1,11 +1,17 @@
 package org.dataarc.core.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang.NumberUtils;
+import org.dataarc.bean.schema.Field;
+import org.dataarc.bean.schema.Schema;
+import org.dataarc.bean.schema.Value;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.ObjectTraversalUtil;
 import org.geojson.Feature;
@@ -25,13 +31,17 @@ public class ImportService {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    ImportDataService importDataService;
+    private ImportDataService importDataService;
+
+    @Autowired
+    private SchemaService schemaService;
 
     Map<String, FieldDataCollector> collectors = new HashMap<>();
 
-    // @Transactional(readOnly = false)
+    @Transactional(readOnly = false)
     public void loadData(String filename) {
         importDataService.deleteAll();
+        schemaService.deleteAll();
         try {
             FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(filename), FeatureCollection.class);
             for (Iterator<Feature> iterator = featureCollection.getFeatures().iterator(); iterator.hasNext();) {
@@ -55,11 +65,19 @@ public class ImportService {
         }
         for (FieldDataCollector collector : collectors.values()) {
             String name = collector.getSchemaName();
+            Schema schema = new Schema();
+            schema.setName(name);
             collector.getFields().forEach(field -> {
+                Field f = new Field(field, collector.getType(field));
+                schema.getFields().add(f);
+                collector.getUniqueValues(field).entrySet().forEach(entry -> {
+                    Value val = new Value(entry.getKey().toString(), new Long(entry.getValue()).intValue());
+                    f.getValues().add(val);
+                });
                 logger.debug("{} {} ({})", name, field, collector.getType(field));
                 logger.debug("\t{}", collector.getUniqueValues(field));
-
             });
+            schemaService.save(schema);
         }
     }
 

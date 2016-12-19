@@ -1,40 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-   xmlns:spatial="http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	xmlns:spatial="http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd 
    http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial 
       http://lonnyj.github.com/liquibase-spatial/liquibase-spatial.xsd">
-<!-- 
-assumes ..
-        create database dataarc;
-        CREATE EXTENSION postgis;
-        CREATE EXTENSION postgis_topology;
- -->
- 
-    <changeSet id="alpha-1" author="abrin">
-        <createTable tableName="source_data">
-            <column name="id" autoIncrement="true" type="bigserial" />
-            <column name="data" type="json" />
-            <column name="source" type="varchar(255)" />
-            <column name="date_created" type="timestamp"
-                defaultValue="now()" />
-        </createTable>
-    </changeSet>
-    <changeSet id="alpha-2" author="abrin">
-        <addColumn tableName="source_data">
-            <column name="start" type="int" />
-        </addColumn>
-        <addColumn tableName="source_data">
-            <column name="end" type="int" />
-        </addColumn>
-        <addColumn tableName="source_data">
-            <column name="position" type="geometry(Point,4326)" />
-        </addColumn>
-    </changeSet>
-    <changeSet id="alpha-3" author="abrin">
-        <renameColumn tableName="source_data" oldColumnName="start" newColumnName="date_start"/>
-        <renameColumn tableName="source_data" oldColumnName="end" newColumnName="date_end"/>
-    </changeSet>
+	<!-- assumes .. create database dataarc; CREATE EXTENSION postgis; CREATE 
+		EXTENSION postgis_topology; -->
+
+	<changeSet id="alpha-1" author="abrin">
+		<createTable tableName="source_data">
+			<column name="id" autoIncrement="true" type="bigserial" />
+			<column name="data" type="json" />
+			<column name="source" type="varchar(255)" />
+			<column name="date_created" type="timestamp" defaultValue="now()" />
+		</createTable>
+	</changeSet>
+	<changeSet id="alpha-2" author="abrin">
+		<addColumn tableName="source_data">
+			<column name="start" type="int" />
+		</addColumn>
+		<addColumn tableName="source_data">
+			<column name="end" type="int" />
+		</addColumn>
+		<addColumn tableName="source_data">
+			<column name="position" type="geometry(Point,4326)" />
+		</addColumn>
+	</changeSet>
+	<changeSet id="alpha-3" author="abrin">
+		<renameColumn tableName="source_data" oldColumnName="start"
+			newColumnName="date_start" />
+		<renameColumn tableName="source_data" oldColumnName="end"
+			newColumnName="date_end" />
+	</changeSet>
+
+	<changeSet id="alpha-4" author="abrin">
+		<createTable tableName="schema">
+			<column name="id" autoIncrement="true" type="bigserial" />
+			<column name="source" type="varchar(100)" />
+			<column name="date_created" type="timestamp" defaultValue="now()" />
+			<column name="date_updated" type="timestamp" defaultValue="now()" />
+		</createTable>
+		<addPrimaryKey tableName="schema" columnNames="id" />
+		<createTable tableName="schema_field">
+			<column name="id" autoIncrement="true" type="bigserial" />
+			<column name="name" type="varchar(100)" />
+			<column name="fieldType" type="varchar(100)" />
+			<column name="date_created" type="timestamp" defaultValue="now()" />
+			<column name="date_updated" type="timestamp" defaultValue="now()" />
+			<column name="schema_id" type="bigint">
+				<constraints references="schema" foreignKeyName="schema_id_field" />
+			</column>
+		</createTable>
+		<addPrimaryKey tableName="schema_field" columnNames="id" />
+		<createTable tableName="field_value">
+			<column name="id" autoIncrement="true" type="bigserial" />
+			<column name="field_value" type="varchar(100)" />
+			<column name="occurrence" type="int" />
+			<column name="field_id" type="bigint">
+				<constraints references="schema_field" foreignKeyName="field_id_field_value" />
+			</column>
+		</createTable>
+		<addPrimaryKey tableName="field_value" columnNames="id" />
+	</changeSet>
+	<changeSet id="alpha-5" author="abrin">
+		<renameColumn tableName="schema" oldColumnName="source"
+			newColumnName="name" />
+	</changeSet>
+	<changeSet id="alpha-6" author="abrin">
+		<renameColumn tableName="schema_field" oldColumnName="fieldType"
+			newColumnName="field_type" />
+	</changeSet>
 </databaseChangeLog>

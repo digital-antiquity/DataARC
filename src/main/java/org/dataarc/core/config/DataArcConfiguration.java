@@ -21,6 +21,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import liquibase.integration.spring.SpringLiquibase;
+
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = { "org.dataarc.core", MongoProfile.ORG_DATAARC_MONGO })
@@ -29,7 +31,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //    ))
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public abstract class DataArcConfiguration {
+public  class DataArcConfiguration {
 
     @Resource
     protected Environment env;
@@ -66,6 +68,16 @@ public abstract class DataArcConfiguration {
     }
     
 
+    @Bean
+    public SpringLiquibase getLiquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDataSource(dataSource());
+        liquibase.setChangeLog("changelog.xml");
+        liquibase.setContexts("test, production");
+        return liquibase;
+    }
+    
+    
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
