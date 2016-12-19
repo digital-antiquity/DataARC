@@ -16,7 +16,7 @@ public class ListUniqueValues {
     private SchemaService schemaService;
     
     @RequestMapping("/api/schema/listDistinctValues")
-    public Set<Value> listDistinctValues(@RequestParam(value = "source", required = true) String source,
+    public Set<Value> listDistinctValues(@RequestParam(value = "schema", required = true) String source,
             @RequestParam(value = "field", required = true) String field) throws Exception {
         return schemaService.getDistinctValues(source, field);
     }

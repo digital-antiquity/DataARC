@@ -1,6 +1,7 @@
 package org.dataarc.core.dao;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,7 +22,7 @@ public class SchemaDao {
 
     @PersistenceContext
     private EntityManager manager;
-    
+
     public void save(Schema schema) {
         manager.persist(schema);
     }
@@ -32,11 +33,9 @@ public class SchemaDao {
         manager.createQuery("delete from Schema").executeUpdate();
     }
 
-    
     public Set<Value> getDistinctValues(String source, final String fieldName) throws Exception {
         Schema schema = getSchemaByName(source);
-        Field field = schema.getFields().stream().filter(fld -> 
-            StringUtils.equals(fld.getName(), fieldName)).findFirst().get();
+        Field field = schema.getFields().stream().filter(fld -> StringUtils.equals(fld.getName(), fieldName)).findFirst().get();
         logger.debug("field {}", field);
         return field.getValues();
     }
@@ -51,5 +50,10 @@ public class SchemaDao {
         return getSchemaByName(source).getFields();
     }
 
+    public Set<String> findAll() {
+        return manager.createQuery("from Schema", Schema.class).getResultList().stream()
+                .map(schema -> schema.getName())
+                .collect(Collectors.toSet());
+    }
 
 }

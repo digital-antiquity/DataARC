@@ -38,9 +38,14 @@ public class SchemaService {
         schemaDao.deleteAll();
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public Set<Field> getFields(String source) {
         return schemaDao.getFields(source);
+    }
+
+    @Transactional(readOnly = true)
+    public Set<String> getSchema() {
+        return schemaDao.findAll();
     }
 
 }

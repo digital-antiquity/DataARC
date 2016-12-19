@@ -25,7 +25,7 @@ import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "org.dataarc.core", MongoProfile.ORG_DATAARC_MONGO })
+@ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO })
 //@ComponentScan(excludeFilters = @Filter(
 //        type = FilterType.REGEX, pattern = { "regex for distribution 1" }
 //    ))
@@ -33,6 +33,8 @@ import liquibase.integration.spring.SpringLiquibase;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public  class DataArcConfiguration {
 
+    static final String ORG_DATAARC_CORE = "org.dataarc.core";
+    private static final String ORG_DATAARC_BEAN = "org.dataarc.bean";
     @Resource
     protected Environment env;
 
@@ -41,7 +43,7 @@ public  class DataArcConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "org.dataarc.bean" });
+        em.setPackagesToScan(new String[] { ORG_DATAARC_BEAN });
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -72,7 +74,7 @@ public  class DataArcConfiguration {
     public SpringLiquibase getLiquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource());
-        liquibase.setChangeLog("changelog.xml");
+        liquibase.setChangeLog("classpath:changelog.xml");
         liquibase.setContexts("test, production");
         return liquibase;
     }

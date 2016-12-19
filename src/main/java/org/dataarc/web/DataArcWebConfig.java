@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "org.dataarc")
+@ComponentScan(basePackages = {"org.dataarc.web", "org.dataarc.core"})
 public class DataArcWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
