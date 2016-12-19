@@ -1,6 +1,9 @@
 package org.dataarc.service;
 
+import java.util.Set;
+
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.schema.Value;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.MatchType;
 import org.dataarc.core.query.QueryPart;
@@ -10,7 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+
 
 public class QueryServiceTest extends AbstractServiceTest {
 
@@ -29,12 +32,13 @@ public class QueryServiceTest extends AbstractServiceTest {
 
     @Test
     public void testQuery() throws Exception {
-        queryService.getDistinctValues("NABONE", "Start");
+        schemaService.getDistinctValues("NABONE", "Start");
     }
 
     @Test
     public void testSubQuery() throws Exception {
-        queryService.getDistinctValues("SEAD", "sites.Sample");
+        Set<Value> distinctValues = schemaService.getDistinctValues("SEAD", "sites.SiteCode");
+        logger.debug("{}", distinctValues);
     }
 
     @Test

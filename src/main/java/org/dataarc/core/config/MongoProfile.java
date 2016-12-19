@@ -17,7 +17,7 @@ import com.mongodb.MongoClient;
 @Profile("mongo")
 public class MongoProfile extends DataArcConfiguration {
 
-    static final String ORG_DATAARC_MONGO = "org.dataarc.mongo";
+    static final String ORG_DATAARC_MONGO = "org.dataarc.datastore.mongo";
     static final int _27017 = 27017;
     static final String LOCALHOST = "localhost";
     static final String DB_NAME = "db.name";

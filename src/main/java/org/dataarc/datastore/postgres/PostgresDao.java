@@ -1,4 +1,4 @@
-package org.dataarc.postgres;
+package org.dataarc.datastore.postgres;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +22,11 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 @Component
 public class PostgresDao implements ImportDao {
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+
+    
+    // http://schinckel.net/2014/05/25/querying-json-in-postgres/
+    // http://stormatics.com/howto-use-json-functionality-in-postgresql/
+    // https://www.postgresql.org/docs/current/static/datatype-json.html
 
     @PersistenceContext
     private EntityManager manager;

@@ -1,4 +1,4 @@
-package org.dataarc.postgres;
+package org.dataarc.datastore.postgres;
 
 import java.io.IOException;
 import java.util.Map;

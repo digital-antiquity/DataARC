@@ -20,7 +20,7 @@ import org.springframework.util.ResourceUtils;
 @EnableSolrRepositories(multicoreSupport = true, basePackages= "org.dataarc.solr")
 
 @Profile("solr")
-@ComponentScan(basePackages = { "org.dataarc.core","org.dataarc.solr"},
+@ComponentScan(basePackages = { "org.dataarc.core","org.dataarc.datastore.solr"},
 excludeFilters = {
         @Filter(type = FilterType.ASSIGNABLE_TYPE,
                 value = {

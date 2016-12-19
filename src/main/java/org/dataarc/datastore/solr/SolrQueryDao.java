@@ -1,4 +1,4 @@
-package org.dataarc.solr;
+package org.dataarc.datastore.solr;
 
 import java.util.Map;
 
@@ -23,9 +23,6 @@ public class SolrQueryDao extends AbstractDao implements QueryDao {
 
     @Autowired
     SourceRepository sourceRepository;
-    // http://schinckel.net/2014/05/25/querying-json-in-postgres/
-    // http://stormatics.com/howto-use-json-functionality-in-postgresql/
-    // https://www.postgresql.org/docs/current/static/datatype-json.html
 
     @Autowired
     SolrTemplate solrTemplate;
@@ -33,7 +30,6 @@ public class SolrQueryDao extends AbstractDao implements QueryDao {
     @Autowired
     SolrDao solrDao;
 
-    @Override
     public Map<String, Long> getDistinctValues(String source, String fieldName) throws Exception {
         return solrDao.getDistinctValues(source, fieldName);
     }

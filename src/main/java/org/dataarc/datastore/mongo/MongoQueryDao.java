@@ -1,4 +1,4 @@
-package org.dataarc.mongo;
+package org.dataarc.datastore.mongo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

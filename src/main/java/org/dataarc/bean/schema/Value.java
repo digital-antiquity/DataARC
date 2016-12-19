@@ -41,4 +41,8 @@ public class Value extends AbstractPersistable {
         this.occurrence = ocur;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s (%s)", value, occurrence);
+    }
 }

@@ -1,4 +1,4 @@
-package org.dataarc.mongo;
+package org.dataarc.datastore.mongo;
 
 import org.dataarc.bean.DataEntry;
 import org.springframework.data.mongodb.repository.MongoRepository;

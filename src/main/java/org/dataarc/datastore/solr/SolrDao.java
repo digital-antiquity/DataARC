@@ -1,4 +1,4 @@
-package org.dataarc.solr;
+package org.dataarc.datastore.solr;
 
 import java.io.IOException;
 import java.util.HashMap;

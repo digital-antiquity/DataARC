@@ -1,4 +1,4 @@
-package org.dataarc.mongo;
+package org.dataarc.datastore.mongo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +44,6 @@ public class MongoDao implements ImportDao,  QueryDao {
     private static final String DATA_ENTRY = "dataEntry";
     
     
-    @Override
     public Map<String, Long> getDistinctValues(String source, String fieldName) throws Exception {
         @SuppressWarnings("unchecked")
         List<String> result = template.getDb().getCollection(DATA_ENTRY).distinct(fieldName);

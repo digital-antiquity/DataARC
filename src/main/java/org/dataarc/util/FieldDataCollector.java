@@ -41,19 +41,9 @@ public class FieldDataCollector {
         if (value instanceof Date) {
             type = FieldType.DATE;
         }
+        
 
-        if (value instanceof Date || value instanceof String || value instanceof Number) {
-            Map<Object, Long> set = uniqueValues.getOrDefault(key, new HashMap<>());
-            if (value instanceof String) {
-                String left = StringUtils.left((String) value, Value.VALUE_LENGTH - 1);
-                Long count = set.getOrDefault(left, 0L);
-                set.put(left, count + 1);
-            } else {
-                Long count = set.getOrDefault(value, 0L);
-                set.put(value, count + 1);
-            }
-            uniqueValues.put(key, set);
-        }
+
 
         String path = key;
         if (StringUtils.isNotBlank(parent)) {
@@ -64,7 +54,21 @@ public class FieldDataCollector {
         if (type == FieldType.NUMBER && _type == FieldType.STRING) {
             type = FieldType.STRING;
         }
+        
         fieldTypes.put(path, type);
+        
+        if (value instanceof Date || value instanceof String || value instanceof Number) {
+            Map<Object, Long> set = uniqueValues.getOrDefault(path, new HashMap<>());
+            if (value instanceof String) {
+                String left = StringUtils.left((String) value, Value.VALUE_LENGTH - 1);
+                Long count = set.getOrDefault(left, 0L);
+                set.put(left, count + 1);
+            } else {
+                Long count = set.getOrDefault(value, 0L);
+                set.put(value, count + 1);
+            }
+            uniqueValues.put(path, set);
+        }
     }
 
     public Set<String> getFields() {

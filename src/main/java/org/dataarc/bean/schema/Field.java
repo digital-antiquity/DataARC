@@ -16,24 +16,25 @@ import javax.persistence.Table;
 import org.dataarc.bean.AbstractPersistable;
 
 @Entity
-@Table(name="schema_field")
+@Table(name = "schema_field")
 public class Field extends AbstractPersistable {
 
-    @Column(length=100)
+    @Column(length = 100)
     private String name;
 
-    @Column(name="field_type")
+    @Column(name = "field_type")
     @Enumerated(EnumType.STRING)
     private FieldType type;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name="field_id",nullable = false)
+    @JoinColumn(name = "field_id", nullable = false)
     private Set<Value> values = new HashSet<>();
 
-    public Field() {}
-    
+    public Field() {
+    }
+
     public Field(String field, FieldType type) {
-        this.name=field;
+        this.name = field;
         this.type = type;
     }
 
@@ -61,4 +62,8 @@ public class Field extends AbstractPersistable {
         this.values = values;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s (%s - %s)", name, type, getId());
+    }
 }
