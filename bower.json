@@ -27,9 +27,11 @@
     "cytoscape": "~2.3.11",
     "seiyria-bootstrap-slider": "~4.8.1",
     "leaflet-pip": "~0.1.0",
-    "jquery-cookie":"1.4.1"
+    "jquery-cookie": "1.4.1",
+    "vue": "^2.1.6",
+    "vue-resource": "^1.0.3"
   },
-    "resolutions": {
-        "d3": "3.5.5"
-    }
+  "resolutions": {
+    "d3": "3.5.5"
+  }
 }

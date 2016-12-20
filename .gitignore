@@ -13,7 +13,6 @@ node
 node_modules
 bin
 /lib/
-src/main/webapp/components
 prism.sql.gz
 indexes
 map
