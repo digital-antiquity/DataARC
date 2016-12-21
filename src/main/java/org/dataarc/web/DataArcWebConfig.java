@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -20,7 +19,6 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
     public FreeMarkerViewResolver freemarkerViewResolver() {
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
         resolver.setCache(true);
-        // resolver.setPrefix("");
         resolver.setSuffix(".ftl");
         return resolver;
     }
@@ -41,17 +39,6 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
         freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/content/");
         return freeMarkerConfigurer;
     }
-
-    //
-    // @Bean
-    // public ViewResolver viewResolver() {
-    // InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-    // viewResolver.setViewClass(FreeMarkerView.class);
-    // viewResolver.setPrefix("/WEB-INF/content/");
-    // viewResolver.setSuffix(".ftl");
-    //
-    // return viewResolver;
-    // }
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

@@ -9,14 +9,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
 import org.hibernate.FlushMode;
+import org.sitemesh.config.ConfigurableSiteMeshFilter;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 import net.sf.ehcache.constructs.web.ShutdownListener;
 
@@ -27,18 +26,17 @@ public class ServletInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext container) {
-        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        ctx.register(DataArcWebConfig.class);
-        ctx.getEnvironment().setActiveProfiles("mongo");
-        ctx.setServletContext(container);
-        container.addListener(new ContextLoaderListener(ctx));
+        AnnotationConfigWebApplicationContext ctx = setupContext(container);
         container.addListener(RequestContextListener.class);
 
         container.addListener(ShutdownListener.class);
 
         addSitemeshFilterToServletContext(container);
         ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(ctx));
+        setupOpenSessionInView(container, servlet);
+    }
 
+    private void setupOpenSessionInView(ServletContext container, ServletRegistration.Dynamic servlet) {
         Dynamic addFilter = container.addFilter("openEntityMangerInView", OpenEntityManagerInViewFilter.class);
         addFilter.setInitParameter("flushMode", FlushMode.MANUAL.name());
         addFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD), false, ALL_PATHS);
@@ -46,25 +44,19 @@ public class ServletInitializer implements WebApplicationInitializer {
         servlet.addMapping("/");
     }
 
+    private AnnotationConfigWebApplicationContext setupContext(ServletContext container) {
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.register(DataArcWebConfig.class);
+        ctx.getEnvironment().setActiveProfiles("mongo");
+        ctx.setServletContext(container);
+        container.addListener(new ContextLoaderListener(ctx));
+        return ctx;
+    }
+
     private void addSitemeshFilterToServletContext(ServletContext servletContext) {
-        FilterRegistration.Dynamic sitemesh = servletContext.addFilter("sitemesh", new SiteMeshFilter());
+        FilterRegistration.Dynamic sitemesh = servletContext.addFilter("sitemesh", new ConfigurableSiteMeshFilter());
         EnumSet<DispatcherType> sitemeshDispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
         sitemesh.addMappingForUrlPatterns(sitemeshDispatcherTypes, true, "/*");
     }
 
-    // @Override
-    // protected Class<?>[] getServletConfigClasses() {
-    // // GolfingWebConfig defines beans that would be in golfing-servlet.xml
-    // return new Class[] { DataArcWebConfig.class };
-    // }
-    //
-    // @Override
-    // protected Class<?>[] getRootConfigClasses() {
-    // return new Class[] {DataArcConfiguration.class };
-    // }
-    //
-    // @Override
-    // protected String[] getServletMappings() {
-    // return new String[] {"/*"};
-    // }
 }

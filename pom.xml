@@ -18,6 +18,7 @@
         <postgresql.jdbc.version>9.4.1212</postgresql.jdbc.version>
         <solr.version>6.0.1</solr.version>
         <hibernate.version>5.2.4.Final</hibernate.version>
+        <sitemesh.version>3.0.1</sitemesh.version>
     </properties>
 
     <dependencyManagement>
@@ -115,12 +116,12 @@
             <version>3.2.2</version>
         </dependency>
 
-      <dependency>
-    <groupId>org.springframework.data</groupId>
-    <artifactId>spring-data-mongodb</artifactId>
-    <version>1.9.5.RELEASE</version>
-</dependency>
-                <dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>1.9.5.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
@@ -159,13 +160,11 @@
             <version>1.2.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/opensymphony/sitemesh -->
         <dependency>
-            <groupId>opensymphony</groupId>
+            <groupId>org.sitemesh</groupId>
             <artifactId>sitemesh</artifactId>
-            <version>2.4.2</version>
+            <version>${sitemesh.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -407,12 +406,8 @@
         </dependency>
         <!-- <dependency> <groupId>org.hibernate.ogm</groupId> <artifactId>hibernate-ogm-infinispan</artifactId> 
             </dependency> -->
-<!--         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.3.2</version>
-        </dependency>
- -->
+        <!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>commons-io</artifactId> 
+            <version>1.3.2</version> </dependency> -->
 
 
         <dependency>
@@ -482,7 +477,7 @@
             <artifactId>log4j-core</artifactId>
             <version>2.7</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-1.2-api</artifactId>
@@ -574,7 +569,7 @@
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                     <webAppSourceDirectory>${basedir}/src/main/webapp/</webAppSourceDirectory>
                     <webAppConfig>
-                        <contextPath>/browse</contextPath>
+                        <contextPath>/</contextPath>
                         <descriptor>${basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
                     </webAppConfig>
                 </configuration>
