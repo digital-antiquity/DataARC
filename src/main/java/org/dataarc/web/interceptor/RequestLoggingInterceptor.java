@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -16,8 +17,9 @@ public class RequestLoggingInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) throws Exception {
+        // HandlerMethod
         long startTime = System.currentTimeMillis();
-        logger.info("Request URL::" + request.getRequestURL().toString());
+        logger.info("{} ({} {})" , request.getRequestURL().toString(), handler, handler.getClass());
         request.setAttribute("startTime", startTime);
         // if returned false, we need to make sure 'response' is sent
         return true;
