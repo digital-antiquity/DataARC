@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ListFields {
+public class ListFields extends AbstractRestController {
 
     @Autowired
     private SchemaService schemaService;

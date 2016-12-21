@@ -1,5 +1,6 @@
 package org.dataarc.web;
 
+import org.dataarc.web.interceptor.RequestLoggingInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -7,12 +8,13 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.dataarc.web", "org.dataarc.core"})
+@ComponentScan(basePackages = { "org.dataarc.web", "org.dataarc.core" })
 public class DataArcWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
@@ -23,14 +25,26 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    @Bean
+    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
+        RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
+        mapping.setInterceptors(new Object[] { getLoggingHandler() });
+        return mapping;
+    }
+
+    @Bean
+    public RequestLoggingInterceptor getLoggingHandler() {
+        return new RequestLoggingInterceptor();
+    }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry
-//                .addResourceHandler("/js/**","/css/**","/images/**","/data/**")
-//                .addResourceLocations("/webapp/", "/other-resources/")
-//                .setCachePeriod(3600)
-//                .resourceChain(true)
-//                .addResolver(new PathResourceResolver());
+        // registry
+        // .addResourceHandler("/js/**","/css/**","/images/**","/data/**")
+        // .addResourceLocations("/webapp/", "/other-resources/")
+        // .setCachePeriod(3600)
+        // .resourceChain(true)
+        // .addResolver(new PathResourceResolver());
     }
 
     @Bean

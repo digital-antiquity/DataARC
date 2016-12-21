@@ -10,7 +10,6 @@
         <meta charset="utf-8" />
     
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
         <link rel="stylesheet" href="components/c3/c3.css" />
         <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
@@ -128,9 +127,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
     <script src="data/iceland.json"></script>
-    <script src="components/jquery/dist/jquery.js"></script>
     <script src="components/jquery-cookie/jquery.cookie.js"></script>
-    <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="components/chroma-js/chroma.min.js"></script>
     <script src="components/leaflet/dist/leaflet.js"></script>
     <script src="components/leaflet-pip/leaflet-pip.js"></script>
