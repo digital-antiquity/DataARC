@@ -5,31 +5,56 @@ var Hack = new Vue({
 
   data: {
     schemum: { name: ''},
-    schema: []
+    schema: [],
+    fields: [],
+    selectedSchema: undefined,
+    selectedField: undefined
   },
-
+  computed: {
+      selectedFields: function() {
+          console.log("calculating selected fields ..." + this.selectedSchema);
+          if (this.selectedSchema == undefined || schema[this.selectedSchema] == undefined) {
+              return [];
+          }
+          return this.schema[this.selectedSchema].fields;
+      }
+  },
   mounted: function () {
-    this.fetchEvents();
+    this.fetchSchema();
   },
 
   methods: {
 
-    fetchEvents: function () {
-      var events = [];
-      console.log("HI");
-      this.$http.get('/api/schema/list')
-        .then(function (schema) {
-            console.log(JSON.stringify(schema.body));
-            var list = new Array();
-            schema.body.forEach(function(s) {
-                list.push({name: s});
+      fetchSchema: function () {
+          var events = [];
+          console.log("fetch schema");
+          this.$http.get('/api/schema/list')
+            .then(function (schema) {
+                console.log(JSON.stringify(schema.body));
+                var list = new Array();
+                schema.body.forEach(function(s) {
+                    list.push({name: s});
+                });
+              Vue.set(this, 'schema', list);
+            })
+            .catch(function (err) {
+                console.log(err);
+              console.err(err);
             });
-          Vue.set(this, 'schema', list);
-        })
-        .catch(function (err) {
-          console.err(err);
-        });
-    },
+        },
+        selectSchema: function () {
+            var s = this.schema[this.selectedSchema];
+            console.log("fetch fields for "+ s.name);
+            this.$http.get('/api/schema/listFields',{params: {'schema': s.name}})
+              .then(function (request) {
+                  console.log(JSON.stringify(request.body));
+                Vue.set(this, 'fields', request.body);
+              })
+              .catch(function (err) {
+                  console.log(err);
+                console.err(err);
+              });
+          },
 
 //    addEvent: function () {
 //      if (this.event.title.trim()) {

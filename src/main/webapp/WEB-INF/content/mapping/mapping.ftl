@@ -1,18 +1,14 @@
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <a class="navbar-brand"><i class="glyphicon glyphicon-bullhorn"></i> Vue.js</a>
-    </div>
-  </nav>
+<h4>      SLEECT!</h4>
   <div class="container" id="schema">
-    <div class="col-sm-5">
-      <div class="list-group">
-        <a href="#" class="list-group-item" v-for="scheme_ in schema">
-          <h4 class="list-group-item-heading"><i class="glyphicon glyphicon-bullhorn"></i> {{ scheme_.name }}</h4>
-          <button class="btn btn-xs btn-danger" v-on:click="deleteEvent($index)">delete</button>
-        </a>
-      </div>
+
+        <div class="col-sm-5">
+      <select v-model="selectedSchema"  v-on="change:selectSchema">
+          <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
+      </select>
+      
     </div>
-    <button class="btn btn-xs btn" v-on:click="getData()">json?</button>
+
   </div>
   
+            <button class="btn btn-xs btn" v-on:click="getData()">json?</button>
   <script src="/js/app/mapping/mapping.js"></script>
