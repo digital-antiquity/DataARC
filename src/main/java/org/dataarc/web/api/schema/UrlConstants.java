@@ -4,6 +4,7 @@ public interface UrlConstants {
 
     String SCHEMA_LIST_FIELDS = "/api/schema/listFields";
     String SCHEMA_LIST = "/api/schema/list";
+    String QUERY_DATASTORE = "/api/query/datastore";
 
     
 }

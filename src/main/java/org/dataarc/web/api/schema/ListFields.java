@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.dataarc.bean.schema.Field;
 import org.dataarc.core.service.SchemaService;
+import org.dataarc.web.api.AbstractRestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

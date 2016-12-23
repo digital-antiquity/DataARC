@@ -1,16 +1,20 @@
-package org.dataarc.service;
+package org.dataarc.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.dataarc.AbstractServiceTest;
+import org.dataarc.core.query.FilterQuery;
+import org.dataarc.core.query.MatchType;
+import org.dataarc.core.query.QueryPart;
 import org.dataarc.web.DataArcWebConfig;
 import org.dataarc.web.api.schema.UrlConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,13 +40,17 @@ public class AbstractControllerTest extends AbstractServiceTest {
         mockMvc.perform(get(UrlConstants.SCHEMA_LIST_FIELDS+"?schema=SEAD"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"));
-        // .andExpect(jsonPath("$", hasSize(2)))
-        // .andExpect(jsonPath("$[0].id", is(1)))
-        // .andExpect(jsonPath("$[0].description", is("Lorem ipsum")))
-        // .andExpect(jsonPath("$[0].title", is("Foo")))
-        // .andExpect(jsonPath("$[1].id", is(2)))
-        // .andExpect(jsonPath("$[1].description", is("Lorem ipsum")))
-        // .andExpect(jsonPath("$[1].title", is("Bar")));
+    }
 
+
+    @Test
+    public void testQuery() throws Exception {
+        String schema  = "SEAD";
+        FilterQuery query = new FilterQuery();
+        query.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
+        
+        mockMvc.perform(post(UrlConstants.QUERY_DATASTORE,schema, query))
+                .andExpect(status().isOk());
+//                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 }

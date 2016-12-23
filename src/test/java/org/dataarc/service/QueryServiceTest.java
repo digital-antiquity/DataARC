@@ -2,6 +2,7 @@ package org.dataarc.service;
 
 import java.util.Set;
 
+import org.dataarc.AbstractServiceTest;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.core.query.FilterQuery;

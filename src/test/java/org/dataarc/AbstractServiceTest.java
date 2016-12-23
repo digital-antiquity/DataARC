@@ -1,4 +1,4 @@
-package org.dataarc.service;
+package org.dataarc;
 
 import org.dataarc.core.config.DataArcConfiguration;
 import org.junit.runner.RunWith;

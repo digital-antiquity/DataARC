@@ -11,21 +11,18 @@ var Hack = new Vue({
     schemum: { name: ''},
     schema: [],
     fields: [],
+    uniqueValues: [],
     selectedSchema: undefined,
     selectedField: undefined
   },
   computed: {
-      selectedFields: function() {
-          console.log("calculating selected fields ..." + this.selectedSchema);
-          if (this.selectedSchema == undefined || schema[this.selectedSchema] == undefined) {
-              return [];
-          }
-          return this.schema[this.selectedSchema].fields;
-      }
   },
   watch: {
       'selectedSchema' : function(val, oldVal) {
           this.selectSchema();
+      },
+      'selectedField' : function(val, oldVal) {
+          this.selectField();
       }
   },
   mounted: function () {
@@ -39,7 +36,6 @@ var Hack = new Vue({
           console.log("fetch schema");
           this.$http.get('/api/schema/list')
             .then(function (schema) {
-//                console.trace(JSON.stringify(schema.body));
                 var list = new Array();
                 schema.body.forEach(function(s) {
                     list.push({name: s});
@@ -53,7 +49,6 @@ var Hack = new Vue({
             });
         },
         selectSchema: function () {
-            console.log("hi");
             var s = this.schema[this.selectedSchema];
             console.log("fetch fields for "+ s.name);
             this.$http.get('/api/schema/listFields',{params: {'schema': s.name}})
@@ -66,6 +61,20 @@ var Hack = new Vue({
                 console.err(err);
               });
           },
+          selectField: function () {
+              var s = this.schema[this.selectedSchema];
+              var f = this.fields[this.selectedField];
+              console.log("fetch unique values for "+ f.name);
+              this.$http.get('/api/schema/listDistinctValues',{params: {'schema': s.name, "field":f.name}})
+                .then(function (request) {
+                    console.log(JSON.stringify(request.body));
+                  Vue.set(this, 'uniqueValues', request.body);
+                })
+                .catch(function (err) {
+                    console.log(err);
+                  console.err(err);
+                });
+            },
 
 //    addEvent: function () {
 //      if (this.event.title.trim()) {
