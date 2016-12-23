@@ -1,4 +1,8 @@
 // var Vue = require('vue');
+  Vue.config.errorHandler = function (err, vm) {
+      console.log(err);
+      console.log(vm);
+  }
 
 var Hack = new Vue({
   el: '#schema',
@@ -19,6 +23,11 @@ var Hack = new Vue({
           return this.schema[this.selectedSchema].fields;
       }
   },
+  watch: {
+      'selectedSchema' : function(val, oldVal) {
+          this.selectSchema();
+      }
+  },
   mounted: function () {
     this.fetchSchema();
   },
@@ -30,11 +39,12 @@ var Hack = new Vue({
           console.log("fetch schema");
           this.$http.get('/api/schema/list')
             .then(function (schema) {
-                console.log(JSON.stringify(schema.body));
+//                console.trace(JSON.stringify(schema.body));
                 var list = new Array();
                 schema.body.forEach(function(s) {
                     list.push({name: s});
                 });
+                console.log(list);
               Vue.set(this, 'schema', list);
             })
             .catch(function (err) {
@@ -43,6 +53,7 @@ var Hack = new Vue({
             });
         },
         selectSchema: function () {
+            console.log("hi");
             var s = this.schema[this.selectedSchema];
             console.log("fetch fields for "+ s.name);
             this.$http.get('/api/schema/listFields',{params: {'schema': s.name}})

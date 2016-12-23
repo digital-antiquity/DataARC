@@ -2,11 +2,13 @@
   <div class="container" id="schema">
 
         <div class="col-sm-5">
-      <select v-model="selectedSchema"  v-on="change:selectSchema">
+      <select v-model="selectedSchema" >
           <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
       </select>
-      
-    </div>
+      <select v-model="selectedField" >
+          <option v-for="(option, index) in fields" v-bind:value="option.id"> {{ option.name }} </option>
+      </select>
+   </div>
 
   </div>
   
