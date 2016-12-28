@@ -5,6 +5,6 @@ import org.dataarc.core.query.FilterQuery;
 
 public interface QueryDao {
 
-    Iterable<DataEntry> getMatchingRows(String source, FilterQuery fq) throws Exception;
+    Iterable<DataEntry> getMatchingRows(FilterQuery fq) throws Exception;
 
 }

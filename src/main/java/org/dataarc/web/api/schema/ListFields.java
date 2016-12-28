@@ -1,6 +1,5 @@
 package org.dataarc.web.api.schema;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.dataarc.bean.schema.Field;
@@ -19,13 +18,8 @@ public class ListFields extends AbstractRestController {
 
     @RequestMapping(UrlConstants.SCHEMA_LIST_FIELDS)
     public Set<Field> listFields(@RequestParam(value = "schema", required = true) String source) throws Exception {
-        Set<Field> toRet = new HashSet<Field>();
-        schemaService.getFields(source).forEach(fld -> {
-            Field f = new Field(fld.getName(), fld.getType());
-            f.setId(fld.getId());
-            toRet.add(f);
-        });
-        return toRet;
+//        Set<Field> toRet = new HashSet<Field>();
+        return schemaService.getFields(source);
     }
 
 }

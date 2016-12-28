@@ -35,9 +35,9 @@ public class SolrQueryDao extends AbstractDao implements QueryDao {
     }
 
     @Override
-    public Iterable<DataEntry> getMatchingRows(String source, FilterQuery fq) {
+    public Iterable<DataEntry> getMatchingRows(FilterQuery fq) {
         Query q = new SimpleQuery();
-        Criteria group = new Criteria("source").is(source);
+        Criteria group = new Criteria("source").is(fq.getSchema());
 
         for (QueryPart part : fq.getConditions()) {
             Criteria where = new Criteria(part.getFieldName());

@@ -44,7 +44,7 @@ public class PostgresQueryDao extends AbstractDao implements QueryDao {
         return postgresDao.getDistinctValues(source, fieldName);
     }
 
-    public Page<DataEntry> getMatchingRows(String source, FilterQuery fq) {
+    public Page<DataEntry> getMatchingRows(FilterQuery fq) {
         throw new NotImplementedException();
         /* this "theoretically works, but doesn't because we don't know how to get at the array subtype in a useful way
          * 

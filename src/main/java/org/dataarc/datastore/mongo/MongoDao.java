@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -57,12 +58,14 @@ public class MongoDao implements ImportDao,  QueryDao {
     }
 
     @Override
-    public List<DataEntry> getMatchingRows(String source, FilterQuery fq) throws Exception {
+    public List<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
         Query q = new Query(); 
+        q.addCriteria(Criteria.where("source").is(fq.getSchema()));
+        
         Criteria group = new Criteria();
         List<Criteria> criteria = new ArrayList<>();
         for (QueryPart part : fq.getConditions()) {
-            Criteria where = Criteria.where(part.getFieldName());
+            Criteria where = Criteria.where("properties." + part.getFieldName());
             switch (part.getType()) {
                 case CONTAINS:
                     where.regex(Pattern.compile(part.getValue(), Pattern.MULTILINE));
