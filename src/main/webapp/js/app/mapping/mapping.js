@@ -4,6 +4,13 @@
       console.log(vm);
   }
 
+//      el: "#searchPart",
+ Vue.component('spart', {
+      template: "#spart-template",
+      props: ['fields', "part"],
+      methods: {}
+  });
+  
 var Hack = new Vue({
   el: '#schema',
 
@@ -12,6 +19,7 @@ var Hack = new Vue({
     schema: [],
     fields: [],
     uniqueValues: [],
+    queryParts: [{fieldName:'test',value:"value",type:'EQUALS'}],
     selectedSchema: undefined,
     selectedField: undefined
   },
@@ -30,7 +38,9 @@ var Hack = new Vue({
   },
 
   methods: {
-
+      addPart: function() {
+          this.queryParts.push({});
+      },
       fetchSchema: function () {
           var events = [];
           console.log("fetch schema");
