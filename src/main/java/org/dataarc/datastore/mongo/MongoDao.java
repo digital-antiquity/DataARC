@@ -77,10 +77,10 @@ public class MongoDao implements ImportDao,  QueryDao {
                     where.is(part.getValue());
                     break;
                 case GREATER_THAN:
-                    where.gt(part.getValue());
+                    where.gt(parse(part.getValue()));
                     break;
                 case LESS_THAN:
-                    where.lt(part.getValue());
+                    where.lt(parse(part.getValue()));
                     break;
                 default:
                     break;
@@ -132,6 +132,29 @@ public class MongoDao implements ImportDao,  QueryDao {
     public void enhanceProperties(Feature feature, Map<String, Object> properties) {
     }
 
+    /*
+     * fixme, optimize with data from schema
+     */
+    private static Object parse(String str) {
+        try {
+            return Float.parseFloat(str);
+        } catch(NumberFormatException e) {
+        }
+        
+        try {
+            return Double.parseDouble(str);
+        } catch(NumberFormatException e1) {
+        }
+        try {
+            return Integer.parseInt(str);
+        } catch(NumberFormatException e2) {
+        }
+        try {
+            return  Long.parseLong(str);
+        } catch(NumberFormatException e3) {
+        }       
+        return str;
+    }
     
     @Override
     public Iterable<DataEntry> findAll() {
