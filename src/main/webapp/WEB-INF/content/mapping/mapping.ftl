@@ -16,25 +16,8 @@
 	   </div>
   <div class="container-fluid" v-show="fields.length > 0">
     <ul class="list-group" v-for="(part, rowNum) in queryParts">
-    	 <div>
- 	<select name='fieldName' v-model="queryParts[rowNum].fieldName" v-on:change="updateTest()">
-          <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.name }} </option>
- 	</select>
+    	 <spart :rowindex="rowNum" :fields="fields" :part="queryParts[rowNum]" :parts="queryParts"></spart>
 
- 	 	<select name='type' v-model="queryParts[rowNum].type">
-	 		<option value="EQUALS">Equals</option>
-	 		<option value="DOES_NOT_EQUAL">Does Not Equal</option>
-	 		<option value="GREATER_THAN">Greater Than</option>
-	 		<option value="LESS_THAN">Less Than</option>
-	 		<option value="CONTAINS">Contains</option>
-	 	</select>
- 	<input name='value' value="" v-bind:type="getHtmlFieldType(queryParts[rowNum].fieldName)" v-model="queryParts[rowNum].value"/>
- 	<span v-show="rowNum > 0">
- 	            <button class="btn btn-xs btn" v-on:click="removePart(rowNum)">-</button>
-	</span>
- 	<span v-show="rowNum == queryParts.length -1">
- 	            <button class="btn btn-xs btn" v-on:click="addPart()">+</button>
-	</span>
 	</ul>
   </div>
 
@@ -64,6 +47,31 @@
   </div>
 
 </div>
+  
+  
+  <template id="spart-template">
+  	<div>
+  	 	<select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()">
+          <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.name }} </option>
+ 	</select>
+
+ 	 	<select name='type' v-model="part.type">
+	 		<option value="EQUALS">Equals</option>
+	 		<option value="DOES_NOT_EQUAL">Does Not Equal</option>
+	 		<option value="GREATER_THAN">Greater Than</option>
+	 		<option value="LESS_THAN">Less Than</option>
+	 		<option value="CONTAINS">Contains</option>
+	 	</select>
+ 	<input name='value' value="" v-bind:type="getHtmlFieldType(part.fieldName)" v-model="part.value"/>
+ 	<span v-show="rowindex > 0">
+ 	            <button class="btn btn-xs btn" v-on:click="removePart(rowindex)">-</button>
+	</span>
+ 	 <span v-show="rowindex == parts.length -1">
+ 	            <button class="btn btn-xs btn" v-on:click="addPart()">+</button>
+	</span>
+  	  	</div>
+  
+  </template>
   
   <script src="/js/app/mapping/mapping.js"></script>
 

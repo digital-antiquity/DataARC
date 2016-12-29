@@ -10,8 +10,42 @@
 // el: "#searchPart",
  Vue.component('spart', {
       template: "#spart-template",
-      props: ['fields', "part"],
-      methods: {}
+      props: ['fields', "part","rowindex","parts"],
+      methods: {
+          getHtmlFieldType(name){
+              if (name == undefined || name == '') {
+                  return "text";
+              }
+              var f = this.fields[this.getFieldIndex(name)];
+              if (f.type == undefined) {
+                  return 'number';
+              }
+              if (f.type === 'NUMBER'){
+                  return "number";
+              } else if (f.type == 'DATE') {
+                  return 'date';
+              }
+              return "text";
+          },
+          getFieldIndex: function(name) {
+              for (var i=0; i< this.fields.length; i++){
+                  if (this.fields[i].name===name) {
+                      return i;
+                  }
+              }
+              return -1;
+          },
+          addPart: function() {
+              this.parts.push({});
+          },
+          removePart: function(idx) {
+            this.parts.splice(idx,1);  
+          },
+          updateTest() {
+              //FIXME: hack, replace with component and proper binding?
+            this.$forceUpdate();  
+          },
+      }
   });
   
 var Hack = new Vue({
@@ -43,12 +77,6 @@ var Hack = new Vue({
   },
 
   methods: {
-      addPart: function() {
-          this.queryParts.push({});
-      },
-      removePart: function(idx) {
-        this.queryParts.splice(idx,1);  
-      },
       fetchSchema: function () {
           var events = [];
           console.log("fetch schema");
@@ -93,21 +121,6 @@ var Hack = new Vue({
                 }
                 return -1;
             },
-            getHtmlFieldType(name){
-                if (name == undefined || name == '') {
-                    return "text";
-                }
-                var f = this.fields[this.getFieldIndex(name)];
-                if (f.type == undefined) {
-                    return 'number';
-                }
-                if (f.type === 'NUMBER'){
-                    return "number";
-                } else if (f.type == 'DATE') {
-                    return 'date';
-                }
-                return "text";
-            },
           selectFieldByName(name) {
                 var s = this.schema[this.selectedSchema];
                 this.$http.get('/api/schema/listDistinctValues',{params: {'schema': s.name, "field":name}})
@@ -119,10 +132,6 @@ var Hack = new Vue({
                     console.log(err);
                   console.err(err);
                 });
-          },
-          updateTest() {
-              //FIXME: hack, replace with component and proper binding?
-            this.$forceUpdate();  
           },
           createQuery() {
               var query = {"conditions":this.queryParts, "operator": "AND"};
