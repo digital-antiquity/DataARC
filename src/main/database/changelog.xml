@@ -72,4 +72,22 @@
 		<renameColumn tableName="schema_field" oldColumnName="fieldType"
 			newColumnName="field_type" />
 	</changeSet>
+	<changeSet id="alpha-7" author="abrin">
+		<createTable tableName="indicator">
+			<column name="id" autoIncrement="true" type="bigserial" />
+			<column name="query" type="json" />
+			<column name="name" type="varchar(255)" />
+			<column name="date_created" type="timestamp" defaultValue="now()" />
+		</createTable>
+	</changeSet>
+	<changeSet id="alpha-8" author="abrin">
+		<modifyDataType tableName="indicator" columnName="query" newDataType="jsonb"/>
+	</changeSet>
+<!-- 		<changeSet id="alpha-8" author="abrin">
+		<addColumn tableName="indicator">
+			<column name="schema_id" type="bigint">
+				<constraints references="schema" foreignKeyName="schema_id_indicator" />
+			</column>
+		</addColumn>
+	</changeSet> -->
 </databaseChangeLog>

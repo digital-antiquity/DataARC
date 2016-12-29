@@ -1,4 +1,4 @@
-package org.dataarc.util;
+package org.dataarc.util.hibernate.type;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;

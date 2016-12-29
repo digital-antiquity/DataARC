@@ -1,4 +1,4 @@
-package org.dataarc.web.api.query;
+package org.dataarc.web.api.indicator;
 
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class QueryDatastore extends AbstractRestController {
+public class QueryDatastoreController extends AbstractRestController {
 
     @Autowired
     private QueryService queryService;

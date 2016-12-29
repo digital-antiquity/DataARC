@@ -1,12 +1,14 @@
 package org.dataarc.core.query;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class FilterQuery {
+public class FilterQuery implements Serializable {
 
+    private static final long serialVersionUID = -4632150696396799879L;
     private List<QueryPart> conditions = new ArrayList<>();
     private Operator operator = Operator.AND;
     private String schema;

@@ -11,6 +11,11 @@
  Vue.component('spart', {
       template: "#spart-template",
       props: ['fields', "part","rowindex","parts"],
+//      watch: {
+//          "part.fieldname": function (val, oldVal) {
+//                  console.log(oldVal + " --> " + val);
+//          }
+//      },
       methods: {
           getHtmlFieldType(name){
               if (name == undefined || name == '') {

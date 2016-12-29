@@ -1,7 +1,10 @@
 package org.dataarc.core.query;
 
-public class QueryPart {
+import java.io.Serializable;
 
+public class QueryPart implements Serializable {
+
+    private static final long serialVersionUID = -8597360418323132553L;
     private String fieldName;
     private String value;
     private MatchType type;
