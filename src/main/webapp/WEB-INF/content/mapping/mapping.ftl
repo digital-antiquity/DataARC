@@ -21,8 +21,10 @@
 	</ul>
   </div>
 
-	<label>Indicator Name</label><input name="indicatorName" v-model="indicatorName" />
-            <button class="btn btn-xs btn" v-on:click="runQuery()">Search</button>
+    <label>Indicator Name</label><input name="indicatorName" v-model="indicatorName" />
+    <label>Indicator Id</label> {{indicatorId}}
+
+                        <button class="btn btn-xs btn" v-on:click="runQuery()">Search</button>
             <button class="btn btn-xs btn" v-on:click="saveIndicator()">Save Indicator</button>
 
 	<table v-if="results != undefined" >

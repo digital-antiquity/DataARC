@@ -1,4 +1,4 @@
-package org.dataarc.web.api.indicator;
+package org.dataarc.web.api.query;
 
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;

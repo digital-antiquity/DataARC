@@ -30,4 +30,10 @@ public class IndicatorService {
         return indicatorDao.findAllForSchema(schemaName);
     }
 
+    @Transactional(readOnly=false)
+    public Indicator merge(Indicator indicator) {
+        return indicatorDao.merge(indicator);
+        
+    }
+
 }

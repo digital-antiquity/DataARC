@@ -62,6 +62,7 @@ var Hack = new Vue({
     fields: [],
     uniqueValues: [],
     indicatorName: "",
+    indicatorId: -1,
     results: undefined,
     queryParts: [{}],
     selectedSchema: undefined,
@@ -85,7 +86,7 @@ var Hack = new Vue({
       fetchSchema: function () {
           var events = [];
           console.log("fetch schema");
-          this.$http.get('/api/schema/list')
+          this.$http.get('/api/schema')
             .then(function (schema) {
                 var list = new Array();
                 schema.body.forEach(function(s) {
@@ -102,7 +103,7 @@ var Hack = new Vue({
         selectSchema: function () {
             var s = this.schema[this.selectedSchema];
             console.log("fetch fields for "+ s.name);
-            this.$http.get('/api/schema/listFields',{params: {'schema': s.name}})
+            this.$http.get('/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
                   console.log(JSON.stringify(request.body));
                 Vue.set(this, 'fields', request.body);
@@ -128,7 +129,7 @@ var Hack = new Vue({
             },
           selectFieldByName(name) {
                 var s = this.schema[this.selectedSchema];
-                this.$http.get('/api/schema/listDistinctValues',{params: {'schema': s.name, "field":name}})
+                this.$http.get('/api/listDistinctValues',{params: {'schema': s.name, "field":name}})
                 .then(function (request) {
                     console.log(JSON.stringify(request.body));
                   Vue.set(this, 'uniqueValues', request.body);
@@ -161,19 +162,37 @@ var Hack = new Vue({
               });
           },
           saveIndicator() {
-              var indicator = {name: this.indicatorName,
+              var indicator = {name: this.indicatorName, id: this.indicatorId,
                       query: this.createQuery()};
+              if (this.indicatorId == -1) {
+                  
               this.$http.post('/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
                   headers: {
                       'Content-Type': 'application/json'
                   }})
               .then(function (request) {
                   console.log(JSON.stringify(request.body));
+                  Vue.set(this, "indicatorId", request.body);
               })
               .catch(function (err) {
                   console.log(err);
                 console.err(err);
               });
+              } else {
+                  this.$http.put('/api/indicator/' + this.indicatorId , JSON.stringify(indicator), {emulateJSON:true,
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }})
+                  .then(function (request) {
+                      console.log(JSON.stringify(request.body));
+                      Vue.set(this, "indicatorId", request.body);
+                  })
+                  .catch(function (err) {
+                      console.log(err);
+                    console.err(err);
+                  });
+                  
+              }
 
           },
     getQuery: function() {

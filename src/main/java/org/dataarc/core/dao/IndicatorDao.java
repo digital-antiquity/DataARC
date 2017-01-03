@@ -50,4 +50,9 @@ public class IndicatorDao {
         return query.getResultList();
     }
 
+    public Indicator merge(Indicator indicator) {
+        return manager.merge(indicator);
+        
+    }
+
 }
