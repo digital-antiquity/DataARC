@@ -2,7 +2,6 @@ package org.dataarc.datastore.solr;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -44,6 +43,11 @@ public class SolrDao implements ImportDao {
 
     @Autowired
     SourceRepository sourceRepository;
+    
+    @Override
+    public void save(DataEntry entry) {
+        sourceRepository.save(entry);
+    }
     
     public Map<String, String> getSchema() throws SolrServerException, IOException {
         SchemaRequest sr = new SchemaRequest();

@@ -32,4 +32,5 @@ public interface IndexFields {
     static final String FUNCTION = "function";
     static final String NISP = "nisp";
     static final String DATA = "_data";
+    static final String INDICATOR = "indicator";
 }

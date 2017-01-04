@@ -1,6 +1,10 @@
 package org.dataarc.web;
 
+import javax.annotation.PostConstruct;
+
+import org.dataarc.core.legacy.search.IndexingService;
 import org.dataarc.web.interceptor.RequestLoggingInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +21,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 @ComponentScan(basePackages = { "org.dataarc.web", "org.dataarc.core" })
 public class DataArcWebConfig extends WebMvcConfigurerAdapter {
 
+    @Autowired
+    private IndexingService indexingService;
+    
     @Bean
     public FreeMarkerViewResolver freemarkerViewResolver() {
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
@@ -59,4 +66,9 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
+    @PostConstruct
+    public void reindex() {
+        indexingService.reindex();
+    }
+    
 }

@@ -2,14 +2,12 @@ package org.dataarc.bean;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
-
-import com.vividsolutions.jts.geom.Point;
 
 //@Entity
 //@Table(name="source_data")
@@ -95,6 +93,7 @@ public class DataEntry {
     @Column(name = "date_created", nullable = false)
     private Date dateCreated;
     private Map<String, Object> properties;
+    private Set<String> indicators;
 
 
     @Override
@@ -108,5 +107,13 @@ public class DataEntry {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Set<String> getIndicators() {
+        return indicators;
+    }
+
+    public void setIndicators(Set<String> indicators) {
+        this.indicators = indicators;
     };
 }

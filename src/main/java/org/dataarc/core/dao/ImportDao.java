@@ -27,4 +27,6 @@ public interface ImportDao {
         return Integer.parseInt(tmp);
     }
 
+    void save(DataEntry entry);
+
 }

@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +43,10 @@ public class MongoDao implements ImportDao,  QueryDao {
 
     private static final String DATA_ENTRY = "dataEntry";
     
+    @Override
+    public void save(DataEntry entry) {
+        repository.save(entry);
+    }
     
     public Map<String, Long> getDistinctValues(String source, String fieldName) throws Exception {
         @SuppressWarnings("unchecked")
