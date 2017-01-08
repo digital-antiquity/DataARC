@@ -31,7 +31,7 @@ public class StartupService implements ApplicationListener<ContextRefreshedEvent
     // get the spreadsheet id, and re-index on startup
     @Override
     public void onApplicationEvent(ContextRefreshedEvent arg0) {
-        // indexingService.reindex();
+         indexingService.reindex();
     }
 
 }

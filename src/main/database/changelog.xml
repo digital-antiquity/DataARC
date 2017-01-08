@@ -84,14 +84,13 @@
 		<modifyDataType tableName="indicator" columnName="query"
 			newDataType="jsonb" />
 	</changeSet>
-	<changeSet id="alpha-8" author="abrin">
-	<!--
+	<changeSet id="alpha-9" author="abrin">
+		<addColumn tableName="schema_field">
+			<column name="display_name" type="varchar(100)" />
+		</addColumn>
+	</changeSet>
+		<!--
 	 <addColumn tableName="indicator"> <column name="schema_id" type="bigint"> 
 		<constraints references="schema" foreignKeyName="schema_id_indicator" /> 
 		</column> </addColumn> -->
-				-
-			<addColumn tableName="schema_field">
-				<column name="display_name" type="varchar(100)" />
-			</addColumn>
-		</changeSet>
 </databaseChangeLog>
