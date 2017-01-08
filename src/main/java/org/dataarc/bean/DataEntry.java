@@ -1,6 +1,8 @@
 package org.dataarc.bean;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -92,8 +94,8 @@ public class DataEntry {
 
     @Column(name = "date_created", nullable = false)
     private Date dateCreated;
-    private Map<String, Object> properties;
-    private Set<String> indicators;
+    private Map<String, Object> properties = new HashMap<>();
+    private Set<String> indicators = new HashSet<>();
 
 
     @Override

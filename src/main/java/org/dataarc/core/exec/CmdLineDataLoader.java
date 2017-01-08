@@ -2,6 +2,7 @@ package org.dataarc.core.exec;
 
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.core.service.ImportService;
+import org.dataarc.core.service.IndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,9 @@ public class CmdLineDataLoader extends AbstractDataLoader {
 
     @Autowired
     ImportService importService;
+    
+    @Autowired
+    IndicatorService indicatorService;
     
     public static void main(String[] args) {
         // TODO Auto-generated method stub
@@ -27,6 +31,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
 
     private void load(String path) {
         importService.loadData(path);
+        indicatorService.applyIndicators();
     }
 
 }

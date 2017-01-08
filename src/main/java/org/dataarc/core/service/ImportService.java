@@ -1,6 +1,5 @@
 package org.dataarc.core.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.lang.NumberUtils;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
