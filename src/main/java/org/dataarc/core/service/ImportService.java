@@ -64,8 +64,8 @@ public class ImportService {
             String name = collector.getSchemaName();
             Schema schema = new Schema();
             schema.setName(name);
-            collector.getFields().forEach(field -> {
-                Field f = new Field(field, collector.getType(field));
+            collector.getNames().forEach(field -> {
+                Field f = new Field(field, collector);
                 schema.getFields().add(f);
                 collector.getUniqueValues(field).entrySet().forEach(entry -> {
                     Value val = new Value(entry.getKey().toString(), new Long(entry.getValue()).intValue());

@@ -17,7 +17,8 @@ import org.dataarc.bean.schema.Value;
 public class FieldDataCollector {
 
     private String schemaName;
-    private Set<String> fields = new HashSet<>();
+    private Set<String> names = new HashSet<>();
+    private Map<String,String> displayNames = new HashMap<>();
     private Map<String, FieldType> fieldTypes = new HashMap<>();
     private Map<String, Map<Object, Long>> uniqueValues = new HashMap<>();
 
@@ -46,7 +47,10 @@ public class FieldDataCollector {
         if (StringUtils.isNotBlank(parent)) {
             path = String.format("%s.%s", parent, key);
         }
-        getFields().add(path);
+        String normalizedName = SchemaUtils.normalize(path);
+        getNames().add(normalizedName);
+        displayNames.put(normalizedName, path);
+
         FieldType _type = fieldTypes.getOrDefault(path, type);
         if (type == FieldType.NUMBER && _type == FieldType.STRING) {
             type = FieldType.STRING;
@@ -68,12 +72,12 @@ public class FieldDataCollector {
         }
     }
 
-    public Set<String> getFields() {
-        return fields;
+    public Set<String> getNames() {
+        return names;
     }
 
-    public void setFields(Set<String> fields) {
-        this.fields = fields;
+    public void setNames(Set<String> fields) {
+        this.names = fields;
     }
 
     public String getSchemaName() {
@@ -90,6 +94,10 @@ public class FieldDataCollector {
 
     public Map<Object, Long> getUniqueValues(String field) {
         return uniqueValues.getOrDefault(field, new HashMap<>());
+    }
+
+    public String getDisplayName(String field) {
+        return displayNames.getOrDefault(field, field);
     }
 
 }

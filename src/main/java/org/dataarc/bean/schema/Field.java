@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.dataarc.bean.AbstractPersistable;
+import org.dataarc.util.FieldDataCollector;
 
 @Entity
 @Table(name = "schema_field")
@@ -21,6 +22,9 @@ public class Field extends AbstractPersistable {
 
     @Column(length = 100)
     private String name;
+
+    @Column(length = 100, name ="display_name")
+    private String displayName;
 
     @Column(name = "field_type")
     @Enumerated(EnumType.STRING)
@@ -33,9 +37,10 @@ public class Field extends AbstractPersistable {
     public Field() {
     }
 
-    public Field(String field, FieldType type) {
+    public Field(String field, FieldDataCollector collector) {
         this.name = field;
-        this.type = type;
+        this.type = collector.getType(field);
+        this.displayName = collector.getDisplayName(field);
     }
 
     public String getName() {
@@ -65,5 +70,13 @@ public class Field extends AbstractPersistable {
     @Override
     public String toString() {
         return String.format("%s (%s - %s)", name, type, getId());
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
