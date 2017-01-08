@@ -41,9 +41,6 @@ public class FieldDataCollector {
         if (value instanceof Date) {
             type = FieldType.DATE;
         }
-        
-
-
 
         String path = key;
         if (StringUtils.isNotBlank(parent)) {
@@ -54,9 +51,9 @@ public class FieldDataCollector {
         if (type == FieldType.NUMBER && _type == FieldType.STRING) {
             type = FieldType.STRING;
         }
-        
+
         fieldTypes.put(path, type);
-        
+
         if (value instanceof Date || value instanceof String || value instanceof Number) {
             Map<Object, Long> set = uniqueValues.getOrDefault(path, new HashMap<>());
             if (value instanceof String) {

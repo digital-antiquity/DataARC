@@ -15,7 +15,6 @@ public interface ImportDao {
 
     Iterable<DataEntry> findAll();
 
-
     public default Integer parseIntProperty(Object object) {
         if (object == null) {
             return null;

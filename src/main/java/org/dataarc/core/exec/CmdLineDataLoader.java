@@ -12,10 +12,10 @@ public class CmdLineDataLoader extends AbstractDataLoader {
 
     @Autowired
     ImportService importService;
-    
+
     @Autowired
     IndicatorService indicatorService;
-    
+
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         final AnnotationConfigApplicationContext applicationContext = getAnnotationConfigContext();

@@ -36,7 +36,7 @@ public class DataEntry {
 
     @Column(name = "title")
     private String title;
-    
+
     public GeoJsonPoint getPosition() {
         return position;
     }
@@ -96,7 +96,6 @@ public class DataEntry {
     private Date dateCreated;
     private Map<String, Object> properties = new HashMap<>();
     private Set<String> indicators = new HashSet<>();
-
 
     @Override
     public String toString() {

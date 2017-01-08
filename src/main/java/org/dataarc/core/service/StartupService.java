@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 
 /**
  * Called on startup of the app... downloads and reinitializes the index
+ * 
  * @author abrin
  *
  */
 @Service
 public class StartupService implements ApplicationListener<ContextRefreshedEvent> {
-
 
     private final Logger logger = Logger.getLogger(getClass());
 
@@ -31,7 +31,7 @@ public class StartupService implements ApplicationListener<ContextRefreshedEvent
     // get the spreadsheet id, and re-index on startup
     @Override
     public void onApplicationEvent(ContextRefreshedEvent arg0) {
-//        indexingService.reindex();
+        // indexingService.reindex();
     }
 
 }

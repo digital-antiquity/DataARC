@@ -12,7 +12,7 @@ public class FilterQuery implements Serializable {
     private List<QueryPart> conditions = new ArrayList<>();
     private Operator operator = Operator.AND;
     private String schema;
-    
+
     public List<QueryPart> getConditions() {
         return conditions;
     }
@@ -28,7 +28,7 @@ public class FilterQuery implements Serializable {
     public void setOperator(Operator operator) {
         this.operator = operator;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("q=");

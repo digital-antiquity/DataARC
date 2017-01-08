@@ -22,11 +22,9 @@ import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
 import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.service.SerializationService;
-import org.geojson.Feature;
 import org.locationtech.spatial4j.context.SpatialContext;
 import org.locationtech.spatial4j.shape.Point;
 import org.slf4j.Logger;
@@ -73,7 +71,7 @@ public class IndexingService {
             writer.commit();
             Iterable<DataEntry> entries = sourceDao.findAll();
             for (DataEntry entry : entries) {
-                indexRow(writer,entry);
+                indexRow(writer, entry);
             }
 
             writer.commit();
@@ -116,12 +114,11 @@ public class IndexingService {
             if (entry.getEnd() != null) {
                 doc.add(new LegacyIntField(IndexFields.END, entry.getEnd(), Field.Store.YES));
             }
-            
 
             get(doc, IndexFields.TITLE, entry, "Title");
             // Field idField = new Field(LuceneConstants.FIELD_ID, desc.getId(), Field.Store.YES, Field.Index.ANALYZED);
             // doc.add(new TextField(IndexFields.TAGS, get(row, "tags"), Field.Store.YES));
-//            logger.debug("{}", feature.getProperties().get("perc"));
+            // logger.debug("{}", feature.getProperties().get("perc"));
             Map<String, Object> data = new HashMap<>();
             if (entry.getProperties().containsKey("domPerc")) {
                 data.put("domPerc", entry.getProperties().get("domPerc"));
@@ -134,7 +131,7 @@ public class IndexingService {
             }
             String data_ = new ObjectMapper().writeValueAsString(data);
             if (StringUtils.isNotBlank(data_)) {
-                doc.add(new TextField(IndexFields.DATA,  data_, Field.Store.YES));
+                doc.add(new TextField(IndexFields.DATA, data_, Field.Store.YES));
             }
             get(doc, IndexFields.FUNCTION, entry, "function of site");
             get(doc, IndexFields.DESCRIPTION, entry, "Description");
@@ -232,13 +229,13 @@ public class IndexingService {
     }
 
     private IndexWriter setupLuceneIndexWriter(String indexName) throws IOException {
-//        analyzer.setVersion(Version.LUCENE_6_0_0);
+        // analyzer.setVersion(Version.LUCENE_6_0_0);
         IndexWriterConfig iwc = new IndexWriterConfig(new LowercaseWhiteSpaceStandardAnalyzer()).setCodec(Codec.forName("Lucene60"));
 
         if (true) {
             iwc.setOpenMode(OpenMode.CREATE);
         }
-        
+
         File path = new File(INDEX_DIR + indexName);
         path.mkdirs();
         Directory dir = FSDirectory.open(path.toPath());

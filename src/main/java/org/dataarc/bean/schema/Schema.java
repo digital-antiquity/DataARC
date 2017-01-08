@@ -15,11 +15,11 @@ import org.dataarc.bean.AbstractPersistable;
 @Entity
 public class Schema extends AbstractPersistable {
 
-    @Column(length=100)
+    @Column(length = 100)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name="schema_id",nullable = false)
+    @JoinColumn(name = "schema_id", nullable = false)
     private Set<Field> fields = new HashSet<>();
 
     public String getName() {

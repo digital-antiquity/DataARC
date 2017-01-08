@@ -73,13 +73,14 @@ public class LuceneService {
      * @param y2
      * @param start
      * @param end
-     * @param list 
+     * @param list
      * @param term
      * @return
      * @throws IOException
      * @throws ParseException
      */
-    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, List<String> types, String term) throws IOException, ParseException {
+    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, List<String> types, String term)
+            throws IOException, ParseException {
         // Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
         FeatureCollection fc = new FeatureCollection();
         setupReaders("bce");
@@ -103,57 +104,57 @@ public class LuceneService {
             Document document = getReader().document(topDocs.scoreDocs[i].doc);
             logger.trace(document);
             try {
-            // create a point for each result
-            String y = document.get(IndexFields.Y);
-            String x = document.get(IndexFields.X);
-            if (x == null || y == null) {
-                continue;
-            }
-            Point key = new Point(Double.parseDouble(y), Double.parseDouble(x));
-
-            Map<String, String> valueMap = new HashMap<String, String>();
-            for (IndexableField el : document.getFields()) {
-                String name = el.name();
-                String v = document.get(name);
-                // hide certain fields
-                if (StringUtils.isBlank(v) || name.equals(IndexFields.X) || name.equals(IndexFields.Y) ||
-                        name.equals(IndexFields.COUNTRY) ||
-                        name.equals(IndexFields.SOURCE) || name.equals(IndexFields.START)) {
+                // create a point for each result
+                String y = document.get(IndexFields.Y);
+                String x = document.get(IndexFields.X);
+                if (x == null || y == null) {
                     continue;
                 }
+                Point key = new Point(Double.parseDouble(y), Double.parseDouble(x));
 
-                // if it's a date, clean it up and combine the start/end into a phrase
-                if (name.equals(IndexFields.END)) {
-                    String start_ = document.get(IndexFields.START);
-                    if (start_.equals("-1")) {
-                        start_ = Integer.toString(START);
+                Map<String, String> valueMap = new HashMap<String, String>();
+                for (IndexableField el : document.getFields()) {
+                    String name = el.name();
+                    String v = document.get(name);
+                    // hide certain fields
+                    if (StringUtils.isBlank(v) || name.equals(IndexFields.X) || name.equals(IndexFields.Y) ||
+                            name.equals(IndexFields.COUNTRY) ||
+                            name.equals(IndexFields.SOURCE) || name.equals(IndexFields.START)) {
+                        continue;
                     }
-                    if (start_.trim().contains("-")) {
-                        start_ += " BCE ";
-                        start_ = start_.replace("-", "");
+
+                    // if it's a date, clean it up and combine the start/end into a phrase
+                    if (name.equals(IndexFields.END)) {
+                        String start_ = document.get(IndexFields.START);
+                        if (start_.equals("-1")) {
+                            start_ = Integer.toString(START);
+                        }
+                        if (start_.trim().contains("-")) {
+                            start_ += " BCE ";
+                            start_ = start_.replace("-", "");
+                        }
+                        if (v.trim().startsWith("-")) {
+                            v += " BCE ";
+                            v = v.replace("-", "");
+                        }
+                        valueMap.put(DATE, start_ + " - " + v);
+                        continue;
                     }
-                    if (v.trim().startsWith("-")) {
-                        v += " BCE ";
-                        v = v.replace("-", "");
-                    }
-                    valueMap.put(DATE, start_ + " - " + v);
-                    continue;
+
+                    valueMap.put(name, v);
                 }
 
-                valueMap.put(name, v);
-            }
-
-            if (!valMap.containsKey(key)) {
-                valMap.put(key, new HashMap<>());
-            }
-            String source = document.get(SOURCE);
-            // group by source
-            if (!valMap.get(key).containsKey(source)) {
-                valMap.get(key).put(source, new ArrayList<>());
-            }
-            valMap.get(key).get(source).add(valueMap);
+                if (!valMap.containsKey(key)) {
+                    valMap.put(key, new HashMap<>());
+                }
+                String source = document.get(SOURCE);
+                // group by source
+                if (!valMap.get(key).containsKey(source)) {
+                    valMap.get(key).put(source, new ArrayList<>());
+                }
+                valMap.get(key).get(source).add(valueMap);
             } catch (Throwable t) {
-                logger.debug(t,t);
+                logger.debug(t, t);
             }
         }
 
@@ -219,7 +220,7 @@ public class LuceneService {
      * @return
      */
     private BooleanQuery.Builder createDateRangeQueryPart(Integer start, Integer end) {
-        
+
         LegacyNumericRangeQuery<Integer> startRange = LegacyNumericRangeQuery.newIntRange(IndexFields.END, -9999, end, true, true);
         LegacyNumericRangeQuery<Integer> endRange = LegacyNumericRangeQuery.newIntRange(IndexFields.START, start, 9999, true, true);
         BooleanQuery.Builder bq = new BooleanQuery.Builder();

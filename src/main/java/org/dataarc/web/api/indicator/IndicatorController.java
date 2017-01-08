@@ -21,34 +21,33 @@ public class IndicatorController extends AbstractRestController {
 
     @Autowired
     private IndicatorService indicatorService;
-    
-    @RequestMapping(path=UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
-    public Long save(@RequestBody(required=true) Indicator indicator) throws Exception {
+
+    @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
+    public Long save(@RequestBody(required = true) Indicator indicator) throws Exception {
         logger.debug("Query: {} ", indicator);
         indicatorService.save(indicator);
         return indicator.getId();
-        
+
     }
 
-    
-    @RequestMapping(path=UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
-    public Long update(@PathVariable("id") Long id, @RequestBody(required=true) Indicator _indicator) throws Exception {
+    @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
+    public Long update(@PathVariable("id") Long id, @RequestBody(required = true) Indicator _indicator) throws Exception {
         logger.debug("Query: {} ", _indicator);
         Indicator indicator = indicatorService.merge(_indicator);
         indicatorService.save(indicator);
         return indicator.getId();
-        
+
     }
 
-    @RequestMapping(path=UrlConstants.VIEW_INDICATOR, method = RequestMethod.GET)
+    @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.GET)
     public Indicator getIndicatorById(@PathVariable(value = "id", required = true) Long id) {
         return indicatorService.findById(id);
     }
 
-    @RequestMapping(path=UrlConstants.LIST_INDICATORS, method = RequestMethod.GET)
-    public Map<Long,String> list(@RequestParam(value="schema", required=true) String schemaName) {
+    @RequestMapping(path = UrlConstants.LIST_INDICATORS, method = RequestMethod.GET)
+    public Map<Long, String> list(@RequestParam(value = "schema", required = true) String schemaName) {
         List<Indicator> indicators = indicatorService.findAllForSchema(schemaName);
-        Map<Long,String> results = new HashMap<>();
+        Map<Long, String> results = new HashMap<>();
         indicators.forEach(ind -> {
             results.put(ind.getId(), ind.getName());
         });

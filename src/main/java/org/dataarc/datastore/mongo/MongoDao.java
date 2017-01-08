@@ -27,33 +27,32 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class MongoDao implements ImportDao,  QueryDao {
+public class MongoDao implements ImportDao, QueryDao {
     protected Logger logger = LoggerFactory.getLogger(getClass());
-
 
     @Autowired
     MongoTemplate template;
 
     @Autowired
     SourceRepository repository;
-    
+
     public Map<String, String> getSchema() throws IOException {
         return null;
     }
 
     private static final String DATA_ENTRY = "dataEntry";
-    
+
     @Override
     public void save(DataEntry entry) {
         repository.save(entry);
     }
-    
+
     public Map<String, Long> getDistinctValues(String source, String fieldName) throws Exception {
         @SuppressWarnings("unchecked")
         List<String> result = template.getDb().getCollection(DATA_ENTRY).distinct(fieldName);
         logger.trace("{}", result);
         // later on if we want to use something like variety.js, we could use this to provide counts
-        Map<String,Long> map = new HashMap<>();
+        Map<String, Long> map = new HashMap<>();
         for (String r : result) {
             map.put(r, 1L);
         }
@@ -62,9 +61,9 @@ public class MongoDao implements ImportDao,  QueryDao {
 
     @Override
     public List<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
-        Query q = new Query(); 
+        Query q = new Query();
         q.addCriteria(Criteria.where("source").is(fq.getSchema()));
-        
+
         Criteria group = new Criteria();
         List<Criteria> criteria = new ArrayList<>();
         for (QueryPart part : fq.getConditions()) {
@@ -99,11 +98,10 @@ public class MongoDao implements ImportDao,  QueryDao {
         List<DataEntry> find = template.find(q, DataEntry.class);
         return find;
     }
-    
 
     @Override
     public void deleteAll() {
-        repository.deleteAll();        
+        repository.deleteAll();
     }
 
     @Override
@@ -113,9 +111,9 @@ public class MongoDao implements ImportDao,  QueryDao {
 
         DataEntry entry = new DataEntry(source, json);
         entry.setEnd(parseIntProperty(feature.getProperties().get("End")));
-         entry.setTitle((String) feature.getProperties().get("Title"));
+        entry.setTitle((String) feature.getProperties().get("Title"));
         entry.setStart(parseIntProperty(feature.getProperties().get("Start")));
-        
+
         GeoJsonObject geometry = feature.getGeometry();
         // template.save(feature, "dataEntry");
         entry.setProperties(feature.getProperties());
@@ -124,11 +122,11 @@ public class MongoDao implements ImportDao,  QueryDao {
             if (point_.getCoordinates() != null) {
                 double latitude = point_.getCoordinates().getLatitude();
                 double longitude = point_.getCoordinates().getLongitude();
-                entry.setPosition(new GeoJsonPoint(longitude,latitude));
+                entry.setPosition(new GeoJsonPoint(longitude, latitude));
             }
         }
         repository.save(entry);
-        
+
     }
 
     @Override
@@ -141,28 +139,27 @@ public class MongoDao implements ImportDao,  QueryDao {
     private static Object parse(String str) {
         try {
             return Float.parseFloat(str);
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
         }
-        
+
         try {
             return Double.parseDouble(str);
-        } catch(NumberFormatException e1) {
+        } catch (NumberFormatException e1) {
         }
         try {
             return Integer.parseInt(str);
-        } catch(NumberFormatException e2) {
+        } catch (NumberFormatException e2) {
         }
         try {
-            return  Long.parseLong(str);
-        } catch(NumberFormatException e3) {
-        }       
+            return Long.parseLong(str);
+        } catch (NumberFormatException e3) {
+        }
         return str;
     }
-    
+
     @Override
     public Iterable<DataEntry> findAll() {
         return repository.findAll();
     }
-
 
 }

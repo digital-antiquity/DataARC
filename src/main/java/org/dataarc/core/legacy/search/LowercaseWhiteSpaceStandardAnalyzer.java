@@ -32,9 +32,9 @@ public final class LowercaseWhiteSpaceStandardAnalyzer extends Analyzer {
 
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
-        
+
         // TOKENIZING ON (punctuation?)(space +) (punctuation?)
-        Tokenizer st = new PatternTokenizer( Pattern.compile("((^|\\W|\\_)?(\\s+)(\\W|\\_|$)?)"), -1);
+        Tokenizer st = new PatternTokenizer(Pattern.compile("((^|\\W|\\_)?(\\s+)(\\W|\\_|$)?)"), -1);
         // FIXME: this still lets things like "carp)" through as well as "carp" - it'd be better if the latter was the only thing
 
         // http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters

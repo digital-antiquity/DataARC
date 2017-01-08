@@ -15,7 +15,7 @@ public class ListUniqueValues extends AbstractRestController {
 
     @Autowired
     private SchemaService schemaService;
-    
+
     @RequestMapping("/api/listDistinctValues")
     public Set<Value> listDistinctValues(@RequestParam(value = "schema", required = true) String source,
             @RequestParam(value = "field", required = true) String field) throws Exception {

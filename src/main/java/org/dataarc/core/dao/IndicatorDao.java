@@ -30,7 +30,6 @@ public class IndicatorDao {
         manager.createQuery("delete from Indicator").executeUpdate();
     }
 
-
     public Set<String> findAll() {
         return manager.createQuery("from Indicator", Indicator.class).getResultList().stream()
                 .map(schema -> schema.getName())
@@ -44,15 +43,16 @@ public class IndicatorDao {
     }
 
     public List<Indicator> findAllForSchema(String schemaName) {
-        //FIXME: SQL-inject
-        Query query = manager.createNativeQuery("select * from indicator where query @> '{\"schema\":\""+StringEscapeUtils.escapeSql(schemaName)+"\" }'", Indicator.class);
-//        query.setParameter(1, schemaName);
+        // FIXME: SQL-inject
+        Query query = manager.createNativeQuery("select * from indicator where query @> '{\"schema\":\"" + StringEscapeUtils.escapeSql(schemaName) + "\" }'",
+                Indicator.class);
+        // query.setParameter(1, schemaName);
         return query.getResultList();
     }
 
     public Indicator merge(Indicator indicator) {
         return manager.merge(indicator);
-        
+
     }
 
 }

@@ -8,25 +8,25 @@ import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.core.CoreContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 import org.springframework.util.ResourceUtils;
 
 @Configuration
-@EnableSolrRepositories(multicoreSupport = true, basePackages= "org.dataarc.solr")
+@EnableSolrRepositories(multicoreSupport = true, basePackages = "org.dataarc.solr")
 
 @Profile("solr")
-@ComponentScan(basePackages = { "org.dataarc.core","org.dataarc.datastore.solr"},
-excludeFilters = {
-        @Filter(type = FilterType.ASSIGNABLE_TYPE,
-                value = {
-                        DataArcConfiguration.class,
-                }),
-})
+@ComponentScan(basePackages = { "org.dataarc.core", "org.dataarc.datastore.solr" },
+        excludeFilters = {
+                @Filter(type = FilterType.ASSIGNABLE_TYPE,
+                        value = {
+                                DataArcConfiguration.class,
+                        }),
+        })
 public class SolrProfile extends DataArcConfiguration {
 
     @Bean
@@ -44,6 +44,4 @@ public class SolrProfile extends DataArcConfiguration {
         return new SolrTemplate(solrClient());
     }
 
-    
-    
 }

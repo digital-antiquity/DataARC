@@ -14,7 +14,6 @@ public class SerializationService {
         return new ObjectMapper().writeValueAsString(query);
     }
 
-
     public FilterQuery deSerialize(String query) throws IOException {
         return new ObjectMapper().readerFor(FilterQuery.class).readValue(query);
     }

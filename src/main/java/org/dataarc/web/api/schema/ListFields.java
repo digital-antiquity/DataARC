@@ -18,7 +18,7 @@ public class ListFields extends AbstractRestController {
 
     @RequestMapping(UrlConstants.SCHEMA_LIST_FIELDS)
     public Set<Field> listFields(@RequestParam(value = "schema", required = true) String source) throws Exception {
-//        Set<Field> toRet = new HashSet<Field>();
+        // Set<Field> toRet = new HashSet<Field>();
         return schemaService.getFields(source);
     }
 

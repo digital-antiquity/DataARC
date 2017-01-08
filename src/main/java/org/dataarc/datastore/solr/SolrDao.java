@@ -43,21 +43,21 @@ public class SolrDao implements ImportDao {
 
     @Autowired
     SourceRepository sourceRepository;
-    
+
     @Override
     public void save(DataEntry entry) {
         sourceRepository.save(entry);
     }
-    
+
     public Map<String, String> getSchema() throws SolrServerException, IOException {
         SchemaRequest sr = new SchemaRequest();
         SchemaResponse process2 = sr.process(template.getSolrClient());
         logger.debug("{}", process2);
         SchemaRepresentation schemaRepresentation = process2.getSchemaRepresentation();
         logger.debug("{}", schemaRepresentation);
-        Map<String,String> fields = new HashMap<>();
+        Map<String, String> fields = new HashMap<>();
         schemaRepresentation.getFields().forEach(fld -> {
-            fields.put((String)fld.get("name"), (String)fld.get("type"));
+            fields.put((String) fld.get("name"), (String) fld.get("type"));
             logger.debug("{} ({})", fld.get("name"), fld.get("type"));
         });
         return fields;
@@ -79,12 +79,12 @@ public class SolrDao implements ImportDao {
 
     @Override
     public void deleteAll() {
-        sourceRepository.deleteAll();        
+        sourceRepository.deleteAll();
     }
 
     @Override
     public void load(Feature feature, Map<String, Object> properties) throws Exception {
-        
+
         String json = new ObjectMapper().writeValueAsString(properties);
         ContentStreamUpdateRequest request = new ContentStreamUpdateRequest("/update/json/docs");
         request.setParam("json.command", "false");
@@ -93,7 +93,7 @@ public class SolrDao implements ImportDao {
         request.addContentStream(new ContentStreamBase.StringStream(json));
         UpdateResponse response = request.process(template.getSolrClient());
         template.getSolrClient().commit();
-        
+
     }
 
     @Override
@@ -113,7 +113,7 @@ public class SolrDao implements ImportDao {
                 // properties.put("point", point);
             }
         }
-        
+
     }
 
     @Override

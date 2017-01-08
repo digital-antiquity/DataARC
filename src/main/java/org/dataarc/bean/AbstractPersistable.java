@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 @MappedSuperclass
 public abstract class AbstractPersistable {
 
-
     @Transient
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -56,14 +55,14 @@ public abstract class AbstractPersistable {
     @Override
     public boolean equals(final Object object) {
         if (object == this) {
-            logger.trace("exact equals {},{}", this,object);
+            logger.trace("exact equals {},{}", this, object);
             return true;
         }
         if ((object instanceof AbstractPersistable) && getClass().isInstance(object)) {
-            logger.trace("same class {},{}", this,object);
+            logger.trace("same class {},{}", this, object);
             return PersistableUtils.isEqual(this, getClass().cast(object));
         }
-        logger.trace("!! not equals {},{}", this,object);
+        logger.trace("!! not equals {},{}", this, object);
         return false;
     }
 

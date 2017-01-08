@@ -9,5 +9,5 @@ public interface UrlConstants {
     String UPDATE_INDICATOR = "/api/indicator/{id}";
     String VIEW_INDICATOR = "/api/indicator/{id}";
     String LIST_INDICATORS = "/api/indicator";
-    
+
 }

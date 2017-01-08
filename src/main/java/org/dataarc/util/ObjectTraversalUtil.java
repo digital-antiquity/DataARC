@@ -19,7 +19,7 @@ public class ObjectTraversalUtil {
         } else if (StringUtils.isBlank(__parent)) {
             __parent = parentKey;
         } else {
-            __parent += "." + parentKey; 
+            __parent += "." + parentKey;
         }
         final String parent = __parent;
         properties.keySet().forEach(key -> {

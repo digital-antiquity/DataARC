@@ -26,18 +26,17 @@ import liquibase.integration.spring.SpringLiquibase;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO })
-//@ComponentScan(excludeFilters = @Filter(
-//        type = FilterType.REGEX, pattern = { "regex for distribution 1" }
-//    ))
+// @ComponentScan(excludeFilters = @Filter(
+// type = FilterType.REGEX, pattern = { "regex for distribution 1" }
+// ))
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public  class DataArcConfiguration {
+public class DataArcConfiguration {
 
     static final String ORG_DATAARC_CORE = "org.dataarc.core";
     private static final String ORG_DATAARC_BEAN = "org.dataarc.bean";
     @Resource
     protected Environment env;
-
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -61,14 +60,12 @@ public  class DataArcConfiguration {
         dataSource.setPassword("");
         return dataSource;
     }
-    
 
     Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", org.hibernate.spatial.dialect.postgis.PostgisDialect.class.getName());
         return properties;
     }
-    
 
     @Bean
     public SpringLiquibase getLiquibase() {
@@ -78,8 +75,7 @@ public  class DataArcConfiguration {
         liquibase.setContexts("test, production");
         return liquibase;
     }
-    
-    
+
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();

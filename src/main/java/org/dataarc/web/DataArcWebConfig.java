@@ -23,7 +23,7 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private IndexingService indexingService;
-    
+
     @Bean
     public FreeMarkerViewResolver freemarkerViewResolver() {
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
@@ -70,5 +70,5 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
     public void reindex() {
         indexingService.reindex();
     }
-    
+
 }

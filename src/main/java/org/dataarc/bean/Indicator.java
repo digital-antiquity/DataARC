@@ -15,11 +15,11 @@ public class Indicator extends AbstractPersistable {
 
     @Column(length = 100)
     private String name;
-    
+
     @Column
     @Type(type = "QueryJsonObject")
     private FilterQuery query;
-    
+
     public String getName() {
         return name;
     }

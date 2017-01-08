@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -19,7 +18,7 @@ public class RequestLoggingInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse response, Object handler) throws Exception {
         // HandlerMethod
         long startTime = System.currentTimeMillis();
-        logger.info("{} ({} {})" , request.getRequestURL().toString(), handler, handler.getClass());
+        logger.info("{} ({} {})", request.getRequestURL().toString(), handler, handler.getClass());
         request.setAttribute("startTime", startTime);
         // if returned false, we need to make sure 'response' is sent
         return true;
@@ -29,7 +28,7 @@ public class RequestLoggingInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-//        logger.debug("Request URL::" + request.getRequestURL().toString() + " Sent to Handler :: Current Time=" + System.currentTimeMillis());
+        // logger.debug("Request URL::" + request.getRequestURL().toString() + " Sent to Handler :: Current Time=" + System.currentTimeMillis());
         // we can add attributes in the modelAndView and use that in the view page
     }
 
