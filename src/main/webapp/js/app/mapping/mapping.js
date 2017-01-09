@@ -55,25 +55,30 @@ var Hack = new Vue({
     schema: [],
     fields: [],
     uniqueValues: [],
-    indicatorName: "",
     indicators: [] ,
-    indicatorId: -1,
     results: undefined,
     conditions: [{}],
-    selectedSchema: undefined,
-    selectedField: undefined,
-    selectedIndicator: undefined
+    currentSchema: undefined,
+    currentField: undefined,
+    currentIndicator: undefined
   },
   computed: {
   },
   watch: {
-      'selectedSchema' : function(val, oldVal) {
+      'currentSchema' : function(val, oldVal) {
           this.selectSchema();
       },
-      'selectedField' : function(val, oldVal) {
+      'currentField' : function(val, oldVal) {
           this.selectField();
       },
-      'selectedIndicator' : function(val, oldVal) {
+      'currentIndicator' : function(val, oldVal) {
+          if (val === "new") {
+              console.log("setup new indicator");
+              var indicator = {name:'New Indicator',query: {conditions:[{}], operator:'AND', schema: this.schema[this.currentSchema].name}};
+              this.indicators.push(indicator);
+              console.log(indicator);
+              Vue.set(this,"currentIndicator", this.indicators.length -1);
+          }
           this.selectIndicator();
       }
   },
@@ -100,7 +105,7 @@ var Hack = new Vue({
             });
         },
         selectSchema: function () {
-            var s = this.schema[this.selectedSchema];
+            var s = this.schema[this.currentSchema];
             console.log("fetch fields for "+ s.name);
             this.$http.get('/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
@@ -121,15 +126,12 @@ var Hack = new Vue({
             });
         },
         selectIndicator: function() {
-            var s = this.schema[this.selectedSchema];
-            var i = this.indicators[this.selectedIndicator];
-            Vue.set(this,'conditions',i.query.conditions);
-            Vue.set(this,"indicatorId", i.id);
-            Vue.set(this,"indicatorName", i.name);
+            var s = this.schema[this.currentSchema];
+            var i = this.indicators[this.currentIndicator];
         },
           selectField: function () {
-              var s = this.schema[this.selectedSchema];
-              var f = this.fields[this.selectedField];
+              var s = this.schema[this.currentSchema];
+              var f = this.fields[this.currentField];
               console.log("fetch unique values for "+ f.name);
               return selectFieldByName(name);
             },
@@ -142,7 +144,7 @@ var Hack = new Vue({
                 return -1;
             },
           selectFieldByName(name) {
-                var s = this.schema[this.selectedSchema];
+                var s = this.schema[this.currentSchema];
                 this.$http.get('/api/listDistinctValues',{params: {'schema': s.name, "field":name}})
                 .then(function (request) {
                     console.log(JSON.stringify(request.body));
@@ -152,14 +154,8 @@ var Hack = new Vue({
                   console.err(err);
                 });
           },
-          createQuery() {
-              var query = {"conditions":this.conditions, "operator": "AND"};
-              var s = this.schema[this.selectedSchema];
-              query.schema = s.name;
-              return query;
-          },
           runQuery() {
-              var query = this.createQuery();
+              var query = this.indicators[this.currentIndicator].query;
               console.log(JSON.stringify(query));
               this.$http.post('/api/query/datastore' , JSON.stringify(query), {emulateJSON:true,
                   headers: {
@@ -174,9 +170,9 @@ var Hack = new Vue({
               });
           },
           saveIndicator() {
-              var indicator = {name: this.indicatorName, id: this.indicatorId,
-                      query: this.createQuery()};
-              if (this.indicatorId == -1) {
+              var indicator = this.indicators[this.currentIndicator];
+              console.log(indicator);
+              if (indicator.id == -1 || indicator.id == undefined) {
                   
               this.$http.post('/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
                   headers: {
@@ -184,7 +180,7 @@ var Hack = new Vue({
                   }})
               .then(function (request) {
                   console.log(JSON.stringify(request.body));
-                  Vue.set(this, "indicatorId", request.body);
+                  indicatorId = request.body;
               })
               .catch(function (err) {
                   console.log(err);

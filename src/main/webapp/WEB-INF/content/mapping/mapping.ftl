@@ -1,12 +1,16 @@
   <div class="container" id="schema">
 
         <div class="col-sm-12">
-	      Schema: <select v-model="selectedSchema" >
+	      Schema: <select v-model="currentSchema" >
 	          <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
 	      </select>
-	      <span v-show="selectedSchema != undefined">
-	       Existing: <select v-model="selectedIndicator"  >
+	      <span v-show="currentSchema != undefined">
+
+	       Existing: <select v-model="currentIndicator">
+	          <optgroup label="Existing Indicators" v-if="indicators.length > 0 ">
 	          <option v-for="(option, index) in indicators" v-bind:value="index"> {{ option.name }} </option>
+	          </optgroup>
+	          <option value="new">New Indicator</option>
 	      </select>
 	      </span>
 	      </div>
@@ -17,18 +21,17 @@
 	      </ul>
 	   </div>
 	   
-  <div class="container-fluid" v-show="fields.length > 0">
-    <ul class="list-group" v-for="(part, rowNum) in conditions">
-    	 <spart :rowindex="rowNum" :fields="fields" :part="conditions[rowNum]" :parts="conditions"></spart>
-
+  <div class="container-fluid" v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
+    <ul class="list-group" v-for="(part, rowNum) in indicators[currentIndicator].query.conditions">
+    	 <spart :rowindex="rowNum" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"></spart>
 	</ul>
-  </div>
 
-    <label>Indicator Name</label><input name="indicatorName" v-model="indicatorName" />
-    <label>Indicator Id</label> {{indicatorId}}
+    <label>Indicator Name</label><input name="indicatorName" v-model="indicators[currentIndicator].name" />
+    <label>Indicator Id</label> {{indicators[currentIndicator].id}}
 
                         <button class="btn btn-xs btn" v-on:click="runQuery()">Search</button>
             <button class="btn btn-xs btn" v-on:click="saveIndicator()">Save Indicator</button>
+  </div>
 
 	<table v-if="results != undefined" >
 	<tr><td colspan=10">{{ results.length }}</td></tr>
@@ -58,7 +61,7 @@
   	<div>
   	 	<select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()">
           <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.name }} </option>
- 	</select>
+        </select>
 
  	 	<select name='type' v-model="part.type">
 	 		<option value="EQUALS">Equals</option>
