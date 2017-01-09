@@ -1,8 +1,6 @@
 package org.dataarc.web.api.indicator;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.dataarc.bean.Indicator;
 import org.dataarc.core.service.IndicatorService;
@@ -45,13 +43,10 @@ public class IndicatorController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.LIST_INDICATORS, method = RequestMethod.GET)
-    public Map<Long, String> list(@RequestParam(value = "schema", required = true) String schemaName) {
+    public List<Indicator> list(@RequestParam(value = "schema", required = true) String schemaName) {
         List<Indicator> indicators = indicatorService.findAllForSchema(schemaName);
-        Map<Long, String> results = new HashMap<>();
-        indicators.forEach(ind -> {
-            results.put(ind.getId(), ind.getName());
-        });
-        return results;
+        logger.debug("{}", indicators);
+        return indicators;
     }
 
 }

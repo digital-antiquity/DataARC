@@ -7,15 +7,9 @@
       console.log(vm);
   }
 
-// el: "#searchPart",
  Vue.component('spart', {
       template: "#spart-template",
       props: ['fields', "part","rowindex","parts"],
-//      watch: {
-//          "part.fieldname": function (val, oldVal) {
-//                  console.log(oldVal + " --> " + val);
-//          }
-//      },
       methods: {
           getHtmlFieldType(name){
               if (name == undefined || name == '') {
@@ -47,7 +41,7 @@
             this.parts.splice(idx,1);  
           },
           updateTest() {
-              //FIXME: hack, replace with component and proper binding?
+              // FIXME: hack, replace with component and proper binding?
             this.$forceUpdate();  
           },
       }
@@ -62,11 +56,13 @@ var Hack = new Vue({
     fields: [],
     uniqueValues: [],
     indicatorName: "",
+    indicators: [] ,
     indicatorId: -1,
     results: undefined,
-    queryParts: [{}],
+    conditions: [{}],
     selectedSchema: undefined,
-    selectedField: undefined
+    selectedField: undefined,
+    selectedIndicator: undefined
   },
   computed: {
   },
@@ -76,6 +72,9 @@ var Hack = new Vue({
       },
       'selectedField' : function(val, oldVal) {
           this.selectField();
+      },
+      'selectedIndicator' : function(val, oldVal) {
+          this.selectIndicator();
       }
   },
   mounted: function () {
@@ -105,14 +104,29 @@ var Hack = new Vue({
             console.log("fetch fields for "+ s.name);
             this.$http.get('/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
-                  console.log(JSON.stringify(request.body));
+//                  console.trace(JSON.stringify(request.body));
                 Vue.set(this, 'fields', request.body);
               })
               .catch(function (err) {
-                  console.log(err);
                 console.err(err);
               });
-          },
+
+            this.$http.get('/api/indicator',{params: {'schema': s.name}})
+            .then(function (request) {
+                console.log(JSON.stringify(request.body));
+              Vue.set(this, 'indicators', request.body);
+            })
+            .catch(function (err) {
+              console.err(err);
+            });
+        },
+        selectIndicator: function() {
+            var s = this.schema[this.selectedSchema];
+            var i = this.indicators[this.selectedIndicator];
+            Vue.set(this,'conditions',i.query.conditions);
+            Vue.set(this,"indicatorId", i.id);
+            Vue.set(this,"indicatorName", i.name);
+        },
           selectField: function () {
               var s = this.schema[this.selectedSchema];
               var f = this.fields[this.selectedField];
@@ -135,12 +149,11 @@ var Hack = new Vue({
                   Vue.set(this, 'uniqueValues', request.body);
                 })
                 .catch(function (err) {
-                    console.log(err);
                   console.err(err);
                 });
           },
           createQuery() {
-              var query = {"conditions":this.queryParts, "operator": "AND"};
+              var query = {"conditions":this.conditions, "operator": "AND"};
               var s = this.schema[this.selectedSchema];
               query.schema = s.name;
               return query;
@@ -157,7 +170,6 @@ var Hack = new Vue({
                   Vue.set(this,"results",request.body);
               })
               .catch(function (err) {
-                  console.log(err);
                 console.err(err);
               });
           },
@@ -188,7 +200,6 @@ var Hack = new Vue({
                       Vue.set(this, "indicatorId", request.body);
                   })
                   .catch(function (err) {
-                      console.log(err);
                     console.err(err);
                   });
                   
@@ -196,8 +207,8 @@ var Hack = new Vue({
 
           },
     getQuery: function() {
-        console.log(this.queryParts);
-        return this.queryParts;
+        console.log(this.conditions);
+        return this.conditions;
     }
   }
 });

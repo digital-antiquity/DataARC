@@ -4,9 +4,11 @@
 	      Schema: <select v-model="selectedSchema" >
 	          <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
 	      </select>
-<!--	      Field: <select v-model="selectedField" >
-	          <option v-for="(option, index) in fields" v-bind:value="index"> {{ option.name }} </option>
-	      </select> -->
+	      <span v-show="selectedSchema != undefined">
+	       Existing: <select v-model="selectedIndicator"  >
+	          <option v-for="(option, index) in indicators" v-bind:value="index"> {{ option.name }} </option>
+	      </select>
+	      </span>
 	      </div>
 	        <div class="col-sm-12">
 	      
@@ -14,9 +16,10 @@
 	       <li><b>{{ value.value }}</b> ({{value.occurrence }})</li>
 	      </ul>
 	   </div>
+	   
   <div class="container-fluid" v-show="fields.length > 0">
-    <ul class="list-group" v-for="(part, rowNum) in queryParts">
-    	 <spart :rowindex="rowNum" :fields="fields" :part="queryParts[rowNum]" :parts="queryParts"></spart>
+    <ul class="list-group" v-for="(part, rowNum) in conditions">
+    	 <spart :rowindex="rowNum" :fields="fields" :part="conditions[rowNum]" :parts="conditions"></spart>
 
 	</ul>
   </div>
