@@ -22,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @WebAppConfiguration
 @ContextConfiguration(classes = { DataArcWebConfig.class })
-public class AbstractControllerTest extends AbstractServiceTest {
+public class ControllerTest extends AbstractServiceTest {
     
     
     protected MockMvc mockMvc;
@@ -38,8 +38,8 @@ public class AbstractControllerTest extends AbstractServiceTest {
     @Test
     public void testSchemaFields() throws Exception {
         mockMvc.perform(get(UrlConstants.SCHEMA_LIST_FIELDS+"?schema=SEAD"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=utf-8"));
+                .andExpect(status().isOk());
+//                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
 
@@ -48,8 +48,9 @@ public class AbstractControllerTest extends AbstractServiceTest {
         String schema  = "SEAD";
         FilterQuery query = new FilterQuery();
         query.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
+        query.setSchema(schema);
         
-        mockMvc.perform(post(UrlConstants.QUERY_DATASTORE,schema, query))
+        mockMvc.perform(post(UrlConstants.QUERY_DATASTORE, query))
                 .andExpect(status().isOk());
 //                .andExpect(content().contentType("application/json;charset=utf-8"));
     }

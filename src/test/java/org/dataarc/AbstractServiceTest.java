@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("mongo")
 @Transactional
 @ContextConfiguration(classes = {DataArcConfiguration.class})
-public class AbstractServiceTest {
+public abstract class AbstractServiceTest {
     
 
 }
