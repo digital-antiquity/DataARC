@@ -14,6 +14,7 @@ import org.dataarc.web.api.schema.UrlConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,8 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @ContextConfiguration(classes = { DataArcWebConfig.class })
 public class ControllerTest extends AbstractServiceTest {
-    
-    
+
     protected MockMvc mockMvc;
 
     @Autowired
@@ -37,21 +37,24 @@ public class ControllerTest extends AbstractServiceTest {
 
     @Test
     public void testSchemaFields() throws Exception {
-        mockMvc.perform(get(UrlConstants.SCHEMA_LIST_FIELDS+"?schema=SEAD"))
-                .andExpect(status().isOk());
-//                .andExpect(content().contentType("application/json;charset=utf-8"));
+        mockMvc.perform(get(UrlConstants.SCHEMA_LIST_FIELDS + "?schema=SEAD"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
-
 
     @Test
     public void testQuery() throws Exception {
-        String schema  = "SEAD";
+        String schema = "SEAD";
         FilterQuery query = new FilterQuery();
         query.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
         query.setSchema(schema);
-        
+
         mockMvc.perform(post(UrlConstants.QUERY_DATASTORE, query))
-                .andExpect(status().isOk());
-//                .andExpect(content().contentType("application/json;charset=utf-8"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+//        mockMvc.perform(get("/index").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith("application/json"))
+//        .andExpect(jsonPath("$.greeting").value("Hello World"));
+
     }
 }
