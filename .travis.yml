@@ -5,7 +5,7 @@ jdk:
 language: java
 
 before_install:
-    - psql -U postgres -c "create extension postgis"
+    - psql -U postgres -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology"
     - psql -c 'create user dataarc CREATEDB;' -U postgres
     - psql -c 'create database dataarc' -U dataarc -d template1
     - export DISPLAY=:99.0
