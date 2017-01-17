@@ -7,7 +7,7 @@ import org.dataarc.core.legacy.search.IndexingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class StartupService implements ApplicationListener<ContextRefreshedEvent> {
+public class StartupService implements ApplicationListener<ContextStartedEvent> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
@@ -30,7 +30,7 @@ public class StartupService implements ApplicationListener<ContextRefreshedEvent
 
     // get the spreadsheet id, and re-index on startup
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent arg0) {
+    public void onApplicationEvent(ContextStartedEvent arg0) {
          indexingService.reindex();
     }
 
