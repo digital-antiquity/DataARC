@@ -25,19 +25,12 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
     protected void registerContextLoaderListener(ServletContext container) {
         super.registerContextLoaderListener(container);
         container.addListener(RequestContextListener.class);
-//        addSitemeshFilterToServletContext(container);
     }
     
     @Override
     protected Filter[] getServletFilters() {
         return new Filter[] {new OpenEntityManagerInViewFilter(), new ConfigurableSiteMeshFilter()};
     }
-
-//    private void addSitemeshFilterToServletContext(ServletContext servletContext) {
-//        FilterRegistration.Dynamic sitemesh = servletContext.addFilter("sitemesh", new ConfigurableSiteMeshFilter());
-//        EnumSet<DispatcherType> sitemeshDispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
-//        sitemesh.addMappingForUrlPatterns(sitemeshDispatcherTypes, true, "/*");
-//    }
 
     @Override
     protected Class<?>[] getRootConfigClasses() {

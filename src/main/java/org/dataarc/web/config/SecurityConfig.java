@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity web) throws Exception {
         super.configure(web);
-        web.csrf().disable();
+        web.csrf().ignoringAntMatchers("/api/**","/json/**").disable();
     }
 
     
