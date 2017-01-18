@@ -24,7 +24,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.ImportDao;
-import org.dataarc.core.service.SerializationService;
+import org.dataarc.core.dao.SerializationDao;
 import org.locationtech.spatial4j.context.SpatialContext;
 import org.locationtech.spatial4j.shape.Point;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class IndexingService {
     ImportDao sourceDao;
 
     @Autowired
-    SerializationService serializationService;
+    SerializationDao serializationService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
