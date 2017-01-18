@@ -505,19 +505,6 @@
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/net.ontopia.external.org.tmapi/tmapi -->
-		<dependency>
-			<groupId>net.ontopia.external.org.tmapi</groupId>
-			<artifactId>tmapi</artifactId>
-			<version>2.0.2</version>
-		</dependency>
-
-		<dependency>
-		  <groupId>org.tmapiutils</groupId>
-		  <artifactId>tmapi-utils</artifactId>
-		  <version>0.6</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.hibernate.ogm</groupId>
 			<artifactId>hibernate-ogm-mongodb</artifactId>
