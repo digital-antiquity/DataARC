@@ -20,7 +20,13 @@ public class QueryDatastoreController extends AbstractRestController {
     @RequestMapping(path = UrlConstants.QUERY_DATASTORE, method = RequestMethod.POST)
     public Iterable<DataEntry> queryDatastore(@RequestBody(required = true) FilterQuery fq) throws Exception {
         logger.debug("Query: {} ", fq);
-        return queryService.getMatchingRows(fq);
+        try { 
+            return queryService.getMatchingRows(fq);
+        } catch (Exception e) {
+            logger.error("{}",e,e);
+            throw e;
+        }
+        
 
     }
 }

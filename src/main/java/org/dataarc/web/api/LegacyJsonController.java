@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.dataarc.core.legacy.search.LuceneService;
+import org.dataarc.web.AbstractController;
 import org.geojson.FeatureCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class LegacyJsonController {
+public class LegacyJsonController extends AbstractController {
 
     @Autowired
     private LuceneService luceneService;
