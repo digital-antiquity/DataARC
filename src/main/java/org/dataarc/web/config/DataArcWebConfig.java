@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -21,7 +22,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "org.dataarc.web", "org.dataarc.core" })
-public class DataArcWebConfig extends WebMvcConfigurationSupport {
+public class DataArcWebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private IndexingService indexingService;
@@ -46,14 +47,12 @@ public class DataArcWebConfig extends WebMvcConfigurationSupport {
         return new RequestLoggingInterceptor();
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-         registry.addResourceHandler("/js/**","/css/**","/images/**","/data/**")
-         .addResourceLocations("js/","css","images","data","WEB-INF")
-         .setCachePeriod(3600)
-         .resourceChain(true)
-         .addResolver(new PathResourceResolver());
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
+//        registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
+//        registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
+//    }
 
     @Bean
     public FreeMarkerConfigurer freemarkerConfig() {

@@ -41,7 +41,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { SecurityConfig.class, DataArcWebConfig.class };
+        return new Class[] { DataArcWebConfig.class , SecurityConfig.class };// 
     }
 
 
@@ -67,7 +67,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { DataArcWebConfig.class };
+        return new Class[] { };
     }
 
     @Override
