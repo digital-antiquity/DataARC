@@ -26,7 +26,8 @@ cache:
   - $HOME/.m2
   - $TRAVIS_BUILD_DIR/node_modules
 install:
-    - travis_wait 120 mvn -q install -N -DskipTests
+    - mvn -q install -N -DskipTests
+    - mvn clean compile -PloadTestData
 script: 
     - travis_wait 200 mvn -q compile verify
 services:
