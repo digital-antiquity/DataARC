@@ -87,11 +87,28 @@
 		</dependencies>
 	</dependencyManagement>
 	<repositories>
-		<repository>
-			<id>virtualcommons.internal</id>
-			<name>ASU Archiva Proxy</name>
-			<url>http://dev.commons.asu.edu/archiva/repository/internal/</url>
-		</repository>
+        <repository>
+            <id>internal</id>
+            <name>Archiva Managed Internal Repository</name>
+            <url>https://dev.tdar.org/archiva/repository/internal/</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>Archiva Managed Snapshot Repository</name>
+            <url>https://dev.tdar.org/archiva/repository/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
 		<repository>
 			<snapshots>
 				<enabled>false</enabled>
@@ -485,6 +502,20 @@
 			<groupId>org.jboss.jbossts</groupId>
 			<artifactId>jbossjta</artifactId>
 			<version>4.16.4.Final</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/net.ontopia.external.org.tmapi/tmapi -->
+		<dependency>
+			<groupId>net.ontopia.external.org.tmapi</groupId>
+			<artifactId>tmapi</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>org.tmapiutils</groupId>
+		  <artifactId>tmapi-utils</artifactId>
+		  <version>0.6</version>
 		</dependency>
 
 		<dependency>
