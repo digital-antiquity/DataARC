@@ -1,12 +1,15 @@
 package org.dataarc.bean.topic;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -21,8 +24,10 @@ public class Topic extends AbstractPersistable {
     @Column(length = 255)
     private String identifier;
 
-    @ElementCollection
-    private List<String> varients;
+    @ElementCollection()
+    @CollectionTable(name = "topic_name_varients", joinColumns = @JoinColumn(name = "topic_id") )
+    @Column(name = "varient")
+    private List<String> varients = new ArrayList<>();
 
     @OneToMany
     private Set<Association> associations = new HashSet<>();

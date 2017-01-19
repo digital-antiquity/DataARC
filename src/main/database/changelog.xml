@@ -105,7 +105,7 @@
 
     <changeSet id="alpha-10" author="abrin">
         <createTable tableName="topic">
-            <column name="id" autoIncrement="true" type="bigserial"/>
+            <column name="id" autoIncrement="true" type="bigserial" />
             <column name="name" type="varchar(255)" />
             <column name="identifier" type="varchar(255)" />
             <column name="date_created" type="timestamp"
@@ -113,8 +113,8 @@
         </createTable>
         <addPrimaryKey tableName="topic" columnNames="id" />
         <addColumn tableName="topic">
-                    <column name="parent_id" type="bigint">
-                <constraints  referencedTableName="topic"
+            <column name="parent_id" type="bigint">
+                <constraints referencedTableName="topic"
                     foreignKeyName="topic_parent_id" />
             </column>
         </addColumn>
@@ -136,6 +136,19 @@
             <column name="date_created" type="timestamp"
                 defaultValue="now()" />
         </createTable>
-        <addPrimaryKey tableName="association" columnNames="id" />
+        <addPrimaryKey tableName="association"
+            columnNames="id" />
+    </changeSet>
+    <changeSet id="alpha-11" author="abrin">
+        <createTable tableName="topic_name_varients">
+            <column name="id" autoIncrement="true" type="bigserial" />
+            <column name="varient" type="varchar(255)" />
+            <column name="date_created" type="timestamp"
+                defaultValue="now()" />
+            <column name="topic_id" type="bigint">
+                <constraints references="topic"
+                    foreignKeyName="topic_varient_id" />
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

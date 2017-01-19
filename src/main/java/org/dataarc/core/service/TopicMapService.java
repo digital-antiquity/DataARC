@@ -11,11 +11,14 @@ import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.Topic;
+import org.dataarc.core.dao.AssociationDao;
 import org.dataarc.core.dao.SerializationDao;
+import org.dataarc.core.dao.TopicDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
 import topicmap.v2_0.Name;
@@ -31,6 +34,13 @@ public class TopicMapService {
     @Autowired
     private SerializationDao serializationService;
 
+    @Autowired
+    TopicDao topicDao;
+
+    @Autowired
+    AssociationDao assoicationDao;
+
+    @Transactional(readOnly=false)
     public void load(String file) throws JAXBException, SAXException {
         TopicMap readTopicMapFromFile = serializationService.readTopicMapFromFile(file);
         logger.debug("{}", readTopicMapFromFile);
@@ -74,6 +84,7 @@ public class TopicMapService {
                     }
 
                 });
+                topicDao.save(topic);
                 topics.add(topic);
             } else if (item instanceof topicmap.v2_0.Association) {
                 topicmap.v2_0.Association association_ = (topicmap.v2_0.Association) item;
@@ -92,14 +103,15 @@ public class TopicMapService {
                 }
                 Role to = null;
                 String tohref = null;
-                association.setType(internalMap.get(association_.getType().getTopicRef()));
+                association.setType(internalMap.get(association_.getType().getTopicRef().getHref()));
                 if (association_.getRole().size() > 1) {
                     to = association_.getRole().get(1);
                     tohref = to.getTopicRef().getHref();
                     if (StringUtils.isNotBlank(tohref)) {
-                        association.setFrom(internalMap.get(tohref));
+                        association.setTo(internalMap.get(tohref));
                     }
                 }
+                assoicationDao.save(association);
                 associations.add(association);
                 logger.debug("\t ({}) {} -> ({}) {}", fromhref, tohref);
             } else {
