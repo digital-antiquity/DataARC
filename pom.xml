@@ -3,11 +3,11 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.digitalantiquity.bcc</groupId>
-    <artifactId>CyberNABO</artifactId>
+    <artifactId>DataARC</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>CyberNABO</name>
-    <description>Cyber NABO Prototype</description>
+    <name>DataARC</name>
+    <description>DataARC Prototype</description>
 
     <properties>
         <spring.framework.version>4.3.4.RELEASE</spring.framework.version>
@@ -89,9 +89,26 @@
     </dependencyManagement>
     <repositories>
         <repository>
-            <id>virtualcommons.internal</id>
-            <name>ASU Archiva Proxy</name>
-            <url>http://dev.commons.asu.edu/archiva/repository/internal/</url>
+            <id>internal</id>
+            <name>Archiva Managed Internal Repository</name>
+            <url>https://dev.tdar.org/archiva/repository/internal/</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>Archiva Managed Snapshot Repository</name>
+            <url>https://dev.tdar.org/archiva/repository/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <snapshots>
@@ -276,18 +293,9 @@
             <artifactId>spring-aop</artifactId>
             <!-- LICENSE: APACHE 2.0 -->
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>4.2.1.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>4.2.1.RELEASE</version>
-        </dependency>
-
+        <!-- <dependency> <!- needed by spring for @Transactional calls -> <groupId>cglib</groupId> 
+            <artifactId>cglib-nodep</artifactId> <version>3.1</version> <!- LICENSE: 
+            APACHE 1.1 -> </dependency> -->
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
@@ -450,8 +458,8 @@
             <!-- LICENSE: LGPL 2.1 -->
         </dependency>
         <!-- <dependency> -->
-        <!-- this attempts to use the META-INF/ configuraiton for the right 
-            logging source; this allows us to pipe hibernate into slf4j -->
+        <!-- this attempts to use the META-INF/ configuraiton for the right logging 
+            source; this allows us to pipe hibernate into slf4j -->
         <!-- <groupId>org.jboss.logging</groupId> <artifactId>jboss-logging</artifactId> 
             <version>3.2.0.Final</version> </dependency> -->
 
@@ -472,9 +480,8 @@
             <!-- LICENSE: LGPL 2.1 -->
         </dependency>
 
-        <!-- <dependency> <groupId>org.hibernate.javax.persistence</groupId> 
-            <artifactId>hibernate-jpa-2.0-api</artifactId> <version>1.0.1.Final</version> 
-            </dependency> -->
+        <!-- <dependency> <groupId>org.hibernate.javax.persistence</groupId> <artifactId>hibernate-jpa-2.0-api</artifactId> 
+            <version>1.0.1.Final</version> </dependency> -->
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>javax.el-api</artifactId>
@@ -497,6 +504,7 @@
             <artifactId>jbossjta</artifactId>
             <version>4.16.4.Final</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.hibernate.ogm</groupId>
@@ -612,11 +620,11 @@
             <!-- LICENSE: ECLIPSE -->
         </dependency>
         <dependency>
-            <groupId>com.rollbar</groupId>
-            <artifactId>rollbar</artifactId>
-            <version>0.5.3</version>
+          <groupId>com.rollbar</groupId>
+           <artifactId>rollbar</artifactId>
+           <version>0.5.3</version>
         </dependency>
-
+        
     </dependencies>
 
     <build>
@@ -629,8 +637,7 @@
             </resource>
             <resource>
                 <!-- And on for the set of files -->
-                <!-- Having to do it as mutually exclusive but that's how 
-                    Maven works -->
+                <!-- Having to do it as mutually exclusive but that's how Maven works -->
                 <!-- See: http://maven.apache.org/plugins/maven-resources-plugin/examples/filter.html -->
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources</directory>
@@ -640,8 +647,7 @@
             </resource>
             <resource>
                 <!-- And on for the set of files -->
-                <!-- Having to do it as mutually exclusive but that's how 
-                    Maven works -->
+                <!-- Having to do it as mutually exclusive but that's how Maven works -->
                 <!-- See: http://maven.apache.org/plugins/maven-resources-plugin/examples/filter.html -->
                 <filtering>false</filtering>
                 <directory>${basedir}/src/main/database</directory>
@@ -719,8 +725,8 @@
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <!-- NB! Set <version> to the latest released version of 
-                    frontend-maven-plugin, like in README.md -->
+                <!-- NB! Set <version> to the latest released version of frontend-maven-plugin, 
+                    like in README.md -->
                 <version>0.0.23</version>
 
                 <executions>
@@ -742,8 +748,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <!-- Optional configuration which provides for running 
-                            any npm command -->
+                        <!-- Optional configuration which provides for running any npm command -->
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
@@ -795,6 +800,5 @@
                 </plugins>
             </build>
         </profile>
-
     </profiles>
 </project>
