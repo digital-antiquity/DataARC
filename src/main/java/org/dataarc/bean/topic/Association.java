@@ -1,13 +1,16 @@
 package org.dataarc.bean.topic;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import org.dataarc.bean.AbstractPersistable;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Entity
 public class Association extends AbstractPersistable {
+
+    @Column(length = 255)
+    private String identifier;
 
     @ManyToOne
     private Topic from;
@@ -40,6 +43,14 @@ public class Association extends AbstractPersistable {
 
     public void setType(Topic type) {
         this.type = type;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
 }

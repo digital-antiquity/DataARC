@@ -15,7 +15,7 @@ public class TopicMapServiceTest extends AbstractServiceTest {
     
     @Test
     public void testDeserializeTopicMap() throws JAXBException, SAXException {
-        topicMapService.load("srx/main/data/landscape_wandora,xtm");
+        topicMapService.load("src/main/data/landscape_wandora.xtm");
     }
 
 }
