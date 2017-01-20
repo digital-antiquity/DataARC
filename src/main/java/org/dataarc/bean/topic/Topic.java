@@ -67,4 +67,8 @@ public class Topic extends AbstractPersistable {
         this.parent = parent;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s (%s)" , name, getId());
+    }
 }

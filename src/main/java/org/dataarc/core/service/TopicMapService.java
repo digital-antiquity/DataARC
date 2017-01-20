@@ -53,7 +53,7 @@ public class TopicMapService {
             if (item instanceof topicmap.v2_0.Topic) {
                 Topic topic = new Topic();
                 topicmap.v2_0.Topic topic_ = (topicmap.v2_0.Topic) item;
-                logger.debug(" T:{}", topic_.getId());
+                logger.trace(" T:{}", topic_.getId());
                 topic_.getNameOrOccurrence().forEach(noc -> {
                     internalMap.put("#" + topic_.getId(), topic);
                     topic.setIdentifier(topic_.getId());
@@ -69,10 +69,10 @@ public class TopicMapService {
                     if (noc instanceof Name) {
                         Name name = (Name) noc;
                         topic.setName(name.getValue());
-                        logger.debug("\tname: {} {} {}", name.getValue(), name.getItemIdentity());
+                        logger.trace("\tname: {} {} {}", name.getValue(), name.getItemIdentity());
                         name.getVariant().forEach(varient -> {
                             // topic_.getVarients().add()
-                            logger.debug("\tv: {} {} {} ", varient.getResourceData().getDatatype(), varient.getResourceData().getContent(),
+                            logger.trace("\tv: {} {} {} ", varient.getResourceData().getDatatype(), varient.getResourceData().getContent(),
                                     varient.getItemIdentity());
                             varient.getResourceData().getContent().forEach(var -> {
                                 topic.getVarients().add(var.toString());
@@ -85,6 +85,7 @@ public class TopicMapService {
 
                 });
                 topicDao.save(topic);
+                logger.debug("{}", topic);
                 topics.add(topic);
             } else if (item instanceof topicmap.v2_0.Association) {
                 
@@ -112,7 +113,7 @@ public class TopicMapService {
                     </association>
                  */
 
-                logger.debug(" A:{} {} {} {} {}", association_.getReifier(), association_.getType().getTopicRef().getHref(), association_.getItemIdentity(),
+                logger.trace(" A:{} {} {} {} {}", association_.getReifier(), association_.getType().getTopicRef().getHref(), association_.getItemIdentity(),
                         association_.getScope());
                 Role from = null;
                 Topic relationFrom = null;
@@ -127,7 +128,7 @@ public class TopicMapService {
                     if (StringUtils.isNotBlank(fromhref)) {
                         associationFrom.setFrom(internalMap.get(fromhref));
                         associationTo.setTo(internalMap.get(fromhref));
-                        associationFrom.setType(relationFrom);
+                        associationFrom.setType(internalMap.get(fromRole));
                     }
                 }
                 Role to = null;
@@ -142,16 +143,19 @@ public class TopicMapService {
                     }
                     if (StringUtils.isNotBlank(tohref)) {
                         associationTo.setFrom(internalMap.get(tohref));
-                        associationFrom.setTo(relationTo);
+                        associationFrom.setTo(internalMap.get(tohref));
+                        associationTo.setType(internalMap.get(toRole));
                     }
                 }
+                logger.debug("{}", associationTo);
+                logger.debug("{}", associationFrom);
                 assoicationDao.save(associationFrom);
                 assoicationDao.save(associationTo);
                 associations.add(associationFrom);
                 associations.add(associationTo);
-                logger.debug("\t ({}) {} -> ({}) {}", fromhref, tohref);
+                logger.trace("\t ({}) {} -> ({}) {}", fromhref, tohref);
             } else {
-                logger.debug(" {} {}", item, item.getClass());
+                logger.warn(" {} {}", item, item.getClass());
             }
 
         });
