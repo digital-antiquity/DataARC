@@ -89,9 +89,9 @@ public class TopicMapService {
             } else if (item instanceof topicmap.v2_0.Association) {
                 
                 topicmap.v2_0.Association association_ = (topicmap.v2_0.Association) item;
-                Association association = new Association();
+                Association associationFrom = new Association();
+                Association associationTo = new Association();
                 // association.setIdentifier(association_.getItemIdentity().);
-                //FIXME (not right)
                 /*
                  *  <association>
                         <type>
@@ -110,32 +110,45 @@ public class TopicMapService {
                             <topicRef href="#grain store"/>
                         </role>
                     </association>
-                
                  */
 
                 logger.debug(" A:{} {} {} {} {}", association_.getReifier(), association_.getType().getTopicRef().getHref(), association_.getItemIdentity(),
                         association_.getScope());
                 Role from = null;
+                Topic relationFrom = null;
                 String fromhref = null;
                 if (association_.getRole().size() > 0) {
                     from = association_.getRole().get(0);
                     fromhref = from.getTopicRef().getHref();
+                    String fromRole = from.getType().getTopicRef().getHref();
+                    if (StringUtils.isNotBlank(fromRole)) {
+                        relationFrom = internalMap.get(fromRole);
+                    }
                     if (StringUtils.isNotBlank(fromhref)) {
-                        association.setFrom(internalMap.get(fromhref));
+                        associationFrom.setFrom(internalMap.get(fromhref));
+                        associationTo.setTo(internalMap.get(fromhref));
+                        associationFrom.setType(relationFrom);
                     }
                 }
                 Role to = null;
+                Topic relationTo = null;
                 String tohref = null;
-                association.setType(internalMap.get(association_.getType().getTopicRef().getHref()));
                 if (association_.getRole().size() > 1) {
                     to = association_.getRole().get(1);
                     tohref = to.getTopicRef().getHref();
+                    String toRole = to.getType().getTopicRef().getHref();
+                    if (StringUtils.isNotBlank(toRole)) {
+                        relationTo= internalMap.get(toRole);
+                    }
                     if (StringUtils.isNotBlank(tohref)) {
-                        association.setTo(internalMap.get(tohref));
+                        associationTo.setFrom(internalMap.get(tohref));
+                        associationFrom.setTo(relationTo);
                     }
                 }
-                assoicationDao.save(association);
-                associations.add(association);
+                assoicationDao.save(associationFrom);
+                assoicationDao.save(associationTo);
+                associations.add(associationFrom);
+                associations.add(associationTo);
                 logger.debug("\t ({}) {} -> ({}) {}", fromhref, tohref);
             } else {
                 logger.debug(" {} {}", item, item.getClass());
