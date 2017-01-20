@@ -87,9 +87,32 @@ public class TopicMapService {
                 topicDao.save(topic);
                 topics.add(topic);
             } else if (item instanceof topicmap.v2_0.Association) {
+                
                 topicmap.v2_0.Association association_ = (topicmap.v2_0.Association) item;
                 Association association = new Association();
                 // association.setIdentifier(association_.getItemIdentity().);
+                //FIXME (not right)
+                /*
+                 *  <association>
+                        <type>
+                            <topicRef href="interactions"/>
+                        </type>
+                        <role>
+                            <type>
+                                <topicRef href="#implies"/>
+                            </type>
+                            <topicRef href="#grain storage pest"/>
+                        </role>
+                        <role>
+                            <type>
+                                <topicRef href="#contains"/>
+                            </type>
+                            <topicRef href="#grain store"/>
+                        </role>
+                    </association>
+                
+                 */
+
                 logger.debug(" A:{} {} {} {} {}", association_.getReifier(), association_.getType().getTopicRef().getHref(), association_.getItemIdentity(),
                         association_.getScope());
                 Role from = null;
