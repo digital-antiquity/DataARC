@@ -1,6 +1,5 @@
 package org.dataarc.core.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,7 @@ import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.Topic;
+import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.dao.AssociationDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
@@ -24,7 +24,6 @@ import org.xml.sax.SAXException;
 import topicmap.v2_0.Name;
 import topicmap.v2_0.Occurrence;
 import topicmap.v2_0.Role;
-import topicmap.v2_0.TopicMap;
 
 @Service
 public class TopicMapService {
@@ -40,20 +39,19 @@ public class TopicMapService {
     @Autowired
     AssociationDao assoicationDao;
 
-    @Transactional(readOnly=false)
-    public void load(String file) throws JAXBException, SAXException {
-        TopicMap readTopicMapFromFile = serializationService.readTopicMapFromFile(file);
-        logger.debug("{}", readTopicMapFromFile);
-        TopicMap topicMap = serializationService.readTopicMapFromFile("src/main/data/landscape_wandora.xtm");
-        logger.debug(topicMap.toString());
+    @Transactional(readOnly = false)
+    public TopicMap load(String file) throws JAXBException, SAXException {
+        topicmap.v2_0.TopicMap topicMap_ = serializationService.readTopicMapFromFile(file);
+        TopicMap topicMap = new TopicMap();
+        topicMap.setName(file);
         Map<String, Topic> internalMap = new HashMap<>();
-        List<Topic> topics = new ArrayList<>();
-        List<Association> associations = new ArrayList<>();
-        topicMap.getTopicOrAssociation().forEach(item -> {
+        List<Topic> topics = topicMap.getTopics();
+        List<Association> associations = topicMap.getAssociations();
+        topicMap_.getTopicOrAssociation().forEach(item -> {
             if (item instanceof topicmap.v2_0.Topic) {
                 Topic topic = new Topic();
                 topicmap.v2_0.Topic topic_ = (topicmap.v2_0.Topic) item;
-                logger.debug(" T:{}", topic_.getId());
+                logger.trace(" T:{}", topic_.getId());
                 topic_.getNameOrOccurrence().forEach(noc -> {
                     internalMap.put("#" + topic_.getId(), topic);
                     topic.setIdentifier(topic_.getId());
@@ -69,10 +67,10 @@ public class TopicMapService {
                     if (noc instanceof Name) {
                         Name name = (Name) noc;
                         topic.setName(name.getValue());
-                        logger.debug("\tname: {} {} {}", name.getValue(), name.getItemIdentity());
+                        logger.trace("\tname: {} {} {}", name.getValue(), name.getItemIdentity());
                         name.getVariant().forEach(varient -> {
                             // topic_.getVarients().add()
-                            logger.debug("\tv: {} {} {} ", varient.getResourceData().getDatatype(), varient.getResourceData().getContent(),
+                            logger.trace("\tv: {} {} {} ", varient.getResourceData().getDatatype(), varient.getResourceData().getContent(),
                                     varient.getItemIdentity());
                             varient.getResourceData().getContent().forEach(var -> {
                                 topic.getVarients().add(var.toString());
@@ -85,40 +83,81 @@ public class TopicMapService {
 
                 });
                 topicDao.save(topic);
+                logger.debug("{} - {}", topic, topic.getIdentifier());
                 topics.add(topic);
             } else if (item instanceof topicmap.v2_0.Association) {
+
                 topicmap.v2_0.Association association_ = (topicmap.v2_0.Association) item;
-                Association association = new Association();
+                Association associationFrom = new Association();
+                Association associationTo = null;
                 // association.setIdentifier(association_.getItemIdentity().);
-                logger.debug(" A:{} {} {} {} {}", association_.getReifier(), association_.getType().getTopicRef().getHref(), association_.getItemIdentity(),
+                /*
+                 * <association>
+                 * <type>
+                 * <topicRef href="interactions"/>
+                 * </type>
+                 * <role>
+                 * <type>
+                 * <topicRef href="#implies"/>
+                 * </type>
+                 * <topicRef href="#grain storage pest"/>
+                 * </role>
+                 * <role>
+                 * <type>
+                 * <topicRef href="#contains"/>
+                 * </type>
+                 * <topicRef href="#grain store"/>
+                 * </role>
+                 * </association>
+                 */
+
+                String associationType = association_.getType().getTopicRef().getHref();
+                logger.trace(" A:{} {} {} {} {}", association_.getReifier(), associationType, association_.getItemIdentity(),
                         association_.getScope());
                 Role from = null;
+                Topic typeFrom = null;
                 String fromhref = null;
                 if (association_.getRole().size() > 0) {
                     from = association_.getRole().get(0);
                     fromhref = from.getTopicRef().getHref();
-                    if (StringUtils.isNotBlank(fromhref)) {
-                        association.setFrom(internalMap.get(fromhref));
-                    }
+                    typeFrom = internalMap.get(from.getType().getTopicRef().getHref());
                 }
                 Role to = null;
+                Topic typeTo = null;
                 String tohref = null;
-                association.setType(internalMap.get(association_.getType().getTopicRef().getHref()));
                 if (association_.getRole().size() > 1) {
+                    associationTo = new Association();
                     to = association_.getRole().get(1);
                     tohref = to.getTopicRef().getHref();
-                    if (StringUtils.isNotBlank(tohref)) {
-                        association.setTo(internalMap.get(tohref));
+                    String toRole = to.getType().getTopicRef().getHref();
+                    if (StringUtils.isNotBlank(toRole)) {
+                        typeTo = internalMap.get(toRole);
                     }
+                    associationTo.setFrom(internalMap.get(tohref));
+                    associationTo.setTo(internalMap.get(fromhref));
+                    associationTo.setType(typeTo);
+                    associationFrom.setTo(internalMap.get(tohref));
+                } else {
+                    associationFrom.setTo(internalMap.get(associationType));
                 }
-                assoicationDao.save(association);
-                associations.add(association);
-                logger.debug("\t ({}) {} -> ({}) {}", fromhref, tohref);
+
+                associationFrom.setFrom(internalMap.get(fromhref));
+                associationFrom.setType(typeFrom);
+
+                assoicationDao.save(associationFrom);
+                logger.debug("{}", associationFrom);
+                associations.add(associationFrom);
+                if (associationTo != null) {
+                    assoicationDao.save(associationTo);
+                    logger.debug("{}", associationTo);
+                    associations.add(associationTo);
+                }
+                logger.trace("\t ({}) {} -> ({}) {}", fromhref, tohref);
             } else {
-                logger.debug(" {} {}", item, item.getClass());
+                logger.warn(" {} {}", item, item.getClass());
             }
 
         });
-
+        return topicMap;
     }
 }

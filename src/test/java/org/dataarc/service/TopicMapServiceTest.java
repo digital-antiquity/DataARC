@@ -3,6 +3,7 @@ package org.dataarc.service;
 import javax.xml.bind.JAXBException;
 
 import org.dataarc.AbstractServiceTest;
+import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.service.TopicMapService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,14 @@ public class TopicMapServiceTest extends AbstractServiceTest {
     
     @Test
     @Rollback(true)
-    public void testDeserializeTopicMap() throws JAXBException, SAXException {
-        topicMapService.load("src/main/data/landscape_wandora.xtm");
+    public void testDeserializeUnidirectionalTopicMap() throws JAXBException, SAXException {
+        TopicMap map = topicMapService.load("src/test/data/unidirectional.xtm");
+    }
+
+    @Test
+    @Rollback(true)
+    public void testDeserializeBidirectionalTopicMap() throws JAXBException, SAXException {
+        TopicMap map = topicMapService.load("src/main/data/landscape_wandora.xtm");
     }
 
 }

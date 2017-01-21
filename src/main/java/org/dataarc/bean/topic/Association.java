@@ -53,4 +53,8 @@ public class Association extends AbstractPersistable {
         this.identifier = identifier;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s %s ——> %s  [%s]", from, type, to, getId());
+    }
 }
