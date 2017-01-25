@@ -151,4 +151,21 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="alpha-12" author="abrin">
+        <addPrimaryKey tableName="indicator" columnNames="id" />
+        <createTable tableName="topic_indicator">
+            <column name="id" autoIncrement="true" type="bigserial" />
+            <column name="topic_id" type="bigint">
+                <constraints references="topic"
+                    foreignKeyName="topic_indicator_id" />
+            </column>
+            <column name="indicator_id" type="bigint">
+                <constraints references="indicator"
+                    foreignKeyName="indicator_topic_id" />
+            </column>
+            <column name="confidence" type="varchar(255)" />
+            <column name="date_created" type="timestamp"
+                defaultValue="now()" />
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
