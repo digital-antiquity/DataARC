@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
-        if (env.getProperty("security.enabled", Boolean.class, true)) {
+        if (env.getProperty("security.enabled", Boolean.class, false)) {
             web.ignoring().antMatchers("/js/**","/css/**","/components/**","/data/**","/","/json");
         } else {
             web.ignoring().antMatchers("/**");
