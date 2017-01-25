@@ -68,6 +68,8 @@ public class TopicMapService {
                         Name name = (Name) noc;
                         topic.setName(name.getValue());
                         logger.trace("\tname: {} {} {}", name.getValue(), name.getItemIdentity());
+
+                        // we need to figure this out and it will increase complexity
                         name.getVariant().forEach(varient -> {
                             // topic_.getVarients().add()
                             logger.trace("\tv: {} {} {} ", varient.getResourceData().getDatatype(), varient.getResourceData().getContent(),
