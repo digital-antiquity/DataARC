@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <html>
     <head>
-        <title>CyberNABO Prototype</title>
+        <title>DataARC Prototype</title>
         <meta charset="utf-8" />
     
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,7 +86,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Welcome to the CyberNABO Prototype</h4>
+        <h4 class="modal-title">Welcome to the DataARC Prototype</h4>
       </div>
       <div class="modal-body">
 				<div class="row">
