@@ -1,7 +1,10 @@
 package org.dataarc.web.config;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,10 +22,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
     
+    @Resource
+    protected Environment env;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
-        web.ignoring().antMatchers("/js/**","/css/**","/components/**","/data/**","/","/json");
+        if (env.getProperty("security.enabled", Boolean.class, true)) {
+            web.ignoring().antMatchers("/js/**","/css/**","/components/**","/data/**","/","/json");
+        } else {
+            web.ignoring().antMatchers("/**");
+        }
     }
 
     @Override

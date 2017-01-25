@@ -1,8 +1,5 @@
 package org.dataarc.web.config;
 
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -17,10 +14,6 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class ServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer  {
 
-    public static final String ALL_PATHS = "/*";
-    EnumSet<DispatcherType> allDispacherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.ERROR);
-    private WebApplicationContext context;
-
     @Override
     protected void registerContextLoaderListener(ServletContext container) {
         super.registerContextLoaderListener(container);
@@ -34,7 +27,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { DataArcWebConfig.class , SecurityConfig.class };// 
+        return new Class[] { DataArcWebConfig.class , SecurityConfig.class };
     }
 
 
@@ -53,7 +46,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
     
     @Override
     protected WebApplicationContext createRootApplicationContext() {
-        context = (WebApplicationContext) super.createRootApplicationContext();
+        WebApplicationContext context = (WebApplicationContext) super.createRootApplicationContext();
         ((ConfigurableEnvironment) context.getEnvironment()).setActiveProfiles("mongo");
         return context;
     }
@@ -65,7 +58,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {"/"};
+        return new String[] {"/*"};
     }
 
 }
