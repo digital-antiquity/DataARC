@@ -14,6 +14,7 @@ import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.dao.AssociationDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
+import org.dataarc.core.dao.TopicMapDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class TopicMapService {
 
     @Autowired
     TopicDao topicDao;
+
+    @Autowired
+    TopicMapDao topicMapDao;
 
     @Autowired
     AssociationDao assoicationDao;
@@ -82,9 +86,8 @@ public class TopicMapService {
                         Occurrence occurrence = (Occurrence) noc;
                         logger.debug("\toccur: {} {} {}", occurrence.getItemIdentity(), occurrence.getResourceData(), occurrence.getResourceRef());
                     }
-
+                    topicDao.save(topic);
                 });
-                topicDao.save(topic);
                 logger.debug("{} - {}", topic, topic.getIdentifier());
                 topics.add(topic);
             } else if (item instanceof topicmap.v2_0.Association) {
@@ -158,8 +161,14 @@ public class TopicMapService {
             } else {
                 logger.warn(" {} {}", item, item.getClass());
             }
-
         });
+        topicMapDao.save(topicMap);
+
         return topicMap;
+    }
+
+    @Transactional(readOnly=true)
+    public TopicMap find() {
+        return topicMapDao.findAll().get(0);
     }
 }

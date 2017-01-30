@@ -12,11 +12,15 @@ import org.dataarc.util.PersistableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /**
  * Convenience base class for Persistable entities providing JPA annotated
  * fields for ID and a property-aware equals()/hashCode() implementations.
  */
 @MappedSuperclass
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public abstract class AbstractPersistable {
 
     @Transient

@@ -55,9 +55,11 @@ public class DataArcConfiguration {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(org.postgis.DriverWrapper.class.getName());
-        dataSource.setUrl("jdbc:postgresql_postGIS://localhost:5432/dataarc");
-        dataSource.setUsername("dataarc");
-        dataSource.setPassword("");
+        String host = env.getProperty("pgHost","localhost");
+        String database = env.getProperty("pgDatabase","dataarc");
+        dataSource.setUrl(String.format("jdbc:postgresql_postGIS://%s:5432/%s", host, database));
+        dataSource.setUsername(env.getProperty("pgUsername", "dataarc"));
+        dataSource.setPassword(env.getProperty("pgPassword", ""));
         return dataSource;
     }
 

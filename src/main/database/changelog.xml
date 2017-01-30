@@ -168,4 +168,26 @@
                 defaultValue="now()" />
         </createTable>
     </changeSet>
+
+    <changeSet id="alpha-13" author="abrin">
+        <createTable tableName="topic_map">
+            <column name="id" autoIncrement="true" type="bigserial"/>
+			<column name="name" type="varchar(255)" />
+            <column name="date_created" type="timestamp"
+                defaultValue="now()" />
+        </createTable>
+        <addPrimaryKey tableName="topic_map" columnNames="id" />
+        <addColumn tableName="topic">
+            <column name="topic_map_id" type="bigint">
+                <constraints referencedTableName="topic_map"
+                    foreignKeyName="topic_map_topic_id" />
+            </column>
+        </addColumn>
+        <addColumn tableName="association">
+            <column name="topic_map_id" type="bigint">
+                <constraints referencedTableName="topic_map"
+                    foreignKeyName="topic_map_association_id" />
+            </column>
+       </addColumn>
+    </changeSet>
 </databaseChangeLog>

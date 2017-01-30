@@ -3,14 +3,30 @@ package org.dataarc.bean.topic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopicMap {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.dataarc.bean.AbstractPersistable;
+
+@Entity()
+@Table(name="topic_map")
+public class TopicMap extends AbstractPersistable {
 
     private String name;
-    
-    private List<Association> associations = new ArrayList<>();
-    
+
+
+    @OneToMany
+    @JoinColumn(name = "topic_map_id")
     private List<Topic> topics = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name = "topic_map_id")
+    private List<Association> associations = new ArrayList<>();
+
+    @Column(length = 255)
     public String getName() {
         return name;
     }
@@ -34,6 +50,5 @@ public class TopicMap {
     public void setTopics(List<Topic> topics) {
         this.topics = topics;
     }
-    
-    
+
 }

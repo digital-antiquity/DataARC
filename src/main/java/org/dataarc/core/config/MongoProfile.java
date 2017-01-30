@@ -1,28 +1,35 @@
 package org.dataarc.core.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
 
 @Configuration
 @EnableMongoRepositories(basePackages = { MongoProfile.ORG_DATAARC_MONGO })
 @ComponentScan(basePackages = { "org.dataarc.core", MongoProfile.ORG_DATAARC_MONGO })
 @Profile("mongo")
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 public class MongoProfile extends DataArcConfiguration {
 
     static final String ORG_DATAARC_MONGO = "org.dataarc.datastore.mongo";
     static final int _27017 = 27017;
     static final String LOCALHOST = "localhost";
-    static final String DB_NAME = "db.name";
-    static final String DB_HOST = "db.host";
+    static final String DB_NAME = "mongoNname";
+    static final String DB_HOST = "mongoHost";
     static final String DB_PORT = "db.port";
+    static final String USERNAME = "monogUser";
+    static final String PASSWORD = "mongoPassword";
     static final String DATABASE_NAME = "dataarc";
 
     // @Bean(name = "mongoEntityManager")
@@ -45,7 +52,14 @@ public class MongoProfile extends DataArcConfiguration {
 
     @Bean
     public MongoDbFactory mongoDbFactory() throws Exception {
-        return new SimpleMongoDbFactory(new MongoClient(), env.getProperty(DB_NAME, DATABASE_NAME));
+        String username = env.getProperty(USERNAME, "");
+        String password = env.getProperty(PASSWORD, "");
+        MongoClient mongo = new MongoClient();
+        if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+            MongoCredential creds = MongoCredential.createCredential(username, "admin", password.toCharArray());
+            mongo.getCredentialsList().add(creds);
+        }
+        return new SimpleMongoDbFactory(mongo, env.getProperty(DB_NAME, DATABASE_NAME));
     }
 
     @Bean
