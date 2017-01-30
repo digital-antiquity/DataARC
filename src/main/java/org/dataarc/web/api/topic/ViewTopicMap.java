@@ -2,6 +2,7 @@ package org.dataarc.web.api.topic;
 
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.service.TopicMapService;
+import org.dataarc.core.service.topic.InternalTopicMap;
 import org.dataarc.web.api.AbstractRestController;
 import org.dataarc.web.api.schema.UrlConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class ViewTopicMap extends AbstractRestController {
     private TopicMapService topicMapService;
 
     @RequestMapping(path=UrlConstants.TOPIC_MAP_VIEW, method=RequestMethod.GET)
-    public TopicMap viewTopicMap() throws Exception {
-        return topicMapService.find();
+    public InternalTopicMap viewTopicMap() throws Exception {
+        return topicMapService.convert(topicMapService.find());
     }
 
 }

@@ -1,8 +1,10 @@
 package org.dataarc.core.service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
@@ -15,6 +17,9 @@ import org.dataarc.core.dao.AssociationDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
 import org.dataarc.core.dao.TopicMapDao;
+import org.dataarc.core.service.topic.InternalAssociation;
+import org.dataarc.core.service.topic.InternalTopic;
+import org.dataarc.core.service.topic.InternalTopicMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,5 +175,38 @@ public class TopicMapService {
     @Transactional(readOnly=true)
     public TopicMap find() {
         return topicMapDao.findAll().get(0);
+    }
+
+    public InternalTopicMap convert(TopicMap find) {
+        InternalTopicMap itm = new InternalTopicMap();
+        Map<Topic, InternalTopic> intmap = new HashMap<>();
+        itm.setId(find.getId());
+        itm.setName(find.getName());
+        find.getAssociations().forEach(assoc -> {
+            InternalAssociation iasc = new InternalAssociation();
+            InternalTopic from = createInternalTopic(intmap, assoc.getFrom());
+            iasc.setFrom(from);
+            InternalTopic to = createInternalTopic(intmap, assoc.getTo());
+            iasc.setTo(to);
+            itm.getTopics().add(from);
+            itm.getTopics().add(to);
+            iasc.setName(assoc.getType().getName());
+            iasc.setId(assoc.getId());
+            itm.getAssociations().add(iasc);
+        });
+        
+        return itm;
+    }
+
+    private InternalTopic createInternalTopic(Map<Topic, InternalTopic> intmap, Topic topic) {
+        InternalTopic orDefault = intmap.getOrDefault(topic, new InternalTopic());
+        if (orDefault.getId() == null || orDefault.getId() == -1) {
+            orDefault.setName(topic.getName());
+            orDefault.setId(topic.getId());
+            orDefault.setIdentifier(topic.getIdentifier());
+            orDefault.setVarients(topic.getVarients());
+            intmap.put(topic, orDefault);
+        }
+        return orDefault;
     }
 }
