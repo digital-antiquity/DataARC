@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
+import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.QueryDao;
 import org.dataarc.core.dao.SchemaDao;
+import org.dataarc.core.dao.TopicDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,10 @@ public class IndicatorService {
 
     @Autowired
     private IndicatorDao indicatorDao;
-
+    
+    @Autowired
+    private TopicDao topicDao;
+    
     @Autowired
     private QueryDao queryDao;
 
@@ -34,6 +39,9 @@ public class IndicatorService {
 
     @Transactional(readOnly = false)
     public void save(Indicator indicator) {
+        logger.debug(indicator.getTopicIdentifier());
+        Topic topic = topicDao.findTopicByIdentifier(indicator.getTopicIdentifier());
+        indicator.setTopic(topic);
         indicatorDao.save(indicator);
     }
 

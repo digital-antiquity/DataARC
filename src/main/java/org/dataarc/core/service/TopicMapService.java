@@ -48,6 +48,11 @@ public class TopicMapService {
     @Autowired
     AssociationDao assoicationDao;
 
+    @Transactional
+    public List<Topic> findTopicsForIndicators() {
+        return topicDao.findTopicsForIndicators();
+    }
+    
     @Transactional(readOnly = false)
     public TopicMap load(String file) throws JAXBException, SAXException {
         topicmap.v2_0.TopicMap topicMap_ = serializationService.readTopicMapFromFile(file);
@@ -145,9 +150,7 @@ public class TopicMapService {
                     logger.trace("toTopicHref: {}", internalMap.get(toTopicHref));
                     logger.trace("toTypeTopicHref: {}", internalMap.get(toTypeTopicHref));
                     logger.trace("aTypeTopicHref: {}", internalMap.get(associTypeTopicHref));
-//                    if (StringUtils.isNotBlank(toRole)) {
-//                        typeTo = internalMap.get(toRole);
-//                    }
+
                     associationTo.setFrom(internalMap.get(toTopicHref));
                     associationTo.setTo(internalMap.get(fromTopicHref));
                     if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {

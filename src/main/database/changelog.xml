@@ -172,7 +172,7 @@
     <changeSet id="alpha-13" author="abrin">
         <createTable tableName="topic_map">
             <column name="id" autoIncrement="true" type="bigserial"/>
-			<column name="name" type="varchar(255)" />
+            <column name="name" type="varchar(255)" />
             <column name="date_created" type="timestamp"
                 defaultValue="now()" />
         </createTable>
@@ -190,4 +190,13 @@
             </column>
        </addColumn>
     </changeSet>
+    <changeSet id="alpha-14" author="abrin">
+        <addColumn tableName="indicator">
+            <column name="topic_id" type="bigint">
+                <constraints referencedTableName="topic"
+                    foreignKeyName="topic_indicator_id" />
+            </column>
+       </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

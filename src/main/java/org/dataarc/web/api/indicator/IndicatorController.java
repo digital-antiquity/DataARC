@@ -20,9 +20,10 @@ public class IndicatorController extends AbstractRestController {
     @Autowired
     private IndicatorService indicatorService;
 
+    
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) Indicator indicator) throws Exception {
-        logger.debug("Saving indicator: {} ", indicator);
+        logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifier());
         indicatorService.save(indicator);
         return indicator.getId();
 
@@ -30,8 +31,10 @@ public class IndicatorController extends AbstractRestController {
 
     @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
     public Long update(@PathVariable("id") Long id, @RequestBody(required = true) Indicator _indicator) throws Exception {
-        logger.debug("Query: {} ", _indicator);
+        String topicIdentifier = _indicator.getTopicIdentifier();
+        logger.debug("Saving indicator: {} :: {}", _indicator, topicIdentifier);
         Indicator indicator = indicatorService.merge(_indicator);
+        indicator.setTopicIdentifier(topicIdentifier);
         indicatorService.save(indicator);
         return indicator.getId();
 

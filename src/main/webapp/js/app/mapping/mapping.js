@@ -56,6 +56,7 @@ var Hack = new Vue({
     fields: [],
     uniqueValues: [],
     indicators: [] ,
+    topics: [],
     results: undefined,
     conditions: [{}],
     currentSchema: undefined,
@@ -84,6 +85,7 @@ var Hack = new Vue({
   },
   mounted: function () {
     this.fetchSchema();
+    this.fetchTopics();
   },
 
   methods: {
@@ -109,7 +111,6 @@ var Hack = new Vue({
             console.log("fetch fields for "+ s.name);
             this.$http.get('/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
-//                  console.trace(JSON.stringify(request.body));
                 Vue.set(this, 'fields', request.body);
               })
               .catch(function (err) {
@@ -125,7 +126,16 @@ var Hack = new Vue({
               console.err(err);
             });
         },
-        selectIndicator: function() {
+        fetchTopics: function() {
+            this.$http.get("/api/topicmap/indicators")
+            .then(function(request){
+                Vue.set(this,"topics",request.body);
+            })
+            .catch(function(err) {
+                console.err(err);
+            });
+        }
+        ,selectIndicator: function() {
             var s = this.schema[this.currentSchema];
             var i = this.indicators[this.currentIndicator];
         },
@@ -173,21 +183,20 @@ var Hack = new Vue({
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
               if (indicator.id == -1 || indicator.id == undefined) {
-                  
-              this.$http.post('/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
-                  headers: {
-                      'Content-Type': 'application/json'
-                  }})
-              .then(function (request) {
-                  console.log(JSON.stringify(request.body));
-                  indicatorId = request.body;
-              })
-              .catch(function (err) {
-                  console.log(err);
-                console.err(err);
-              });
+                  this.$http.post('/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }})
+                  .then(function (request) {
+                      console.log(JSON.stringify(request.body));
+                      indicatorId = request.body;
+                  })
+                  .catch(function (err) {
+                      console.log(err);
+                    console.err(err);
+                  });
               } else {
-                  this.$http.put('/api/indicator/' + this.indicatorId , JSON.stringify(indicator), {emulateJSON:true,
+                  this.$http.put('/api/indicator/' + indicator.id , JSON.stringify(indicator), {emulateJSON:true,
                       headers: {
                           'Content-Type': 'application/json'
                       }})

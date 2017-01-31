@@ -29,6 +29,11 @@
     <label>Indicator Name</label><input name="indicatorName" v-model="indicators[currentIndicator].name" />
     <label>Indicator Id</label> {{indicators[currentIndicator].id}}
 
+
+        <select name='topic' v-model="indicators[currentIndicator].topicIdentifier">
+          <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
+        </select>
+
                         <button class="btn btn-xs btn" v-on:click="runQuery()">Search</button>
             <button class="btn btn-xs btn" v-on:click="saveIndicator()">Save Indicator</button>
   </div>
