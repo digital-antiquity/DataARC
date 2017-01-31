@@ -1,10 +1,8 @@
 package org.dataarc.core.service;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
@@ -126,38 +124,47 @@ public class TopicMapService {
                 String associationType = association_.getType().getTopicRef().getHref();
                 logger.trace(" A:{} {} {} {} {}", association_.getReifier(), associationType, association_.getItemIdentity(),
                         association_.getScope());
-                Role from = null;
-                Topic typeFrom = null;
-                String fromhref = null;
+                String fromTopicHref = null;
+                String fromTypeTopicHref = null;
+                String toTopicHref = null;
+                String associTypeTopicHref = association_.getType().getTopicRef().getHref();
+                String toTypeTopicHref = null;
                 if (association_.getRole().size() > 0) {
-                    from = association_.getRole().get(0);
-                    fromhref = from.getTopicRef().getHref();
-                    typeFrom = internalMap.get(from.getType().getTopicRef().getHref());
+                    Role from = association_.getRole().get(0);
+                    fromTopicHref = from.getTopicRef().getHref();
+                    fromTypeTopicHref = from.getType().getTopicRef().getHref();
                 }
-                Role to = null;
-                Topic typeTo = null;
-                String tohref = null;
                 if (association_.getRole().size() > 1) {
                     associationTo = new Association();
-                    to = association_.getRole().get(1);
-                    tohref = to.getTopicRef().getHref();
-                    String toRole = to.getType().getTopicRef().getHref();
-                    if (StringUtils.isNotBlank(toRole)) {
-                        typeTo = internalMap.get(toRole);
-                    }
-                    associationTo.setFrom(internalMap.get(tohref));
-                    associationTo.setTo(internalMap.get(fromhref));
-                    if (Objects.equal(fromhref, tohref)) {
+                    Role to = association_.getRole().get(1);
+                    toTopicHref = to.getTopicRef().getHref();
+                    toTypeTopicHref = to.getType().getTopicRef().getHref();
+
+                    logger.trace("fromTopicHref: {}", internalMap.get(fromTopicHref));
+                    logger.trace("fromTypeTopicHref: {}", internalMap.get(fromTypeTopicHref));
+                    logger.trace("toTopicHref: {}", internalMap.get(toTopicHref));
+                    logger.trace("toTypeTopicHref: {}", internalMap.get(toTypeTopicHref));
+                    logger.trace("aTypeTopicHref: {}", internalMap.get(associTypeTopicHref));
+//                    if (StringUtils.isNotBlank(toRole)) {
+//                        typeTo = internalMap.get(toRole);
+//                    }
+                    associationTo.setFrom(internalMap.get(toTopicHref));
+                    associationTo.setTo(internalMap.get(fromTopicHref));
+                    if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {
                         logger.warn("from == to");
+                        associationTo.setTo(internalMap.get(associTypeTopicHref));
                     }
-                    associationTo.setType(typeTo);
-                    associationFrom.setTo(internalMap.get(tohref));
+                    associationTo.setType(internalMap.get(toTypeTopicHref));
+                    associationFrom.setTo(internalMap.get(toTopicHref));
                 } else {
                     associationFrom.setTo(internalMap.get(associationType));
                 }
 
-                associationFrom.setFrom(internalMap.get(fromhref));
-                associationFrom.setType(typeFrom);
+                associationFrom.setFrom(internalMap.get(fromTopicHref));
+                associationFrom.setType(internalMap.get(fromTypeTopicHref));
+                if (Objects.equal(associationFrom.getTo(), associationFrom.getFrom())) {
+                    associationFrom.setFrom(internalMap.get(associTypeTopicHref));
+                }
 
                 assoicationDao.save(associationFrom);
                 logger.debug("{}", associationFrom);
@@ -167,7 +174,7 @@ public class TopicMapService {
                     logger.debug("{}", associationTo);
                     associations.add(associationTo);
                 }
-                logger.trace("\t ({}) {} -> ({}) {}", fromhref, tohref);
+                logger.trace("\t ({}) {} -> ({}) {}", fromTopicHref, toTopicHref);
             } else {
                 logger.warn(" {} {}", item, item.getClass());
             }
