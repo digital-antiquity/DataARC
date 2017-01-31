@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -31,16 +32,11 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    @Bean
-    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
-        mapping.setInterceptors(new Object[] { getLoggingHandler() });
-        return mapping;
-    }
-
-    @Bean
-    public RequestLoggingInterceptor getLoggingHandler() {
-        return new RequestLoggingInterceptor();
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new RequestLoggingInterceptor());
+        super.addInterceptors(registry);
     }
 
 //    @Override
