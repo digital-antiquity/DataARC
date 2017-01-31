@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
+import com.google.common.base.Objects;
+
 import topicmap.v2_0.Name;
 import topicmap.v2_0.Occurrence;
 import topicmap.v2_0.Role;
@@ -145,6 +147,9 @@ public class TopicMapService {
                     }
                     associationTo.setFrom(internalMap.get(tohref));
                     associationTo.setTo(internalMap.get(fromhref));
+                    if (Objects.equal(fromhref, tohref)) {
+                        logger.warn("from == to");
+                    }
                     associationTo.setType(typeTo);
                     associationFrom.setTo(internalMap.get(tohref));
                 } else {
