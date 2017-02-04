@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AdminController extends AbstractRestController {
+public class AdminApiController extends AbstractRestController {
 
     @Autowired
     private IndicatorService indicatorService;
