@@ -96,6 +96,32 @@ public class DataEntry {
     private Date dateCreated;
     private Map<String, Object> properties = new HashMap<>();
     private Set<String> indicators = new HashSet<>();
+    private Set<String> topics = new HashSet<>();
+    private Set<String> topicIdentifiers = new HashSet<>();
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Set<String> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(Set<String> topics) {
+        this.topics = topics;
+    }
+
+    public Set<String> getTopicIdentifiers() {
+        return topicIdentifiers;
+    }
+
+    public void setTopicIdentifiers(Set<String> topicIdentifiers) {
+        this.topicIdentifiers = topicIdentifiers;
+    }
 
     @Override
     public String toString() {

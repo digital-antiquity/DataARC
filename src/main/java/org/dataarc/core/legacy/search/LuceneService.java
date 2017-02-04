@@ -56,7 +56,7 @@ public class LuceneService {
     private IndexSearcher searcher;
     // Fields that are being searched in keyword searches
     private static final String[] searchFields = { IndexFields.TITLE, IndexFields.DESCRIPTION, IndexFields.WHAT, IndexFields.WHEN, IndexFields.WHERE,
-            IndexFields.WHO,
+            IndexFields.WHO, IndexFields.TOPIC,
             IndexFields.SOURCE, IndexFields.TYPE, IndexFields.TAGS };
 
     void setupReaders(String indexName) throws IOException {

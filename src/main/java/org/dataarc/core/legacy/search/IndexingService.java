@@ -151,6 +151,12 @@ public class IndexingService {
                     doc.add(new TextField(IndexFields.TAGS, tag.trim(), Field.Store.YES));
                 }
             }
+            entry.getTopicIdentifiers().forEach(ident -> {
+                doc.add(new TextField(IndexFields.TOPIC, ident, Field.Store.YES));
+            });
+            entry.getTopics().forEach(ident -> {
+                doc.add(new TextField(IndexFields.TOPIC, ident, Field.Store.YES));
+            });
             if (CollectionUtils.isNotEmpty(entry.getIndicators())) {
                 for (String indicator : entry.getIndicators()) {
                     doc.add(new TextField(IndexFields.INDICATOR, indicator, Field.Store.YES));
