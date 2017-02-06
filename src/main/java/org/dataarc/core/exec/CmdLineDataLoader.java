@@ -41,13 +41,19 @@ public class CmdLineDataLoader extends AbstractDataLoader {
     }
 
     private void load(String path) {
+        logger.debug("loading data");
         importService.loadData(path);
+        logger.debug("done loading data");
         try {
+            logger.debug("loading wandora");
             topicMapService.load("src/main/data/landscape_wandora.xtm");
+            logger.debug("done loading wandora");
         } catch (JAXBException | SAXException e) {
             logger.error("{}", e,e);
         }
+        logger.debug("applying indicators");
         indicatorService.applyIndicators();
+        logger.debug("done applying indicators");
     }
 
 }
