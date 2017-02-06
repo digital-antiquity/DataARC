@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
         <link rel="stylesheet" href="${contextPath}/components/c3/c3.css" />
-        <link rel="stylesheet" href="${contextPath}components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+        <link rel="stylesheet" href="${contextPath}/components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
     	<link rel="stylesheet" href="${contextPath}/css/nabo.css"/>    
         <link rel="stylesheet" href="${contextPath}/components/leaflet/dist/leaflet.css" />
 <!--        <link rel="stylesheet" href="${contextPath}/components/leaflet-cluster/dist/MarkerCluster.css" />
