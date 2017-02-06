@@ -379,6 +379,7 @@ function drawGrid() {
     ajax.success(function(data) {
         shouldContinue = true;
     }).then(function(data) {
+        console.log(data);
         // initialize the GeoJSON layer
         if (cluster()) {
             if (markers) {
