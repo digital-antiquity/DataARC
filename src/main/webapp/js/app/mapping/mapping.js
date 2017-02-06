@@ -92,7 +92,7 @@ var Hack = new Vue({
       fetchSchema: function () {
           var events = [];
           console.log("fetch schema");
-          this.$http.get(getContext() + '/api/schema')
+          this.$http.get(getContextPath() + '/api/schema')
             .then(function (schema) {
                 var list = new Array();
                 schema.body.forEach(function(s) {
@@ -109,7 +109,7 @@ var Hack = new Vue({
         selectSchema: function () {
             var s = this.schema[this.currentSchema];
             console.log("fetch fields for "+ s.name);
-            this.$http.get(getContext() + '/api/fields',{params: {'schema': s.name}})
+            this.$http.get(getContextPath() + '/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
                 Vue.set(this, 'fields', request.body);
               })
@@ -117,7 +117,7 @@ var Hack = new Vue({
                 console.err(err);
               });
 
-            this.$http.get(getContext() + '/api/indicator',{params: {'schema': s.name}})
+            this.$http.get(getContextPath() + '/api/indicator',{params: {'schema': s.name}})
             .then(function (request) {
                 console.log(JSON.stringify(request.body));
               Vue.set(this, 'indicators', request.body);
@@ -127,7 +127,7 @@ var Hack = new Vue({
             });
         },
         fetchTopics: function() {
-            this.$http.get("/api/topicmap/indicators")
+            this.$http.get(getContextPath() +"/api/topicmap/indicators")
             .then(function(request){
                 Vue.set(this,"topics",request.body);
             })
@@ -155,7 +155,7 @@ var Hack = new Vue({
             },
           selectFieldByName(name) {
                 var s = this.schema[this.currentSchema];
-                this.$http.get(getContext() + '/api/listDistinctValues',{params: {'schema': s.name, "field":name}})
+                this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': s.name, "field":name}})
                 .then(function (request) {
                     console.log(JSON.stringify(request.body));
                   Vue.set(this, 'uniqueValues', request.body);
@@ -167,7 +167,7 @@ var Hack = new Vue({
           runQuery() {
               var query = this.indicators[this.currentIndicator].query;
               console.log(JSON.stringify(query));
-              this.$http.post(getContext() + '/api/query/datastore' , JSON.stringify(query), {emulateJSON:true,
+              this.$http.post(getContextPath() + '/api/query/datastore' , JSON.stringify(query), {emulateJSON:true,
                   headers: {
                       'Content-Type': 'application/json'
                   }})
@@ -183,7 +183,7 @@ var Hack = new Vue({
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
               if (indicator.id == -1 || indicator.id == undefined) {
-                  this.$http.post(getContext() + '/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
+                  this.$http.post(getContextPath() + '/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
                       headers: {
                           'Content-Type': 'application/json'
                       }})
@@ -196,7 +196,7 @@ var Hack = new Vue({
                     console.err(err);
                   });
               } else {
-                  this.$http.put(getContext() + '/api/indicator/' + indicator.id , JSON.stringify(indicator), {emulateJSON:true,
+                  this.$http.put(getContextPath() + '/api/indicator/' + indicator.id , JSON.stringify(indicator), {emulateJSON:true,
                       headers: {
                           'Content-Type': 'application/json'
                       }})
