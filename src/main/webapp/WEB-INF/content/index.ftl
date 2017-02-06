@@ -40,7 +40,9 @@ var _rollbarConfig = {
     <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script>
-
+function getContext() {
+	return "${contextPath}";
+}
 </script>
 
    </head>
