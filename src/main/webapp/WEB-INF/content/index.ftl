@@ -11,16 +11,48 @@
     
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
-        <link rel="stylesheet" href="components/c3/c3.css" />
-        <link rel="stylesheet" href="components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
-    	<link rel="stylesheet" href="css/nabo.css"/>    
-        <link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
-<!--        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.css" />
-        <link rel="stylesheet" href="components/leaflet-cluster/dist/MarkerCluster.Default.css" />-->
-        <link rel="stylesheet" href="components/prune-cluster/dist/LeafletStyleSheet.css" />
+        <link rel="stylesheet" href="${contextPath}/components/c3/c3.css" />
+        <link rel="stylesheet" href="${contextPath}components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+    	<link rel="stylesheet" href="${contextPath}/css/nabo.css"/>    
+        <link rel="stylesheet" href="${contextPath}/components/leaflet/dist/leaflet.css" />
+<!--        <link rel="stylesheet" href="${contextPath}/components/leaflet-cluster/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="${contextPath}/components/leaflet-cluster/dist/MarkerCluster.Default.css" />-->
+        <link rel="stylesheet" href="${contextPath}/components/prune-cluster/dist/LeafletStyleSheet.css" />
+
+<script>
+var _rollbarConfig = {
+    accessToken: "b0b1c2d1df09471c842da3da26a9ec49",
+    captureUncaught: true,
+    payload: {
+        environment: "test"
+    }
+};
+!function(r){function e(t){if(o[t])return o[t].exports;var n=o[t]={exports:{},id:t,loaded:!1};return r[t].call(n.exports,n,n.exports,e),n.loaded=!0,n.exports}var o={};return e.m=r,e.c=o,e.p="",e(0)}([function(r,e,o){"use strict";var t=o(1).Rollbar,n=o(2);_rollbarConfig.rollbarJsUrl=_rollbarConfig.rollbarJsUrl||"https://d37gvrvc0wt4s1.cloudfront.net/js/v1.9/rollbar.min.js";var a=t.init(window,_rollbarConfig),i=n(a,_rollbarConfig);a.loadFull(window,document,!_rollbarConfig.async,_rollbarConfig,i)},function(r,e){"use strict";function o(r){return function(){try{return r.apply(this,arguments)}catch(e){try{console.error("[Rollbar]: Internal error",e)}catch(o){}}}}function t(r,e,o){window._rollbarWrappedError&&(o[4]||(o[4]=window._rollbarWrappedError),o[5]||(o[5]=window._rollbarWrappedError._rollbarContext),window._rollbarWrappedError=null),r.uncaughtError.apply(r,o),e&&e.apply(window,o)}function n(r){var e=function(){var e=Array.prototype.slice.call(arguments,0);t(r,r._rollbarOldOnError,e)};return e.belongsToShim=!0,e}function a(r){this.shimId=++c,this.notifier=null,this.parentShim=r,this._rollbarOldOnError=null}function i(r){var e=a;return o(function(){if(this.notifier)return this.notifier[r].apply(this.notifier,arguments);var o=this,t="scope"===r;t&&(o=new e(this));var n=Array.prototype.slice.call(arguments,0),a={shim:o,method:r,args:n,ts:new Date};return window._rollbarShimQueue.push(a),t?o:void 0})}function l(r,e){if(e.hasOwnProperty&&e.hasOwnProperty("addEventListener")){var o=e.addEventListener;e.addEventListener=function(e,t,n){o.call(this,e,r.wrap(t),n)};var t=e.removeEventListener;e.removeEventListener=function(r,e,o){t.call(this,r,e&&e._wrapped?e._wrapped:e,o)}}}var c=0;a.init=function(r,e){var t=e.globalAlias||"Rollbar";if("object"==typeof r[t])return r[t];r._rollbarShimQueue=[],r._rollbarWrappedError=null,e=e||{};var i=new a;return o(function(){if(i.configure(e),e.captureUncaught){i._rollbarOldOnError=r.onerror,r.onerror=n(i);var o,a,c="EventTarget,Window,Node,ApplicationCache,AudioTrackList,ChannelMergerNode,CryptoOperation,EventSource,FileReader,HTMLUnknownElement,IDBDatabase,IDBRequest,IDBTransaction,KeyOperation,MediaController,MessagePort,ModalWindow,Notification,SVGElementInstance,Screen,TextTrack,TextTrackCue,TextTrackList,WebSocket,WebSocketWorker,Worker,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload".split(",");for(o=0;o<c.length;++o)a=c[o],r[a]&&r[a].prototype&&l(i,r[a].prototype)}return e.captureUnhandledRejections&&(i._unhandledRejectionHandler=function(r){var e=r.reason,o=r.promise,t=r.detail;!e&&t&&(e=t.reason,o=t.promise),i.unhandledRejection(e,o)},r.addEventListener("unhandledrejection",i._unhandledRejectionHandler)),r[t]=i,i})()},a.prototype.loadFull=function(r,e,t,n,a){var i=function(){var e;if(void 0===r._rollbarPayloadQueue){var o,t,n,i;for(e=new Error("rollbar.js did not load");o=r._rollbarShimQueue.shift();)for(n=o.args,i=0;i<n.length;++i)if(t=n[i],"function"==typeof t){t(e);break}}"function"==typeof a&&a(e)},l=!1,c=e.createElement("script"),p=e.getElementsByTagName("script")[0],d=p.parentNode;c.crossOrigin="",c.src=n.rollbarJsUrl,c.async=!t,c.onload=c.onreadystatechange=o(function(){if(!(l||this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState)){c.onload=c.onreadystatechange=null;try{d.removeChild(c)}catch(r){}l=!0,i()}}),d.insertBefore(c,p)},a.prototype.wrap=function(r,e){try{var o;if(o="function"==typeof e?e:function(){return e||{}},"function"!=typeof r)return r;if(r._isWrap)return r;if(!r._wrapped){r._wrapped=function(){try{return r.apply(this,arguments)}catch(e){throw"string"==typeof e&&(e=new String(e)),e._rollbarContext=o()||{},e._rollbarContext._wrappedSource=r.toString(),window._rollbarWrappedError=e,e}},r._wrapped._isWrap=!0;for(var t in r)r.hasOwnProperty(t)&&(r._wrapped[t]=r[t])}return r._wrapped}catch(n){return r}};for(var p="log,debug,info,warn,warning,error,critical,global,configure,scope,uncaughtError,unhandledRejection".split(","),d=0;d<p.length;++d)a.prototype[p[d]]=i(p[d]);r.exports={Rollbar:a,_rollbarWindowOnError:t}},function(r,e){"use strict";r.exports=function(r,e){return function(o){if(!o&&!window._rollbarInitialized){var t=window.RollbarNotifier,n=e||{},a=n.globalAlias||"Rollbar",i=window.Rollbar.init(n,r);i._processShimQueue(window._rollbarShimQueue||[]),window[a]=i,window._rollbarInitialized=!0,t.processPayloads()}}}}]);
+</script>
+
+
+    <script src="${contextPath}/components/vue/dist/vue.min.js"></script>
+    <script src="${contextPath}/components/vue-resource/dist/vue-resource.min.js"></script>
+
+    <link href="${contextPath}/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
+    <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script>
+
+</script>
 
    </head>
 <body>
+
+            <div id="main" class="container-fluid">
+	            <div class="span-md-11">
+	            	<h3>DataARC Prototype Application</h3>
+	        	</div>
+        	</div>
+                <hr />
+
 <div class="container-fluid">
 <div class="row">
     <div id="mapbox"  class="col-md-8">
@@ -127,21 +159,21 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
     <script src="data/iceland.json"></script>
-    <script src="components/jquery-cookie/jquery.cookie.js"></script>
-    <script src="components/chroma-js/chroma.min.js"></script>
-    <script src="components/leaflet/dist/leaflet.js"></script>
-    <script src="components/leaflet-pip/leaflet-pip.js"></script>
+    <script src="${contextPath}/components/jquery-cookie/jquery.cookie.js"></script>
+    <script src="${contextPath}/components/chroma-js/chroma.min.js"></script>
+    <script src="${contextPath}/components/leaflet/dist/leaflet.js"></script>
+    <script src="${contextPath}/components/leaflet-pip/leaflet-pip.js"></script>
     
-    <script charset="utf-8" src="components/d3/d3.js"></script>
-    <script src="components/c3/c3.js"></script>
-    <script src="components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
-    <!-- <script src="components/leaflet-cluster/dist/leaflet.markercluster.js"></script> -->
-    <script src="components/prune-cluster/dist/PruneCluster.js"></script>
+    <script charset="utf-8" src="${contextPath}/components/d3/d3.js"></script>
+    <script src="${contextPath}/components/c3/c3.js"></script>
+    <script src="${contextPath}/components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    <!-- <script src="${contextPath}/components/leaflet-cluster/dist/leaflet.markercluster.js"></script> -->
+    <script src="${contextPath}/components/prune-cluster/dist/PruneCluster.js"></script>
     
-    <script src="js/nabo.js"></script>
-    <script src="js/nabo-custom-graphs.js"></script>
-    <script src="js/nabo-timeline.js"></script>
-    <script src="js/nabo-forcemap.js"></script>
+    <script src="${contextPath}/js/nabo.js"></script>
+    <script src="${contextPath}/js/nabo-custom-graphs.js"></script>
+    <script src="${contextPath}/js/nabo-timeline.js"></script>
+    <script src="${contextPath}/js/nabo-forcemap.js"></script>
 <script>
 // GLOBALS:
 var max = 800;
@@ -183,6 +215,12 @@ $(function() {
 
 </script>
 </div>
+
+
+        <div id="footer" class="clearfix">
+        </div>
+        
+
 </body>
 </html>
 	
