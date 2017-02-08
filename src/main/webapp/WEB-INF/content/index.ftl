@@ -8,6 +8,7 @@
     <head>
         <title>DataARC Prototype</title>
         <meta charset="utf-8" />
+        <script src="data/iceland.json"></script>
     
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
@@ -160,7 +161,6 @@ function getContextPath() {
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-    <script src="data/iceland.json"></script>
     <script src="${contextPath}/components/jquery-cookie/jquery.cookie.js"></script>
     <script src="${contextPath}/components/chroma-js/chroma.min.js"></script>
     <script src="${contextPath}/components/leaflet/dist/leaflet.js"></script>

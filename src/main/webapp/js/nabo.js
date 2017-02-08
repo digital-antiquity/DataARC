@@ -642,6 +642,7 @@ function removeShapeHighlight(_leaflet_id) {
  * Loads the Hrepprurs or shapes based from the custom GeoJson objects.
  */
 function setupMapShape() {
+    // loaded separately (iceland.json)
     hlayer = new L.GeoJSON(hrep, {
         style : myStyle,
         onEachFeature : function(feature, layer_) {
