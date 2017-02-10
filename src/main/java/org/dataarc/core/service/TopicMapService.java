@@ -192,6 +192,7 @@ public class TopicMapService {
         return topicMapDao.findAll().get(0);
     }
 
+    @Transactional(readOnly = true)
     public InternalTopicMap convert(TopicMap find) {
         InternalTopicMap itm = new InternalTopicMap();
         Map<Topic, InternalTopic> intmap = new HashMap<>();
@@ -223,5 +224,11 @@ public class TopicMapService {
             intmap.put(topic, orDefault);
         }
         return orDefault;
+    }
+
+    @Transactional(readOnly = false)
+    public void deleteTopicMap() {
+        topicDao.delete();
+        
     }
 }

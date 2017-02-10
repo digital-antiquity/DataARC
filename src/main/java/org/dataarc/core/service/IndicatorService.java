@@ -24,10 +24,10 @@ public class IndicatorService {
 
     @Autowired
     private IndicatorDao indicatorDao;
-    
+
     @Autowired
     private TopicDao topicDao;
-    
+
     @Autowired
     private QueryDao queryDao;
 
@@ -66,8 +66,10 @@ public class IndicatorService {
         for (Indicator indicator : findAllForSchema(schemaName)) {
             for (DataEntry entry : queryDao.getMatchingRows(indicator.getQuery())) {
                 entry.getIndicators().add(indicator.getName());
-                entry.getTopics().add(indicator.getTopic().getName());
-                entry.getTopicIdentifiers().add(indicator.getTopicIdentifier());
+                if (indicator.getTopic() != null) {
+                    entry.getTopics().add(indicator.getTopic().getName());
+                    entry.getTopicIdentifiers().add(indicator.getTopicIdentifier());
+                }
                 importDao.save(entry);
             }
         }
