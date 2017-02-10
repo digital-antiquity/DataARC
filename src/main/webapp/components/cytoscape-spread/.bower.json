@@ -1,0 +1,35 @@
+{
+  "name": "cytoscape-spread",
+  "version": "1.2.0",
+  "description": "The Spread physics simulation layout for Cytoscape.js",
+  "main": "cytoscape-spread.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cytoscape/cytoscape.js-spread.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "cytoscape",
+    "cyext"
+  ],
+  "license": "LGPL-3.0+",
+  "dependencies": {
+    "cytoscape": "^2.5.0"
+  },
+  "homepage": "https://github.com/cytoscape/cytoscape.js-spread",
+  "_release": "1.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.2.0",
+    "commit": "fa519738c555459643241fb6c9c4a442e2d7002c"
+  },
+  "_source": "https://github.com/cytoscape/cytoscape.js-spread.git",
+  "_target": "~1.2.0",
+  "_originalSource": "cytoscape-spread"
+}

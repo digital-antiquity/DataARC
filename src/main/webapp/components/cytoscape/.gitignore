@@ -1,9 +1,12 @@
 .project
 .DS_Store
 .buildpath
+.versions
 node_modules
+npm-debug.log
 build
 build/*
 build/**
-npm-debug.log
 documentation/slimerjs-*/**
+documentation/api/**
+documentation/download/*.zip
