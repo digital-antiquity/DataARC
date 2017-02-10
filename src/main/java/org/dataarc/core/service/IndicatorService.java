@@ -41,6 +41,7 @@ public class IndicatorService {
     public void save(Indicator indicator) {
         logger.debug(indicator.getTopicIdentifier());
         Topic topic = topicDao.findTopicByIdentifier(indicator.getTopicIdentifier());
+        logger.debug("  topic: {}", topic);
         indicator.setTopic(topic);
         indicatorDao.save(indicator);
     }

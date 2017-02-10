@@ -33,7 +33,6 @@ public class TopicDao {
     }
 
     public Topic findTopicByIdentifier(String topic) {
-        logger.debug(topic);
         TypedQuery<Topic> query = manager.createQuery("from Topic t where t.identifier =:identifier", Topic.class);
         query.setParameter("identifier", topic);
         query.setMaxResults(1);

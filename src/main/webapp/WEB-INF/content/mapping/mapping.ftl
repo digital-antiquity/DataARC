@@ -40,16 +40,17 @@ function getContextPath() {
   <div class="container" id="schema">
 
         <div class="col-sm-12">
-	      Schema: <select v-model="currentSchema" >
+	      Source: <select v-model="currentSchema" >
 	          <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
 	      </select>
+	      <br/>
 	      <span v-show="currentSchema != undefined">
 
-	       Existing: <select v-model="currentIndicator">
+	       Indicator: <select v-model="currentIndicator">
 	          <optgroup label="Existing Indicators" v-if="indicators.length > 0 ">
 	          <option v-for="(option, index) in indicators" v-bind:value="index"> {{ option.name }} </option>
 	          </optgroup>
-	          <option value="new">New Indicator</option>
+	          <option value="new">Create New Indicator</option>
 	      </select>
 	      </span>
 	      </div>
@@ -66,13 +67,16 @@ function getContextPath() {
 	</ul>
 
     <label>Indicator Name</label><input name="indicatorName" v-model="indicators[currentIndicator].name" />
+    <br>
     <label>Indicator Id</label> {{indicators[currentIndicator].id}}
 
-
+<br/>
+<span class='debug hidden'>{{ indicators[currentIndicator] }}</span>
+Assign Topic:
         <select name='topic' v-model="indicators[currentIndicator].topicIdentifier">
           <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
         </select>
-
+<br/>
                         <button class="btn btn-xs btn" v-on:click="runQuery()">Search</button>
             <button class="btn btn-xs btn" v-on:click="saveIndicator()">Save Indicator</button>
   </div>
