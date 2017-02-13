@@ -4,12 +4,14 @@ import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-import org.sitemesh.config.ConfigurableSiteMeshFilter;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import com.opensymphony.module.sitemesh.freemarker.FreemarkerDecoratorServlet;
+import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 
 public class ServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer  {
@@ -18,12 +20,17 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
     protected void registerContextLoaderListener(ServletContext container) {
         super.registerContextLoaderListener(container);
         container.addListener(RequestContextListener.class);
+        ServletRegistration.Dynamic freemarker = container.addServlet("sitemesh-freemarker", FreemarkerDecoratorServlet.class);
+        freemarker.setInitParameter("default_encoding", "UTF-8");
+        freemarker.setLoadOnStartup(1);
+        freemarker.addMapping("*.dec");
+
     }
     
     @Override
     protected Filter[] getServletFilters() {
-        //, new ConfigurableSiteMeshFilter()
-        return new Filter[] {new OpenEntityManagerInViewFilter()};
+        SiteMeshFilter siteMeshFilter = new SiteMeshFilter();
+        return new Filter[] {new OpenEntityManagerInViewFilter(), siteMeshFilter};
     }
 
     @Override
@@ -32,6 +39,8 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
     }
 
 
+    
+    
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 
@@ -57,6 +66,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
         return new Class[] { };
     }
 
+    
     @Override
     protected String[] getServletMappings() {
         return new String[] {"/*"};
