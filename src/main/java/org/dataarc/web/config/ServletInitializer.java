@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 import org.dataarc.web.filter.ClearContentLengthFilter;
-import org.dataarc.web.filter.DataARCSitemeshFilter;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
@@ -24,7 +23,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 
     @Override
     protected Filter[] getServletFilters() {
-        return new Filter[] { new OpenEntityManagerInViewFilter(), new DataARCSitemeshFilter(),new ClearContentLengthFilter() };
+        return new Filter[] { new OpenEntityManagerInViewFilter(), new ConfigurableSiteMeshFilter(),new ClearContentLengthFilter() };
     }
 
     @Override

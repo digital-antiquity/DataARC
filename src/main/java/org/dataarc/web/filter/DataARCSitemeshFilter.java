@@ -16,9 +16,8 @@ import org.sitemesh.webapp.contentfilter.Selector;
 
 public class DataARCSitemeshFilter extends SiteMeshFilter {
 
-    public DataARCSitemeshFilter(Selector selector, ContentProcessor contentProcessor, DecoratorSelector<WebAppContext> decoratorSelector,
-            boolean includeErrorPages) {
-        super(selector, contentProcessor, decoratorSelector, includeErrorPages);
+    public DataARCSitemeshFilter() {
+        super(null, null, null,false);
         // TODO Auto-generated constructor stub
     }
     
