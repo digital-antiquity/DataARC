@@ -23,7 +23,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 
     @Override
     protected Filter[] getServletFilters() {
-        return new Filter[] { new OpenEntityManagerInViewFilter(), new ConfigurableSiteMeshFilter(),new ClearContentLengthFilter() };
+        return new Filter[] { new OpenEntityManagerInViewFilter()};
     }
 
     @Override
