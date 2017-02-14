@@ -41,9 +41,9 @@ public class TopicDao {
     }
 
     public void delete() {
-        manager.createQuery("delete from Association", Association.class).executeUpdate();
-        manager.createQuery("delete from Topic", Topic.class).executeUpdate();
-        manager.createQuery("delete from TopicMap", TopicMap.class).executeUpdate();
+        manager.createQuery("delete from Association").executeUpdate();
+        manager.createQuery("delete from Topic").executeUpdate();
+        manager.createQuery("delete from TopicMap").executeUpdate();
 
     }
 
