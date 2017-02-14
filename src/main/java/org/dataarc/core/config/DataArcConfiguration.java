@@ -38,6 +38,10 @@ public class DataArcConfiguration {
     @Resource
     protected Environment env;
 
+    public DataArcConfiguration() {
+        System.setProperty("java.util.logging.manager","org.apache.logging.log4j.jul.LogManager");
+    }
+    
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
