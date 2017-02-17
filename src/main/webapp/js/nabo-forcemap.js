@@ -62,8 +62,9 @@ function initForceMapJSON() {
     force = d3.layout.force().linkDistance(LINK_DISTANCE).linkStrength(LINK_STRENGTH).charge(-100).size([ width, getHeight() ]);
 
     // iterate through the JSON data
-    d3.json("data/success.json", function(error, graph) {
+    d3.json(getContextPath() + "/data/success.json", function(error, graph) {
         // find the leaf nodes and initialize the lns list
+        console.log(graph);
         getJsonLeafNodes(nds, graph.mindmap.root, lns);
         
         // create the nds -> data lookup cross-reference
@@ -79,7 +80,9 @@ function initForceMapJSON() {
             if (urls.hasOwnProperty(id)) {
                 if (urls[id].urls) {
                     var node = nds[ordIdXref[id]];
-                    node.urls = urls[id].urls;
+                    if (node) {
+                        node.urls = urls[id].urls;
+                    }
                 }
             }
         }
@@ -162,10 +165,14 @@ function initForceMapJSON() {
         var nodelabels = vis.selectAll(".nodelabel");
 
         root = graph.mindmap.root;
+        console.log(root);
         // hilde all of the grand-children and below
-        root.children.forEach(function(c) {
+        if (root.children && root.children.length > 0) {
+            root.children.forEach(function(c) {
                 showHideBranch(c);
-        });
+            });
+        }
+            
 
         // http://jsfiddle.net/vfu78/16/
         // add mouse-over title
@@ -258,7 +265,7 @@ function bindClickEvents() {
  * @param links
  */
 function getJsonLeafNodes(leafNodes, obj, links) {
-	    if (obj.children) {
+	    if (obj.children && obj.children.length > 0) {
 	        obj.children.forEach(function(child) {
 	            getJsonLeafNodes(leafNodes, child, links)
 	        });
@@ -303,7 +310,7 @@ function initForceMapXml() {
     ).size([ width, getHeight() ]);
     // iterate through the JSON data
 
-    d3.xml("data/landscape_gisli.xgml", function(error, graph) {
+    d3.xml(getContextPath() + "/data/landscape_gisli.xgml", function(error, graph) {
         // find the leaf nodes and initialize the lns list
         doc = graph;
         getLeafNodes(nds, graph, lns);

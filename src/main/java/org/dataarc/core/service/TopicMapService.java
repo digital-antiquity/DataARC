@@ -154,7 +154,7 @@ public class TopicMapService {
                     associationTo.setFrom(internalMap.get(toTopicHref));
                     associationTo.setTo(internalMap.get(fromTopicHref));
                     if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {
-                        logger.warn("from == to");
+                        logger.warn("\t\tfrom == to");
                         associationTo.setTo(internalMap.get(associTypeTopicHref));
                     }
                     associationTo.setType(internalMap.get(toTypeTopicHref));
