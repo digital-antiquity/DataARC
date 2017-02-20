@@ -241,15 +241,13 @@ body {
         <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()">
           <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.name }} </option>
         </select>
-
         <select name='type' v-model="part.type">
-            <option value="EQUALS">Equals</option>
-            <option value="DOES_NOT_EQUAL">Does Not Equal</option>
-            <option value="GREATER_THAN">Greater Than</option>
-            <option value="LESS_THAN">Less Than</option>
-            <option value="CONTAINS">Contains</option>
+          <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
         </select>
-    <input name='value' value="" v-bind:type="getHtmlFieldType(part.fieldName)" v-model="part.value"/>
+
+        <input name='value' value="" v-bind:type="getHtmlFieldType(part.fieldName)" v-model="part.value"/>
+    
+    
     <span v-show="rowindex > 0">
                 <button class="btn btn-xs btn" v-on:click="removePart(rowindex)">-</button>
     </span>

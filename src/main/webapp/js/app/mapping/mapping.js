@@ -10,7 +10,19 @@
  Vue.component('spart', {
       template: "#spart-template",
       props: ['fields', "part","rowindex","parts"],
+      computed: {
+      },
       methods: {
+          getLimits :  function() {
+              var r = [{'text':'Equals', 'value': 'EQUALS'},{'text':'Does not Equal', 'value': 'DOES_NOT_EQUAL'}];
+              if (this.getHtmlFieldType(this.part.fieldName) != 'text') {
+                  r.push({'text':'Greater Than','value':'GREATER_THAN'});
+                  r.push({'text':'Less Than','value':'LESS_THAN'});
+              } else {
+                  r.push({'text':'Contains','value':'CONTAINS'});
+              }
+              return r;
+          },
           getHtmlFieldType(name){
               if (name == undefined || name == '') {
                   return "text";
