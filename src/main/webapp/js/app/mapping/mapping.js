@@ -164,6 +164,8 @@ var Hack = new Vue({
         },
         selectSchema: function () {
             var s = this.schema[this.currentSchema];
+            Vue.set(this,"indicators",[]);
+            Vue.set(this,"fields",[]);
             console.log("fetch fields for "+ s.name);
             this.$http.get(getContextPath() + '/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
