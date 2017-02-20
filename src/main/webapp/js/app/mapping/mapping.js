@@ -267,6 +267,28 @@ var Hack = new Vue({
               }
 
           },
+          deleteIndicator() {
+              var indicator = this.indicators[this.currentIndicator];
+              console.log(indicator);
+              if (indicator.id != -1 && indicator.id != undefined) {
+                  this.$http.delete(getContextPath() + '/api/indicator/' + indicator.id , JSON.stringify(indicator), {emulateJSON:true,
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }})
+                  .then(function (request) {
+                      console.log(JSON.stringify(request.body));
+                  })
+                  .catch(function (err) {
+                    console.err(err);
+                  });
+              }
+              Vue.set(this, "indicatorId", -1);
+              this.indicators.splice(this.currentIndicator,1);
+              Vue.set(this, "currentIndicator", undefined);
+              Vue.set(this,"indicators",this.indicators);
+              
+
+          },
     getQuery: function() {
         console.log(this.conditions);
         return this.conditions;

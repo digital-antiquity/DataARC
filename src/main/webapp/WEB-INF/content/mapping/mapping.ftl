@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>
-            <sitemesh:write property='title'/>
+            Indicator Creation Tool
         </title>
         <script>
             var _rollbarConfig = {
@@ -225,6 +225,7 @@
                             <div class="col-sm-12">
                                 <button class="btn btn-xs btn" v-on:click="runQuery()" v-bind:disabled='cannotSearch'>Search / Test Query</button>
                                 <button class="btn btn-xs btn" v-on:click="saveIndicator()" v-bind:disabled='cannotSubmit'>Save Indicator</button>
+                                <button class="btn btn-xs btn" v-on:click="deleteIndicator()" >Delete Indicator</button>
                             </div>
                         </div>
                         <br/>

@@ -49,6 +49,13 @@ public class IndicatorController extends AbstractRestController {
         return findById;
     }
 
+    
+    @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.DELETE)
+    public void getDeleteId(@PathVariable(value = "id", required = true) Long id) {
+        Indicator findById = indicatorService.findById(id);
+        indicatorService.delete(findById);
+    }
+
     @RequestMapping(path = UrlConstants.LIST_INDICATORS, method = RequestMethod.GET)
     public List<Indicator> list(@RequestParam(value = "schema", required = true) String schemaName) {
         List<Indicator> indicators = indicatorService.findAllForSchema(schemaName);

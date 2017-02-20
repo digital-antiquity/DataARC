@@ -55,4 +55,9 @@ public class IndicatorDao {
 
     }
 
+    public void delete(Indicator findById) {
+        manager.remove(findById);
+        
+    }
+
 }

@@ -87,4 +87,10 @@ public class IndicatorService {
         });
     }
 
+    @Transactional(readOnly=false)
+    public void delete(Indicator findById) {
+        indicatorDao.delete(findById);
+        
+    }
+
 }
