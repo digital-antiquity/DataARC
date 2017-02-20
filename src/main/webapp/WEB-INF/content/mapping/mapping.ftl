@@ -166,7 +166,9 @@ body {
 
  <div class="container" id="schema">
 
-        <div class="col-sm-12">
+        <div class="col-sm-11">
+        <span  data-toggle="tooltip" data-placement="right" title="Indicators are built from a single data source" >
+          </span>
           <label for="datasource">Choose a Data Source:</label> 
           <select v-model="currentSchema" id="datasource" >
               <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
@@ -183,7 +185,7 @@ body {
           </span>
        </div>
        <br/>
-        <div class="col-sm-11 col-sm-offset-1">
+        <div class="col-sm-10 col-sm-offset-1">
           
           <ul v-for="value in uniqueValues">
            <li><b>{{ value.value }}</b> ({{value.occurrence }})</li>

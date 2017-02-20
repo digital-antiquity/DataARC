@@ -26,9 +26,7 @@ var _rollbarConfig = {
     <script src="/components/jquery/dist/jquery.js"></script>
     <script src="/components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<script>
 
-</script>
 </head>
 <body id="page-home">
             <div id="main" class="container-fluid">
@@ -41,6 +39,11 @@ var _rollbarConfig = {
         
         <div id="footer" class="clearfix">
         </div>
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})</script>
         
 </body>
 </html>

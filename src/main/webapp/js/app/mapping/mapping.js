@@ -98,8 +98,10 @@ var Hack = new Vue({
   mounted: function () {
     this.fetchSchema();
     this.fetchTopics();
-  },
-
+    this.$nextTick(function () {
+          console.log('hi');
+          $('[data-toggle="tooltip"]').tooltip();
+      })},
   methods: {
       fetchSchema: function () {
           var events = [];
