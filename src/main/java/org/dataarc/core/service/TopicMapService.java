@@ -48,11 +48,16 @@ public class TopicMapService {
     @Autowired
     AssociationDao assoicationDao;
 
-    @Transactional
-    public List<Topic> findTopicsForIndicators() {
-        return topicDao.findTopicsForIndicators();
+    @Transactional(readOnly = true)
+    public List<Topic> findFlattenedTopicsForIndicators() {
+        List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();
+        //flatten for this use
+        findTopicsForIndicators.forEach(topic -> {
+            topic.setParent(null);
+        });
+        return findTopicsForIndicators;
     }
-    
+
     @Transactional(readOnly = false)
     public TopicMap load(String file) throws JAXBException, SAXException {
         topicmap.v2_0.TopicMap topicMap_ = serializationService.readTopicMapFromFile(file);
@@ -187,7 +192,7 @@ public class TopicMapService {
         return topicMap;
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public TopicMap find() {
         return topicMapDao.findAll().get(0);
     }
@@ -210,7 +215,7 @@ public class TopicMapService {
             iasc.setId(assoc.getId());
             itm.getAssociations().add(iasc);
         });
-        
+
         return itm;
     }
 
@@ -229,6 +234,6 @@ public class TopicMapService {
     @Transactional(readOnly = false)
     public void deleteTopicMap() {
         topicDao.delete();
-        
+
     }
 }

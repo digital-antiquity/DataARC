@@ -19,7 +19,7 @@ public class ListMappableTopic extends AbstractRestController {
 
     @RequestMapping(path=UrlConstants.TOPIC_INDICATOR_LIST, method=RequestMethod.GET)
     public List<Topic> list() throws Exception {
-        return topicMapService.findTopicsForIndicators();
+        return topicMapService.findFlattenedTopicsForIndicators();
     }
 
 }
