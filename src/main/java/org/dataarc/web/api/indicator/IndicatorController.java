@@ -2,6 +2,7 @@ package org.dataarc.web.api.indicator;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.Indicator;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.web.api.AbstractRestController;
@@ -23,7 +24,7 @@ public class IndicatorController extends AbstractRestController {
     
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) Indicator indicator) throws Exception {
-        logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifier());
+        logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
         indicatorService.save(indicator);
         return indicator.getId();
 
@@ -31,10 +32,10 @@ public class IndicatorController extends AbstractRestController {
 
     @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
     public Long update(@PathVariable("id") Long id, @RequestBody(required = true) Indicator _indicator) throws Exception {
-        String topicIdentifier = _indicator.getTopicIdentifier();
+        List<String> topicIdentifier = _indicator.getTopicIdentifiers();
         logger.debug("Saving indicator: {} :: {}", _indicator, topicIdentifier);
         Indicator indicator = indicatorService.merge(_indicator);
-        indicator.setTopicIdentifier(topicIdentifier);
+        indicator.setTopicIdentifiers(topicIdentifier);
         indicatorService.save(indicator);
         return indicator.getId();
 
@@ -43,10 +44,16 @@ public class IndicatorController extends AbstractRestController {
     @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.GET)
     public Indicator getIndicatorById(@PathVariable(value = "id", required = true) Long id) {
         Indicator findById = indicatorService.findById(id);
-        if (findById.getTopic() != null) {
-            findById.setTopicIdentifier(findById.getTopic().getIdentifier());
-        }
+        setTopics(findById);
         return findById;
+    }
+
+    private void setTopics(Indicator findById) {
+        if (CollectionUtils.isNotEmpty(findById.getTopics())) {
+            findById.getTopics().forEach(topic-> {
+                findById.getTopicIdentifiers().add(topic.getIdentifier());
+            });
+        }
     }
 
     
@@ -60,9 +67,7 @@ public class IndicatorController extends AbstractRestController {
     public List<Indicator> list(@RequestParam(value = "schema", required = true) String schemaName) {
         List<Indicator> indicators = indicatorService.findAllForSchema(schemaName);
         indicators.forEach(findById-> {
-            if (findById.getTopic() != null) {
-                findById.setTopicIdentifier(findById.getTopic().getIdentifier());
-            }
+            setTopics(findById);
         });
         logger.debug("{}", indicators);
         return indicators;

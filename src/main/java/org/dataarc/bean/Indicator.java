@@ -1,9 +1,12 @@
 package org.dataarc.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
 import org.dataarc.bean.topic.Topic;
@@ -17,21 +20,28 @@ import org.hibernate.annotations.TypeDefs;
 @TypeDefs({ @TypeDef(name = "QueryJsonObject", typeClass = QueryJsonType.class) })
 public class Indicator extends AbstractPersistable {
 
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
+    }
+
     @Column(length = 100)
     private String name;
 
     @Transient
-    private String topicIdentifier; 
-    
+    private List<String> topicIdentifiers = new ArrayList<>();
+
     @Column
     @Type(type = "QueryJsonObject")
     private FilterQuery query;
 
-    
-    @ManyToOne
-    @JoinColumn(name="topic_id")
-    private Topic topic;
-    
+    @ManyToMany
+    @JoinTable(name = "indicator_topic")
+    private List<Topic> topics = new ArrayList<>();
+
     public String getName() {
         return name;
     }
@@ -48,20 +58,13 @@ public class Indicator extends AbstractPersistable {
         this.query = query;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public List<String> getTopicIdentifiers() {
+        return topicIdentifiers;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setTopicIdentifiers(List<String> topicIdentifiers) {
+        this.topicIdentifiers = topicIdentifiers;
     }
 
-    public String getTopicIdentifier() {
-        return topicIdentifier;
-    }
-
-    public void setTopicIdentifier(String topicIdentifier) {
-        this.topicIdentifier = topicIdentifier;
-    }
-
+    
 }

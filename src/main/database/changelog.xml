@@ -199,4 +199,20 @@
        </addColumn>
     </changeSet>
 
+    <changeSet id="alpha-15" author="abrin">
+    <dropColumn tableName="indicator" columnName="topic_id"/>
+            <createTable tableName="identifier_topic">
+            <column name="id" autoIncrement="true" type="bigserial"/>
+            <column name="topic_id" type="bigint">
+                <constraints referencedTableName="topic"
+                    foreignKeyName="topic_indicator_id" />
+            </column>
+            <column name="indicator_id" type="bigint">
+                <constraints referencedTableName="indicator"
+                    foreignKeyName="indicator_topic_id" />
+            </column>
+
+        </createTable>
+    
+    </changeSet>
 </databaseChangeLog>

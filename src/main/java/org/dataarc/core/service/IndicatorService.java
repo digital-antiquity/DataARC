@@ -1,7 +1,10 @@
 package org.dataarc.core.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
 import org.dataarc.bean.topic.Topic;
@@ -15,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Objects;
 
 @Service
 @Transactional
@@ -39,10 +44,26 @@ public class IndicatorService {
 
     @Transactional(readOnly = false)
     public void save(Indicator indicator) {
-        logger.debug(indicator.getTopicIdentifier());
-        Topic topic = topicDao.findTopicByIdentifier(indicator.getTopicIdentifier());
-        logger.debug("  topic: {}", topic);
-        indicator.setTopic(topic);
+        logger.debug("{}", indicator.getTopicIdentifiers());
+        List<Topic> topics = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
+        indicator.getTopics().forEach(t -> {ids.add(t.getId());});
+        indicator.getTopicIdentifiers().forEach(ident -> {
+            Topic topic = topicDao.findTopicByIdentifier(ident);
+            topics.add(topic);
+            logger.debug("  topic: {}", topic);
+            indicator.getTopics().add(topic);
+            ids.remove(topic.getId());
+        });
+        ids.forEach(id -> {
+            Iterator<Topic> iterator = indicator.getTopics().iterator();
+            while (iterator.hasNext()) {
+                Topic topic = iterator.next();
+                if (Objects.equal(topic.getId(), id)) {
+                    iterator.remove();
+                }
+            }
+        });
         indicatorDao.save(indicator);
     }
 
@@ -67,9 +88,15 @@ public class IndicatorService {
         for (Indicator indicator : findAllForSchema(schemaName)) {
             for (DataEntry entry : queryDao.getMatchingRows(indicator.getQuery())) {
                 entry.getIndicators().add(indicator.getName());
-                if (indicator.getTopic() != null) {
-                    entry.getTopics().add(indicator.getTopic().getName());
-                    entry.getTopicIdentifiers().add(indicator.getTopicIdentifier());
+                if (CollectionUtils.isNotEmpty(indicator.getTopics() )) {
+                    List<String> topics = new ArrayList<>();
+                    List<String> idents = new ArrayList<>();
+                    indicator.getTopics().forEach(topc-> {
+                        topics.add(topc.getName());
+                        idents.add(topc.getIdentifier());
+                    });
+                    entry.getTopicIdentifiers().addAll(idents);
+                    entry.getTopics().addAll(topics);
                 }
                 importDao.save(entry);
             }
