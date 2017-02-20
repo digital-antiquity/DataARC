@@ -71,8 +71,8 @@ var Hack = new Vue({
     uniqueValues: [],
     indicators: [] ,
     topics: [],
+    selectedTopics: [],
     results: undefined,
-    conditions: [{}],
     currentSchema: undefined,
     currentField: undefined,
     currentIndicator: undefined
@@ -192,10 +192,23 @@ var Hack = new Vue({
             .catch(function(err) {
                 console.err(err);
             });
-        }
-        ,selectIndicator: function() {
+        },
+        selectIndicator: function() {
             var s = this.schema[this.currentSchema];
             var i = this.indicators[this.currentIndicator];
+            var idents = i.topicIdentifiers;
+            if (idents == undefined) {
+                idents = [];
+                i.topicIdentifiers = idents;
+                idents.push({});
+            } 
+            Vue.set(this,"selectedTopics",idents);
+        },
+        addTopic() {
+            this.selectedTopics.push({});
+        },
+        removeTopic(idx) {
+            this.selectedTopics.splice(idx,1);                
         },
           selectField: function () {
               var s = this.schema[this.currentSchema];
@@ -240,6 +253,7 @@ var Hack = new Vue({
           saveIndicator() {
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
+              indicator.topicIdentifiers = this.selectedTopics;
               if (indicator.id == -1 || indicator.id == undefined) {
                   this.$http.post(getContextPath() + '/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
                       headers: {
