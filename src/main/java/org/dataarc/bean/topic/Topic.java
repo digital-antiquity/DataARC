@@ -25,12 +25,12 @@ public class Topic extends AbstractPersistable {
     private String identifier;
 
     @ElementCollection()
-    @CollectionTable(name = "topic_name_varients", joinColumns = @JoinColumn(name = "topic_id") )
+    @CollectionTable(name = "topic_name_varients", joinColumns = @JoinColumn(name = "topic_id"))
     @Column(name = "varient")
     private List<String> varients = new ArrayList<>();
 
-    @OneToMany
-    private Set<Association> associations = new HashSet<>();
+//    @OneToMany()
+//    private Set<Association> associations = new HashSet<>();
 
     @ManyToOne(optional = true)
     private Topic parent;

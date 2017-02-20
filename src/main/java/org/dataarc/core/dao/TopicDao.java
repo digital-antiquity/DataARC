@@ -6,9 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.Topic;
-import org.dataarc.bean.topic.TopicMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,6 +40,7 @@ public class TopicDao {
 
     public void delete() {
         manager.createQuery("delete from Association").executeUpdate();
+        manager.createNativeQuery("delete from topic_name_varients").executeUpdate();        
         manager.createQuery("delete from Topic").executeUpdate();
         manager.createQuery("delete from TopicMap").executeUpdate();
 

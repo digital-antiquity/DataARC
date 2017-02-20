@@ -3,10 +3,12 @@ package org.dataarc.bean.topic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.dataarc.bean.AbstractPersistable;
 
 @Entity
+@Table(name="association")
 public class Association extends AbstractPersistable {
 
     @Column(length = 255)
