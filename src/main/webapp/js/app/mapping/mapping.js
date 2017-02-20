@@ -128,7 +128,7 @@ var Hack = new Vue({
       'currentIndicator' : function(val, oldVal) {
           if (val === "new") {
               console.log("setup new indicator");
-              var indicator = {name:'',query: {conditions:[{}], operator:'AND', schema: this.schema[this.currentSchema].name}};
+              var indicator = {name:'',query: {conditions:[{}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
               this.indicators.push(indicator);
               console.log(indicator);
               Vue.set(this,"currentIndicator", this.indicators.length -1);

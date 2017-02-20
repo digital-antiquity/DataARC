@@ -212,10 +212,13 @@
 
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                         <div class="col-sm-11">
-                                <label for="chooseTopic">Assign Topic:</label>
-                                <select id="chooseTopic" name='topic' v-model="indicators[currentIndicator].topicIdentifier">
-                                    <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
-                                </select>
+                            <label for="chooseTopic">Assign Topic:</label>
+                            {{ indicators[currentIndicator].topicIdentifers }}
+                            <li v-for="(ident, _idx) in indicators[currentIndicator].topicIdentifers" >[{{_idx}}] {{ indicators[currentIndicator].topicIdentifiers }}
+                                    <select id="chooseTopic" name='topic' v-model="indicators[currentIndicator].topicIdentifiers">
+                                        <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
+                                    </select>
+                            </li>
                             </div>
                             <div class="col-sm-1">
                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
