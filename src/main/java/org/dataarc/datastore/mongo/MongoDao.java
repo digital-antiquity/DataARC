@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.QueryDao;
@@ -67,6 +68,12 @@ public class MongoDao implements ImportDao, QueryDao {
         Criteria group = new Criteria();
         List<Criteria> criteria = new ArrayList<>();
         for (QueryPart part : fq.getConditions()) {
+            if (part.getType() == null) {
+                throw new QueryException("invalid query (no type)");
+            }
+            if (StringUtils.isBlank(part.getFieldName())) {
+                throw new QueryException("invalid query (no field specified)");
+            }
             Criteria where = Criteria.where("properties." + part.getFieldName());
             switch (part.getType()) {
                 case CONTAINS:

@@ -1,3 +1,4 @@
+//Vue.use(VeeValidate); // good to go.
 //Vue.http.options.emulateJSON = true; // send as 
 
 
@@ -6,6 +7,7 @@
       console.log(err);
       console.log(vm);
   }
+
 
  Vue.component('spart', {
       template: "#spart-template",
@@ -76,6 +78,45 @@ var Hack = new Vue({
     currentIndicator: undefined
   },
   computed: {
+      cannotSubmit: function() {
+          if (this.currentIndicator != undefined) {
+              var ind = this.indicators[this.currentIndicator];
+              console.log(ind);
+              if (ind.name != '') {
+                  return false;
+              }
+          }
+          return true;
+      },
+      cannotSearch: function() {
+          return false;
+          if (this.currentIndicator != undefined) {
+              var ind = this.indicators[this.currentIndicator];
+              console.log(ind.query.conditions.length);
+              if (ind.query.conditions.length == 0) {
+                  return true;
+              }
+              var disabled = false;
+              ind.query.conditions.forEach(function(cond){
+                  console.log(cond);
+                  if (cond.fieldName == undefined || cond.fieldName == '') {
+                      console.log('invalid field name:' + cond);
+                      disabled = true;
+                      return;
+                  }
+                  if (cond.type == undefined || cond.type == '') {
+                      console.log('invalid field type:' + cond);
+                      disabled = true;
+                      return;
+                  }
+              });
+              if (disabled) {
+                  return true;
+              }
+          }
+          return false;
+      }
+
   },
   watch: {
       'currentSchema' : function(val, oldVal) {
@@ -87,7 +128,7 @@ var Hack = new Vue({
       'currentIndicator' : function(val, oldVal) {
           if (val === "new") {
               console.log("setup new indicator");
-              var indicator = {name:'New Indicator',query: {conditions:[{}], operator:'AND', schema: this.schema[this.currentSchema].name}};
+              var indicator = {name:'',query: {conditions:[{}], operator:'AND', schema: this.schema[this.currentSchema].name}};
               this.indicators.push(indicator);
               console.log(indicator);
               Vue.set(this,"currentIndicator", this.indicators.length -1);
@@ -101,6 +142,7 @@ var Hack = new Vue({
     this.$nextTick(function () {
           console.log('hi');
           $('[data-toggle="tooltip"]').tooltip();
+          $('[data-toggle="popover"]').popover({'trigger':'focus','placement':'left'});
       })},
   methods: {
       fetchSchema: function () {
