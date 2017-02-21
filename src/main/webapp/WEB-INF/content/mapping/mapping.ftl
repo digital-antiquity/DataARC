@@ -216,7 +216,8 @@
                         <div class="col-sm-11">
                             <label for="chooseTopic">Assign Topic:</label>
                             <!-- fixme: was indicators[currentIndicator].topicIdentifers[_idx]  -->
-                            <li v-for="(ident, _idx) in selectedTopics" >
+							<ul class="list-unstyled">
+                            <li v-for="(ident, _idx) in selectedTopics"  >
                                     <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]">
                                         <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
                                     </select>
@@ -229,6 +230,7 @@
                             </span>
 
                             </li>
+                            </ul>
                             </div>
                             <div class="col-sm-1">
                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
