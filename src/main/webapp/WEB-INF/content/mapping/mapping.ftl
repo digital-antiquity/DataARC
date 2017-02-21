@@ -143,14 +143,14 @@
                         <li><a href="">Another nav item</a></li>
                         </ul> -->
                 </div>
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main form-inline">
                     <h1 class="page-header">Indicator Mapping</h1>
                     <div class="container-fluid" id="schema">
 
                         <div class="row">
                             <div class="col-sm-11">
-                                <label for="datasource">Choose a Data Source:</label> 
-                                <select v-model="currentSchema" id="datasource" >
+                                <label for="datasource" class="control-label">Choose a Data Source:</label> 
+                                <select v-model="currentSchema" id="datasource" class="form-control" >
                                     <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
                                 </select>
                             </div>
@@ -161,15 +161,15 @@
                         </div>
                         <div class="row" v-show="currentSchema != undefined">
                             <div class="col-sm-11">
-                                    <label for="choose-indicator">Indicator:</label> 
-                                    <select v-model="currentIndicator" id="choose-indicator">
+                                    <label for="choose-indicator" class="control-label">Indicator:</label> 
+                                    <select v-model="currentIndicator" id="choose-indicator" class="form-control">
                                         <optgroup label="Existing Indicators" v-if="indicators.length > 0 ">
                                             <option v-for="(option, index) in indicators" v-bind:value="index"> {{ option.name }} </option>
                                         </optgroup>
                                         <option value="new">Create New Indicator</option>
                                     </select>
                                 <span  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator) && currentIndicator > 0">
-                                        <label for="indicatorId">Indicator Id:</label> {{indicators[currentIndicator].id}}
+                                        <label for="indicatorId" class="control-label">Indicator Id:</label> {{indicators[currentIndicator].id}}
                                 </span>
 
                             </div>
@@ -181,8 +181,8 @@
 
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                         <div class="col-sm-11">
-                                <label for="indicatorName">Indicator Name:</label><input id="indicatorName" 
-                                name="indicatorName" v-model="indicators[currentIndicator].name" />
+                                <label for="indicatorName" class="control-label">Indicator Name:</label>
+                                <input id="indicatorName" name="indicatorName" v-model="indicators[currentIndicator].name" class="form-control"/>
 
                             </div>
                             <div class="col-sm-1">
@@ -214,19 +214,19 @@
 
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                         <div class="col-sm-11">
-                            <label for="chooseTopic">Assign Topic:</label>
+                            <label for="chooseTopic" class="control-label">Assign Topic:</label>
                             <!-- fixme: was indicators[currentIndicator].topicIdentifers[_idx]  -->
 							<ul class="list-unstyled">
                             <li v-for="(ident, _idx) in selectedTopics"  >
-                                    <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]">
+                                    <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control">
                                         <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
                                     </select>
                             <span v-show="_idx > 0">
-	                            <button class="btn btn-xs btn" v-on:click="removeTopic(_idx)">-</button>
+	                            <button class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>
                             </span>
 
                             <span v-show="_idx == selectedTopics.length -1">
-                            <button class="btn btn-xs btn" v-on:click="addTopic()">+</button>
+	                            <button class="btn btn-xs btn-default" v-on:click="addTopic()">+</button>
                             </span>
 
                             </li>
@@ -239,9 +239,9 @@
                         <br/>
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                             <div class="col-sm-12">
-                                <button class="btn btn-xs btn" v-on:click="runQuery()" v-bind:disabled='cannotSearch'>Search / Test Query</button>
-                                <button class="btn btn-xs btn" v-on:click="saveIndicator()" v-bind:disabled='cannotSubmit'>Save Indicator</button>
-                                <button class="btn btn-xs btn" v-on:click="deleteIndicator()" >Delete Indicator</button>
+                                <button class="btn btn-xs btn-default" v-on:click="runQuery()" v-bind:disabled='cannotSearch'>Search / Test Query</button>
+                                <button class="btn btn-xs btn-success" v-on:click="saveIndicator()" v-bind:disabled='cannotSubmit'>Save Indicator</button>
+                                <button class="btn btn-xs btn-danger" v-on:click="deleteIndicator()" >Delete Indicator</button>
                             </div>
                         </div>
                         <br/>
@@ -275,18 +275,18 @@
                         
                     <template id="spart-template">
                         <div>
-                            <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()">
+                            <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()" class="form-control">
                                 <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.name }} </option>
                             </select>
-                            <select name='type' v-model="part.type">
+                            <select name='type' v-model="part.type" class="form-control">
                                 <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                             </select>
-                            <input name='value' value="" v-bind:type="getHtmlFieldType(part.fieldName)" v-model="part.value"/>
+                            <input name='value' value="" v-bind:type="getHtmlFieldType(part.fieldName)" v-model="part.value" class="form-control"/>
                             <span v-show="rowindex > 0">
-                            <button class="btn btn-xs btn" v-on:click="removePart(rowindex)">-</button>
+                            <button class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
                             </span>
                             <span v-show="rowindex == parts.length -1">
-                            <button class="btn btn-xs btn" v-on:click="addPart()">+</button>
+                            <button class="btn btn-xs btn-default" v-on:click="addPart()">+</button>
                             </span>
                         </div>
                     </template>
