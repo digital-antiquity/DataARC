@@ -85,6 +85,18 @@ var Hack = new Vue({
               if (ind.name != '') {
                   return false;
               }
+              if (this.selectedTopics.length == 0) {
+                  return false;
+              }
+              var valid = false;
+              this.selectedTopics.forEach(function(tid){
+                  if (tid != '' && tid != undefined) {
+                      valid = true;
+                  } 
+              });
+              if (valid == false) {
+                  return false;
+              }
           }
           return true;
       },
@@ -197,7 +209,7 @@ var Hack = new Vue({
             var s = this.schema[this.currentSchema];
             var i = this.indicators[this.currentIndicator];
             var idents = i.topicIdentifiers;
-            if (idents == undefined) {
+            if (idents == undefined || idents.length == 0) {
                 idents = [];
                 i.topicIdentifiers = idents;
                 idents.push({});
