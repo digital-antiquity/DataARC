@@ -178,6 +178,19 @@
                                     data-toggle="tooltip" title="Select an exsting indicator, or create a new one" ></span>
                             </div>
                         </div>
+
+                        <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
+                        <div class="col-sm-11">
+                                <label for="indicatorName">Indicator Name:</label><input id="indicatorName" 
+                                name="indicatorName" v-model="indicators[currentIndicator].name" />
+
+                            </div>
+                            <div class="col-sm-1">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+                                    data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
+                            </div>
+                        </div>
+
                         <div class="row" v-show="currentIndicator != undefined">
                             <div class="col-sm-11 col-sm-offset-1">
                                 <ul v-for="value in uniqueValues">
@@ -196,19 +209,8 @@
                                 data-toggle="popover" title="Indicator Queries" data-content="Queries for indicators can be simple or complex, and utilize the combination of fields and values"></span>
                             </div>
                         </div>
-                        <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
-                        <div class="col-sm-11">
-                                <label for="indicatorName">Indicator Name:</label><input id="indicatorName" 
-                                name="indicatorName" v-model="indicators[currentIndicator].name" />
 
-                            </div>
-                            <div class="col-sm-1">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
-                                    data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
-                            </div>
-                        </div>
-
-                                <span class='debug hidden'>{{ indicators[currentIndicator] }}</span>
+                        <span class='debug hidden'>{{ indicators[currentIndicator] }}</span>
 
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                         <div class="col-sm-11">
@@ -232,6 +234,7 @@
                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </div>
                         </div>
+                        <br/>
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                             <div class="col-sm-12">
                                 <button class="btn btn-xs btn" v-on:click="runQuery()" v-bind:disabled='cannotSearch'>Search / Test Query</button>

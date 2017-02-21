@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
@@ -39,7 +40,7 @@ public class Indicator extends AbstractPersistable {
     private FilterQuery query;
 
     @ManyToMany
-    @JoinTable(name = "indicator_topic")
+    @JoinTable(name = "topic_indicator", joinColumns = @JoinColumn(name = "indicator_id"), inverseJoinColumns= @JoinColumn(name="topic_id"))
     private List<Topic> topics = new ArrayList<>();
 
     public String getName() {
