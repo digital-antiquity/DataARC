@@ -81,12 +81,12 @@ var Hack = new Vue({
       cannotSubmit: function() {
           if (this.currentIndicator != undefined) {
               var ind = this.indicators[this.currentIndicator];
-              console.log(ind);
-              if (ind.name != '') {
-                  return false;
+              console.log(ind.name);
+              if (ind.name == '' || ind.name == undefined) {
+                  return true;
               }
               if (this.selectedTopics.length == 0) {
-                  return false;
+                  return true;
               }
               var valid = false;
               this.selectedTopics.forEach(function(tid){
@@ -95,10 +95,10 @@ var Hack = new Vue({
                   } 
               });
               if (valid == false) {
-                  return false;
+                  return true;
               }
           }
-          return true;
+          return false;
       },
       cannotSearch: function() {
           return false;
@@ -212,7 +212,7 @@ var Hack = new Vue({
             if (idents == undefined || idents.length == 0) {
                 idents = [];
                 i.topicIdentifiers = idents;
-                idents.push({});
+                idents.push("");
             } 
             Vue.set(this,"selectedTopics",idents);
         },
