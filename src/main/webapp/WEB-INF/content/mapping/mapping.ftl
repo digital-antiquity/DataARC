@@ -149,7 +149,7 @@
 
                         <div class="row">
                             <div class="col-sm-11">
-                                <label for="datasource" class="control-label">Choose a Data Source:</label> 
+                                <label for="datasource" class="control-label col-sm-3">Choose a Data Source:</label> 
                                 <select v-model="currentSchema" id="datasource" class="form-control" >
                                     <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
                                 </select>
@@ -161,7 +161,7 @@
                         </div>
                         <div class="row" v-show="currentSchema != undefined">
                             <div class="col-sm-11">
-                                    <label for="choose-indicator" class="control-label">Indicator:</label> 
+                                    <label for="choose-indicator" class="control-label col-sm-3">Indicator:</label> 
                                     <select v-model="currentIndicator" id="choose-indicator" class="form-control">
                                         <optgroup label="Existing Indicators" v-if="indicators.length > 0 ">
                                             <option v-for="(option, index) in indicators" v-bind:value="index"> {{ option.name }} </option>
@@ -169,7 +169,7 @@
                                         <option value="new">Create New Indicator</option>
                                     </select>
                                 <span  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator) && currentIndicator > 0">
-                                        <label for="indicatorId" class="control-label">Indicator Id:</label> {{indicators[currentIndicator].id}}
+                                        <label for="indicatorId" class="control-label col-sm-3">Indicator Id:</label> {{indicators[currentIndicator].id}}
                                 </span>
 
                             </div>
@@ -181,7 +181,7 @@
 
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                         <div class="col-sm-11">
-                                <label for="indicatorName" class="control-label">Indicator Name:</label>
+                                <label for="indicatorName" class="control-label col-sm-3">Indicator Name:</label>
                                 <input id="indicatorName" name="indicatorName" v-model="indicators[currentIndicator].name" class="form-control"/>
 
                             </div>
@@ -210,30 +210,41 @@
                             </div>
                         </div>
 
+                        <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                
+                            </div>
+                            <div class="col-sm-1">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+                                data-toggle="popover" title="Indicator Queries" data-content="Queries for indicators can be simple or complex, and utilize the combination of fields and values"></span>
+                            </div>
+                        </div>
+
                         <span class='debug hidden'>{{ indicators[currentIndicator] }}</span>
 
                         <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
-                        <div class="col-sm-11">
-                            <label for="chooseTopic" class="control-label">Assign Topic:</label>
-                            <!-- fixme: was indicators[currentIndicator].topicIdentifers[_idx]  -->
-							<ul class="list-unstyled">
-                            <li v-for="(ident, _idx) in selectedTopics"  >
-                                    <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control">
-                                        <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
-                                    </select>
-                            <span v-show="_idx > 0">
-	                            <button class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>
-                            </span>
-
-                            <span v-show="_idx == selectedTopics.length -1">
-	                            <button class="btn btn-xs btn-default" v-on:click="addTopic()">+</button>
-                            </span>
-
-                            </li>
-                            </ul>
+                            <div class="col-sm-11">
+                                <label for="chooseTopic" class="control-label col-sm-3">Assign Topic:</label>
+                                <br/>
+                                <!-- fixme: was indicators[currentIndicator].topicIdentifers[_idx]  -->
+    							<ul class="list-unstyled">
+                                    <li v-for="(ident, _idx) in selectedTopics"  >
+                                            <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control">
+                                                <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
+                                            </select>
+                                    <span v-show="_idx > 0">
+        	                            <button class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>
+                                    </span>
+        
+                                    <span v-show="_idx == selectedTopics.length -1">
+        	                            <button class="btn btn-xs btn-default" v-on:click="addTopic()">+</button>
+                                    </span>
+        
+                                    </li>
+                                </ul>
                             </div>
                             <div class="col-sm-1">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </div>
                         </div>
                         <br/>

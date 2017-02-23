@@ -195,6 +195,8 @@ var Hack = new Vue({
             .catch(function (err) {
               console.err(err);
             });
+            Vue.set(this,"selectedTopics",[]);
+
         },
         fetchTopics: function() {
             this.$http.get(getContextPath() +"/api/topicmap/indicators")
