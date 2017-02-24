@@ -1,6 +1,7 @@
 package org.dataarc.service;
 
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.xml.bind.JAXBException;
 
@@ -42,6 +43,31 @@ public class TopicMapServiceTest extends AbstractServiceTest {
     @Rollback(true)
     public void testDeserializeBidirectionalTopicMap() throws JAXBException, SAXException {
         TopicMap map = topicMapService.load("src/main/data/landscape_wandora.xtm");
+        map.getTopics().forEach(topic -> {
+            assertNotNull(topic);
+            assertNotNull(topic.getName());
+            assertNotNull(topic.getIdentifier());
+        });
+        map.getAssociations().forEach(assoc -> {
+            assertNotNull(assoc);
+            assertNotNull(assoc.getFrom());
+            assertNotNull(assoc.getTo());
+//            assertNotNull(assoc.getIdentifier());
+            assertNotNull(assoc.getType());
+            
+        });
+    }
+
+    @Test
+    @Rollback(true)
+    public void testExternalTopicMap() throws JAXBException, SAXException {
+        TopicMap map = topicMapService.load("src/test/data/external.xtm");
+        map.getTopics().forEach(topic -> {
+            assertNotNull(topic);
+            assertNotNull(topic.getName());
+            assertNotNull(topic.getIdentifier());
+            
+        });
     }
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import org.dataarc.bean.AbstractPersistable;
 
@@ -23,6 +24,7 @@ public class Topic extends AbstractPersistable {
     private String name;
 
     @Column(length = 255)
+    @NotNull
     private String identifier;
 
     @ElementCollection()

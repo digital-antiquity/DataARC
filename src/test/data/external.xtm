@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topicMap xmlns="http://www.topicmaps.org/xtm/" version="2.0">
+    <topic id="topic133565.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/core/wandora-class"/>
+        <name>
+            <value>landscape concept</value>
+        </name>
+    </topic>
+    <topic id="topic133713.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487188685328-1"/>
+        <instanceOf>
+            <topicRef href="#topic133565.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>Ideas</value>
+        </name>
+    </topic>
+
+    <topic id="topic133715.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487188713560-3"/>
+        <instanceOf>
+            <topicRef href="#topic133714.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>Ecclesiastical Power</value>
+        </name>
+    </topic>
+    <topic id="topic133714.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487188699981-2"/>
+        <instanceOf>
+            <topicRef href="#topic133713.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>Power</value>
+        </name>
+    </topic>
+    <topic id="topic133716.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E28_Conceptual_Object"/>
+    </topic>
+    
+</topicMap>
+    

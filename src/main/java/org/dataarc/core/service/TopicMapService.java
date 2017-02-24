@@ -30,6 +30,7 @@ import com.google.common.base.Objects;
 import topicmap.v2_0.Name;
 import topicmap.v2_0.Occurrence;
 import topicmap.v2_0.Role;
+import topicmap.v2_0.SubjectIdentifier;
 
 @Service
 public class TopicMapService {
@@ -120,28 +121,28 @@ public class TopicMapService {
                         toHref = to.getTopicRef().getHref();
                         toTypeHref = to.getType().getTopicRef().getHref();
 
-                        logger.trace("fromTopicHref: {}", internalMap.get(fromHref));
-                        logger.trace("fromTypeTopicHref: {}", internalMap.get(fromTypeHref));
-                        logger.trace("toTopicHref: {}", internalMap.get(toHref));
-                        logger.trace("toTypeTopicHref: {}", internalMap.get(toTypeHref));
-                        logger.trace("aTypeTopicHref: {}", internalMap.get(associTypeHref));
+                        logger.trace("fromTopicHref: {}", get(internalMap,fromHref));
+                        logger.trace("fromTypeTopicHref: {}", get(internalMap,fromTypeHref));
+                        logger.trace("toTopicHref: {}", get(internalMap,toHref));
+                        logger.trace("toTypeTopicHref: {}", get(internalMap,toTypeHref));
+                        logger.trace("aTypeTopicHref: {}", get(internalMap,associTypeHref));
 
-                        associationTo.setFrom(internalMap.get(toHref));
-                        associationTo.setTo(internalMap.get(fromHref));
+                        associationTo.setFrom(get(internalMap,toHref));
+                        associationTo.setTo(get(internalMap,fromHref));
                         if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {
                             logger.warn("\t\tfrom == to");
-                            associationTo.setTo(internalMap.get(associTypeHref));
+                            associationTo.setTo(get(internalMap,associTypeHref));
                         }
-                        associationTo.setType(internalMap.get(toTypeHref));
-                        associationFrom.setTo(internalMap.get(toHref));
+                        associationTo.setType(get(internalMap,toTypeHref));
+                        associationFrom.setTo(get(internalMap,toHref));
                     } else {
-                        associationFrom.setTo(internalMap.get(associationType));
+                        associationFrom.setTo(get(internalMap,associationType));
                     }
 
-                    associationFrom.setFrom(internalMap.get(fromHref));
-                    associationFrom.setType(internalMap.get(fromTypeHref));
+                    associationFrom.setFrom(get(internalMap,fromHref));
+                    associationFrom.setType(get(internalMap,fromTypeHref));
                     if (Objects.equal(associationFrom.getTo(), associationFrom.getFrom())) {
-                        associationFrom.setFrom(internalMap.get(associTypeHref));
+                        associationFrom.setFrom(get(internalMap,associTypeHref));
                     }
 
                     assoicationDao.save(associationFrom);
@@ -163,15 +164,15 @@ public class TopicMapService {
                 Topic topic = new Topic();
                 topicmap.v2_0.Topic topic_ = (topicmap.v2_0.Topic) item;
                 logger.trace(" T:{}", topic_.getId());
+                topic.setIdentifier(topic_.getId());
                 topic_.getNameOrOccurrence().forEach(noc -> {
-                    topic.setIdentifier(topic_.getId());
                     // topic_.setParent(topic.getInstanceOf().);
                     if (topic_.getInstanceOf() != null) {
                         if (topic_.getInstanceOf().getTopicRef().size() > 1) {
                             throw new NotImplementedException();
                         }
                         topic_.getInstanceOf().getTopicRef().forEach(ref -> {
-                            topic.setParent(internalMap.get(ref.getHref()));
+                            topic.setParent(get(internalMap,ref.getHref()));
                         });
                     }
                     if (noc instanceof Name) {
@@ -192,12 +193,28 @@ public class TopicMapService {
                         Occurrence occurrence = (Occurrence) noc;
                         logger.debug("\toccur: {} {} {}", occurrence.getItemIdentity(), occurrence.getResourceData(), occurrence.getResourceRef());
                     }
-                    topicDao.save(topic);
-                    internalMap.put("#" + topic_.getId(), topic);
                 });
+                if (StringUtils.isBlank(topic.getName())) {
+                    topic_.getItemIdentityOrSubjectLocatorOrSubjectIdentifier().forEach(itm -> {
+                        if (itm instanceof SubjectIdentifier) {
+                            topic.setName(((SubjectIdentifier) itm).getHref());
+                            
+                        }
+                    });
+                }
+                topicDao.save(topic);
+                internalMap.put("#" + topic_.getId(), topic);
                 logger.debug("{} - {}", topic, topic.getIdentifier());
                 topics.add(topic);
             }});
+    }
+
+    private Topic get(Map<String, Topic> internalMap, String href) {
+        Topic t = internalMap.get(href);
+        if (t == null) {
+            logger.error("Topic is null for: {}", href);
+        }
+        return t;
     }
 
     @Transactional(readOnly = true)

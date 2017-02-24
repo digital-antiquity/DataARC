@@ -1,1805 +1,3308 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <topicMap xmlns="http://www.topicmaps.org/xtm/" version="2.0">
-	<topic id="L203297538---topic134464.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/core/wandora-class"/>
-		<name>
-			<value>landscape concept</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134465.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334603649-0"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134464.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>physical landscape</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134466.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334612706-1"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134464.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>imaginary landscape</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134467.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334623756-2"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134464.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>community places</value>
-			<variant>
-				<scope>
-					<topicRef href="#L203297538---topic134467.1487381093608"/>
-				</scope>
-				<resourceData>administrative unit</resourceData>
-			</variant>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134468.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334686472-3"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134466.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>haunted place</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134469.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334702322-4"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134466.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>cursed spot</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134470.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334739388-5"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134464.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>actors</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134471.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334746766-6"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>humans</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134472.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334752797-7"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>trolls</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134473.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334760292-8"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>monsters</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134474.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334767227-9"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>elves</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134475.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334774418-10"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>sheep</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134476.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677043549-52"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>animal</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134477.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334781196-11"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>fish</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134478.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334787386-12"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>walrus</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134479.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334920563-14"/>
-		<name>
-			<value>is a</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134480.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334927059-15"/>
-		<name>
-			<value>creates / created by</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134481.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334935011-16"/>
-		<name>
-			<value>occupies</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134482.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334944298-17"/>
-		<name>
-			<value>alters</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134483.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484334952251-18"/>
-		<name>
-			<value>destroys</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134484.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662161085-0"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134467.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>Iceland</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134485.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662172072-1"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134467.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>Greenland</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134486.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662181724-2"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134467.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>Orkney</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134487.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662422299-3"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134467.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>administrative unit</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134488.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662616537-4"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134467.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>shared spaces</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134489.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662629922-5"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134488.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>cemetery</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134490.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662675641-6"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134465.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>built environment</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134491.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662717578-7"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134465.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>managed landscape area</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134492.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662737113-8"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134465.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>unmanaged landscape area</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134493.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662765479-9"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134490.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>grave</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134494.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662850201-10"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>things</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134495.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662868400-11"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>grave goods</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134496.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484662879513-12"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>skeleton</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134497.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484663459134-13"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>ghost</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134498.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484663588262-14"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134488.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>port</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134499.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484663625945-15"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134488.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>commons</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134500.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484663659271-16"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>boat</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134501.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484663718798-17"/>
-		<name>
-			<value>contains</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134502.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484664936277-18"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134491.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>agricultural landscape</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134503.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484664985445-19"/>
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666613295-44"/>
-		<subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000266"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134502.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>pasture</value>
-			<variant>
-				<scope>
-					<topicRef href="#L203297538---topic134484.1487381093608"/>
-				</scope>
-				<resourceData>outfield area</resourceData>
-			</variant>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134504.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484664994917-20"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134502.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>infield area</value>
-			<variant>
-				<scope>
-					<topicRef href="#L203297538---topic134484.1487381093608"/>
-				</scope>
-				<resourceData>Tun</resourceData>
-			</variant>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134505.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665003535-21"/>
-		<name>
-			<value>implies</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134506.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665093089-22"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134502.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>garden plot</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134507.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665215340-23"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134490.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>field boundary</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134508.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665233057-24"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134507.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>stone row</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134509.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665242189-25"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134507.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>wood fence</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134510.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665252302-26"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134507.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>linear ditch</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134511.1487381093608">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665263584-27"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134507.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>linear ditch and bank</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134512.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665273909-28"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134507.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>hedge</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134513.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665810611-29"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>coastal ocean</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134514.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484665823714-30"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>deep ocean</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134515.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666049190-31"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134490.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>building</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134516.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666062769-32"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134515.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>agricultural building</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134517.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666072890-33"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>shed</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134518.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666089314-34"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>kennel</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134519.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666095922-35"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>coop</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134520.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666103337-36"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>trap</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134521.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666111129-37"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>barn</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134522.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666148164-38"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>shelter</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134523.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666191889-39"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>stable</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134524.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666205514-40"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>milking pen</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134525.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666220672-41"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>byre</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134526.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666247465-42"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>hay rick</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134527.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484666256714-43"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>outhouse</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134528.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484667380694-45"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>unmanaged forest</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134529.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484667407963-46"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>unmanaged grassland</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134530.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484676998702-47"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>horse</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134531.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677003949-48"/>
-		<subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9913"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>cow</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134532.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677008500-49"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>dog</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134533.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677013716-50"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>chicken</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134534.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677018291-51"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>goose</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134535.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677247622-53"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>meadowland</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134536.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677253113-54"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>wetland</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134537.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677281463-55"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>beach</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134538.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677308664-56"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134528.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>deciduous unmanaged forest</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134539.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677319721-57"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134528.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>coniferous unmanaged forest</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134540.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677335246-58"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>moorland</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134541.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677341999-59"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>heathland</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134542.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677422110-60"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134466.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>mythical place</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134543.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677465916-61"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134467.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>named place</value>
-			<variant>
-				<scope>
-					<topicRef href="#L203297538---topic134467.1487381093608"/>
-				</scope>
-				<resourceData>toponym</resourceData>
-			</variant>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134544.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677491795-62"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134543.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>named inhabited place</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134545.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677503875-63"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134543.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>named uninhabited place</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134546.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677566588-64"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>insects</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134547.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677592399-65"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134546.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>beetles</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134548.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677672058-66"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>knife</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134549.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677679517-67"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>ceramic vessel</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134550.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677692680-68"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>metal vessel</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134551.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677728792-69"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>rabbit</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134552.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677733145-70"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>seal</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134553.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677739353-71"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>whale</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134554.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677794138-72"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>caribou</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134555.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677871155-73"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>nail</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134556.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677875605-74"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>spear</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134557.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677881119-75"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>whetstone</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134558.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484677982278-76"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>bone</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134559.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678013942-77"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134487.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>territory</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134560.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678019634-78"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134487.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>town</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134561.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678061343-79"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>jewelry</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134562.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678121228-80"/>
-		<name>
-			<value>increases</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134563.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678127850-81"/>
-		<name>
-			<value>decreases</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134564.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678180279-83"/>
-		<name>
-			<value>many</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134565.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678186126-84"/>
-		<name>
-			<value>few</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134566.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678191677-85"/>
-		<name>
-			<value>none</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134567.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678229431-86"/>
-		<name>
-			<value>came before</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134568.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678237184-87"/>
-		<name>
-			<value>came after</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134569.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678248461-88"/>
-		<name>
-			<value>caused</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134570.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678339205-89"/>
-		<name>
-			<value>intended for</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134571.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678365690-90"/>
-		<name>
-			<value>located at</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134572.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678440290-91"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>grain store</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134573.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678490468-93"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134546.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>ectoparasite</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134574.1487381093609">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678523798-94"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>dung</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134575.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678531421-95"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>carrion</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134576.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678569559-96"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>moving water</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134577.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678580390-97"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134576.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>river</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134578.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678586527-98"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134576.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>stream</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134579.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678609757-99"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134492.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>still water</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134580.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484680378137-100"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>hutch</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134581.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484680658954-101"/>
-		<name>
-			<value>sample</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134582.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484680695064-102"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134491.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>managed forest</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134583.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484680848595-103"/>
-		<name>
-			<value>uncertain</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134584.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484680880725-104"/>
-		<name>
-			<value>quantifies</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134585.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484681226148-105"/>
-		<name>
-			<value>NISP</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134586.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484681266376-106"/>
-		<name>
-			<value>proportion</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134587.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485873787702-0"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134487.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>farm</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134588.1487381093610">
-		<subjectIdentifier href="http://www.topicmaps.org/xtm/1.0/core.xtm#superclass-subclass"/>
-		<name>
-			<value>core.xtm#superclass-subclass</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134589.1487381093610">
-		<subjectIdentifier href="http://www.topicmaps.org/xtm/1.0/core.xtm#superclass"/>
-		<name>
-			<value>core.xtm#superclass</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134590.1487381093610">
-		<subjectIdentifier href="http://www.topicmaps.org/xtm/1.0/core.xtm#subclass"/>
-		<name>
-			<value>core.xtm#subclass</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134591.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485874111134-1"/>
-		<name>
-			<value>describes</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134592.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485874646404-2"/>
-		<name>
-			<value>value</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134593.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485874702995-3"/>
-		<name>
-			<value>owns</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134594.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875016944-4"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134488.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>church</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134595.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875097752-5"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134476.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>livestock</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134596.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485876095755-19"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>institution</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134597.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485876036751-18"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>group</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134598.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875350429-6"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134470.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>plants</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134599.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875500872-11"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134587.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>independent farm</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134600.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875488077-10"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134587.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>tenant farm</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134601.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875801133-15"/>
-		<name>
-			<value>has obligation</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134602.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875777125-13"/>
-		<name>
-			<value>has rights to</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134603.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485875790367-14"/>
-		<name>
-			<value>has status</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134604.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485878078722-20"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>money</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134605.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485878166142-21"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134601.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>social obligation</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134606.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1485878213290-22"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134601.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>material obligation</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134608.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487187761490-0"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134587.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>church farm</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134609.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/core/role-class"/>
-		<name>
-			<value>role-class</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134610.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/rdfs/role/class"/>
-		<name>
-			<value>class</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134611.1487381093610">
-		<subjectIdentifier href="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
-		<name>
-			<value>rdf-schema#subClassOf</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134612.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E53_Place"/>
-		<name>
-			<value>E53_Place</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134613.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P89_falls_within"/>
-		<name>
-			<value>P89_falls_within</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134614.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P89i_contains"/>
-		<name>
-			<value>P89i_contains</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134615.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487188685328-1"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134464.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>Ideas</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134616.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487188699981-2"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134615.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>Power</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134617.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487188713560-3"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134616.1487381093610"/>
-		</instanceOf>
-		<name>
-			<value>Ecclesiastical Power</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134618.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E28_Conceptual_Object"/>
-		<name>
-			<value>E28_Conceptual_Object</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134619.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P94_has_created"/>
-		<name>
-			<value>P94_has_created</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134620.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P94i_was_created_by"/>
-		<name>
-			<value>P94i_was_created_by</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134621.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P168i_defines_place"/>
-		<name>
-			<value>P168i_defines_place</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134622.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P168_place_is_defined_by"/>
-		<name>
-			<value>P168_place_is_defined_by</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134623.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1484678462022-92"/>
-		<subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_7071"/>
-		<subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_7046"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134546.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>grain storage pest</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134624.1487381093610">
-		<subjectIdentifier href="http://linked.earth/ontology#ProxyObservation"/>
-		<name>
-			<value>ontology#ProxyObservation</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134625.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P131_is_identified_by"/>
-		<name>
-			<value>P131_is_identified_by</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134626.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487192789727-4"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134531.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>cattle bone</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134627.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487192800405-5"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134531.1487381093609"/>
-		</instanceOf>
-		<name>
-			<value>cattle skin</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134628.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E20_Biological_Object"/>
-		<name>
-			<value>E20_Biological_Object</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134629.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P1i_identifies"/>
-		<name>
-			<value>P1i_identifies</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134630.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by"/>
-		<name>
-			<value>P1_is_identified_by</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134631.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487193447901-6"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>driftwood</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134632.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E72_Legal_Object"/>
-		<name>
-			<value>E72_Legal_Object</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134633.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by"/>
-		<name>
-			<value>P105_right_held_by</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134634.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P105i_has_right_on"/>
-		<name>
-			<value>P105i_has_right_on</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134635.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E7_Activity"/>
-		<name>
-			<value>E7_Activity</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134636.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P125i_was_type_of_object_used_in"/>
-		<name>
-			<value>P125i_was_type_of_object_used_in</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134637.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P125_used_object_of_type"/>
-		<name>
-			<value>P125_used_object_of_type</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134638.1487381093610">
-		<subjectIdentifier href="http://wandora.org/si/temp/1487193860546-7"/>
-		<instanceOf>
-			<topicRef href="#L203297538---topic134494.1487381093608"/>
-		</instanceOf>
-		<name>
-			<value>wall</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134639.1487381093610">
-		<subjectIdentifier href="http://www.ics.forth.gr/isl/CRMba/B1_Built_Work"/>
-		<name>
-			<value>B1_Built_Work</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134640.1487381093610">
-		<subjectIdentifier href="http://www.ics.forth.gr/isl/CRMba/BP1_is_section_of"/>
-		<name>
-			<value>BP1_is_section_of</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134641.1487381093610">
-		<subjectIdentifier href="http://www.ics.forth.gr/isl/CRMba/BP1i_has_section"/>
-		<name>
-			<value>BP1i_has_section</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134642.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P86_falls_within"/>
-		<name>
-			<value>P86_falls_within</value>
-		</name>
-	</topic>
-	<topic id="L203297538---topic134643.1487381093610">
-		<subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P86i_contains"/>
-		<name>
-			<value>P86i_contains</value>
-		</name>
-	</topic>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134588.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134589.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134467.1487381093608"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134590.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134587.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134466.1487381093608"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134480.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134472.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134469.1487381093608"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134481.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134473.1487381093608"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134480.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134473.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134466.1487381093608"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134481.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134474.1487381093608"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134480.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134474.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134487.1487381093608"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134479.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134485.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134612.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134614.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134608.1487381093610"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134613.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134489.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134489.1487381093608"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134481.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134493.1487381093608"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134480.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134493.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134493.1487381093608"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134481.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134496.1487381093608"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134480.1487381093608"/>
-			</type>
-			<topicRef href="#L203297538---topic134496.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134612.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134642.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134503.1487381093608"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134643.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134587.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134612.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134614.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134587.1487381093610"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134613.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134504.1487381093608"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134612.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134622.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134504.1487381093608"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134624.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134598.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134612.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134622.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134599.1487381093610"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134621.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134516.1487381093609"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134612.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134622.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134525.1487381093609"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134621.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134531.1487381093609"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134628.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134630.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134531.1487381093609"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134629.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134626.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134612.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134625.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134572.1487381093609"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134624.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134623.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134639.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134641.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134572.1487381093609"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134640.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134638.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134609.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134610.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134594.1487381093610"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134611.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134608.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134618.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134619.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134608.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134618.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134619.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134608.1487381093610"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134620.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134617.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134635.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134636.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134631.1487381093610"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134637.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134608.1487381093610"/>
-		</role>
-	</association>
-	<association>
-		<type>
-			<topicRef href="#L203297538---topic134632.1487381093610"/>
-		</type>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134633.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134631.1487381093610"/>
-		</role>
-		<role>
-			<type>
-				<topicRef href="#L203297538---topic134634.1487381093610"/>
-			</type>
-			<topicRef href="#L203297538---topic134617.1487381093610"/>
-		</role>
-	</association>
+    <topic id="topic133565.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/core/wandora-class"/>
+        <name>
+            <value>landscape concept</value>
+        </name>
+    </topic>
+    <topic id="topic133566.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334603649-0"/>
+        <instanceOf>
+            <topicRef href="#topic133565.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>physical landscape</value>
+        </name>
+    </topic>
+    <topic id="topic133567.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334612706-1"/>
+        <instanceOf>
+            <topicRef href="#topic133565.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>imaginary landscape</value>
+        </name>
+    </topic>
+    <topic id="topic133568.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334623756-2"/>
+        <instanceOf>
+            <topicRef href="#topic133565.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>community places</value>
+            <variant>
+                <scope>
+                    <topicRef href="#topic133568.1487867787130"/>
+                </scope>
+                <resourceData>administrative unit</resourceData>
+            </variant>
+        </name>
+    </topic>
+    <topic id="topic133569.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334686472-3"/>
+        <instanceOf>
+            <topicRef href="#topic133567.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>haunted place</value>
+        </name>
+    </topic>
+    <topic id="topic133570.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334702322-4"/>
+        <instanceOf>
+            <topicRef href="#topic133567.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>cursed spot</value>
+        </name>
+    </topic>
+    <topic id="topic133571.1487867787130">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334739388-5"/>
+        <instanceOf>
+            <topicRef href="#topic133565.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>actors</value>
+        </name>
+    </topic>
+    <topic id="topic133572.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334746766-6"/>
+        <instanceOf>
+            <topicRef href="#topic133571.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>humans</value>
+        </name>
+    </topic>
+    <topic id="topic133573.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334760292-8"/>
+        <instanceOf>
+            <topicRef href="#topic133574.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>monsters</value>
+        </name>
+    </topic>
+    <topic id="topic133574.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487799214526-3"/>
+        <instanceOf>
+            <topicRef href="#topic133571.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>supernatural actors</value>
+        </name>
+    </topic>
+    <topic id="topic133575.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334774418-10"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9940"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>sheep</value>
+        </name>
+    </topic>
+    <topic id="topic133576.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677043549-52"/>
+        <instanceOf>
+            <topicRef href="#topic133571.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>animal</value>
+        </name>
+    </topic>
+    <topic id="topic133577.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334781196-11"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_7898"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>fish</value>
+        </name>
+    </topic>
+    <topic id="topic133578.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334787386-12"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9707"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>walrus</value>
+        </name>
+    </topic>
+    <topic id="topic133579.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334920563-14"/>
+        <name>
+            <value>is a</value>
+        </name>
+    </topic>
+    <topic id="topic133580.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334927059-15"/>
+        <name>
+            <value>creates / created by</value>
+        </name>
+    </topic>
+    <topic id="topic133581.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334935011-16"/>
+        <name>
+            <value>occupies</value>
+        </name>
+    </topic>
+    <topic id="topic133582.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334944298-17"/>
+        <name>
+            <value>alters</value>
+        </name>
+    </topic>
+    <topic id="topic133583.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484334952251-18"/>
+        <name>
+            <value>destroys</value>
+        </name>
+    </topic>
+    <topic id="topic133584.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662161085-0"/>
+        <instanceOf>
+            <topicRef href="#topic133568.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>Iceland</value>
+        </name>
+    </topic>
+    <topic id="topic133585.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662172072-1"/>
+        <instanceOf>
+            <topicRef href="#topic133568.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>Greenland</value>
+        </name>
+    </topic>
+    <topic id="topic133586.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662181724-2"/>
+        <instanceOf>
+            <topicRef href="#topic133568.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>Orkney</value>
+        </name>
+    </topic>
+    <topic id="topic133587.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662422299-3"/>
+        <instanceOf>
+            <topicRef href="#topic133568.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>administrative unit</value>
+        </name>
+    </topic>
+    <topic id="topic133588.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662616537-4"/>
+        <instanceOf>
+            <topicRef href="#topic133568.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>shared spaces</value>
+        </name>
+    </topic>
+    <topic id="topic133589.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662629922-5"/>
+        <instanceOf>
+            <topicRef href="#topic133588.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>cemetery</value>
+        </name>
+    </topic>
+    <topic id="topic133590.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662675641-6"/>
+        <instanceOf>
+            <topicRef href="#topic133566.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>built environment</value>
+        </name>
+    </topic>
+    <topic id="topic133591.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662717578-7"/>
+        <instanceOf>
+            <topicRef href="#topic133566.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>managed landscape area</value>
+        </name>
+    </topic>
+    <topic id="topic133592.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662737113-8"/>
+        <instanceOf>
+            <topicRef href="#topic133566.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>unmanaged landscape area</value>
+        </name>
+    </topic>
+    <topic id="topic133593.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662765479-9"/>
+        <instanceOf>
+            <topicRef href="#topic133590.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>grave</value>
+        </name>
+    </topic>
+    <topic id="topic133594.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662850201-10"/>
+        <instanceOf>
+            <topicRef href="#topic133571.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>things</value>
+        </name>
+    </topic>
+    <topic id="topic133595.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662868400-11"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>grave goods</value>
+        </name>
+    </topic>
+    <topic id="topic133596.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484662879513-12"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>skeleton</value>
+        </name>
+    </topic>
+    <topic id="topic133597.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484663459134-13"/>
+        <instanceOf>
+            <topicRef href="#topic133574.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>ghost</value>
+        </name>
+    </topic>
+    <topic id="topic133598.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484663588262-14"/>
+        <instanceOf>
+            <topicRef href="#topic133588.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>port</value>
+        </name>
+    </topic>
+    <topic id="topic133599.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484663625945-15"/>
+        <instanceOf>
+            <topicRef href="#topic133588.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>commons</value>
+        </name>
+    </topic>
+    <topic id="topic133600.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484663659271-16"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>boat</value>
+        </name>
+    </topic>
+    <topic id="topic133601.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484663718798-17"/>
+        <name>
+            <value>contains</value>
+        </name>
+    </topic>
+    <topic id="topic133602.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484664936277-18"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000077"/>
+        <instanceOf>
+            <topicRef href="#topic133591.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>agricultural landscape</value>
+        </name>
+    </topic>
+    <topic id="topic133603.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484664985445-19"/>
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666613295-44"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000266"/>
+        <instanceOf>
+            <topicRef href="#topic133602.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>pasture</value>
+            <variant>
+                <scope>
+                    <topicRef href="#topic133584.1487867787131"/>
+                </scope>
+                <resourceData>outfield area</resourceData>
+            </variant>
+        </name>
+    </topic>
+    <topic id="topic133604.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484664994917-20"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000114"/>
+        <instanceOf>
+            <topicRef href="#topic133602.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>infield area</value>
+            <variant>
+                <scope>
+                    <topicRef href="#topic133584.1487867787131"/>
+                </scope>
+                <resourceData>Tun</resourceData>
+            </variant>
+        </name>
+    </topic>
+    <topic id="topic133605.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665003535-21"/>
+        <name>
+            <value>implies</value>
+        </name>
+    </topic>
+    <topic id="topic133606.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665093089-22"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_01000419"/>
+        <instanceOf>
+            <topicRef href="#topic133602.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>garden plot</value>
+        </name>
+    </topic>
+    <topic id="topic133607.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665215340-23"/>
+        <instanceOf>
+            <topicRef href="#topic133590.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>field boundary</value>
+        </name>
+    </topic>
+    <topic id="topic133608.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665233057-24"/>
+        <instanceOf>
+            <topicRef href="#topic133607.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>stone row</value>
+        </name>
+    </topic>
+    <topic id="topic133609.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665242189-25"/>
+        <instanceOf>
+            <topicRef href="#topic133607.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>wood fence</value>
+        </name>
+    </topic>
+    <topic id="topic133610.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665252302-26"/>
+        <instanceOf>
+            <topicRef href="#topic133607.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>linear ditch</value>
+        </name>
+    </topic>
+    <topic id="topic133611.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665263584-27"/>
+        <instanceOf>
+            <topicRef href="#topic133607.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>linear ditch and bank</value>
+        </name>
+    </topic>
+    <topic id="topic133612.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665273909-28"/>
+        <instanceOf>
+            <topicRef href="#topic133607.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>hedge</value>
+        </name>
+    </topic>
+    <topic id="topic133613.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665810611-29"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00002150"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>coastal ocean</value>
+        </name>
+    </topic>
+    <topic id="topic133614.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484665823714-30"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000015"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>deep ocean</value>
+        </name>
+    </topic>
+    <topic id="topic133615.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666062769-32"/>
+        <instanceOf>
+            <topicRef href="#topic133616.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>agricultural building</value>
+        </name>
+    </topic>
+    <topic id="topic133616.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666049190-31"/>
+        <instanceOf>
+            <topicRef href="#topic133590.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>building</value>
+        </name>
+    </topic>
+    <topic id="topic133617.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666072890-33"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>shed</value>
+        </name>
+    </topic>
+    <topic id="topic133618.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666089314-34"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>kennel</value>
+        </name>
+    </topic>
+    <topic id="topic133619.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666095922-35"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>coop</value>
+        </name>
+    </topic>
+    <topic id="topic133620.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666103337-36"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>trap</value>
+        </name>
+    </topic>
+    <topic id="topic133621.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666111129-37"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>barn</value>
+        </name>
+    </topic>
+    <topic id="topic133622.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666148164-38"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>shelter</value>
+        </name>
+    </topic>
+    <topic id="topic133623.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666191889-39"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>stable</value>
+        </name>
+    </topic>
+    <topic id="topic133624.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666205514-40"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>milking pen</value>
+        </name>
+    </topic>
+    <topic id="topic133625.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666220672-41"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>byre</value>
+        </name>
+    </topic>
+    <topic id="topic133626.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666247465-42"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>hay rick</value>
+        </name>
+    </topic>
+    <topic id="topic133627.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484666256714-43"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>outhouse</value>
+        </name>
+    </topic>
+    <topic id="topic133628.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484667380694-45"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>unmanaged forest</value>
+        </name>
+    </topic>
+    <topic id="topic133629.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484667407963-46"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000106"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>unmanaged grassland</value>
+        </name>
+    </topic>
+    <topic id="topic133630.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484676998702-47"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9796"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>horse</value>
+        </name>
+    </topic>
+    <topic id="topic133631.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677003949-48"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9913"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>cow</value>
+        </name>
+    </topic>
+    <topic id="topic133632.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677008500-49"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9615"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>dog</value>
+        </name>
+    </topic>
+    <topic id="topic133633.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677013716-50"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9031"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>chicken</value>
+        </name>
+    </topic>
+    <topic id="topic133634.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677018291-51"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_8847"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>goose</value>
+        </name>
+    </topic>
+    <topic id="topic133635.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677247622-53"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000108"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>meadowland</value>
+        </name>
+    </topic>
+    <topic id="topic133636.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677253113-54"/>
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677335246-58"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000043"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>moorland</value>
+        </name>
+    </topic>
+    <topic id="topic133637.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677281463-55"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000091"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>beach</value>
+        </name>
+    </topic>
+    <topic id="topic133638.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677308664-56"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_01000197"/>
+        <instanceOf>
+            <topicRef href="#topic133628.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>deciduous unmanaged forest</value>
+        </name>
+    </topic>
+    <topic id="topic133639.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677319721-57"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_01000196"/>
+        <instanceOf>
+            <topicRef href="#topic133628.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>coniferous unmanaged forest</value>
+        </name>
+    </topic>
+    <topic id="topic133640.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677341999-59"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000107"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>heathland</value>
+        </name>
+    </topic>
+    <topic id="topic133641.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677422110-60"/>
+        <instanceOf>
+            <topicRef href="#topic133567.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>mythical place</value>
+        </name>
+    </topic>
+    <topic id="topic133642.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677465916-61"/>
+        <instanceOf>
+            <topicRef href="#topic133568.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>named place</value>
+            <variant>
+                <scope>
+                    <topicRef href="#topic133568.1487867787130"/>
+                </scope>
+                <resourceData>toponym</resourceData>
+            </variant>
+        </name>
+    </topic>
+    <topic id="topic133643.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677491795-62"/>
+        <instanceOf>
+            <topicRef href="#topic133642.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>named inhabited place</value>
+        </name>
+    </topic>
+    <topic id="topic133644.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677503875-63"/>
+        <instanceOf>
+            <topicRef href="#topic133642.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>named uninhabited place</value>
+        </name>
+    </topic>
+    <topic id="topic133645.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677566588-64"/>
+        <instanceOf>
+            <topicRef href="#topic133571.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>insects</value>
+        </name>
+    </topic>
+    <topic id="topic133646.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677592399-65"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>beetles</value>
+        </name>
+    </topic>
+    <topic id="topic133647.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677672058-66"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>knife</value>
+        </name>
+    </topic>
+    <topic id="topic133648.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677679517-67"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>ceramic vessel</value>
+        </name>
+    </topic>
+    <topic id="topic133649.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677692680-68"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>metal vessel</value>
+        </name>
+    </topic>
+    <topic id="topic133650.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677728792-69"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9986"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>rabbit</value>
+        </name>
+    </topic>
+    <topic id="topic133651.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677733145-70"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9709"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>seal</value>
+        </name>
+    </topic>
+    <topic id="topic133652.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677739353-71"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>whale</value>
+        </name>
+    </topic>
+    <topic id="topic133653.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677794138-72"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>caribou</value>
+        </name>
+    </topic>
+    <topic id="topic133654.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677871155-73"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>nail</value>
+        </name>
+    </topic>
+    <topic id="topic133655.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677875605-74"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>spear</value>
+        </name>
+    </topic>
+    <topic id="topic133656.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677881119-75"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>whetstone</value>
+        </name>
+    </topic>
+    <topic id="topic133657.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677982278-76"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>bone</value>
+        </name>
+    </topic>
+    <topic id="topic133658.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678013942-77"/>
+        <instanceOf>
+            <topicRef href="#topic133587.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>territory</value>
+        </name>
+    </topic>
+    <topic id="topic133659.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678019634-78"/>
+        <instanceOf>
+            <topicRef href="#topic133587.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>town</value>
+        </name>
+    </topic>
+    <topic id="topic133660.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678061343-79"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>jewelry</value>
+        </name>
+    </topic>
+    <topic id="topic133661.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678121228-80"/>
+        <name>
+            <value>increases</value>
+        </name>
+    </topic>
+    <topic id="topic133662.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678127850-81"/>
+        <name>
+            <value>decreases</value>
+        </name>
+    </topic>
+    <topic id="topic133663.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678180279-83"/>
+        <name>
+            <value>many</value>
+        </name>
+    </topic>
+    <topic id="topic133664.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678186126-84"/>
+        <name>
+            <value>few</value>
+        </name>
+    </topic>
+    <topic id="topic133665.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678191677-85"/>
+        <name>
+            <value>none</value>
+        </name>
+    </topic>
+    <topic id="topic133666.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678229431-86"/>
+        <name>
+            <value>came before</value>
+        </name>
+    </topic>
+    <topic id="topic133667.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678237184-87"/>
+        <name>
+            <value>came after</value>
+        </name>
+    </topic>
+    <topic id="topic133668.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678248461-88"/>
+        <name>
+            <value>caused</value>
+        </name>
+    </topic>
+    <topic id="topic133669.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678339205-89"/>
+        <name>
+            <value>intended for</value>
+        </name>
+    </topic>
+    <topic id="topic133670.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678365690-90"/>
+        <name>
+            <value>located at</value>
+        </name>
+    </topic>
+    <topic id="topic133671.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678440290-91"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>grain store</value>
+        </name>
+    </topic>
+    <topic id="topic133672.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678490468-93"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>ectoparasite</value>
+        </name>
+    </topic>
+    <topic id="topic133673.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678523798-94"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>dung</value>
+        </name>
+    </topic>
+    <topic id="topic133674.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678531421-95"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>carrion</value>
+        </name>
+    </topic>
+    <topic id="topic133675.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678569559-96"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000029"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>moving water</value>
+        </name>
+    </topic>
+    <topic id="topic133676.1487867787131">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678580390-97"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000022"/>
+        <instanceOf>
+            <topicRef href="#topic133675.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>river</value>
+        </name>
+    </topic>
+    <topic id="topic133677.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678586527-98"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000023"/>
+        <instanceOf>
+            <topicRef href="#topic133675.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>stream</value>
+        </name>
+    </topic>
+    <topic id="topic133678.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678609757-99"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_01000617"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>still water</value>
+        </name>
+    </topic>
+    <topic id="topic133679.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484680378137-100"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>hutch</value>
+        </name>
+    </topic>
+    <topic id="topic133680.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484680658954-101"/>
+        <name>
+            <value>sample</value>
+        </name>
+    </topic>
+    <topic id="topic133681.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484680695064-102"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000119"/>
+        <instanceOf>
+            <topicRef href="#topic133591.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>managed forest</value>
+        </name>
+    </topic>
+    <topic id="topic133682.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484680848595-103"/>
+        <name>
+            <value>uncertain</value>
+        </name>
+    </topic>
+    <topic id="topic133683.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484680880725-104"/>
+        <name>
+            <value>quantifies</value>
+        </name>
+    </topic>
+    <topic id="topic133684.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484681226148-105"/>
+        <name>
+            <value>NISP</value>
+        </name>
+    </topic>
+    <topic id="topic133685.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484681266376-106"/>
+        <name>
+            <value>proportion</value>
+        </name>
+    </topic>
+    <topic id="topic133686.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485873787702-0"/>
+        <instanceOf>
+            <topicRef href="#topic133587.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>farm</value>
+        </name>
+    </topic>
+    <topic id="topic133687.1487867787132">
+        <subjectIdentifier href="http://www.topicmaps.org/xtm/1.0/core.xtm#superclass-subclass"/>
+    </topic>
+    <topic id="topic133688.1487867787132">
+        <subjectIdentifier href="http://www.topicmaps.org/xtm/1.0/core.xtm#superclass"/>
+    </topic>
+    <topic id="topic133689.1487867787132">
+        <subjectIdentifier href="http://www.topicmaps.org/xtm/1.0/core.xtm#subclass"/>
+    </topic>
+    <topic id="topic133690.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485874111134-1"/>
+        <name>
+            <value>describes</value>
+        </name>
+    </topic>
+    <topic id="topic133691.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485874646404-2"/>
+        <name>
+            <value>value</value>
+        </name>
+    </topic>
+    <topic id="topic133692.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485874702995-3"/>
+        <name>
+            <value>owns</value>
+        </name>
+    </topic>
+    <topic id="topic133693.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875016944-4"/>
+        <instanceOf>
+            <topicRef href="#topic133588.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>church</value>
+        </name>
+    </topic>
+    <topic id="topic133694.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875097752-5"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>livestock</value>
+        </name>
+    </topic>
+    <topic id="topic133695.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485876095755-19"/>
+        <instanceOf>
+            <topicRef href="#topic133571.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>institution</value>
+        </name>
+    </topic>
+    <topic id="topic133696.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875350429-6"/>
+        <instanceOf>
+            <topicRef href="#topic133571.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>plants</value>
+        </name>
+    </topic>
+    <topic id="topic133697.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875500872-11"/>
+        <instanceOf>
+            <topicRef href="#topic133686.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>independent farm</value>
+        </name>
+    </topic>
+    <topic id="topic133698.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875488077-10"/>
+        <instanceOf>
+            <topicRef href="#topic133686.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>tenant farm</value>
+        </name>
+    </topic>
+    <topic id="topic133699.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875801133-15"/>
+        <name>
+            <value>has obligation</value>
+        </name>
+    </topic>
+    <topic id="topic133700.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875777125-13"/>
+        <name>
+            <value>has rights to</value>
+        </name>
+    </topic>
+    <topic id="topic133701.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875790367-14"/>
+        <name>
+            <value>has status</value>
+        </name>
+    </topic>
+    <topic id="topic133702.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485878078722-20"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>money</value>
+        </name>
+    </topic>
+    <topic id="topic133703.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485878166142-21"/>
+        <instanceOf>
+            <topicRef href="#topic133699.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>social obligation</value>
+        </name>
+    </topic>
+    <topic id="topic133704.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485878213290-22"/>
+        <instanceOf>
+            <topicRef href="#topic133699.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>material obligation</value>
+        </name>
+    </topic>
+    <topic id="topic133705.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1485875376270-8"/>
+    </topic>
+    <topic id="topic133706.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487187761490-0"/>
+        <instanceOf>
+            <topicRef href="#topic133686.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>church farm</value>
+        </name>
+    </topic>
+    <topic id="topic133707.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/core/role-class"/>
+    </topic>
+    <topic id="topic133708.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/rdfs/role/class"/>
+    </topic>
+    <topic id="topic133709.1487867787132">
+        <subjectIdentifier href="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    </topic>
+    <topic id="topic133710.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E53_Place"/>
+    </topic>
+    <topic id="topic133711.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P89_falls_within"/>
+    </topic>
+    <topic id="topic133712.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P89i_contains"/>
+    </topic>
+    <topic id="topic133713.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487188685328-1"/>
+        <instanceOf>
+            <topicRef href="#topic133565.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>Ideas</value>
+        </name>
+    </topic>
+    <topic id="topic133714.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487188699981-2"/>
+        <instanceOf>
+            <topicRef href="#topic133713.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>Power</value>
+        </name>
+    </topic>
+    <topic id="topic133715.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487188713560-3"/>
+        <instanceOf>
+            <topicRef href="#topic133714.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>Ecclesiastical Power</value>
+        </name>
+    </topic>
+    <topic id="topic133716.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E28_Conceptual_Object"/>
+    </topic>
+    <topic id="topic133717.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P94_has_created"/>
+    </topic>
+    <topic id="topic133718.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P94i_was_created_by"/>
+    </topic>
+    <topic id="topic133719.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P168i_defines_place"/>
+    </topic>
+    <topic id="topic133720.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P168_place_is_defined_by"/>
+    </topic>
+    <topic id="topic133721.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484678462022-92"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_7071"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_7046"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>grain storage pest</value>
+        </name>
+    </topic>
+    <topic id="topic133722.1487867787132">
+        <subjectIdentifier href="http://linked.earth/ontology#ProxyObservation"/>
+    </topic>
+    <topic id="topic133723.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P131_is_identified_by"/>
+    </topic>
+    <topic id="topic133724.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487192789727-4"/>
+        <instanceOf>
+            <topicRef href="#topic133631.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>cattle bone</value>
+        </name>
+    </topic>
+    <topic id="topic133725.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487192800405-5"/>
+        <instanceOf>
+            <topicRef href="#topic133631.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>cattle skin</value>
+        </name>
+    </topic>
+    <topic id="topic133726.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E20_Biological_Object"/>
+    </topic>
+    <topic id="topic133727.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P1i_identifies"/>
+    </topic>
+    <topic id="topic133728.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by"/>
+    </topic>
+    <topic id="topic133729.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487193447901-6"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>driftwood</value>
+        </name>
+    </topic>
+    <topic id="topic133730.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E72_Legal_Object"/>
+    </topic>
+    <topic id="topic133731.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by"/>
+    </topic>
+    <topic id="topic133732.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P105i_has_right_on"/>
+    </topic>
+    <topic id="topic133733.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E7_Activity"/>
+    </topic>
+    <topic id="topic133734.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P125i_was_type_of_object_used_in"/>
+    </topic>
+    <topic id="topic133735.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P125_used_object_of_type"/>
+    </topic>
+    <topic id="topic133736.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487193860546-7"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>wall</value>
+        </name>
+    </topic>
+    <topic id="topic133737.1487867787132">
+        <subjectIdentifier href="http://www.ics.forth.gr/isl/CRMba/BP1_is_section_of"/>
+    </topic>
+    <topic id="topic133738.1487867787132">
+        <subjectIdentifier href="http://www.ics.forth.gr/isl/CRMba/BP1i_has_section"/>
+    </topic>
+    <topic id="topic133739.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P86_falls_within"/>
+    </topic>
+    <topic id="topic133740.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P86i_contains"/>
+    </topic>
+    <topic id="topic133741.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487541081464-1"/>
+        <name>
+            <value>Tithe</value>
+        </name>
+    </topic>
+    <topic id="topic133742.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487541128107-2"/>
+        <instanceOf>
+            <topicRef href="#topic133714.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>Obligation</value>
+        </name>
+    </topic>
+    <topic id="topic133743.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487541144784-3"/>
+        <instanceOf>
+            <topicRef href="#topic133742.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>Social Obligation</value>
+        </name>
+    </topic>
+    <topic id="topic133744.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487541177508-4"/>
+        <instanceOf>
+            <topicRef href="#topic133742.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>Financial Obligation</value>
+        </name>
+    </topic>
+    <topic id="topic133745.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487541222453-5"/>
+        <instanceOf>
+            <topicRef href="#topic133652.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>live whale</value>
+        </name>
+    </topic>
+    <topic id="topic133746.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487541230800-6"/>
+        <instanceOf>
+            <topicRef href="#topic133652.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>beached whale</value>
+        </name>
+    </topic>
+    <topic id="topic133747.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P149_is_identified_by"/>
+    </topic>
+    <topic id="topic133748.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487544245039-7"/>
+        <instanceOf>
+            <topicRef href="#topic133706.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>whole church</value>
+        </name>
+    </topic>
+    <topic id="topic133749.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487544251940-8"/>
+        <instanceOf>
+            <topicRef href="#topic133706.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>half church</value>
+        </name>
+    </topic>
+    <topic id="topic133750.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487544270885-9"/>
+        <instanceOf>
+            <topicRef href="#topic133706.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>bishop's church</value>
+        </name>
+    </topic>
+    <topic id="topic133751.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487544279479-10"/>
+        <instanceOf>
+            <topicRef href="#topic133706.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>place of worship</value>
+        </name>
+    </topic>
+    <topic id="topic133752.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E12_Production"/>
+    </topic>
+    <topic id="topic133753.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P108_has_produced"/>
+    </topic>
+    <topic id="topic133754.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P108i_was_produced_by"/>
+    </topic>
+    <topic id="topic133755.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487544837043-11"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>midden assemblage</value>
+        </name>
+    </topic>
+    <topic id="topic133756.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E26_Physical_Feature"/>
+    </topic>
+    <topic id="topic133757.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P53_has_former_or_current_location"/>
+    </topic>
+    <topic id="topic133758.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P53i_is_former_or_current_location_of"/>
+    </topic>
+    <topic id="topic133759.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E48_Place_Name"/>
+    </topic>
+    <topic id="topic133760.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P149i_identifies"/>
+    </topic>
+    <topic id="topic133761.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487545198867-12"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>manuscript</value>
+        </name>
+    </topic>
+    <topic id="topic133762.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E19_Physical_Object"/>
+    </topic>
+    <topic id="topic133763.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487545431458-13"/>
+        <instanceOf>
+            <topicRef href="#topic133602.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>improved land</value>
+        </name>
+    </topic>
+    <topic id="topic133764.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P148_has_component"/>
+    </topic>
+    <topic id="topic133765.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P148i_is_component_of"/>
+    </topic>
+    <topic id="topic133766.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487545978342-14"/>
+        <instanceOf>
+            <topicRef href="#topic133615.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>shieling shed</value>
+        </name>
+    </topic>
+    <topic id="topic133767.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487546165465-15"/>
+        <instanceOf>
+            <topicRef href="#topic133575.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>sheep bone</value>
+        </name>
+    </topic>
+    <topic id="topic133768.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487546405530-16"/>
+        <instanceOf>
+            <topicRef href="#topic133769.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>saga narrative</value>
+        </name>
+    </topic>
+    <topic id="topic133769.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487855360706-0"/>
+        <instanceOf>
+            <topicRef href="#topic133713.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>stories</value>
+        </name>
+    </topic>
+    <topic id="topic133770.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487546460729-17"/>
+        <instanceOf>
+            <topicRef href="#topic133696.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>tree</value>
+        </name>
+    </topic>
+    <topic id="topic133771.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E81_Transformation"/>
+    </topic>
+    <topic id="topic133772.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P123_resulted_in"/>
+    </topic>
+    <topic id="topic133773.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P123i_resulted_from"/>
+    </topic>
+    <topic id="topic133774.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487547347359-18"/>
+        <instanceOf>
+            <topicRef href="#topic133566.1487867787130"/>
+        </instanceOf>
+        <name>
+            <value>ecological area</value>
+        </name>
+    </topic>
+    <topic id="topic133775.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P11i_participated_in"/>
+    </topic>
+    <topic id="topic133776.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P11_had_participant"/>
+    </topic>
+    <topic id="topic133777.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487549062602-20"/>
+        <instanceOf>
+            <topicRef href="#topic133713.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>luck</value>
+        </name>
+    </topic>
+    <topic id="topic133778.1487867787132">
+        <subjectIdentifier href="http://animaldiversity.ummz.umich.edu/collections/mammal_anatomy/cheek_teeth_structure"/>
+        <name>
+            <value>cheek_teeth_structure</value>
+        </name>
+    </topic>
+    <topic id="topic133779.1487867787132">
+        <subjectIdentifier href="http://www.ics.forth.gr/isl/CRMba/B1_Built_Work"/>
+    </topic>
+    <topic id="topic133780.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487798187143-2"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>vellum</value>
+        </name>
+    </topic>
+    <topic id="topic133781.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E90_Symbolic_Object"/>
+    </topic>
+    <topic id="topic133782.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P165i_is_incorporated_in"/>
+    </topic>
+    <topic id="topic133783.1487867787132">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P165_incorporates"/>
+    </topic>
+    <topic id="topic133784.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487799313003-5"/>
+        <instanceOf>
+            <topicRef href="#topic133572.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>live human</value>
+        </name>
+    </topic>
+    <topic id="topic133785.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487799320726-6"/>
+        <instanceOf>
+            <topicRef href="#topic133572.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>dead human</value>
+        </name>
+    </topic>
+    <topic id="topic133786.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487799430077-7"/>
+        <instanceOf>
+            <topicRef href="#topic133574.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>dream figures</value>
+        </name>
+    </topic>
+    <topic id="topic133787.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487856037431-1"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9852"/>
+        <instanceOf>
+            <topicRef href="#topic133576.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>elk</value>
+        </name>
+    </topic>
+    <topic id="topic133788.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487856591131-2"/>
+        <instanceOf>
+            <topicRef href="#topic133695.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>government</value>
+        </name>
+    </topic>
+    <topic id="topic133789.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487857343886-3"/>
+        <instanceOf>
+            <topicRef href="#topic133695.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>family</value>
+        </name>
+    </topic>
+    <topic id="topic133790.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487857362542-4"/>
+        <instanceOf>
+            <topicRef href="#topic133695.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>business</value>
+        </name>
+    </topic>
+    <topic id="topic133791.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487857408365-5"/>
+        <instanceOf>
+            <topicRef href="#topic133769.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>folk tale</value>
+        </name>
+    </topic>
+    <topic id="topic133792.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487857439405-6"/>
+        <instanceOf>
+            <topicRef href="#topic133714.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>legal power</value>
+        </name>
+    </topic>
+    <topic id="topic133793.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487857687522-8"/>
+        <instanceOf>
+            <topicRef href="#topic133594.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>wood</value>
+        </name>
+    </topic>
+    <topic id="topic133794.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487857890331-9"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000316"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>intertidal zone</value>
+        </name>
+    </topic>
+    <topic id="topic133795.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487858003423-10"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000299"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>ice field</value>
+        </name>
+    </topic>
+    <topic id="topic133796.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487859197977-11"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/ENVO_00000016"/>
+        <instanceOf>
+            <topicRef href="#topic133592.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>sea</value>
+        </name>
+    </topic>
+    <topic id="topic133797.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861896173"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>acidophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133798.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861896773"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>agaricolous</value>
+        </name>
+    </topic>
+    <topic id="topic133799.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861897029"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>akrodendric</value>
+        </name>
+    </topic>
+    <topic id="topic133800.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861897278"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>algophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133801.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861897479"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>amylophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133802.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861897689"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>aphidophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133803.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861897878"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>apoidephilous</value>
+        </name>
+    </topic>
+    <topic id="topic133804.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861898079"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>aquatic</value>
+        </name>
+    </topic>
+    <topic id="topic133805.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861898257"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>arboricolous</value>
+        </name>
+    </topic>
+    <topic id="topic133806.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861898461"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>cadavericolous</value>
+        </name>
+    </topic>
+    <topic id="topic133807.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861898653"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>campicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133808.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861898858"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>carpophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133809.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861899079"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Carrion</value>
+        </name>
+    </topic>
+    <topic id="topic133810.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861899301"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>coprophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133811.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861899543"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>corticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133812.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861899851"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>cortivorous</value>
+        </name>
+    </topic>
+    <topic id="topic133813.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861900081"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>deserticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133814.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861900330"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>detriticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133815.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861900531"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Disturbed/arable</value>
+        </name>
+    </topic>
+    <topic id="topic133816.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861900767"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Dry dead wood</value>
+        </name>
+    </topic>
+    <topic id="topic133817.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861900981"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Dung/foul habitats</value>
+        </name>
+    </topic>
+    <topic id="topic133818.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861901439"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Ectoparasite</value>
+        </name>
+    </topic>
+    <topic id="topic133819.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861901674"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>ectophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133820.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861901937"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>entomophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133821.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861902231"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>eurythermal</value>
+        </name>
+    </topic>
+    <topic id="topic133822.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861902573"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>eurytopic</value>
+        </name>
+    </topic>
+    <topic id="topic133823.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861902871"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Facultative Sy</value>
+        </name>
+    </topic>
+    <topic id="topic133824.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861903142"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>floricolous</value>
+        </name>
+    </topic>
+    <topic id="topic133825.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861903413"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>fungicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133826.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861903681"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>General synanthropic</value>
+        </name>
+    </topic>
+    <topic id="topic133827.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861903943"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>graminicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133828.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861904174"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>halophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133829.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861904430"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>halotolerant</value>
+        </name>
+    </topic>
+    <topic id="topic133830.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861904710"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Heathland &amp; moorland</value>
+        </name>
+    </topic>
+    <topic id="topic133831.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861905016"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>heliophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133832.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861905271"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>helminthophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133833.1487867787132">
+        <subjectIdentifier href="http://wandora.org/si/1487861905504"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>herbicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133834.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861905713"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>humicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133835.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861905963"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>hygrophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133836.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861906178"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Indicators: Coniferous</value>
+        </name>
+    </topic>
+    <topic id="topic133837.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861906385"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Indicators: Deciduous</value>
+        </name>
+    </topic>
+    <topic id="topic133838.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861906628"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Indicators: Dung</value>
+        </name>
+    </topic>
+    <topic id="topic133839.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861906892"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Indicators: Running water</value>
+        </name>
+    </topic>
+    <topic id="topic133840.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861907316"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Indicators: Standing water</value>
+        </name>
+    </topic>
+    <topic id="topic133841.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861907565"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>krenophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133842.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861907823"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>kreophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133843.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861908063"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>lignicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133844.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861908297"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>limnicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133845.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861908525"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>linicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133846.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861908747"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Meadowland</value>
+        </name>
+    </topic>
+    <topic id="topic133847.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861908956"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>microcavernicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133848.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861909193"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>molluscophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133849.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861909454"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>monophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133850.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861909700"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Mould beetles</value>
+        </name>
+    </topic>
+    <topic id="topic133851.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861909941"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>muscicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133852.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861910205"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>muscophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133853.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861910460"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>mycetophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133854.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861910767"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>mycetophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133855.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861911035"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>myrmecophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133856.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861911307"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>necrophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133857.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861911584"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>necrophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133858.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861911845"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>nidicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133859.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861912100"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>nivicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133860.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861912394"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>oligophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133861.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861912654"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>oligoprobic</value>
+        </name>
+    </topic>
+    <topic id="topic133862.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861912940"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>omnivorous</value>
+        </name>
+    </topic>
+    <topic id="topic133863.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861913179"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Open wet habitats</value>
+        </name>
+    </topic>
+    <topic id="topic133864.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861913439"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>paludicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133865.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861913745"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>parasitic</value>
+        </name>
+    </topic>
+    <topic id="topic133866.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861914028"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Pasture/Dung</value>
+        </name>
+    </topic>
+    <topic id="topic133867.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861914269"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>phloeophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133868.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861914497"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>pholeophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133869.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861914746"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>phyllicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133870.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861915036"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>phyllodetriticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133871.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861915323"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>phyllophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133872.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861915537"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>phytodetriticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133873.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861915839"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>phytophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133874.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861916074"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>planticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133875.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861916338"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>pollenophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133876.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861916662"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>polyphagous</value>
+        </name>
+    </topic>
+    <topic id="topic133877.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861916899"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>praticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133878.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861917124"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>psammophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133879.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861917340"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>rheophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133880.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861917563"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>rhizophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133881.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861917844"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>ripicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133882.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861918083"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Sandy/dry disturbed/arable</value>
+        </name>
+    </topic>
+    <topic id="topic133883.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861918311"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>saprophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133884.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861918535"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>saprophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133885.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861918773"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>silicophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133886.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861918988"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>silvicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133887.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861919239"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>sphagnicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133888.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861919458"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>stenohygric</value>
+        </name>
+    </topic>
+    <topic id="topic133889.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861919674"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>stenotopic</value>
+        </name>
+    </topic>
+    <topic id="topic133890.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861919918"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>steppicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133891.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861920152"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>stercoricolous</value>
+        </name>
+    </topic>
+    <topic id="topic133892.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861920381"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Stored grain pest</value>
+        </name>
+    </topic>
+    <topic id="topic133893.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861920590"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Strong Sy</value>
+        </name>
+    </topic>
+    <topic id="topic133894.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861920822"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>succicolous</value>
+        </name>
+    </topic>
+    <topic id="topic133895.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861921058"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>synanthropic</value>
+        </name>
+    </topic>
+    <topic id="topic133896.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861921270"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>terricolous or subterranean</value>
+        </name>
+    </topic>
+    <topic id="topic133897.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861921534"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>thermophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133898.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861921796"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>trogophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133899.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861921998"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Typically Sy</value>
+        </name>
+    </topic>
+    <topic id="topic133900.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861922257"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>tyrphophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133901.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861922457"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>ubiquitous</value>
+        </name>
+    </topic>
+    <topic id="topic133902.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861922701"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Wetlands/marshes</value>
+        </name>
+    </topic>
+    <topic id="topic133903.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861922976"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>Wood and trees</value>
+        </name>
+    </topic>
+    <topic id="topic133904.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861923303"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>xerophilous</value>
+        </name>
+    </topic>
+    <topic id="topic133905.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861923630"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>xylodetriticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133906.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861923939"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>xylophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133907.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861924385"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>zoodetriticolous</value>
+        </name>
+    </topic>
+    <topic id="topic133908.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/1487861924911"/>
+        <instanceOf>
+            <topicRef href="#topic133645.1487867787131"/>
+        </instanceOf>
+        <name>
+            <value>zoophagous</value>
+        </name>
+    </topic>
+    <topic id="topic133909.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487862646573-12"/>
+        <instanceOf>
+            <topicRef href="#topic133744.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>tithe</value>
+        </name>
+    </topic>
+    <topic id="topic133910.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487862655299-13"/>
+        <instanceOf>
+            <topicRef href="#topic133744.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>tax</value>
+        </name>
+    </topic>
+    <topic id="topic133911.1487867787133">
+        <subjectIdentifier href="http://wandora.org/si/temp/1487866095478-15"/>
+        <instanceOf>
+            <topicRef href="#topic133713.1487867787132"/>
+        </instanceOf>
+        <name>
+            <value>paleoclimate model</value>
+        </name>
+    </topic>
+    <association>
+        <type>
+            <topicRef href="#topic133570.1487867787130"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133580.1487867787131"/>
+            </type>
+            <topicRef href="#topic133573.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133581.1487867787131"/>
+            </type>
+            <topicRef href="#topic133573.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133587.1487867787131"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133579.1487867787131"/>
+            </type>
+            <topicRef href="#topic133585.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133589.1487867787131"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133580.1487867787131"/>
+            </type>
+            <topicRef href="#topic133593.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133581.1487867787131"/>
+            </type>
+            <topicRef href="#topic133593.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133593.1487867787131"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133580.1487867787131"/>
+            </type>
+            <topicRef href="#topic133596.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133581.1487867787131"/>
+            </type>
+            <topicRef href="#topic133596.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133687.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133689.1487867787132"/>
+            </type>
+            <topicRef href="#topic133686.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133688.1487867787132"/>
+            </type>
+            <topicRef href="#topic133568.1487867787130"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133707.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133708.1487867787132"/>
+            </type>
+            <topicRef href="#topic133693.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133709.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133711.1487867787132"/>
+            </type>
+            <topicRef href="#topic133589.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133712.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133711.1487867787132"/>
+            </type>
+            <topicRef href="#topic133604.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133712.1487867787132"/>
+            </type>
+            <topicRef href="#topic133686.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133716.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133718.1487867787132"/>
+            </type>
+            <topicRef href="#topic133715.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133717.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133719.1487867787132"/>
+            </type>
+            <topicRef href="#topic133615.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133720.1487867787132"/>
+            </type>
+            <topicRef href="#topic133697.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133723.1487867787132"/>
+            </type>
+            <topicRef href="#topic133671.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133722.1487867787132"/>
+            </type>
+            <topicRef href="#topic133721.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133719.1487867787132"/>
+            </type>
+            <topicRef href="#topic133631.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133720.1487867787132"/>
+            </type>
+            <topicRef href="#topic133625.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133726.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133727.1487867787132"/>
+            </type>
+            <topicRef href="#topic133724.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133728.1487867787132"/>
+            </type>
+            <topicRef href="#topic133631.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133730.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133731.1487867787132"/>
+            </type>
+            <topicRef href="#topic133729.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133732.1487867787132"/>
+            </type>
+            <topicRef href="#topic133715.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133733.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133734.1487867787132"/>
+            </type>
+            <topicRef href="#topic133729.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133735.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133722.1487867787132"/>
+            </type>
+            <topicRef href="#topic133696.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133720.1487867787132"/>
+            </type>
+            <topicRef href="#topic133604.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133739.1487867787132"/>
+            </type>
+            <topicRef href="#topic133603.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133740.1487867787132"/>
+            </type>
+            <topicRef href="#topic133686.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133716.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133734.1487867787132"/>
+            </type>
+            <topicRef href="#topic133746.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133747.1487867787132"/>
+            </type>
+            <topicRef href="#topic133715.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133730.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133732.1487867787132"/>
+            </type>
+            <topicRef href="#topic133715.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133731.1487867787132"/>
+            </type>
+            <topicRef href="#topic133746.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133752.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133753.1487867787132"/>
+            </type>
+            <topicRef href="#topic133572.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133754.1487867787132"/>
+            </type>
+            <topicRef href="#topic133686.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133730.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133731.1487867787132"/>
+            </type>
+            <topicRef href="#topic133698.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133732.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133756.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133757.1487867787132"/>
+            </type>
+            <topicRef href="#topic133755.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133758.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133759.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133760.1487867787132"/>
+            </type>
+            <topicRef href="#topic133642.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133747.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133762.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133757.1487867787132"/>
+            </type>
+            <topicRef href="#topic133761.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133758.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133716.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133764.1487867787132"/>
+            </type>
+            <topicRef href="#topic133763.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133765.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133710.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133757.1487867787132"/>
+            </type>
+            <topicRef href="#topic133766.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133758.1487867787132"/>
+            </type>
+            <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133716.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133760.1487867787132"/>
+            </type>
+            <topicRef href="#topic133767.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133747.1487867787132"/>
+            </type>
+            <topicRef href="#topic133766.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133771.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133772.1487867787132"/>
+            </type>
+            <topicRef href="#topic133770.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133773.1487867787132"/>
+            </type>
+            <topicRef href="#topic133729.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133716.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133760.1487867787132"/>
+            </type>
+            <topicRef href="#topic133645.1487867787131"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133747.1487867787132"/>
+            </type>
+            <topicRef href="#topic133774.1487867787132"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133779.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133737.1487867787132"/>
+            </type>
+            <topicRef href="#topic133736.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133738.1487867787132"/>
+            </type>
+            <topicRef href="#topic133671.1487867787131"/>
+        </role>
+    </association>
+    <association>
+        <type>
+            <topicRef href="#topic133781.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133782.1487867787132"/>
+            </type>
+            <topicRef href="#topic133768.1487867787132"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133783.1487867787132"/>
+            </type>
+            <topicRef href="#topic133714.1487867787132"/>
+        </role>
+    </association>
 </topicMap>
