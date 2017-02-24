@@ -171,7 +171,7 @@ function getContextPath() {
 <!-- <script src="${contextPath}/components/leaflet-cluster/dist/leaflet.markercluster.js"></script> -->
 <script src="${contextPath}/components/prune-cluster/dist/PruneCluster.js"></script>
 
-<script src="${contextPath}/components/cytoscape/cytoscape.min-edit.js"></script>
+<script src="${contextPath}/components/cytoscape/dist/cytoscape.min-edit.js"></script>
 <script src="${contextPath}/components/cytoscape-cola/cola.js"></script>
 <script src="${contextPath}/components/cytoscape-cola/cytoscape-cola.js"></script>
 <script src="${contextPath}/components/cytoscape-spread/cytoscape-spread.js"></script>

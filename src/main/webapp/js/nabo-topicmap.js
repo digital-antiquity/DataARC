@@ -11,14 +11,14 @@ $(function(){
 
   // get network data via ajax
   var graphP = $.ajax({
-    url: '/prototype/api/topicmap/view',
+    url: getContextPath() + '/api/topicmap/view',
     type: 'GET',
     dataType: 'json'
   });
 
   // also get style via ajax
   var styleP = $.ajax({
-    url: '/prototype/css/style.cy.css',
+    url: getContextPath() + '/css/style.cy.css',
     type: 'GET',
     dataType: 'text'
   });
