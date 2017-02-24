@@ -197,7 +197,12 @@ public class TopicMapService {
                 if (StringUtils.isBlank(topic.getName())) {
                     topic_.getItemIdentityOrSubjectLocatorOrSubjectIdentifier().forEach(itm -> {
                         if (itm instanceof SubjectIdentifier) {
-                            topic.setName(((SubjectIdentifier) itm).getHref());
+                            String href = ((SubjectIdentifier) itm).getHref();
+                            if (StringUtils.isNotBlank(href)) {
+                                href = StringUtils.removeEnd(href, "/");
+                                href = StringUtils.substringAfterLast(href, "/");
+                                topic.setName(href);
+                            }
                             
                         }
                     });
