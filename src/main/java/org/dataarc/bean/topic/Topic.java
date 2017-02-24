@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -32,7 +33,7 @@ public class Topic extends AbstractPersistable {
 //    @OneToMany()
 //    private Set<Association> associations = new HashSet<>();
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, cascade={CascadeType.ALL})
     private Topic parent;
 
     public String getName() {
