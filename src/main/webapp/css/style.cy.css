@@ -1,0 +1,80 @@
+core {
+	active-bg-color: #eee;
+	active-bg-opacity: 0;
+}
+
+edge {
+	curve-style: bezier;
+	opacity: 0.2;
+	width: 4;
+	z-index: 0;
+	overlay-opacity: 0;
+  mid-target-arrow-color: #900;
+  mid-target-arrow-shape: triangle-backcurve;
+  line-color:#00f;
+}
+
+node {
+	width: 30;
+	height: 30;
+	font-size: 14;
+	font-weight: bold;
+	min-zoomed-font-size: 2;
+	content: data(name);
+	text-valign: center;
+	text-halign: center;
+	color: #000;
+	background-color:#ddd;
+	overlay-color: #fff;
+}
+
+node[NodeType = "Major"] {
+	background-color: #FACD37;
+}
+
+node.highlighted {
+	min-zoomed-font-size: 0;
+  z-index: 9999;
+}
+
+edge.highlighted {
+	opacity: 0.3;
+	width: 4;
+	z-index: 9999;
+}
+
+.faded {
+  events: no;
+}
+
+node.faded {
+  opacity: 0.08;
+}
+
+edge.faded {
+  opacity: 0.06;
+}
+
+.hidden {
+	display: none;
+}
+
+.highlighted {
+
+}
+
+node:selected {
+	width: 30;
+	height: 30;
+	border-color: rgb(187, 219, 247);
+	border-opacity: 0.5;
+	border-width: 5;
+}
+
+edge:selected {
+	width: 6;
+}
+
+.filtered {
+	display: none;
+}

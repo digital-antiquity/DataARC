@@ -51,11 +51,11 @@
 	opacity: 0.7;
 }
 
-#forcemap {
+#topicmap {
     overflow:hidden;
 }
 
-#infoabout, #forcemap {
+#infoabout, #topicmap {
     border:1px solid #CCC;
     padding: 5px;
 }
@@ -63,4 +63,78 @@
 .linkLabel {
     fill: #CCC;
     text-anchor:middle;
+}
+
+#main{
+  padding-top:10px;
+}
+
+#clear {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0.25em;
+  visibility: hidden;
+}
+
+#search-wrapper {
+  z-index: 9999;
+}
+
+#topicmap{
+  border:1px solid black;
+  margin-top:45px;
+}
+
+#search {
+  width: 14em;
+  font-family: inherit;
+}
+
+.tt-dropdown-menu {
+  background: #fff;
+  width: 14em;
+  border: 1px solid #ccc;
+  max-height: 80vh;
+  max-height: calc( 100vh - 4em );
+  overflow: auto;
+  margin-top: 0.5em;
+}
+
+.tt-dropdown-menu * {
+  margin: 0;
+  padding: 0;
+}
+
+.tt-suggestion {
+  margin: 1px;
+  padding: 1px;
+  cursor: pointer;
+}
+
+.tt-suggestion + .tt-suggestion {
+  border-top: 1px solid #ccc;
+}
+
+.node-name{
+  font-size: 1.25em;
+}
+
+.node-name-edge{
+  color:blue;
+}
+
+.search-results{
+  padding-left:10px;
+}
+
+#infotable{
+  /*margin-top:5px;*/
+  min-height:32px;
+  width:100%;
+  border:1px solid black;
+}
+
+#infotable td{
+  padding:5px;
 }

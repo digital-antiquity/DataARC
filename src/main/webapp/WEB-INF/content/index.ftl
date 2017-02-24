@@ -5,20 +5,21 @@
 	<!DOCTYPE html>
 <meta charset="utf-8">
 <html>
-    <head>
-        <title>DataARC Prototype</title>
-        <meta charset="utf-8" />
-        <script src="data/iceland.json"></script>
-    
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
-        <link rel="stylesheet" href="${contextPath}/components/c3/c3.css" />
-        <link rel="stylesheet" href="${contextPath}/components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
-    	<link rel="stylesheet" href="${contextPath}/css/nabo.css"/>    
-        <link rel="stylesheet" href="${contextPath}/components/leaflet/dist/leaflet.css" />
-<!--        <link rel="stylesheet" href="${contextPath}/components/leaflet-cluster/dist/MarkerCluster.css" />
-        <link rel="stylesheet" href="${contextPath}/components/leaflet-cluster/dist/MarkerCluster.Default.css" />-->
-        <link rel="stylesheet" href="${contextPath}/components/prune-cluster/dist/LeafletStyleSheet.css" />
+<head>
+    <title>DataARC Prototype</title>
+    <meta charset="utf-8" />
+    <script src="data/iceland.json"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
+    <link rel="stylesheet" href="${contextPath}/components/c3/c3.css" />
+    <link rel="stylesheet" href="${contextPath}/components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+	<link rel="stylesheet" href="${contextPath}/css/nabo.css"/>    
+    <link rel="stylesheet" href="${contextPath}/components/leaflet/dist/leaflet.css" />
+<!--<link rel="stylesheet" href="${contextPath}/components/leaflet-cluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="${contextPath}/components/leaflet-cluster/dist/MarkerCluster.Default.css" />-->
+    <link rel="stylesheet" href="${contextPath}/components/prune-cluster/dist/LeafletStyleSheet.css" />
+    <link rel="stylesheet" href="${contextPath}/components/qtip2/jquery.qtip.min.css" />
 
 <script>
 var _rollbarConfig = {
@@ -37,7 +38,7 @@ var _rollbarConfig = {
 
     <link href="${contextPath}/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-    <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
+    <script src="${contextPath}/components/jquery/dist/jquery.min.js"></script>
     <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script>
@@ -46,75 +47,72 @@ function getContextPath() {
 }
 </script>
 
-   </head>
+</head>
 <body>
 
-            <div id="main" class="container-fluid">
-	            <div class="span-md-11">
-	            	<h3>DataARC Prototype Application</h3>
-	        	</div>
-        	</div>
-                <hr />
+ <div class="container-fluid" id="main">
+   <div class="row">
+     <div id="mapbox"  class="col-md-8">
+       <div id="map" style="height: 600px"></div>
+       <div class="row">
+         <div class="col-md-12">
+           <form class="form-inline">
+             <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
+             <span class='slider-span'>&nbsp;Limit by year:</span> <b>0</b> 
+             <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
+               data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
+               data-slider-handle="round"> <b>2016</b>
+               <span class="">&nbsp;&nbsp;&nbsp;<input id="cluster" type="checkbox">&nbsp;<label for="cluster">cluster results?</label></span>
+               <br/>
+               <!--<img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">-->
+               <div id="tl" class="timeline-default" style="height: 400px;"></div>
+           </form>
+         </div>
+       </div>
+     </div>
+     <div id="infobox" class="col-md-4">
 
-<div class="container-fluid">
-<div class="row">
-    <div id="mapbox"  class="col-md-8">
-        <div id="map" style="height: 600px"></div>
-        <div class="row">
-	        <div class="col-md-12">
-			    <form class="form-inline">
-				    <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
-				    <span class='slider-span'>&nbsp;Limit by year:</span> <b>0</b> 
-				            <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
-				     data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
-				     data-slider-handle="round"> <b>2016</b>
-				     <span class="">&nbsp;&nbsp;&nbsp;<input id="cluster" type="checkbox">&nbsp;<label for="cluster">cluster results?</label></span>
-				     <br/>
-				     <!--<img src="http://ads.ahds.ac.uk/arena/search/images/per1.gif">-->
-			           <div id="tl" class="timeline-default" style="height: 400px;"></div>
+       <div id="search-wrapper" class="pull-left">
+         <input type="text" class="form-control" id="search" placeholder="&#xf002; Search">
+       </div>
 
-				     
-			    </form>
-			</div>
-	</div>
-        
-    </div>
-    <div id="infobox" class="col-md-4">
-    <ul class="nav nav-tabs">
-	  <li role="presentation" id="successTab" class=""><a href="?oldjson">Success</a></li>
-	  <li role="presentation" id="landscapeTab" class=""><a href="?">Landscape</a></li>
-	</ul>
-        <div id="forcemap"></div>
-        <div><p><small>Select a node to center it. Click on the + symbols to expand along a branch. Double click on a node to access linked URLs pointing at relevant databases and descriptions of key metrics.</small></p></div>
-	<div class="btn-toolbar" role="toolbar">
-        <div class="btn-group">
-        
-		<button title='zoom in' class="btn btn-default" id="zoom_in"><span class="glyphicon glyphicon-zoom-in"></span></button>
-		<button title='zoom out' class="btn btn-default" id="zoom_out"><span class="glyphicon glyphicon-zoom-out"></span></button>
-		
-		<button title='scroll up' class="btn btn-default" id="up"><span class="glyphicon glyphicon-triangle-top"></span></button>
-		<button title='scroll down' class="btn btn-default" id="down"><span class="glyphicon glyphicon-triangle-bottom"></span></button>
-		<button title='scroll left' class="btn btn-default" id="left"><span class="glyphicon glyphicon-triangle-left"></span></button>
-		<button title='scroll right' class="btn btn-default" id="right"><span class="glyphicon glyphicon-triangle-right"></span></button>
-        </div>
-        <div class="btn-group pull-right">
-        <button title='expand' class="btn btn-default" id="expand"><span class="glyphicon glyphicon-resize-full"></span></button>
-        <button title='contract' class="btn btn-default" id="contract"><span class="glyphicon glyphicon-resize-small"></span></button>
-        </div>
-        </div>
-        <br/>
-        <div id="infostatus">
-        </div>
-        <div id="chart"></div>
-        <div id="infodetail">
-            <div id="infoabout">
-            <h4>Detail Info Box</h4>
-            <p><b>Click</b> on a point on the map, a region, or a node in the topic map to see details about that concept or point here.</p>
-            </div>
-        </div>
-    
-    </div>
-</div>
+       <div class="btn-group pull-right">
+         <button title='zoom in' class="btn btn-default" id="zoom_in"><span class="glyphicon glyphicon-zoom-in"></span></button>
+         <button title='zoom out' class="btn btn-default" id="zoom_out"><span class="glyphicon glyphicon-zoom-out"></span></button>
+         <button title="change layout" class="btn btn-default" id="change_layout"><span class="glyphicon glyphicon-random"></span></button>
+         <button title='reset' class="btn btn-default" id="reset"><span class="glyphicon glyphicon-repeat"></span></button>
+         <button title='expand' class="btn btn-default" id="expand"><span class="glyphicon glyphicon-resize-full"></span></button>
+         <button title='contract' class="btn btn-default" id="contract"><span class="glyphicon glyphicon-resize-small"></span></button>
+       </div>
+
+       <div id="topicmap" style="width:100%;height:400px;"></div>
+       <table id="infotable"><td></td></table>
+       <br/>
+       <div id="infostatus">
+       </div>
+       <div id="chart"></div>
+       <div id="infodetail">
+           <div id="infoabout">
+           <h4>Detail Info Box</h4>
+           <p><b>Click</b> on a point on the map, a region, or a node in the topic map to see details about that concept or point here.</p>
+           </div>
+       </div>
+
+     </div>
+   </div>
+ </div>
+
+ <div id="layouts">
+   <select id="layout-select">
+     <option value="spread">Spread</option>
+     <option value="grid">Grid</option>
+     <option value="circle">Circle</option>
+     <option value="breadthfirst">Breadth First</option>
+     <option value="cose">Cose</option>
+     <option value="cola">Cola</option>
+     <option value="concentric">Concentric</option>
+   </select>
+ </div>
 
 <div class="modal" id="intro-modal">
   <div class="modal-dialog modal-lg">
@@ -161,21 +159,34 @@ function getContextPath() {
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-    <script src="${contextPath}/components/jquery-cookie/jquery.cookie.js"></script>
-    <script src="${contextPath}/components/chroma-js/chroma.min.js"></script>
-    <script src="${contextPath}/components/leaflet/dist/leaflet.js"></script>
-    <script src="${contextPath}/components/leaflet-pip/leaflet-pip.js"></script>
-    
-    <script charset="utf-8" src="${contextPath}/components/d3/d3.js"></script>
-    <script src="${contextPath}/components/c3/c3.js"></script>
-    <script src="${contextPath}/components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
-    <!-- <script src="${contextPath}/components/leaflet-cluster/dist/leaflet.markercluster.js"></script> -->
-    <script src="${contextPath}/components/prune-cluster/dist/PruneCluster.js"></script>
-    
-    <script src="${contextPath}/js/nabo.js"></script>
-    <script src="${contextPath}/js/nabo-custom-graphs.js"></script>
-    <script src="${contextPath}/js/nabo-timeline.js"></script>
-    <script src="${contextPath}/js/nabo-forcemap.js"></script>
+
+<script src="${contextPath}/components/jquery-cookie/jquery.cookie.js"></script>
+<script src="${contextPath}/components/chroma-js/chroma.min.js"></script>
+<script src="${contextPath}/components/leaflet/dist/leaflet.js"></script>
+<script src="${contextPath}/components/leaflet-pip/leaflet-pip.js"></script>
+
+<script charset="utf-8" src="${contextPath}/components/d3/d3.js"></script>
+<script src="${contextPath}/components/c3/c3.js"></script>
+<script src="${contextPath}/components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<!-- <script src="${contextPath}/components/leaflet-cluster/dist/leaflet.markercluster.js"></script> -->
+<script src="${contextPath}/components/prune-cluster/dist/PruneCluster.js"></script>
+
+<script src="${contextPath}/components/cytoscape/cytoscape.min-edit.js"></script>
+<script src="${contextPath}/components/cytoscape-cola/cola.js"></script>
+<script src="${contextPath}/components/cytoscape-cola/cytoscape-cola.js"></script>
+<script src="${contextPath}/components/cytoscape-spread/cytoscape-spread.js"></script>
+<script src="${contextPath}/components/qtip2/jquery.qtip.min.js"></script>
+<script src="${contextPath}/components/cytoscape-qtip/cytoscape-qtip.js"></script>
+<script src="${contextPath}/components/bluebird/js/browser/bluebird.min.js"></script>
+<script src="${contextPath}/components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="${contextPath}/components/lodash/lodash.min.js"></script>
+
+<script src="${contextPath}/js/nabo.js"></script>
+<script src="${contextPath}/js/nabo-custom-graphs.js"></script>
+<script src="${contextPath}/js/nabo-timeline.js"></script>
+<!-- <script src="${contextPath}/js/nabo-forcemap.js"></script> -->
+<script src="${contextPath}/js/nabo-topicmap.js"></script>
+
 <script>
 // GLOBALS:
 var max = 800;
@@ -202,13 +213,41 @@ if (!cookieValue) {
 }
 
 $(function() {
-    if (location.search && location.search.toLowerCase().indexOf("oldjson") > -1) {
-        initForceMapJSON();
-		$("#successTab").addClass("active");
-    } else {
-		$("#landscapeTab").addClass("active");
-        initForceMapXml();
+
+    var topicmapExpanded = false;
+    var topicmapHeightPct = 0.5;
+    var topicmapHeightExp = 0.75;
+
+    function resize(){
+      var winHeight = $(window).height();
+      var topicmapHeight = winHeight * (topicmapExpanded ? topicmapHeightExp : topicmapHeightPct);
+      $('#topicmap').css('height',topicmapHeight+'px');
     }
+
+    resize();
+    $(window).resize(resize);
+
+    $("#expand").click(function() {
+      topicmapExpanded = true;
+      var $info = $("#infobox");
+      var $map = $("#mapbox");
+      $info.removeClass("col-md-4");
+      $info.addClass("col-md-8");
+      $map.removeClass("col-md-8");
+      $map.addClass("col-md-4");
+      resize();
+    });
+
+    $("#contract").click(function() {
+      topicmapExpanded = false;
+      var $info = $("#infobox");
+      var $map = $("#mapbox");
+      $map.removeClass("col-md-4");
+      $map.addClass("col-md-8");
+      $info.removeClass("col-md-8");
+      $info.addClass("col-md-4");
+      resize();
+    });
 	
 	if (location.search && location.search.toLowerCase().indexOf("expand=forcemap") > -1) {
 		$("#expand").click();
