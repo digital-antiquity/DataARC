@@ -38,6 +38,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
         }
         commandline.load(path);
         applicationContext.close();
+        System.exit(0);
     }
 
     private void load(String path) {
