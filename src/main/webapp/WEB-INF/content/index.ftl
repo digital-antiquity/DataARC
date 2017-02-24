@@ -8,7 +8,7 @@
     <head>
         <title>DataARC Prototype</title>
         <meta charset="utf-8" />
-        <script src="data/iceland.json"></script>
+        <script src="${contextPath}/data/iceland.json"></script>
     
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
@@ -51,7 +51,7 @@ function getContextPath() {
 
             <div id="main" class="container-fluid">
 	            <div class="span-md-11">
-	            	<h3>DataARC Prototype Application</h3>
+	               <img src="${contextPath}/images/dataarc_logo_final.png" alt='DataARC' style="height:50px;margin-top:10px" class="img-responsive center-block"/>
 	        	</div>
         	</div>
                 <hr />
@@ -126,7 +126,7 @@ function getContextPath() {
       <div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-	    		      <img src="images/preview-small.png"/>
+	    		      <img src="${contextPath}/images/preview-small.png"/>
 	    	        </div>
 		       </div>
 				<div class="row">
