@@ -337,9 +337,9 @@ $(function(){
         hideNodeInfo();
         clear();
         if(layout=='concentric'){
-            cy.on('zoom pan', _.debounce(bindCircles, 100));
-        } else {
           cy.on('zoom pan', _.debounce(bindCircles, 100));
+        } else {
+          clearCircles();
         }
       }
 
@@ -591,9 +591,8 @@ $(function(){
       setTimeout(function() {
         bindCircles();
         cy.on('zoom pan', _.debounce(bindCircles, 100));
-      }, 1100);
+      }, 2000);
     } else {
-      console.log('bind off');
       cy.off('zoom pan', bindCircles);
       clearCircles();
     }
