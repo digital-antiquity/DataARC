@@ -405,7 +405,6 @@ $(function(){
     },
     templates: {
       suggestion: function (data) {
-        console.log(data);
         return '<p class="node-name search-results">' + data.name + '</p>';
       }
     }
@@ -537,7 +536,8 @@ $(function(){
       srcCtx.oBackingStorePixelRatio ||
       srcCtx.backingStorePixelRatio || 1;
 
-    return (window.devicePixelRatio || 1) / backingStore; // eslint-disable-line no-undef
+    //return (window.devicePixelRatio || 1) / backingStore; // eslint-disable-line no-undef
+    return 1;
   };
 
   function changeLayout(layout, id=false){
@@ -591,7 +591,7 @@ $(function(){
       setTimeout(function() {
         bindCircles();
         cy.on('zoom pan', _.debounce(bindCircles, 100));
-      }, 2000);
+      }, 1100);
     } else {
       cy.off('zoom pan', bindCircles);
       clearCircles();
