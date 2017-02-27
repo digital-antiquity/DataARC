@@ -263,7 +263,7 @@ $(function(){
   }
 
   function hideNodeInfo(){
-    $('#infotable').hide();
+    $('#infotable').empty();
   }
 
   function initCy( then ){
