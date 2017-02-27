@@ -330,6 +330,7 @@ $(function(){
         Promise.resolve().then(function(){
           return highlight( node );
         });
+        clearCircles();
       } else if( edge.nonempty() ){
         showEdgeInfo( edge );
         console.log('Edge id = '+edge.id());
@@ -609,6 +610,7 @@ $(function(){
 
   function centerNode(data){
     var id = $('#centerNode').data('id');
+    $('#layout-select').val('concentric');
     Promise.resolve()
     .then(clear)
     setTimeout(function() {layout = 'concentric'; changeLayout('concentric',id)}, 1500);
