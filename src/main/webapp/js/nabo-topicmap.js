@@ -509,7 +509,6 @@ $(function(){
 
 
   function resizeMyCanvas(){
-    pxRatio = getPixelRatio();
     $canvas
       .attr( 'height', canvasContainer.height() )
       .attr( 'width', canvasContainer.width() )
@@ -522,24 +521,10 @@ $(function(){
     pan = cy.pan();
     ePan = {x: pan.x, y:pan.y};
     zoom = cy.zoom();
-    eZoom = zoom * pxRatio;
+    eZoom = zoom * 1;
     ctx.translate( ePan.x, ePan.y );
     ctx.scale( eZoom, eZoom );
   }
-
-  function getPixelRatio(){
-    srcCtx = sourceCanvas.getContext('2d');
-
-    var backingStore = srcCtx.backingStorePixelRatio ||
-      srcCtx.webkitBackingStorePixelRatio ||
-      srcCtx.mozBackingStorePixelRatio ||
-      srcCtx.msBackingStorePixelRatio ||
-      srcCtx.oBackingStorePixelRatio ||
-      srcCtx.backingStorePixelRatio || 1;
-
-    //return (window.devicePixelRatio || 1) / backingStore; // eslint-disable-line no-undef
-    return 1;
-  };
 
   function changeLayout(layout, id=false){
     cy.off('zoom pan', bindCircles);
