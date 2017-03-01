@@ -3305,4 +3305,123 @@
             <topicRef href="#topic133714.1487867787132"/>
         </role>
     </association>
+    <!-- church farm is a farm -->
+    <association>
+        <type>
+             <topicRef href="#topic133686.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133579.1487867787131" />
+            </type>
+        <topicRef href="#topic133706.1487867787132"/>
+        </role>
+    </association>
+    <!-- independent farm is a farm -->
+    <association>
+        <type>
+            <topicRef href="#topic133686.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133579.1487867787131" />
+            </type>
+            <topicRef href="#topic133697.1487867787132"/>
+        </role>
+    </association>
+
+
+    <!-- saga narriative creates cursed spot -->
+    <association>
+        <type>
+                <topicRef href="#topic133570.1487867787130"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133580.1487867787131" />
+            </type>
+            <topicRef href="#topic133768.1487867787132"/>
+        </role>
+    </association>
+
+
+
+    <!-- power is component of eccesiastical power -->
+    <association>
+        <type>
+            <!-- ecclesiastical -->
+            <topicRef href="#topic133715.1487867787132"/>
+        </type>
+        <role>
+            <type>
+                <!-- is component of -->
+                <topicRef href="#topic133765.1487867787132" />
+            </type>
+            <!-- power -->
+            <topicRef href="#topic133714.1487867787132"/>
+        </role>
+    </association>
+
+
+
+    <!-- admin unit contains farms -->
+    <association>
+        <type>
+            <topicRef href="#topic133686.1487867787132" />
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133601.1487867787131"/>
+            </type>
+            <topicRef href="#topic133587.1487867787131"/>
+        </role>
+    </association>
+
+
+    <!-- cow has right on  pasture -->
+    <association>
+        <type>
+            <topicRef href="#topic133603.1487867787131" />
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133732.1487867787132"/>
+            </type>
+            <topicRef href="#topic133631.1487867787131"/>
+        </role>
+    </association>
+
+
+    <!-- farm falls within ecological area -->
+    <association>
+        <type>
+            <topicRef href="#topic133774.1487867787132" />
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133739.1487867787132"/>
+            </type>
+            <topicRef href="#topic133603.1487867787131"/>
+        </role>
+    </association>
+
+
+
+    <!-- farm contains grain store -->
+    <association>
+        <type>
+            <!--  -->
+            <topicRef href="#topic133671.1487867787131"/>
+        </type>
+        <role>
+            <type>
+                <!-- is component of -->
+                <topicRef href="#topic133601.1487867787131" />
+            </type>
+            <!-- power -->
+            <topicRef href="#topic133686.1487867787132"/>
+        </role>
+    </association>
+    
+    
 </topicMap>
