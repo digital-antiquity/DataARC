@@ -49,6 +49,12 @@ function getContextPath() {
 
 </head>
 <body>
+    <div id="main" class="container-fluid">
+        <div class="span-md-11">
+           <img src="${contextPath}/images/dataarc_logo_final.png" alt='DataARC' style="height:50px;margin-top:10px" class="img-responsive center-block"/>
+    	</div>
+	</div>
+    <hr />
 
  <div class="container-fluid" id="main">
    <div class="row">
