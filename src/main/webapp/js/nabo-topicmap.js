@@ -273,7 +273,7 @@ $(function(){
 
     cy = window.cy = cytoscape({
       container: document.getElementById('topicmap'),
-      layout: { name: 'spread', padding: layoutPadding, directed: true, stop:setOrgPos },
+      layout: { name: 'cola', padding: layoutPadding, directed: true, stop:setOrgPos },
       style: styleJson,
       elements: elements,
       motionBlur: true,
