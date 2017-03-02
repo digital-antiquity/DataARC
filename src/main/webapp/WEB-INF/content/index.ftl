@@ -51,12 +51,12 @@ function getContextPath() {
 <body>
     <div id="main" class="container-fluid">
         <div class="span-md-11">
-           <img src="${contextPath}/images/dataarc_logo_final.png" alt='DataARC' style="height:50px;margin-top:10px" class="img-responsive center-block"/>
+           <img src="${contextPath}/images/dataarc_logo_final.png" alt='DataARC' style="height:50px;margin-top:20px" class="img-responsive center-block"/>
     	</div>
 	</div>
     <hr />
 
- <div class="container-fluid" id="main">
+ <div class="container-fluid">
    <div class="row">
      <div id="mapbox"  class="col-md-8">
        <div id="map" style="height: 600px"></div>
@@ -79,7 +79,7 @@ function getContextPath() {
      <div id="infobox" class="col-md-4">
 
        <div id="search-wrapper" class="pull-left">
-         <input type="text" class="form-control" id="search" placeholder="&#xf002; Search">
+         <input type="text" class="form-control" id="search" placeholder="Search">
        </div>
 
        <div class="btn-group pull-right">
