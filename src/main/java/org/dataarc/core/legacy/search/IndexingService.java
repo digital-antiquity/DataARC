@@ -126,8 +126,8 @@ public class IndexingService {
             if (entry.getProperties().containsKey("perc")) {
                 data.put("perc", entry.getProperties().get("perc"));
             }
-            if (entry.getProperties().containsKey("samples")) {
-                data.put("samples", entry.getProperties().get("samples"));
+            if (entry.getProperties().containsKey("sites")) {
+                data.put("sites", entry.getProperties().get("sites"));
             }
             String data_ = new ObjectMapper().writeValueAsString(data);
             if (StringUtils.isNotBlank(data_)) {

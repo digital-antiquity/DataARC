@@ -38,6 +38,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
         }
         commandline.load(path);
         applicationContext.close();
+        System.exit(0);
     }
 
     private void load(String path) {
@@ -49,7 +50,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
             topicMapService.deleteTopicMap();
             topicMapService.load("src/main/data/landscape_wandora.xtm");
             logger.debug("done loading wandora");
-        } catch (JAXBException | SAXException e) {
+        } catch (Exception e) {
             logger.error("{}", e,e);
         }
         logger.debug("applying indicators");

@@ -74,7 +74,7 @@ function createSeadGraph(key, input) {
         if (!input.hasOwnProperty(v)) {
             continue;
         }
-        var jd = JSON.parse(v).samples;
+        var jd = JSON.parse(v).sites;
         console.log(jd);
         var num =0;
         for (site in jd) {
@@ -82,24 +82,19 @@ function createSeadGraph(key, input) {
                 continue;
             }
             var samples = jd[site];
-            console.log(site);
             console.log(samples);
-            for (var i=0; i < samples.length; i++) {
-                $.each(samples[i], function(k, vv) {
-//                    console.log(k,vv);
-                    if (k == 'Sample') {
-                        sampleLabels.push(vv);
-                    } else {
-                        var cat = k;
-                        var val = parseFloat(vv);
-                        if (cats[cat] == undefined) {
-                            cats[cat] = [];
-                        }
-                        cats[cat].push(val);
+            $.each(samples, function(k, vv) {
+                if (k == 'Sample') {
+                    sampleLabels.push(vv);
+                } else {
+                    var cat = k;
+                    var val = parseFloat(vv);
+                    if (cats[cat] == undefined) {
+                        cats[cat] = [];
                     }
-                });
-                
-            }
+                    cats[cat].push(val);
+                }
+            });
             num++;
             for (var c =0 ; c < categories.length; c++) {
                 var cat = categories[c];
@@ -109,6 +104,7 @@ function createSeadGraph(key, input) {
             }
         }
     }
+    var width = $("#infodetail").width();
     var chartData = {
         bindto : "#barChart",
         data : {
@@ -116,11 +112,18 @@ function createSeadGraph(key, input) {
             type : 'bar',
             groups: [categories]
         },
+        size: {
+            height: 400,
+            width: width
+          },
+          legend: {
+              hide:false
+          },
         axis: {
-            rotated: true,
+            rotated: false,
             x: {
                 type: 'category',
-                categories: sampleLabels
+                categories: sampleLabels,
             }
         }
     };

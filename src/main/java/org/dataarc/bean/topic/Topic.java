@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import org.dataarc.bean.AbstractPersistable;
 
@@ -22,6 +24,7 @@ public class Topic extends AbstractPersistable {
     private String name;
 
     @Column(length = 255)
+    @NotNull
     private String identifier;
 
     @ElementCollection()
@@ -32,7 +35,7 @@ public class Topic extends AbstractPersistable {
 //    @OneToMany()
 //    private Set<Association> associations = new HashSet<>();
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, cascade={CascadeType.ALL})
     private Topic parent;
 
     public String getName() {

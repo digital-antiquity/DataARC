@@ -696,7 +696,7 @@ function featureToTable(points) {
             keys[key].push(props[key]);
         }
     }
-
+console.log(keys);
     // for each "source," create a tab-panel
     var text = '<div role="tabpanel">';
     text += '  <ul class="nav nav-tabs" role="tablist">';

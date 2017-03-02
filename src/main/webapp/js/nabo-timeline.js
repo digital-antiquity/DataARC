@@ -5,6 +5,7 @@
 
 // Create the timelien
 function createTimeline() {
+    SimileAjax.History.enabled = false;
     var eventSource = new Timeline.DefaultEventSource(0);
 
     var theme = Timeline.ClassicTheme.create();

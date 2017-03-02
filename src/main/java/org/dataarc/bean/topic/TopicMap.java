@@ -3,6 +3,7 @@ package org.dataarc.bean.topic;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,11 +19,11 @@ public class TopicMap extends AbstractPersistable {
     private String name;
 
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "topic_map_id")
     private List<Topic> topics = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "topic_map_id")
     private List<Association> associations = new ArrayList<>();
 
