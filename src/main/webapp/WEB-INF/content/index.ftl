@@ -110,13 +110,13 @@ function getContextPath() {
 
  <div id="layouts">
    <select id="layout-select">
-     <option value="spread">Spread</option>
-     <option value="grid">Grid</option>
-     <option value="circle">Circle</option>
      <option value="breadthfirst">Breadth First</option>
-     <option value="cose">Cose</option>
-     <option value="cola">Cola</option>
+     <option value="circle">Circle</option>
+     <option value="cola" selected>Cola</option>
      <option value="concentric">Concentric</option>
+     <option value="cose">Cose</option>
+     <option value="grid">Grid</option>
+     <option value="spread">Spread</option>
    </select>
  </div>
 
