@@ -526,7 +526,8 @@ $(function(){
     ctx.scale( eZoom, eZoom );
   }
 
-  function changeLayout(layout, id=false){
+  function changeLayout(layout, id){
+    if (typeof(id)==='undefined') id = false;
     cy.off('zoom pan', bindCircles);
     allEles.restore();
     var layoutOptions = {name: layout, animate: true, animationDuration: 1000, animationEasing: easing, stop: setOrgPos, avoidOverlap: true };
