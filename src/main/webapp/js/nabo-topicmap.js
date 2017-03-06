@@ -273,7 +273,7 @@ $(function(){
 
     cy = window.cy = cytoscape({
       container: document.getElementById('topicmap'),
-      layout: { name: 'spread', padding: layoutPadding, directed: true, stop:setOrgPos },
+      layout: { name: 'cola', padding: layoutPadding, directed: true, stop:setOrgPos },
       style: styleJson,
       elements: elements,
       motionBlur: true,
@@ -526,7 +526,8 @@ $(function(){
     ctx.scale( eZoom, eZoom );
   }
 
-  function changeLayout(layout, id=false){
+  function changeLayout(layout, id){
+    if (typeof(id)==='undefined') id = false;
     cy.off('zoom pan', bindCircles);
     allEles.restore();
     var layoutOptions = {name: layout, animate: true, animationDuration: 1000, animationEasing: easing, stop: setOrgPos, avoidOverlap: true };
