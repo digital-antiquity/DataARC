@@ -16,6 +16,7 @@ import org.dataarc.core.dao.TopicDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,7 @@ public class IndicatorService {
     private ImportDao importDao;
 
     @Transactional(readOnly = false)
+    @PreAuthorize("hasPermission('Indicator', 'CREATE_EDIT')")
     public void save(Indicator indicator) {
         logger.debug("{}", indicator.getTopicIdentifiers());
         List<Topic> topics = new ArrayList<>();
