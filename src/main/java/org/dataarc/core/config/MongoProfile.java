@@ -1,6 +1,12 @@
 package org.dataarc.core.config;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+import org.apache.solr.core.CoreContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,17 +17,22 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.repository.config.EnableSolrRepositories;
+import org.springframework.util.ResourceUtils;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 
 @Configuration
+@EnableSolrRepositories(multicoreSupport = true, basePackages = MongoProfile.ORG_DATAARC_SOLR)
 @EnableMongoRepositories(basePackages = { MongoProfile.ORG_DATAARC_MONGO })
 @ComponentScan(basePackages = { "org.dataarc.core", MongoProfile.ORG_DATAARC_MONGO })
 @Profile("mongo")
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 public class MongoProfile extends DataArcConfiguration {
 
+    static final String ORG_DATAARC_SOLR = "org.dataarc.solr";
     static final String ORG_DATAARC_MONGO = "org.dataarc.datastore.mongo";
     static final int _27017 = 27017;
     static final String LOCALHOST = "localhost";
@@ -67,6 +78,22 @@ public class MongoProfile extends DataArcConfiguration {
         MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
         return mongoTemplate;
 
+    }
+
+
+    @Bean
+    SolrClient solrClient() throws FileNotFoundException {
+
+        // env.getProperty(DB_HOST, LOCALHOST)
+        String solrHome = ResourceUtils.getURL("src/main/resources/solr").getPath();
+        CoreContainer container = CoreContainer.createAndLoad(new File(solrHome).toPath());
+
+        return new EmbeddedSolrServer(container, "dataArc");
+    }
+
+    @Bean
+    public SolrTemplate solrTemplate() throws FileNotFoundException {
+        return new SolrTemplate(solrClient());
     }
 
     // @Bean

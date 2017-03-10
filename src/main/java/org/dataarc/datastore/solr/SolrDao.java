@@ -42,7 +42,7 @@ public class SolrDao implements ImportDao {
     SolrTemplate template;
 
     @Autowired
-    SourceRepository sourceRepository;
+    SolrRepository sourceRepository;
 
     @Override
     public void save(DataEntry entry) {
