@@ -37,7 +37,7 @@ public class SolrDao implements ImportDao {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
-
+//http://nixmash.com/java/location-queries-with-spring-data-solr/
     @Autowired
     SolrTemplate template;
 
