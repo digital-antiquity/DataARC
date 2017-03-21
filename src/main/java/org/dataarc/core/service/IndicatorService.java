@@ -122,4 +122,10 @@ public class IndicatorService {
         
     }
 
+    @Transactional(readOnly=true)
+    @PreAuthorize("hasPermission(#id, 'VIEW')")
+    public Indicator view(Long id) {
+        return findById(id);
+    }
+
 }

@@ -43,7 +43,7 @@ public class IndicatorController extends AbstractRestController {
 
     @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.GET)
     public Indicator getIndicatorById(@PathVariable(value = "id", required = true) Long id) {
-        Indicator findById = indicatorService.findById(id);
+        Indicator findById = indicatorService.view(id);
         setTopics(findById);
         return findById;
     }
