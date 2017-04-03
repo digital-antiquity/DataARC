@@ -340,13 +340,6 @@
             <version>1.1</version>
         </dependency>
         <!-- Servlet & Jsp -->
-        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.api.version}</version>
-            <!-- <scope>provided</scope> -->
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.locationtech.spatial4j/spatial4j -->
         <dependency>
             <groupId>org.locationtech.spatial4j</groupId>
@@ -793,7 +786,7 @@
                         <!-- Optional configuration which provides for running 
                             any npm command -->
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>install  --allow-root</arguments>
                         </configuration>
                     </execution>
                     <!-- meed to run npm install bower; npm install grunt -->
@@ -803,7 +796,7 @@
                             <goal>bower</goal>
                         </goals>
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>install  --allow-root</arguments>
                         </configuration>
                     </execution>
 
