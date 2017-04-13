@@ -16,8 +16,6 @@ public class SolrQueryDao extends AbstractDao  {
     @Autowired
     SolrTemplate solrTemplate;
 
-    @Autowired
-    SolrDao solrDao;
 
 
 }

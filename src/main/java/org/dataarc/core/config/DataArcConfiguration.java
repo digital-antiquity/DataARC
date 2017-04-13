@@ -25,7 +25,7 @@ import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO })
+@ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO, DataArcConfiguration.ORG_DATAARC_SOLR })
 // @ComponentScan(excludeFilters = @Filter(
 // type = FilterType.REGEX, pattern = { "regex for distribution 1" }
 // ))
@@ -33,7 +33,9 @@ import liquibase.integration.spring.SpringLiquibase;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class DataArcConfiguration {
 
+    static final String ORG_DATAARC_MONGO = "org.dataarc.datastore.mongo";
     static final String ORG_DATAARC_CORE = "org.dataarc.core";
+    static final String ORG_DATAARC_SOLR = "org.dataarc.datastore.solr";
     private static final String ORG_DATAARC_BEAN = "org.dataarc.bean";
     @Resource
     protected Environment env;

@@ -25,15 +25,13 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 
 @Configuration
-@EnableSolrRepositories(multicoreSupport = true, basePackages = MongoProfile.ORG_DATAARC_SOLR)
-@EnableMongoRepositories(basePackages = { MongoProfile.ORG_DATAARC_MONGO })
-@ComponentScan(basePackages = { "org.dataarc.core", MongoProfile.ORG_DATAARC_MONGO })
+@EnableSolrRepositories(multicoreSupport = true, basePackages = DataArcConfiguration.ORG_DATAARC_SOLR)
+@EnableMongoRepositories(basePackages = { DataArcConfiguration.ORG_DATAARC_MONGO })
+@ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, DataArcConfiguration.ORG_DATAARC_MONGO, DataArcConfiguration.ORG_DATAARC_SOLR })
 @Profile("mongo")
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 public class MongoProfile extends DataArcConfiguration {
 
-    static final String ORG_DATAARC_SOLR = "org.dataarc.solr";
-    static final String ORG_DATAARC_MONGO = "org.dataarc.datastore.mongo";
     static final int _27017 = 27017;
     static final String LOCALHOST = "localhost";
     static final String DB_NAME = "mongoNname";

@@ -23,7 +23,9 @@ public class StartupService implements ApplicationListener<ContextStartedEvent> 
 
     @Autowired
     IndexingService indexingService;
-
+    @Autowired
+    SolrIndexingService solrIndexingService;
+    
     @Autowired(required = false)
     @Qualifier("bce.properties")
     private Properties myProperties = new Properties();
@@ -32,6 +34,7 @@ public class StartupService implements ApplicationListener<ContextStartedEvent> 
     @Override
     public void onApplicationEvent(ContextStartedEvent arg0) {
          indexingService.reindex();
+         solrIndexingService.reindex();
     }
 
 }

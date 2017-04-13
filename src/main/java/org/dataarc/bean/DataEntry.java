@@ -11,9 +11,6 @@ import javax.persistence.Column;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
-//@Entity
-//@Table(name="source_data")
-//@TypeDefs( {@TypeDef( name= "StringJsonObject", typeClass = StringJsonUserType.class)})
 public class DataEntry {
 
     private GeoJsonPoint position;
