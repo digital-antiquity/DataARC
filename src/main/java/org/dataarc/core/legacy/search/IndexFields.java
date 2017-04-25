@@ -34,4 +34,8 @@ public interface IndexFields {
     static final String DATA = "_data";
     static final String INDICATOR = "indicator";
     static final String TOPIC  = "topic";
+    static final String INDICATOR_2ND = "indicator_2";
+    static final String TOPIC_ID = "topic_id";
+    static final String POINT = "point";
+    static final String KEYWORD = "keywords";
 }

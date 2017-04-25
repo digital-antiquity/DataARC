@@ -1,15 +1,16 @@
 package org.dataarc.core.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Column;
-
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.core.legacy.search.IndexFields;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
@@ -39,16 +40,19 @@ public class SolrIndexObject {
     private Date dateCreated;
     @Field(child = true, value = "properties")
     private Map<String, Object> properties = new HashMap<>();
-    @Field(child = true, value = "indicators")
+    @Field(child = true, value = IndexFields.INDICATOR)
     private Set<String> indicators = new HashSet<>();
-    @Field(child = true, value = "indicators2")
+    @Field(child = true, value = IndexFields.INDICATOR_2ND)
     private Set<String> indicators2 = new HashSet<>();
-    @Field(child = true, value = "topics")
+    @Field(child = true, value = IndexFields.TOPIC)
     private Set<String> topics = new HashSet<>();
-    @Field(child = true, value = "topicIds")
+    @Field(child = true, value = IndexFields.TOPIC_ID)
     private Set<String> topicIdentifiers = new HashSet<>();
 
-    @Column(columnDefinition = "geometry(Point,4326)")
+    @Field(value=IndexFields.KEYWORD) 
+    private List<String> values = new ArrayList<>();
+
+    @Field(value=IndexFields.POINT)
     private Point position;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
