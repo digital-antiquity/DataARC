@@ -13,11 +13,12 @@ import org.dataarc.bean.DataEntry;
 import org.dataarc.core.legacy.search.IndexFields;
 import org.geojson.Feature;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 @SolrDocument
@@ -57,13 +58,14 @@ public class SolrIndexObject {
 
     @Field(value = IndexFields.POINT)
     private Point position;
-    private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+//    private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     public SolrIndexObject() {}
     
     public SolrIndexObject(DataEntry entry) {
-        if (entry.getPosition() != null) {
-            position = geometryFactory.createPoint(new Coordinate(entry.getPosition().getX(), entry.getPosition().getY()));
+        GeoJsonPoint p = entry.getPosition();
+        if (p != null) {
+            position = new Point(p.getX(),p.getY());
         }
 
         id = entry.getId();
@@ -167,17 +169,16 @@ public class SolrIndexObject {
         return position;
     }
 
-    public void setPosition(String point) {
-        
-    }
+//    public void setPosition(String point) {
+//        
+//    }
 
-    private void setPosition(Point position) {
+    public void setPosition(Point position) {
         this.position = position;
     }
 
     public Feature copyToFeature() {
-        Coordinate coordinate = getPosition().getCoordinate();
-        org.geojson.Point key = new org.geojson.Point(coordinate.x, coordinate.y);
+        org.geojson.Point key = new org.geojson.Point(getPosition().getX(), getPosition().getY());
         Feature feature = new Feature();
         feature.setGeometry(key);
         Map<String, Object> valMap = new HashMap<>();

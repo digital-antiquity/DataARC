@@ -34,8 +34,8 @@ public class LegacyJsonController extends AbstractController {
         SearchQueryObject sqo = new SearchQueryObject();
 //        sqo.setTopLeft(new double[] {x1,y1});
 //        sqo.setBottomRight(new double[] {x2,y2});
-        sqo.setStart(start);
-        sqo.setEnd(end);
+//        sqo.setStart(start);
+//        sqo.setEnd(end);
         if (StringUtils.isNotBlank(term)) {
             sqo.getKeywords().add(term);
         }

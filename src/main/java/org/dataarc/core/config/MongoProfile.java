@@ -2,6 +2,7 @@ package org.dataarc.core.config;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
@@ -12,17 +13,21 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.convert.CustomConversions;
+import org.springframework.data.solr.core.convert.MappingSolrConverter;
+import org.springframework.data.solr.core.convert.SolrConverter;
+import org.springframework.data.solr.core.mapping.SimpleSolrMappingContext;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 import org.springframework.util.ResourceUtils;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
+import com.vividsolutions.jts.geom.Point;
 
 @Configuration
 @EnableSolrRepositories(multicoreSupport = true, basePackages = DataArcConfiguration.ORG_DATAARC_SOLR)
@@ -113,5 +118,19 @@ public class MongoProfile extends DataArcConfiguration {
     // transactionManager.setEntityManagerFactory(mongoEntityManager().getObject());
     // return transactionManager;
     // }
+
+//    @Bean
+//    public SolrConverter solrConverter(CustomConversions customConversions){
+//        MappingSolrConverter mappingSolrConverter= new MappingSolrConverter(new SimpleSolrMappingContext());
+//        mappingSolrConverter.setCustomConversions(customConversions);
+//        return mappingSolrConverter;
+//    }
+//    
+//
+//    @Bean
+//    public CustomConversions customConversions(){
+//        return new CustomConversions(Arrays.asList(new PointConverter<Point,String>()));
+//    }
+
 
 }

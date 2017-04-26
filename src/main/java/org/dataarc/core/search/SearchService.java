@@ -61,7 +61,7 @@ public class SearchService {
         // Filter filter = strategy.makeFilter(args);
         int limit = 1_000_000;
         Criteria temporalConditions = null;
-        FacetQuery query = new SimpleFacetQuery();
+        FacetQuery query = new SimpleFacetQuery(new Criteria(Criteria.WILDCARD).expression(Criteria.WILDCARD));
         if (sqo.getEnd() != null) {
             temporalConditions = new Criteria(IndexFields.END).between(sqo.getStart(), sqo.getEnd());
         }
@@ -121,7 +121,7 @@ public class SearchService {
             logger.debug(obj);
             try {
                 // create a point for each result
-                if (obj.getPosition() == null || obj.getPosition().getCoordinate() == null) {
+                if (obj.getPosition() == null || obj.getPosition() == null) {
                 } else {
                     fc.add(obj.copyToFeature());
                 }
