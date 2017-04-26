@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.legacy.search.IndexFields;
+import org.geojson.Feature;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
@@ -21,6 +22,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 @SolrDocument
 public class SolrIndexObject {
+    private static final String DATE = "date";
+    private static final String SOURCE = "source";
 
     @Id
     public String id;
@@ -49,13 +52,15 @@ public class SolrIndexObject {
     @Field(child = true, value = IndexFields.TOPIC_ID)
     private Set<String> topicIdentifiers = new HashSet<>();
 
-    @Field(value=IndexFields.KEYWORD) 
+    @Field(value = IndexFields.KEYWORD)
     private List<String> values = new ArrayList<>();
 
-    @Field(value=IndexFields.POINT)
+    @Field(value = IndexFields.POINT)
     private Point position;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
+    public SolrIndexObject() {}
+    
     public SolrIndexObject(DataEntry entry) {
         if (entry.getPosition() != null) {
             position = geometryFactory.createPoint(new Coordinate(entry.getPosition().getX(), entry.getPosition().getY()));
@@ -162,8 +167,50 @@ public class SolrIndexObject {
         return position;
     }
 
-    public void setPosition(Point position) {
+    public void setPosition(String point) {
+        
+    }
+
+    private void setPosition(Point position) {
         this.position = position;
+    }
+
+    public Feature copyToFeature() {
+        Coordinate coordinate = getPosition().getCoordinate();
+        org.geojson.Point key = new org.geojson.Point(coordinate.x, coordinate.y);
+        Feature feature = new Feature();
+        feature.setGeometry(key);
+        Map<String, Object> valMap = new HashMap<>();
+        // if it's a date, clean it up and combine the start/end into a phrase
+        valMap.put("data", getProperties());
+        valMap.put(DATE, getFormattedDate());
+        valMap.put(SOURCE, getSource());
+        valMap.put(IndexFields.TOPIC, getTopics());
+        valMap.put(IndexFields.TOPIC_ID, getTopicIdentifiers());
+        valMap.put(IndexFields.INDICATOR, getIndicators());
+        valMap.put(IndexFields.TITLE, getTitle());
+        feature.setProperties(valMap);
+        return feature;
+    }
+
+    private String getFormattedDate() {
+        String start_ = "";
+        String end_ = "";
+        if (getStart() != null && getStart() != -1) {
+            start_ = Integer.toString(getStart());
+        }
+        if (getEnd() != null && getEnd() != -1) {
+            end_ = Integer.toString(getEnd());
+        }
+        if (start_.trim().contains("-")) {
+            start_ += " BCE ";
+            start_ = start_.replace("-", "");
+        }
+        if (end_.trim().startsWith("-")) {
+            end_ += " BCE ";
+            end_ = end_.replace("-", "");
+        }
+        return start_ + " - " + end_;
     }
 
 }

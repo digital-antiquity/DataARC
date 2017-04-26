@@ -2,7 +2,7 @@ package org.dataarc.web.config;
 
 import javax.annotation.PostConstruct;
 
-import org.dataarc.core.legacy.search.IndexingService;
+import org.dataarc.core.service.SolrIndexingService;
 import org.dataarc.web.interceptor.RequestLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 public class DataArcWebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private IndexingService indexingService;
+    private SolrIndexingService indexingService;
 
     @Bean
     public FreeMarkerViewResolver freemarkerViewResolver() {
