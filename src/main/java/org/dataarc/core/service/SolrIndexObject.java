@@ -14,14 +14,12 @@ import org.dataarc.core.legacy.search.IndexFields;
 import org.geojson.Feature;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
-import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import com.fasterxml.classmate.util.ResolvedTypeCache.Key;
 
-@SolrDocument
+@SolrDocument(solrCoreName="general")
 public class SolrIndexObject {
     private static final String DATE = "date";
     private static final String SOURCE = "source";
@@ -30,14 +28,17 @@ public class SolrIndexObject {
     public String id;
 
     @Field
+    @Indexed(type = "tlongs")
     private Integer start;
+
     @Field
+    @Indexed(type = "tlongs")
     private Integer end;
 
     @Field
     private String title;
 
-    @Field
+    @Indexed(type = "text_general", name = IndexFields.SOURCE, copyTo=IndexFields.SOURCE+"_txt")
     private String source;
 
     @Field
@@ -58,16 +59,15 @@ public class SolrIndexObject {
 
     @Field(value = IndexFields.POINT)
     private Point position;
-//    private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+    // private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-    public SolrIndexObject() {}
-    
+    public SolrIndexObject() {
+    }
+
     public SolrIndexObject(DataEntry entry) {
-        GeoJsonPoint p = entry.getPosition();
-        if (p != null) {
-            position = new Point(p.getX(),p.getY());
+        if (entry.getX() != null && entry.getY() != null) {
+            position = new Point(entry.getX(), entry.getY());
         }
-
         id = entry.getId();
         start = entry.getStart();
         end = entry.getEnd();
@@ -75,6 +75,9 @@ public class SolrIndexObject {
         indicators = entry.getIndicators();
         topics = entry.getTopics();
         topicIdentifiers = entry.getTopicIdentifiers();
+        values.add(source);
+        values.addAll(indicators);
+        values.addAll(topics);
     }
 
     public String getId() {
@@ -169,9 +172,9 @@ public class SolrIndexObject {
         return position;
     }
 
-//    public void setPosition(String point) {
-//        
-//    }
+    // public void setPosition(String point) {
+    //
+    // }
 
     public void setPosition(Point position) {
         this.position = position;
@@ -213,5 +216,7 @@ public class SolrIndexObject {
         }
         return start_ + " - " + end_;
     }
+
+    private @Field("*_txt") Map<String, List<String>> textMap;
 
 }

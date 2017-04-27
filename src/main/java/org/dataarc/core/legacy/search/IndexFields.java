@@ -37,5 +37,5 @@ public interface IndexFields {
     static final String INDICATOR_2ND = "indicator_2";
     static final String TOPIC_ID = "topic_id";
     static final String POINT = "point";
-    static final String KEYWORD = "keywords";
+    static final String KEYWORD = "general_keywords";
 }
