@@ -54,7 +54,7 @@ public class TopicMapService {
         List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();
         //flatten for this use
         findTopicsForIndicators.forEach(topic -> {
-            topic.setParent(null);
+            topic.getParents().clear();
         });
         return findTopicsForIndicators;
     }
@@ -168,11 +168,8 @@ public class TopicMapService {
                 topic_.getNameOrOccurrence().forEach(noc -> {
                     // topic_.setParent(topic.getInstanceOf().);
                     if (topic_.getInstanceOf() != null) {
-                        if (topic_.getInstanceOf().getTopicRef().size() > 1) {
-                            throw new NotImplementedException();
-                        }
                         topic_.getInstanceOf().getTopicRef().forEach(ref -> {
-                            topic.setParent(get(internalMap,ref.getHref()));
+                            topic.getParents().add(get(internalMap,ref.getHref()));
                         });
                     }
                     if (noc instanceof Name) {

@@ -17,8 +17,6 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-import com.fasterxml.classmate.util.ResolvedTypeCache.Key;
-
 @SolrDocument(solrCoreName="general")
 public class SolrIndexObject {
     private static final String DATE = "date";
@@ -28,17 +26,15 @@ public class SolrIndexObject {
     public String id;
 
     @Field
-    @Indexed(type = "tlongs")
     private Integer start;
 
     @Field
-    @Indexed(type = "tlongs")
     private Integer end;
 
     @Field
     private String title;
 
-    @Indexed(type = "text_general", name = IndexFields.SOURCE, copyTo=IndexFields.SOURCE+"_txt")
+    @Field
     private String source;
 
     @Field

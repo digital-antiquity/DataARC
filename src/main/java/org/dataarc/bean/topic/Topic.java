@@ -11,8 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
 import org.dataarc.bean.AbstractPersistable;
@@ -35,8 +35,11 @@ public class Topic extends AbstractPersistable {
 //    @OneToMany()
 //    private Set<Association> associations = new HashSet<>();
 
-    @ManyToOne(optional = true, cascade={CascadeType.ALL})
-    private Topic parent;
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name = "topic_parents", joinColumns = { @JoinColumn(nullable = false, name = "topic_id") }, inverseJoinColumns = { @JoinColumn(
+            nullable = false,
+            name = "parent_id") })
+    private Set<Topic> parents = new HashSet<>();
 
     public String getName() {
         return name;
@@ -62,16 +65,16 @@ public class Topic extends AbstractPersistable {
         this.varients = varients;
     }
 
-    public Topic getParent() {
-        return parent;
-    }
-
-    public void setParent(Topic parent) {
-        this.parent = parent;
-    }
-
     @Override
     public String toString() {
         return String.format("%s (%s)" , name, getId());
+    }
+
+    public Set<Topic> getParents() {
+        return parents;
+    }
+
+    public void setParents(Set<Topic> parents) {
+        this.parents = parents;
     }
 }
