@@ -22,11 +22,11 @@
     <field name="dateCreated" type="date" required="false" indexed="true" />
 
 
-    <field name="topic_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-    <field name="topic_id_2" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-    <field name="topic" type="text_en" indexed="true" stored="true" required="false" multiValued="false" />
-    <field name="indicator" type="text_en" indexed="true" stored="true" required="false" multiValued="false" />
-    <field name="indicator_2" type="text_en" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="topic_id" type="string" indexed="true" stored="true" required="false" multiValued="true" />
+    <field name="topic_id_2" type="string" indexed="true" stored="true" required="false" multiValued="true" />
+    <field name="topic" type="text_en" indexed="true" stored="true" required="false" multiValued="true" />
+    <field name="indicator" type="text_en" indexed="true" stored="true" required="false" multiValued="true" />
+    <field name="indicator_2" type="text_en" indexed="true" stored="true" required="false" multiValued="true" />
     
 
     <field name="point" type="location_rpt" indexed="true"  required="false" multiValued="true"  stored="true"/>

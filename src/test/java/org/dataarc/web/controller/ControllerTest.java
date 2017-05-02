@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -52,6 +53,17 @@ public class ControllerTest extends AbstractServiceTest {
         mockMvc.perform(MockMvcRequestBuilders.post(UrlConstants.QUERY_DATASTORE).content(asJsonString(query)).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+
+    @Test
+    public void legacyJson() throws Exception {
+        String schema = "SEAD";
+        ResultActions andExpect = mockMvc.perform(MockMvcRequestBuilders.post("/json?source="+ schema).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        String asString = andExpect.andReturn().getResponse().getContentAsString();
+        logger.debug(asString);
 
     }
 
