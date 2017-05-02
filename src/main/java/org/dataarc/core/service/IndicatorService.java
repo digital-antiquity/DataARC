@@ -3,6 +3,7 @@ package org.dataarc.core.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.DataEntry;
@@ -18,8 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.base.Objects;
 
 @Service
 @Transactional
@@ -59,7 +58,7 @@ public class IndicatorService {
             Iterator<Topic> iterator = indicator.getTopics().iterator();
             while (iterator.hasNext()) {
                 Topic topic = iterator.next();
-                if (Objects.equal(topic.getId(), id)) {
+                if (Objects.equals(topic.getId(), id)) {
                     iterator.remove();
                 }
             }

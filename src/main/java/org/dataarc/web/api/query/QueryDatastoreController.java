@@ -3,7 +3,7 @@ package org.dataarc.web.api.query;
 import java.util.ArrayList;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.service.QueryService;

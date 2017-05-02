@@ -3,7 +3,6 @@ package org.dataarc.core.search;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.dataarc.core.legacy.search.IndexFields;
 import org.dataarc.core.service.SolrIndexObject;
 import org.geojson.FeatureCollection;
@@ -31,10 +30,6 @@ public class SearchService {
     private SolrTemplate solrTemplate;
 
     private final Logger logger = Logger.getLogger(getClass());
-    // Fields that are being searched in keyword searches
-    private static final String[] searchFields = { IndexFields.TITLE, IndexFields.DESCRIPTION, IndexFields.WHAT, IndexFields.WHEN, IndexFields.WHERE,
-            IndexFields.WHO, IndexFields.TOPIC,
-            IndexFields.SOURCE, IndexFields.TYPE, IndexFields.TAGS };
 
     static int limit = 1_000_000;
 
@@ -54,7 +49,7 @@ public class SearchService {
      * @throws ParseException
      */
     public FeatureCollection search(SearchQueryObject sqo)
-            throws IOException, ParseException {
+            throws IOException  {
         // Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
         FeatureCollection fc = new FeatureCollection();
         // SpatialArgs args = new SpatialArgs(SpatialOperation.IsWithin, rectangle);
@@ -92,7 +87,7 @@ public class SearchService {
             
             Criteria in = null;
             for (String source : sqo.getSources()) {
-                Criteria c = Criteria.where(IndexFields.SOURCE+"").is(source);
+                Criteria c = Criteria.where("source_txt_en").is(source);
                 if (in == null) {
                     in = c;
                 } else {

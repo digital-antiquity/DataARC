@@ -3,10 +3,10 @@ package org.dataarc.core.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.Topic;
@@ -24,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
-
-import com.google.common.base.Objects;
 
 import topicmap.v2_0.Name;
 import topicmap.v2_0.Occurrence;
@@ -129,7 +127,7 @@ public class TopicMapService {
 
                         associationTo.setFrom(get(internalMap,toHref));
                         associationTo.setTo(get(internalMap,fromHref));
-                        if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {
+                        if (Objects.equals(associationTo.getTo(), associationTo.getFrom())) {
                             logger.warn("\t\tfrom == to");
                             associationTo.setTo(get(internalMap,associTypeHref));
                         }
@@ -141,7 +139,7 @@ public class TopicMapService {
 
                     associationFrom.setFrom(get(internalMap,fromHref));
                     associationFrom.setType(get(internalMap,fromTypeHref));
-                    if (Objects.equal(associationFrom.getTo(), associationFrom.getFrom())) {
+                    if (Objects.equals(associationFrom.getTo(), associationFrom.getFrom())) {
                         associationFrom.setFrom(get(internalMap,associTypeHref));
                     }
 

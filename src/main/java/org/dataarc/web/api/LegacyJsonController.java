@@ -3,8 +3,7 @@ package org.dataarc.web.api;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.commons.lang3.StringUtils;
 import org.dataarc.core.search.SearchQueryObject;
 import org.dataarc.core.search.SearchService;
 import org.dataarc.web.AbstractController;
@@ -30,7 +29,7 @@ public class LegacyJsonController extends AbstractController {
             @RequestParam(value = "end", required = false, defaultValue = "9999") Integer end,
             @RequestParam(value = "term", required = false) String term,
             @RequestParam(value = "topicId", required = false) String topicId,
-            @RequestParam(value = "types", required = false) List<String> types) throws IOException, ParseException {
+            @RequestParam(value = "types", required = false) List<String> types) throws IOException {
         SearchQueryObject sqo = new SearchQueryObject();
         if (x1 != -1d && y1 != -1d) {
             sqo.setTopLeft(new double[] { x1, y1 });

@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.AbstractDao;
@@ -16,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.arjuna.ats.jta.exceptions.NotImplementedException;
 
 @Component
 @Transactional
@@ -31,7 +32,7 @@ public class PostgresQueryDao extends AbstractDao implements QueryDao {
         return postgresDao.getDistinctValues(source, fieldName);
     }
 
-    public Page<DataEntry> getMatchingRows(FilterQuery fq) {
+    public Page<DataEntry> getMatchingRows(FilterQuery fq) throws NotImplementedException {
         throw new NotImplementedException();
         /*
          * this "theoretically works, but doesn't because we don't know how to get at the array subtype in a useful way
