@@ -37,9 +37,5 @@ public interface IndexFields {
     static final String INDICATOR_2ND = "indicator_2";
     static final String TOPIC_ID = "topic_id";
     static final String POINT = "point";
-<<<<<<< HEAD
-    static final String KEYWORD = "keyword";
-=======
     static final String KEYWORD = "keywords";
->>>>>>> parent of 97157f0... more work on schema and cleanup of search, about ready to move back to a manually created schema
 }

@@ -3,8 +3,11 @@ package org.dataarc.web.api;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.dataarc.core.legacy.search.LuceneService;
+import org.dataarc.core.search.SearchQueryObject;
 import org.dataarc.web.AbstractController;
 import org.geojson.FeatureCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +29,13 @@ public class LegacyJsonController extends AbstractController {
             @RequestParam(value = "start", required = false, defaultValue = "-9999") Integer start,
             @RequestParam(value = "end", required = false, defaultValue = "9999") Integer end,
             @RequestParam(value = "term", required = false) String term,
+            @RequestParam(value = "topicId", required = false) String topicId,
             @RequestParam(value = "types", required = false) List<String> types) throws IOException, ParseException {
-<<<<<<< HEAD
         SearchQueryObject sqo = new SearchQueryObject();
-//        sqo.setTopLeft(new double[] {x1,y1});
-//        sqo.setBottomRight(new double[] {x2,y2});
-//        sqo.setStart(start);
-//        sqo.setEnd(end);
+        sqo.setTopLeft(new double[] {x1,y1});
+        sqo.setBottomRight(new double[] {x2,y2});
+        sqo.setStart(start);
+        sqo.setEnd(end);
         if (StringUtils.isNotBlank(term)) {
             sqo.getKeywords().add(term);
         }
@@ -42,10 +45,7 @@ public class LegacyJsonController extends AbstractController {
         if (StringUtils.isNotBlank(topicId)) {
             sqo.getTopicIds().add(topicId);
         }
-        return searchService.search(sqo);
-=======
-        return luceneService.search(x1, y1, x2, y2, start, end, types, term);
->>>>>>> parent of dc30cd6... more work on search index issues, removing older lucene work
+        return luceneService.search(sqo);
     }
 
 }

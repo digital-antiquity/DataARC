@@ -148,7 +148,7 @@ public class IndexingService {
             String tags = get(entry, "tags");
             if (StringUtils.isNotBlank(tags)) {
                 for (String tag : StringUtils.split(tags, ",")) {
-                    doc.add(new TextField(IndexFields.TAGS, tag.trim(), Field.Store.YES));
+                    doc.add(new TextField(IndexFields.KEYWORD, tag.trim(), Field.Store.YES));
                 }
             }
             entry.getTopicIdentifiers().forEach(ident -> {
@@ -241,8 +241,8 @@ public class IndexingService {
     }
 
     private IndexWriter setupLuceneIndexWriter(String indexName) throws IOException {
-        // analyzer.setVersion(Version.LUCENE_6_0_0);
-        IndexWriterConfig iwc = new IndexWriterConfig(new LowercaseWhiteSpaceStandardAnalyzer()).setCodec(Codec.forName("Lucene60"));
+//         analyzer.setVersion(Version.LUCENE_6_0_0);
+        IndexWriterConfig iwc = new IndexWriterConfig(new LowercaseWhiteSpaceStandardAnalyzer()).setCodec(Codec.forName("Lucene62"));
 
         if (true) {
             iwc.setOpenMode(OpenMode.CREATE);

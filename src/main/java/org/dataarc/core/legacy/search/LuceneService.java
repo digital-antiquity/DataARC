@@ -28,6 +28,7 @@ import org.apache.lucene.spatial.prefix.RecursivePrefixTreeStrategy;
 import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
 import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.lucene.store.FSDirectory;
+import org.dataarc.core.search.SearchQueryObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.geojson.Point;
@@ -79,7 +80,7 @@ public class LuceneService {
      * @throws IOException
      * @throws ParseException
      */
-    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, List<String> types, String term)
+    public FeatureCollection search(SearchQueryObject sqo)
             throws IOException, ParseException {
         // Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
         FeatureCollection fc = new FeatureCollection();
@@ -88,9 +89,10 @@ public class LuceneService {
         // Filter filter = strategy.makeFilter(args);
         int limit = 1_000_000;
 
-        Builder bq = createDateRangeQueryPart(start, end);
-        appendTypes(types, bq);
-        appendKeywordSearch(term, bq);
+        Builder bq = createDateRangeQueryPart(sqo.getStart(), sqo.getEnd());
+        appendTypes(sqo.getSources(), bq);
+        appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
+        appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
         BooleanQuery query = bq.build();
         logger.debug(query);
         TopDocs topDocs = getSearcher().search(query, limit);
@@ -183,19 +185,24 @@ public class LuceneService {
     /**
      * Append the keyword phrase by searching all search fields
      * 
-     * @param term
+     * @param list
      * @param bq
      * @throws ParseException
      */
-    private void appendKeywordSearch(String term, Builder bq) throws ParseException {
-        if (StringUtils.isNotBlank(term)) {
-            String q = "";
-            for (String field : searchFields) {
-                q += field + ":\"" + term + "\" ";
+    private void appendKeywordSearch(List<String> list, String field, Builder bq) throws ParseException {
+        String q = "";
+        for (String item : list) {
+            if (StringUtils.isNotBlank(item)) {
+                if (StringUtils.isNotBlank(q)) {
+                    q += " OR ";
+                }
+                q += field + ":\"" + item + "\" ";
             }
-            QueryParser parser = new QueryParser(IndexFields.TAGS, analyzer);
+        }
+        
+        if (StringUtils.isNotBlank(q)) {
+            QueryParser parser = new QueryParser(field, analyzer);
             bq.add(new BooleanClause(parser.parse(q), Occur.MUST));
-
         }
     }
 
@@ -244,5 +251,4 @@ public class LuceneService {
     public void setReader(IndexReader reader) {
         this.reader = reader;
     }
-
 }
