@@ -31,6 +31,7 @@ $(function(){
     _.each(data[0].topics, function(value){
       nodes.push({"data": {
         "id": value.id.toString(),
+        "identifier": value.identifier,
         "shared_name": value.name,
         "name": value.name,
         "SUID": value.id,
@@ -45,6 +46,7 @@ $(function(){
         "name": value.name,
         "shared_interaction": value.name,
         "interaction": value.name,
+        "identifier": value.identifier,
         "SUID": value.id,
         "selected": false,
         "source": value.from,
@@ -317,13 +319,14 @@ $(function(){
 
       if( node.nonempty() ){
         var nodeClickedEvent = jQuery.Event('nodeclicked');
-        nodeClickedEvent.id = node.id();
+        console.log(node.data());
+        nodeClickedEvent.id = node.data().identifier;
         nodeClickedEvent.name = node.data().name;
         $( "body" ).trigger(nodeClickedEvent);
 
-        var $term = $("#term");
-        $term.val(node.data().name);
-        $term.trigger("keyup");
+//        var $term = $("#term");
+//        $term.val(node.data().name);
+//        $term.trigger("keyup");
         
         showNodeInfo( node );
 

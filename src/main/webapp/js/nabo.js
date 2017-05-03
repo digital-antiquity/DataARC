@@ -367,7 +367,7 @@ function drawGrid() {
     var term = $("#term").val();
     // construct a GET/JSON request
     var req = getContextPath() + "/json?x1=" + lng + "&y2=" + lat + "&x2=" + lng_ + "&y1=" + lat_ + "&zoom=" + map.getZoom() + "&start=" + start + "&end=" + end +
-            "&term=" + term;
+            "&term=" + term + "&topic=" + $("#topic").val();
     for (var i=0; i < showSources.length; i++) {
         req += "&types="+ showSources[i];
     }
@@ -907,8 +907,13 @@ function attachMapEvents() {
 
     });
 
+    $("body").on("nodeclicked", function(e){
+       $("#topic").val(e.id); 
+       drawGrid();
+    });
     // input box for search, bind keyup
     $("#term").keyup(function() {
+        $("#topic").val("");
         if ($("#term").val().length && !showAllPoints) {
             $("#showAll").trigger("click");
         }

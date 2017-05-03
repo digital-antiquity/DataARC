@@ -64,6 +64,7 @@ function getContextPath() {
          <div class="col-md-12">
            <form class="form-inline">
              <input type="text" name="term" class="form-control" id="term" placeholder="search"/>
+             <input type="hidden" name="topic" class="form-control" id="topic"/>
              <span class='slider-span'>&nbsp;Limit by year:</span> <b>0</b> 
              <input data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="2000" data-slider-step="1" data-slider-value="[800,1200]"
                data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" id="timeslider"
