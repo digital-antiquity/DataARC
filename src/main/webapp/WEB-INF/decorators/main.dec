@@ -44,6 +44,7 @@ var _rollbarConfig = {
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })</script>
-        
+
+<p><i>This material is based upon work supported by the National Science Foundation under Grant Numbers 1439389 and 16370706</i></p>        
 </body>
 </html>
