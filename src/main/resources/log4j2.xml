@@ -7,8 +7,7 @@
     </Appenders>
     <Loggers>
         <Logger name="org.dataarc" level="debug" />
-        <Logger name="org.springframework.data.solr" level="debug" />
-        <Logger name="org.apache.solr" level="debug" />
+        <Logger name="org.springframework.data.solr.core" level="debug" />
         <!-- <Logger name="org" level="trace" /> -->
         <Root level="warn">
             <AppenderRef ref="STDOUT" />
