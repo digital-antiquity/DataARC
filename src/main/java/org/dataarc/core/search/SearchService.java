@@ -9,6 +9,7 @@ import org.dataarc.core.service.SolrIndexObject;
 import org.geojson.FeatureCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Box;
+import org.springframework.data.solr.core.DefaultQueryParser;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.FacetQuery;
@@ -36,7 +37,6 @@ public class SearchService {
             IndexFields.WHO, IndexFields.TOPIC,
             IndexFields.SOURCE, IndexFields.TYPE, IndexFields.TAGS };
 
-    static int limit = 1_000_000;
 
     /**
      * Perform a search passing in the bounding box and search terms
@@ -59,13 +59,14 @@ public class SearchService {
         FeatureCollection fc = new FeatureCollection();
         // SpatialArgs args = new SpatialArgs(SpatialOperation.IsWithin, rectangle);
         // Filter filter = strategy.makeFilter(args);
+        int limit = 1_000_000;
         Criteria temporalConditions = null;
         FacetQuery query = new SimpleFacetQuery(new Criteria(Criteria.WILDCARD).expression(Criteria.WILDCARD));
         if (sqo.getEnd() != null) {
-            temporalConditions = new Criteria(IndexFields.END).greaterThanEqual(sqo.getStart());
+            temporalConditions = new Criteria(IndexFields.END).between(sqo.getStart(), sqo.getEnd());
         }
         if (sqo.getStart() != null) {
-            Criteria start = new Criteria(IndexFields.START).lessThanEqual(sqo.getEnd());
+            Criteria start = new Criteria(IndexFields.START).between(sqo.getStart(), sqo.getEnd());
             if (temporalConditions == null) {
                 temporalConditions = start;
             } else {
@@ -89,25 +90,13 @@ public class SearchService {
         }
 
         if (!CollectionUtils.isEmpty(sqo.getSources())) {
-            
-            Criteria in = null;
-            for (String source : sqo.getSources()) {
-                Criteria c = Criteria.where(IndexFields.SOURCE+"").is(source);
-                if (in == null) {
-                    in = c;
-                } else {
-                    in = in.or(c);
-                }
-            };
-            if (in != null) {
-                query.addCriteria(in);
-            }
+            query.addCriteria(new Criteria(IndexFields.SOURCE).in(sqo.getSources()));
         }
 
         // query.addProjectionOnField("*");
         // query.addProjectionOnField("distance:geodist()");
         query.setDefaultOperator(Operator.AND);
-        query.setRows(limit);
+
         //
         // final SolrQuery solrQuery = qp.constructSolrQuery(query);
         // solrQuery.add("sfield", "store");
@@ -123,9 +112,13 @@ public class SearchService {
         // });
 
         FacetPage<SolrIndexObject> facetPage = solrTemplate.queryForFacetPage(query, SolrIndexObject.class);
-        logger.debug(String.format("results: %s page:%s size: %s", facetPage.getTotalElements(), facetPage.getNumber(), facetPage.getSize()));
+
+        if (facetPage.getSize() == 0) {
+            return fc;
+        }
 
         facetPage.getContent().forEach(obj -> {
+            logger.debug(obj);
             try {
                 // create a point for each result
                 if (obj.getPosition() == null || obj.getPosition() == null) {
