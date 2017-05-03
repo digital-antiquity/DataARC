@@ -863,9 +863,11 @@ function attachMapEvents() {
 
     // drag object
     map.on('dragend', function() {
+        resetGrid();
         drawGrid();
     });
 
+    
     // click on map
     map.on('click', onMapClick);
 
