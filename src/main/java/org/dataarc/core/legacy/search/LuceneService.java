@@ -1,4 +1,4 @@
-package org.dataarc.core.search;
+package org.dataarc.core.legacy.search;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,23 +28,10 @@ import org.apache.lucene.spatial.prefix.RecursivePrefixTreeStrategy;
 import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
 import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.dataarc.core.legacy.search.IndexFields;
-import org.dataarc.core.legacy.search.IndexingService;
-import org.dataarc.core.legacy.search.LowercaseWhiteSpaceStandardAnalyzer;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.geojson.Point;
-import org.hibernate.hql.ast.origin.hql.parse.HQLParser.empty_key_return;
 import org.locationtech.spatial4j.context.SpatialContext;
-import org.springframework.data.geo.Box;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.solr.core.DefaultQueryParser;
-import org.springframework.data.solr.core.SolrCallback;
-import org.springframework.data.solr.core.geo.GeoConverters;
-import org.springframework.data.solr.core.query.Criteria;
-import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -55,7 +42,7 @@ import org.springframework.util.CollectionUtils;
  *
  */
 @Service
-public class SearchService {
+public class LuceneService {
 
     private static final String DATE = "date";
     private static final String SOURCE = "source";
@@ -92,51 +79,14 @@ public class SearchService {
      * @throws IOException
      * @throws ParseException
      */
-    public FeatureCollection search(SearchQueryObject sqo)
+    public FeatureCollection search(Double x1, Double y1, Double x2, double y2, Integer start, Integer end, List<String> types, String term)
             throws IOException, ParseException {
         // Rectangle rectangle = ctx.makeRectangle(Math.min(x1, x2), Math.max(x1, x2), Math.min(y1, y2), Math.max(y1, y2));
         FeatureCollection fc = new FeatureCollection();
+        setupReaders("bce");
         // SpatialArgs args = new SpatialArgs(SpatialOperation.IsWithin, rectangle);
         // Filter filter = strategy.makeFilter(args);
         int limit = 1_000_000;
-        Criteria temporalConditions = null;
-<<<<<<< HEAD
-        FacetQuery query = new SimpleFacetQuery(new Criteria(Criteria.WILDCARD).expression(Criteria.WILDCARD));
-=======
->>>>>>> parent of dc30cd6... more work on search index issues, removing older lucene work
-        if (sqo.getEnd() != null) {
-            temporalConditions = new Criteria(IndexFields.END).between(sqo.getStart(), sqo.getEnd()) ;
-        }
-        if (sqo.getStart() != null) {
-            Criteria start = new Criteria(IndexFields.START).between(sqo.getStart(), sqo.getEnd());
-            if (temporalConditions == null) {
-                temporalConditions = start;
-            } else {
-                temporalConditions = temporalConditions.and(start);
-            }
-        }
-        Criteria spatial = null;
-        if (sqo.getTopLeft() != null && sqo.getBottomRight() != null) {
-            spatial = new Criteria(IndexFields.POINT).near(new Box(sqo.getTopLeft(), sqo.getBottomRight()));
-        }
-
-        SimpleQuery query = new SimpleQuery(temporalConditions);
-        query.addProjectionOnField("*");
-        query.addProjectionOnField("distance:geodist()");
-
-        DefaultQueryParser qp = new DefaultQueryParser();
-        final SolrQuery solrQuery = qp.constructSolrQuery(query);
-        solrQuery.add("sfield", "store");
-        solrQuery.add("pt", GeoConverters.GeoLocationToStringConverter.INSTANCE.convert(new GeoLocation(45.15, -93.85)));
-        solrQuery.add("d", GeoConverters.DistanceToStringConverter.INSTANCE.convert(new Distance(5)));
-
-        List<EventDocument> result = template.execute(new SolrCallback<List<EventDocument>>() {
-
-          @Override
-          public List<EventDocument> doInSolr(SolrServer solrServer) throws SolrServerException, IOException {
-            return template.getConverter().read(solrServer.query(solrQuery).getResults(), EventDocument.class);
-          }
-        });
 
         Builder bq = createDateRangeQueryPart(start, end);
         appendTypes(types, bq);
@@ -155,11 +105,6 @@ public class SearchService {
             logger.trace(document);
             try {
                 // create a point for each result
-<<<<<<< HEAD
-                if (obj.getPosition() == null || obj.getPosition() == null) {
-                } else {
-                    fc.add(obj.copyToFeature());
-=======
                 String y = document.get(IndexFields.Y);
                 String x = document.get(IndexFields.X);
                 if (x == null || y == null) {
@@ -197,7 +142,6 @@ public class SearchService {
                     }
 
                     valueMap.put(name, v);
->>>>>>> parent of dc30cd6... more work on search index issues, removing older lucene work
                 }
 
                 if (!valMap.containsKey(key)) {

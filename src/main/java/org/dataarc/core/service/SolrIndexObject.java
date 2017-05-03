@@ -11,7 +11,6 @@ import java.util.Set;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.legacy.search.IndexFields;
-import org.geojson.Feature;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
@@ -27,8 +26,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 @SolrDocument
 >>>>>>> parent of 97157f0... more work on schema and cleanup of search, about ready to move back to a manually created schema
 public class SolrIndexObject {
-    private static final String DATE = "date";
-    private static final String SOURCE = "source";
 
     @Id
     public String id;
@@ -57,15 +54,13 @@ public class SolrIndexObject {
     @Field(child = true, value = IndexFields.TOPIC_ID)
     private Set<String> topicIdentifiers = new HashSet<>();
 
-    @Field(value = IndexFields.KEYWORD)
+    @Field(value=IndexFields.KEYWORD) 
     private List<String> values = new ArrayList<>();
 
-    @Field(value = IndexFields.POINT)
+    @Field(value=IndexFields.POINT)
     private Point position;
 //    private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-    public SolrIndexObject() {}
-    
     public SolrIndexObject(DataEntry entry) {
         GeoJsonPoint p = entry.getPosition();
         if (p != null) {
@@ -173,14 +168,18 @@ public class SolrIndexObject {
         return position;
     }
 
+<<<<<<< HEAD
 //    public void setPosition(String point) {
 //        
 //    }
 
+=======
+>>>>>>> parent of dc30cd6... more work on search index issues, removing older lucene work
     public void setPosition(Point position) {
         this.position = position;
     }
 
+<<<<<<< HEAD
     public Feature copyToFeature() {
         org.geojson.Point key = new org.geojson.Point(getPosition().getX(), getPosition().getY());
         Feature feature = new Feature();
@@ -218,4 +217,6 @@ public class SolrIndexObject {
         return start_ + " - " + end_;
     }
 
+=======
+>>>>>>> parent of dc30cd6... more work on search index issues, removing older lucene work
 }

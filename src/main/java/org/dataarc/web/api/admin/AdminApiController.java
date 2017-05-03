@@ -1,7 +1,7 @@
 package org.dataarc.web.api.admin;
 
+import org.dataarc.core.legacy.search.IndexingService;
 import org.dataarc.core.service.IndicatorService;
-import org.dataarc.core.service.SolrIndexingService;
 import org.dataarc.web.api.AbstractRestController;
 import org.dataarc.web.api.schema.UrlConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class AdminApiController extends AbstractRestController {
     private IndicatorService indicatorService;
 
     @Autowired
-    private SolrIndexingService indexingService;
+    private IndexingService indexingService;
 
     @RequestMapping(path = UrlConstants.REINDEX, method = RequestMethod.POST)
     public void reindex() throws Exception {
