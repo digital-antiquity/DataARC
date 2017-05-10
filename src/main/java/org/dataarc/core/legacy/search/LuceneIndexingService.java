@@ -42,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Service
-public class IndexingService {
+public class LuceneIndexingService {
 
     public static final String INDEX_DIR = "indexes/";
 

@@ -38,4 +38,6 @@ public interface IndexFields {
     static final String TOPIC_ID = "topic_id";
     static final String POINT = "point";
     static final String KEYWORD = "keywords";
+    static final String DATE = "date";
+    static final String TOPIC_ID_2ND = "topic_id_2";
 }

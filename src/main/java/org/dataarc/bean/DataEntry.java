@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
@@ -139,5 +140,22 @@ public class DataEntry {
 
     public void setIndicators(Set<String> indicators) {
         this.indicators = indicators;
-    };
+    }
+
+
+    @Transient
+    public Double getX() {
+        if (position != null) {
+            return position.getX();
+        }
+        return null;
+    }
+
+    @Transient
+    public Double getY() {
+        if (position != null) {
+            return position.getY();
+        }
+        return null;
+    }
 }

@@ -66,7 +66,7 @@ public class LuceneService {
             IndexFields.SOURCE, IndexFields.TYPE, IndexFields.TAGS };
 
     void setupReaders(String indexName) throws IOException {
-        setReader(DirectoryReader.open(FSDirectory.open(new File(IndexingService.INDEX_DIR + indexName).toPath())));
+        setReader(DirectoryReader.open(FSDirectory.open(new File(LuceneIndexingService.INDEX_DIR + indexName).toPath())));
         setSearcher(new IndexSearcher(getReader()));
     }
 

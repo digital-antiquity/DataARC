@@ -3,7 +3,7 @@ package org.dataarc.core.service;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.dataarc.core.legacy.search.IndexingService;
+import org.dataarc.core.search.SolrIndexingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
@@ -22,7 +22,7 @@ public class StartupService implements ApplicationListener<ContextStartedEvent> 
     private final Logger logger = Logger.getLogger(getClass());
 
     @Autowired
-    IndexingService indexingService;
+    SolrIndexingService indexingService;
     
     @Autowired(required = false)
     @Qualifier("bce.properties")
