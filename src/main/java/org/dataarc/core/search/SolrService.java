@@ -153,7 +153,7 @@ public class SolrService {
 
     private void appendSpatial(double[] topLeft, double[] bottomRight, StringBuilder bq) {
         // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
-        String spatial = String.format("%s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\"", IndexFields.POINT,
+        String spatial = String.format("%s:\"WIthin(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\"", IndexFields.POINT,
                 correctForWorldWrapX(bottomRight[0]), correctForWorldWrapX(topLeft[0]), 
                 correctForWorldWrapY(bottomRight[1]), correctForWorldWrapY(topLeft[1]));
         if (bq.length() > 0) {
