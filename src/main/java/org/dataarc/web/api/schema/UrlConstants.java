@@ -13,5 +13,7 @@ public interface UrlConstants {
     String LIST_INDICATORS = "/api/indicator";
     String REINDEX = "/api/admin/reindex";
     String ADMIN = "/admin";
+    String ADMIN_SOURCE_DATA = "/admin/source";
+    String ADMIN_SOURCE_UPLOAD_FILE = "/admin/uploadFile";
 
 }

@@ -174,10 +174,6 @@ public class SolrService {
     }
     private void appendSpatial(double[] topLeft, double[] bottomRight, StringBuilder bq) {
         // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
-//        String spatial = String.format("%s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\"", IndexFields.POINT,
-//                correctForWorldWrapX(bottomRight[0]), correctForWorldWrapX(topLeft[0]), 
-//                correctForWorldWrapY(bottomRight[1]), correctForWorldWrapY(topLeft[1]));
-//
         StringBuilder spatial = new StringBuilder();
         //*** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** // 
         Double minLong = topLeft[0];
@@ -203,7 +199,6 @@ public class SolrService {
             spatial.append (String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
                     minLong, maxLong,  maxLat,minLat));             
         }
-        
         if (bq.length() > 0) {
             bq.append(" AND ");
         }
