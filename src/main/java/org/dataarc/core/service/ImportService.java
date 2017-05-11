@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.dataarc.bean.schema.Field;
-import org.dataarc.bean.schema.Schema;
-import org.dataarc.bean.schema.Value;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.ObjectTraversalUtil;
 import org.geojson.Feature;
@@ -61,20 +58,7 @@ public class ImportService {
             e.printStackTrace();
         }
         for (FieldDataCollector collector : collectors.values()) {
-            String name = collector.getSchemaName();
-            Schema schema = new Schema();
-            schema.setName(name);
-            collector.getNames().forEach(field -> {
-                Field f = new Field(field, collector);
-                schema.getFields().add(f);
-                collector.getUniqueValues(field).entrySet().forEach(entry -> {
-                    Value val = new Value(entry.getKey().toString(), new Long(entry.getValue()).intValue());
-                    f.getValues().add(val);
-                });
-                logger.debug("{} {} ({})", name, field, collector.getType(field));
-                logger.debug("\t{}", collector.getUniqueValues(field));
-            });
-            schemaService.save(schema);
+            schemaService.saveSchema(collector);
         }
     }
 

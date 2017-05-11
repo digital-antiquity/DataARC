@@ -1,5 +1,6 @@
 package org.dataarc.core.dao;
 
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
+import org.dataarc.util.FieldDataCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -54,6 +56,32 @@ public class SchemaDao {
         return manager.createQuery("from Schema", Schema.class).getResultList().stream()
                 .map(schema -> schema.getName())
                 .collect(Collectors.toSet());
+    }
+
+    public void saveSchema(FieldDataCollector collector) {
+        String name = collector.getSchemaName();
+        Schema schema = getSchemaByName(name);
+        if (schema == null) {
+            schema = new Schema();
+            schema.setName(name);
+        }
+        for (String fieldName : collector.getNames()) {
+            Field field = schema.getFieldByName(fieldName);
+            if (field == null) {
+                field = new Field(fieldName, collector);
+                schema.getFields().add(field);
+            }
+            // reset existing values
+            field.getValues().clear();
+            for (Entry<Object, Long> entry : collector.getUniqueValues(fieldName).entrySet()) {
+                Value val = new Value(entry.getKey().toString(), new Long(entry.getValue()).intValue());
+                field.getValues().add(val);
+            };
+            logger.debug("{} {} ({})", name, fieldName, collector.getType(fieldName));
+            logger.debug("\t{}", collector.getUniqueValues(fieldName));
+        };
+        save(schema);
+        
     }
 
 }

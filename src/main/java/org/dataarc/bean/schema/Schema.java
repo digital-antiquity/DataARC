@@ -38,4 +38,13 @@ public class Schema extends AbstractPersistable {
         this.fields = fields;
     }
 
+    
+    public Field getFieldByName(String name) {
+        for (Field fld : fields) {
+            if (fld.getDisplayName().equals(name) || fld.getName().equals(name)) {
+                return fld;
+            }
+        };
+        return null;
+    }
 }

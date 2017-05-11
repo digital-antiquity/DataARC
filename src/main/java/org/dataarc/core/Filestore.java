@@ -5,12 +5,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 public class Filestore {
 
+    public static Filestore instance;
+    
+    public static Filestore getInstance() {
+        if (instance == null) {
+            instance = new Filestore();
+        }
+        return instance;
+    }
+    
     public File getBaseDir() {
         File root = new File(System.getProperty("java.io.tmpdir"));
         File store = mkdir(new File(root, "data-arc"));
@@ -49,5 +59,12 @@ public class Filestore {
            }
         }
         return lastModifiedFile;
+    }
+
+    public File store(String schema, InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
+        File schemaDir = mkdir(new File(getBaseDir(), schema));
+        File outfile = new File(schemaDir, String.format("schmea-%s.%s",System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
+        IOUtils.copy(inputStream, new FileOutputStream(outfile));
+        return outfile;
     }
 }

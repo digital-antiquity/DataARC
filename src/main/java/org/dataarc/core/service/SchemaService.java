@@ -7,6 +7,9 @@ import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.core.dao.SchemaDao;
+import org.dataarc.util.FieldDataCollector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class SchemaService {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     SchemaDao schemaDao;
@@ -46,6 +51,10 @@ public class SchemaService {
     @Transactional(readOnly = true)
     public Set<String> getSchema() {
         return schemaDao.findAll();
+    }
+
+    public void saveSchema(FieldDataCollector collector) {
+        schemaDao.saveSchema(collector);
     }
 
 }

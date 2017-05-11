@@ -1,7 +1,5 @@
 package org.dataarc.core.exec;
 
-import javax.xml.bind.JAXBException;
-
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.core.service.ImportService;
 import org.dataarc.core.service.IndicatorService;
@@ -11,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-import org.xml.sax.SAXException;
 
 @Component
 public class CmdLineDataLoader extends AbstractDataLoader {

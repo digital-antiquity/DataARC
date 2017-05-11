@@ -28,4 +28,6 @@ public interface ImportDao {
 
     void save(DataEntry entry);
 
+    Long deleteBySource(String name);
+
 }
