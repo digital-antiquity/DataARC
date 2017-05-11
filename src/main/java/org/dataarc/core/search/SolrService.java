@@ -15,7 +15,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.solr.common.params.SolrParams;
 import org.dataarc.core.legacy.search.IndexFields;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
@@ -151,11 +150,60 @@ public class SolrService {
         return date;
     }
 
+
+    public static boolean crossesDateline(double minLongitude, double maxLongitude) {
+        /*
+         * below is the logic that was originally used in PostGIS -- it worked to help identify issues where a box was
+         * drawn around Guam and Hawaii, but it's not really needed anymore because all of our logic looks at the box
+         * and breaks it in two over the IDL instead of choosing the smaller box.
+         * return (getMinObfuscatedLongitude() < -100f && getMaxObfuscatedLongitude() > 100f);
+         */
+        if (minLongitude > 0f && maxLongitude < 0f) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean crossesPrimeMeridian(double minLongitude, double maxLongitude) {
+        if (minLongitude < 0f && maxLongitude > 0f) {
+            return true;
+        }
+
+        return false;
+    }
     private void appendSpatial(double[] topLeft, double[] bottomRight, StringBuilder bq) {
         // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
-        String spatial = String.format("%s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\"", IndexFields.POINT,
-                correctForWorldWrapX(bottomRight[0]), correctForWorldWrapX(topLeft[0]), 
-                correctForWorldWrapY(bottomRight[1]), correctForWorldWrapY(topLeft[1]));
+//        String spatial = String.format("%s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\"", IndexFields.POINT,
+//                correctForWorldWrapX(bottomRight[0]), correctForWorldWrapX(topLeft[0]), 
+//                correctForWorldWrapY(bottomRight[1]), correctForWorldWrapY(topLeft[1]));
+//
+        StringBuilder spatial = new StringBuilder();
+        //*** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** // 
+        Double minLong = topLeft[0];
+        Double maxLat = bottomRight[1];
+        Double minLat = topLeft[1];
+        Double maxLong = bottomRight[0];
+        if (crossesDateline(minLong,maxLong) && ! crossesPrimeMeridian(minLong,maxLong)) {
+            spatial.append (String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" OR"
+                    + "  %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+            minLong, -180d, maxLat,minLat,
+            IndexFields.POINT,
+            180d, minLong, maxLat,minLat));
+
+        } else  if (crossesPrimeMeridian(minLong,maxLong)) {
+            spatial.append (String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+            minLong, maxLong,  maxLat,minLat));
+        } else {
+            if (minLat > maxLat) {
+                Double t = maxLat;
+                maxLat = minLat;
+                minLat = t;
+            }
+            spatial.append (String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+                    minLong, maxLong,  maxLat,minLat));             
+        }
+        
         if (bq.length() > 0) {
             bq.append(" AND ");
         }
