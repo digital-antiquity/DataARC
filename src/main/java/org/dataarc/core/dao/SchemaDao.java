@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -43,9 +44,13 @@ public class SchemaDao {
     }
 
     private Schema getSchemaByName(String name) {
-        Query query = manager.createQuery("from Schema where name=:source", Schema.class);
-        query.setParameter("source", name);
-        return (Schema) query.getSingleResult();
+        try {
+            Query query = manager.createQuery("from Schema where name=:source", Schema.class);
+            query.setParameter("source", name);
+            return (Schema) query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
 
     public Set<Field> getFields(String source) {
@@ -76,12 +81,14 @@ public class SchemaDao {
             for (Entry<Object, Long> entry : collector.getUniqueValues(fieldName).entrySet()) {
                 Value val = new Value(entry.getKey().toString(), new Long(entry.getValue()).intValue());
                 field.getValues().add(val);
-            };
+            }
+            ;
             logger.debug("{} {} ({})", name, fieldName, collector.getType(fieldName));
             logger.debug("\t{}", collector.getUniqueValues(fieldName));
-        };
+        }
+        ;
         save(schema);
-        
+
     }
 
 }

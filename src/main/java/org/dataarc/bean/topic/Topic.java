@@ -23,7 +23,7 @@ public class Topic extends AbstractPersistable {
     @Column(length = 255)
     private String name;
 
-    @Column(length = 255)
+    @Column(length = 255, unique=true)
     @NotNull
     private String identifier;
 

@@ -171,7 +171,7 @@
 
     <changeSet id="alpha-13" author="abrin">
         <createTable tableName="topic_map">
-            <column name="id" autoIncrement="true" type="bigserial"/>
+            <column name="id" autoIncrement="true" type="bigserial" />
             <column name="name" type="varchar(255)" />
             <column name="date_created" type="timestamp"
                 defaultValue="now()" />
@@ -188,7 +188,7 @@
                 <constraints referencedTableName="topic_map"
                     foreignKeyName="topic_map_association_id" />
             </column>
-       </addColumn>
+        </addColumn>
     </changeSet>
     <changeSet id="alpha-14" author="abrin">
         <addColumn tableName="indicator">
@@ -196,13 +196,13 @@
                 <constraints referencedTableName="topic"
                     foreignKeyName="topic_indicator_id" />
             </column>
-       </addColumn>
+        </addColumn>
     </changeSet>
 
     <changeSet id="alpha-15" author="abrin">
-    <dropColumn tableName="indicator" columnName="topic_id"/>
-            <createTable tableName="identifier_topic">
-            <column name="id" autoIncrement="true" type="bigserial"/>
+        <dropColumn tableName="indicator" columnName="topic_id" />
+        <createTable tableName="identifier_topic">
+            <column name="id" autoIncrement="true" type="bigserial" />
             <column name="topic_id" type="bigint">
                 <constraints referencedTableName="topic"
                     foreignKeyName="topic_indicator_id" />
@@ -213,9 +213,9 @@
             </column>
 
         </createTable>
-    
+
     </changeSet>
-        <changeSet id="alpha-16" author="abrin">
+    <changeSet id="alpha-16" author="abrin">
         <createTable tableName="topic_parents">
             <column name="topic_id" type="bigint">
                 <constraints referencedTableName="topic"
@@ -225,12 +225,29 @@
                 <constraints referencedTableName="topic"
                     foreignKeyName="topic_parent_indicator_id" />
             </column>
-       </createTable>
-       <sql>
-       insert into topic_parents (topic_id, parent_id) select id, parent_id from topic where parent_id is not null;
-       </sql>
-       <dropColumn tableName="topic" columnName="parent_id"/>
+        </createTable>
+        <sql>
+            insert into topic_parents (topic_id, parent_id) select id, parent_id from
+            topic where parent_id is not null;
+        </sql>
+        <dropColumn tableName="topic" columnName="parent_id" />
     </changeSet>
-    
-    
+    <changeSet id="alpha-17" author="abrin">
+        <dropTable tableName="identifier_topic" />
+        <addUniqueConstraint columnNames="identifier" tableName="topic"/>
+        <createTable tableName="identifier_topic">
+            <column name="id" autoIncrement="true" type="bigserial" />
+            <column name="topic_id" type="varchar(255)">
+                <constraints referencedTableName="topic" referencedColumnNames="identifier"
+                    foreignKeyName="topic_indicator_id" />
+            </column>
+            <column name="indicator_id" type="bigint">
+                <constraints referencedTableName="indicator"
+                    foreignKeyName="indicator_topic_id" />
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
 </databaseChangeLog>

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.dao.ImportDao;
@@ -34,6 +35,15 @@ public class PostgresDao implements ImportDao {
     @Transactional(readOnly = false)
     public void deleteAll() {
         manager.createQuery("delete from DataEntry").executeUpdate();
+
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteBySource(String source) {
+        Query query = manager.createQuery("delete from DataEntry where source=:source");
+        query.setParameter("source", source);
+        query.executeUpdate();
 
     }
 

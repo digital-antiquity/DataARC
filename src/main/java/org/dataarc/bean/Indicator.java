@@ -40,7 +40,7 @@ public class Indicator extends AbstractPersistable {
     private FilterQuery query;
 
     @ManyToMany
-    @JoinTable(name = "topic_indicator", joinColumns = @JoinColumn(name = "indicator_id"), inverseJoinColumns= @JoinColumn(name="topic_id"))
+    @JoinTable(name = "topic_indicator", joinColumns = @JoinColumn(name = "indicator_id"), inverseJoinColumns= @JoinColumn(name="topic_id",referencedColumnName="identifier"))
     private List<Topic> topics = new ArrayList<>();
 
     public String getName() {

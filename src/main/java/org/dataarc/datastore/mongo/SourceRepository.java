@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SourceRepository extends MongoRepository<DataEntry, String> {
 
+    Long deleteBySource(String source);
 }

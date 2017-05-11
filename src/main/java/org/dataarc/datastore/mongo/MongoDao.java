@@ -112,6 +112,11 @@ public class MongoDao implements ImportDao, QueryDao {
     }
 
     @Override
+    public void deleteBySource(String source) {
+        repository.deleteBySource(source);
+    }
+
+    @Override
     public void load(Feature feature, Map<String, Object> properties) throws Exception {
         String source = (String) feature.getProperties().get("source");
         String json = new ObjectMapper().writeValueAsString(feature);
