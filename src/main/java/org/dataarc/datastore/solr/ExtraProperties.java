@@ -14,6 +14,10 @@ public class ExtraProperties {
     @Field("*")
     private Map<String, Object> data = new HashMap<>();
 
+    public ExtraProperties(Map<String, Object> data2) {
+        this.data = data2;
+    }
+
     public Map<String, Object> getData() {
         return data;
     }

@@ -3,8 +3,8 @@ package org.dataarc.core.search;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.spatial.prefix.RecursivePrefixTreeStrategy;
 import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
@@ -12,6 +12,7 @@ import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -19,9 +20,10 @@ import org.dataarc.core.legacy.search.IndexFields;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.locationtech.spatial4j.context.SpatialContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.vividsolutions.jts.io.WKTReader;
 
@@ -33,9 +35,9 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @Service
 public class SolrService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final int START = 0;
-    private final Logger logger = Logger.getLogger(getClass());
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
@@ -66,14 +68,17 @@ public class SolrService {
 
         int limit = 1_000_000;
         FeatureCollection fc = new FeatureCollection();
-        StringBuilder bq = new StringBuilder(createDateRangeQueryPart(sqo.getStart(), sqo.getEnd()));
+        StringBuilder bq = new StringBuilder("");
+        bq.append(createDateRangeQueryPart(sqo.getStart(), sqo.getEnd()));
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
         appendSpatial(topLeft, bottomRight, bq);
         SolrQuery params = new SolrQuery(bq.toString());
         params.setParam("rows", Integer.toString(limit));
+        params.setFilterQueries("type:object");
 
+        params.setFields("*","[child parentFilter=\"type:object\"]");       
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", bq.toString(), topDocs.getNumFound()));
@@ -85,7 +90,7 @@ public class SolrService {
         // aggregate results in a map by point
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
-            logger.debug(document);
+            logger.debug("{}", document);
             try {
                 // create a point for each result
                 String point = (String) document.get(IndexFields.POINT);
@@ -105,7 +110,10 @@ public class SolrService {
                 feature.setProperty(IndexFields.COUNTRY, document.get(IndexFields.COUNTRY));
                 feature.setProperty(IndexFields.START, document.get(IndexFields.START));
                 feature.setProperty(IndexFields.END, document.get(IndexFields.END));
-
+                if (CollectionUtils.isNotEmpty(document.getChildDocuments() )) {
+                    logger.debug("child docs: " +  document.getChildDocuments());
+                    feature.setProperty("data", document.getChildDocuments());
+                }
                 String date = formateDate(document);
                 feature.setProperty(IndexFields.DATE, date);
 
@@ -122,7 +130,7 @@ public class SolrService {
                 }
                 fc.add(feature);
             } catch (Throwable t) {
-                logger.error(t, t);
+                logger.error("{}", t, t);
             }
         }
         return fc;

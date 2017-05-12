@@ -38,7 +38,7 @@ public class SchemaUtils {
         String decomp = Normalizer.normalize(utfString, Normalizer.Form.NFKD);
         String input = replaceAll(decomp, PATTERN_NON_ASCII, "");
         input = replaceAll(input, PATTERN_NONWORD, "");
-        input = replaceAll(input, PATTERN_WHITESPACE, "-");
+        input = replaceAll(input, PATTERN_WHITESPACE, "_");
         input = replaceAll(input, PATTERN_AFFIX_SLUG, "");
         return input.toLowerCase();
     }

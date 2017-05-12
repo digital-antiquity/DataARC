@@ -105,7 +105,7 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.KEYWORD, "text_general");
         schemaFields.put(IndexFields.SOURCE, "text_general");
         schemaFields.put(IndexFields.POINT, "location_rpt");
-
+        schemaFields.put("type", "string");
         for (String field : schemaFields.keySet()) {
             boolean seen = false;
             boolean deleted = false;
@@ -117,7 +117,7 @@ public class SolrIndexingService {
                     logger.debug("{}: {}", field, solrField);
                     if (!schemaFields.get(field).equals(solrField.get("type"))) {
                         logger.debug(" deleting .. {}", field);
-                        deleteFiedl(field);
+                        deleteField(field);
                         deleted = true;
                     }
                     seen = true;
@@ -140,7 +140,7 @@ public class SolrIndexingService {
                 if (field.getType() != null && !field.getName().equals("source")) {
                     logger.debug("{} - {} {}", schema, field, field.getType());
                     try {
-                        addSchemaField(String.format("%s-%s", schema.getName(), field.getName()), toSolrType(field.getType()), false);
+                        addSchemaField(String.format("%s_%s", schema.getName(), field.getName()), toSolrType(field.getType()), false);
                     } catch (SolrServerException | IOException e) {
                         logger.error("exception in adding schema field: {}", e, e);
                     }
@@ -178,7 +178,7 @@ public class SolrIndexingService {
         SchemaResponse.UpdateResponse addFieldResponse_ = addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
     }
 
-    private void deleteFiedl(String field) throws SolrServerException, IOException {
+    private void deleteField(String field) throws SolrServerException, IOException {
         SchemaRequest.DeleteField addFieldUpdateSchemaRequest = new SchemaRequest.DeleteField(field);
         SchemaResponse.UpdateResponse addFieldResponse = addFieldUpdateSchemaRequest.process(client, DATA_ARC);
     }

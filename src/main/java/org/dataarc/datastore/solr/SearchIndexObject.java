@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.Schema;
@@ -41,19 +43,25 @@ public class SearchIndexObject {
     private String source;
 
     @Field
-    private Date dateCreated;
+    private Date dateCreated = new Date();
 
     @Field(value = "properties*")
-     private Map<String,Object> properties = new HashMap<>();
+    private Map<String, Object> properties;
+
+    @Field(child = true)
+    private List<ExtraProperties> data;
+
+    @Field
+    private String type = "object";
 
     @Field(value = IndexFields.INDICATOR)
-    private Set<String> indicators = new HashSet<>();
-    @Field(value = IndexFields.INDICATOR_2ND)
-    private Set<String> indicators2 = new HashSet<>();
+    private Set<String> indicators;
+    @Field(value = IndexFields.TOPIC_ID_2ND)
+    private Set<String> topic_2nd;
     @Field(value = IndexFields.TOPIC)
-    private Set<String> topics = new HashSet<>();
+    private Set<String> topics;
     @Field(value = IndexFields.TOPIC_ID)
-    private Set<String> topicIdentifiers = new HashSet<>();
+    private Set<String> topicIdentifiers;
 
     @Field(value = IndexFields.KEYWORD)
     private List<String> values = new ArrayList<>();
@@ -73,19 +81,48 @@ public class SearchIndexObject {
         start = entry.getStart();
         end = entry.getEnd();
         source = entry.getSource();
-        indicators = entry.getIndicators();
-        topics = entry.getTopics();
-        topicIdentifiers = entry.getTopicIdentifiers();
+        if (CollectionUtils.isNotEmpty(entry.getIndicators())) {
+            indicators = entry.getIndicators();
+            values.addAll(indicators);
+        }
+        if (CollectionUtils.isNotEmpty(entry.getTopics())) {
+            topics = entry.getTopics();
+            values.addAll(topics);
+        }
+        if (CollectionUtils.isNotEmpty(entry.getTopicIdentifiers())) {
+            topicIdentifiers = entry.getTopicIdentifiers();
+        }
         values.add(source);
-        values.addAll(indicators);
-        values.addAll(topics);
+        if ( MapUtils.isNotEmpty(entry.getProperties() )) {
+            properties = new HashMap<>();
+        }
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
             // make sure that the schema field exists, is not a null type (i.e. we inspected it) and has a value
             org.dataarc.bean.schema.Field field = schema.getFieldByName(k);
-            if (v != null && field != null && field.getType() != null && !field.getName().equals("source")) {
-                logger.debug("{}, {} ({})", field.getDisplayName(), field.getName(), field.getId());
-                getProperties().put(String.format("%s-%s", schema.getName(), field.getName()), v);
+            // if (field == null) {
+            // logger.debug("{} -- null", k);
+            // }
+            if (field != null) {
+                if (v instanceof Map) {
+                    Map<String, Object> data = (Map<String, Object>) v;
+                    if (getData() == null) {
+                        setData(new ArrayList<>());
+                    }
+                    getData().add(new ExtraProperties(data));
+                    logger.trace("{}", data);
+                } else if (v instanceof List) {
+                    if (getData() == null) {
+                        setData(new ArrayList<>());
+                    }
+                    List<Map<String, Object>> sites = (List<Map<String, Object>>) v;
+                    logger.trace("{}", sites);
+                    sites.forEach(s -> {
+                        getData().add(new ExtraProperties(s));
+                    });
+                } else if (v != null && field.getType() != null && !field.getName().equals("source")) {
+                    getProperties().put(String.format("%s_%s", schema.getName(), field.getName()), v);
+                }
             }
         });
     }
@@ -144,14 +181,6 @@ public class SearchIndexObject {
 
     public void setIndicators(Set<String> indicators) {
         this.indicators = indicators;
-    }
-
-    public Set<String> getIndicators2() {
-        return indicators2;
-    }
-
-    public void setIndicators2(Set<String> indicators2) {
-        this.indicators2 = indicators2;
     }
 
     public Set<String> getTopics() {
@@ -221,15 +250,37 @@ public class SearchIndexObject {
         return start_ + " - " + end_;
     }
 
-
-    public Map<String,Object> getProperties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String,Object> properties) {
+    public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
     }
 
+    public List<ExtraProperties> getData() {
+        return data;
+    }
+
+    public void setData(List<ExtraProperties> data) {
+        this.data = data;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Set<String> getTopic_2nd() {
+        return topic_2nd;
+    }
+
+    public void setTopic_2nd(Set<String> topic_2nd) {
+        this.topic_2nd = topic_2nd;
+    }
 
     private @Field("*_txt") Map<String, List<String>> textMap;
 

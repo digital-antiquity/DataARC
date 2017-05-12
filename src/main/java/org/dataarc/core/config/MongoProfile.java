@@ -38,7 +38,7 @@ public class MongoProfile extends DataArcConfiguration {
     static final String USERNAME = "monogUser";
     static final String PASSWORD = "mongoPassword";
     static final String DATABASE_NAME = "dataarc";
-    private boolean embedded = true;
+    private boolean embedded = false;
     // @Bean(name = "mongoEntityManager")
     // public LocalContainerEntityManagerFactoryBean mongoEntityManager() throws Throwable {
     // Map<String, Object> properties = new HashMap<String, Object>();
@@ -90,38 +90,4 @@ public class MongoProfile extends DataArcConfiguration {
         return mongoTemplate;
 
     }
-
-    // @Bean
-    // public MongoClientFactoryBean mongo() {
-    // MongoClientFactoryBean facgtory = new MongoClientFactoryBean();
-    // facgtory.setHost(env.getProperty(DB_HOST, LOCALHOST));
-    // facgtory.setPort(env.getProperty(DB_PORT, Integer.class, _27017));
-    // return facgtory;
-    // }
-    //
-    // @Bean
-    // public MongoTemplate mongoTemplate() throws Exception {
-    // return new MongoTemplate(mongo().getObject(), env.getProperty(DB_NAME));
-    // }
-
-    // @Bean(name = "mongoTransactionManager")
-    // public PlatformTransactionManager transactionManager() throws Throwable {
-    // JpaTransactionManager transactionManager = new JpaTransactionManager();
-    // transactionManager.setEntityManagerFactory(mongoEntityManager().getObject());
-    // return transactionManager;
-    // }
-
-    // @Bean
-    // public SolrConverter solrConverter(CustomConversions customConversions){
-    // MappingSolrConverter mappingSolrConverter= new MappingSolrConverter(new SimpleSolrMappingContext());
-    // mappingSolrConverter.setCustomConversions(customConversions);
-    // return mappingSolrConverter;
-    // }
-    //
-    //
-    // @Bean
-    // public CustomConversions customConversions(){
-    // return new CustomConversions(Arrays.asList(new PointConverter<Point,String>()));
-    // }
-
 }
