@@ -249,5 +249,10 @@
         </createTable>
 
     </changeSet>
+    <changeSet id="alpha-18" author="abrin">
+        <addColumn tableName="schema">
+            <column name="display_name" type="varchar(100)" />
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.legacy.search.IndexFields;
 import org.geojson.Feature;
 import org.slf4j.Logger;
@@ -42,8 +42,10 @@ public class SearchIndexObject {
 
     @Field
     private Date dateCreated;
-//    @Field(value = "properties")
-    private Map<String, Object> properties = new HashMap<>();
+
+    @Field(value = "properties*")
+     private Map<String,Object> properties = new HashMap<>();
+
     @Field(value = IndexFields.INDICATOR)
     private Set<String> indicators = new HashSet<>();
     @Field(value = IndexFields.INDICATOR_2ND)
@@ -63,17 +65,11 @@ public class SearchIndexObject {
     public SearchIndexObject() {
     }
 
-    public SearchIndexObject(DataEntry entry) {
+    public SearchIndexObject(DataEntry entry, Schema schema) {
         if (entry.getX() != null && entry.getY() != null) {
             position = WKTWriter.toPoint(new Coordinate(entry.getX(), entry.getY()));
         }
         id = entry.getId();
-        if (StringUtils.equalsIgnoreCase(id, "5905eaa369cb80d8b6c39da7")) {
-            logger.debug("id:" + id);
-            logger.debug(" e:" + entry.getX() + " , "  + entry.getY());
-            logger.debug(" p:" + position);
-            
-        }
         start = entry.getStart();
         end = entry.getEnd();
         source = entry.getSource();
@@ -83,6 +79,15 @@ public class SearchIndexObject {
         values.add(source);
         values.addAll(indicators);
         values.addAll(topics);
+        entry.getProperties().keySet().forEach(k -> {
+            Object v = entry.getProperties().get(k);
+            // make sure that the schema field exists, is not a null type (i.e. we inspected it) and has a value
+            org.dataarc.bean.schema.Field field = schema.getFieldByName(k);
+            if (v != null && field != null && field.getType() != null && !field.getName().equals("source")) {
+                logger.debug("{}, {} ({})", field.getDisplayName(), field.getName(), field.getId());
+                getProperties().put(String.format("%s-%s", schema.getName(), field.getName()), v);
+            }
+        });
     }
 
     public String getId() {
@@ -133,14 +138,6 @@ public class SearchIndexObject {
         this.dateCreated = dateCreated;
     }
 
-    public Map<String, Object> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<String, Object> properties) {
-        this.properties = properties;
-    }
-
     public Set<String> getIndicators() {
         return indicators;
     }
@@ -183,10 +180,10 @@ public class SearchIndexObject {
 
     public Feature copyToFeature() {
         WKTReader reader = new WKTReader();
-        
+
         Feature feature = new Feature();
         try {
-            Point read = (Point)reader.read(getPosition());
+            Point read = (Point) reader.read(getPosition());
             feature.setGeometry(new org.geojson.Point(read.getX(), read.getY()));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -223,6 +220,16 @@ public class SearchIndexObject {
         }
         return start_ + " - " + end_;
     }
+
+
+    public Map<String,Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String,Object> properties) {
+        this.properties = properties;
+    }
+
 
     private @Field("*_txt") Map<String, List<String>> textMap;
 

@@ -18,6 +18,9 @@ public class Schema extends AbstractPersistable {
     @Column(length = 100)
     private String name;
 
+    @Column(length = 100, name="display_name")
+    private String displayName;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "schema_id", nullable = false)
     private Set<Field> fields = new HashSet<>();
@@ -46,5 +49,13 @@ public class Schema extends AbstractPersistable {
             }
         };
         return null;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

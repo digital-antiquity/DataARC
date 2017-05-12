@@ -1,31 +1,32 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.lucene.spatial.prefix.RecursivePrefixTreeStrategy;
-import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
-import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
+import org.apache.solr.common.SolrInputDocument;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.schema.FieldType;
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.dao.ImportDao;
+import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.legacy.search.IndexFields;
 import org.dataarc.datastore.solr.SearchIndexObject;
-import org.hibernate.hql.ast.origin.hql.parse.HQLParser.index_key_return;
-import org.locationtech.spatial4j.context.SpatialContext;
+import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SolrIndexingService {
@@ -34,15 +35,17 @@ public class SolrIndexingService {
 
     @Autowired
     ImportDao sourceDao;
+    @Autowired
+    SchemaDao schemaDao;
 
     @Autowired
     SerializationDao serializationService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-//    SpatialContext ctx = SpatialContext.GEO;
-//    SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
-//    RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
+    // SpatialContext ctx = SpatialContext.GEO;
+    // SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
+    // RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
     List<String> singleFields = Arrays.asList(IndexFields.START, IndexFields.END, IndexFields.POINT, IndexFields.SOURCE);
 
     @Autowired
@@ -53,6 +56,7 @@ public class SolrIndexingService {
      * 
      * @param key
      */
+    @Transactional(readOnly = true)
     public void reindex() {
         logger.debug("begin reindexing");
         try {
@@ -64,8 +68,12 @@ public class SolrIndexingService {
             int count = 0;
             for (DataEntry entry : entries) {
                 // indexRow(entry);
-                SearchIndexObject searchIndexObject = new SearchIndexObject(entry);
-                client.addBean(DATA_ARC, searchIndexObject);
+                Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
+                SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema);
+                DocumentObjectBinder b = new DocumentObjectBinder();
+                SolrInputDocument doc = b.toSolrInputDocument(searchIndexObject);
+                logger.debug("{}", doc);
+                UpdateResponse addBean = client.addBean(DATA_ARC, searchIndexObject);
                 if (count % 500 == 0) {
                     logger.debug("{} - {}", searchIndexObject.getId(), searchIndexObject.getTitle());
                     client.commit(DATA_ARC);
@@ -97,7 +105,7 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.KEYWORD, "text_general");
         schemaFields.put(IndexFields.SOURCE, "text_general");
         schemaFields.put(IndexFields.POINT, "location_rpt");
-        
+
         for (String field : schemaFields.keySet()) {
             boolean seen = false;
             boolean deleted = false;
@@ -109,8 +117,7 @@ public class SolrIndexingService {
                     logger.debug("{}: {}", field, solrField);
                     if (!schemaFields.get(field).equals(solrField.get("type"))) {
                         logger.debug(" deleting .. {}", field);
-                        SchemaRequest.DeleteField addFieldUpdateSchemaRequest = new SchemaRequest.DeleteField(field);
-                        SchemaResponse.UpdateResponse addFieldResponse = addFieldUpdateSchemaRequest.process(client, DATA_ARC);
+                        deleteFiedl(field);
                         deleted = true;
                     }
                     seen = true;
@@ -120,19 +127,64 @@ public class SolrIndexingService {
                 continue;
             }
             logger.debug("adding field to schema: {}", field);
-            Map<String, Object> fieldAttributes = new LinkedHashMap<>();
-            fieldAttributes.put("name", field);
-            fieldAttributes.put("type", schemaFields.get(field));
             if (singleFields.contains(field)) {
-                fieldAttributes.put("multiValued", false);
+                addSchemaField(field, schemaFields.get(field), false);
             } else {
-                fieldAttributes.put("multiValued", true);
+                addSchemaField(field, schemaFields.get(field), true);
             }
-            fieldAttributes.put("stored", true);
-
-            SchemaRequest.AddField addFieldUpdateSchemaRequest = new SchemaRequest.AddField(fieldAttributes);
-            SchemaResponse.UpdateResponse addFieldResponse = addFieldUpdateSchemaRequest.process(client, DATA_ARC);
         }
+
+        schemaDao.findAll().forEach(name -> {
+            Schema schema = schemaDao.getSchemaByName(name);
+            schema.getFields().forEach(field -> {
+                if (field.getType() != null && !field.getName().equals("source")) {
+                    logger.debug("{} - {} {}", schema, field, field.getType());
+                    try {
+                        addSchemaField(String.format("%s-%s", schema.getName(), field.getName()), toSolrType(field.getType()), false);
+                    } catch (SolrServerException | IOException e) {
+                        logger.error("exception in adding schema field: {}", e, e);
+                    }
+                }
+            });
+
+        });
+    }
+
+    private String toSolrType(FieldType type) {
+        switch (type) {
+            case DATE:
+                return "date";
+            case NUMBER:
+                return "float";
+            case STRING:
+            default:
+                return "string";
+        }
+    }
+
+    private void addSchemaField(String field, String string, boolean b) throws SolrServerException, IOException {
+        Map<String, Object> attr = new HashMap<>();
+        attr.put("name", field);
+        attr.put("type", string);
+        attr.put("stored", true);
+        attr.put("multiValued", b);
+        logger.debug("adding field: {}", attr);
+        SchemaRequest.AddField addFieldUpdateSchemaRequest = new SchemaRequest.AddField(attr);
+        SchemaResponse.UpdateResponse addFieldResponse = addFieldUpdateSchemaRequest.process(client, DATA_ARC);
+    }
+
+    private void addDynamicField(Map<String, Object> fieldAttributes_) throws SolrServerException, IOException {
+        SchemaRequest.AddDynamicField addFieldUpdateSchemaRequest_ = new SchemaRequest.AddDynamicField(fieldAttributes_);
+        SchemaResponse.UpdateResponse addFieldResponse_ = addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
+    }
+
+    private void deleteFiedl(String field) throws SolrServerException, IOException {
+        SchemaRequest.DeleteField addFieldUpdateSchemaRequest = new SchemaRequest.DeleteField(field);
+        SchemaResponse.UpdateResponse addFieldResponse = addFieldUpdateSchemaRequest.process(client, DATA_ARC);
+    }
+
+    private void addSchemaField(Map<String, Object> fieldAttributes) throws SolrServerException, IOException {
+
     }
 
 }

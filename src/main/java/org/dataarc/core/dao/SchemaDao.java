@@ -43,7 +43,7 @@ public class SchemaDao {
         return field.getValues();
     }
 
-    private Schema getSchemaByName(String name) {
+    public Schema getSchemaByName(String name) {
         try {
             Query query = manager.createQuery("from Schema where name=:source", Schema.class);
             query.setParameter("source", name);

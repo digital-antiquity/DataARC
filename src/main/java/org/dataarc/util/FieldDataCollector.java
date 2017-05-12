@@ -85,7 +85,7 @@ public class FieldDataCollector {
     }
 
     public void setSchemaName(String schemaName) {
-        this.schemaName = schemaName;
+        this.schemaName = SchemaUtils.normalize(schemaName);
     }
 
     public FieldType getType(String field) {

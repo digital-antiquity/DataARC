@@ -31,19 +31,16 @@ public class SchemaUtils {
      * @param utfString
      * @return
      */
-    static String normalize(String utfString) {
+    public static String normalize(String utfString) {
+        if (StringUtils.isBlank(utfString)) {
+            return utfString;
+        }
         String decomp = Normalizer.normalize(utfString, Normalizer.Form.NFKD);
-        return replaceAll(decomp, PATTERN_NON_ASCII, "");
-    }
-
-    public static String slugify(String input) {
-        if (StringUtils.isBlank(input))
-            return input;
-        String slug = normalize(input);
-        slug = replaceAll(slug, PATTERN_NONWORD, "");
-        slug = replaceAll(slug, PATTERN_WHITESPACE, "-");
-        slug = replaceAll(slug, PATTERN_AFFIX_SLUG, "");
-        return slug.toLowerCase();
+        String input = replaceAll(decomp, PATTERN_NON_ASCII, "");
+        input = replaceAll(input, PATTERN_NONWORD, "");
+        input = replaceAll(input, PATTERN_WHITESPACE, "-");
+        input = replaceAll(input, PATTERN_AFFIX_SLUG, "");
+        return input.toLowerCase();
     }
 
 }
