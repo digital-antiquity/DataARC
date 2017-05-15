@@ -36,7 +36,20 @@ public class FieldDataCollector {
 
         FieldType type = FieldType.STRING;
         if (value instanceof Number || value instanceof String && NumberUtils.isNumber((String) value)) {
-            type = FieldType.NUMBER;
+            if (value instanceof Float || value instanceof Double) {
+                type = FieldType.FLOAT;
+            }
+            if (value instanceof Integer || value instanceof Long) {
+                type = FieldType.LONG;
+            }
+            if (value instanceof String) {
+                String svalue = (String) value;
+                if (svalue.indexOf(".") > -1) {
+                    type = FieldType.FLOAT;
+                } else {
+                    type = FieldType.LONG;
+                }
+            }
         }
 
         if (value instanceof Date) {
@@ -51,12 +64,12 @@ public class FieldDataCollector {
         getNames().add(normalizedName);
         displayNames.put(normalizedName, path);
 
-        FieldType _type = fieldTypes.getOrDefault(path, type);
-        if (type == FieldType.NUMBER && _type == FieldType.STRING) {
+        FieldType _type = fieldTypes.getOrDefault(normalizedName, type);
+        if ((type == FieldType.FLOAT || type == FieldType.LONG) && _type == FieldType.STRING) {
             type = FieldType.STRING;
         }
 
-        fieldTypes.put(path, type);
+        fieldTypes.put(normalizedName, type);
 
         if (value instanceof Date || value instanceof String || value instanceof Number) {
             Map<Object, Long> set = uniqueValues.getOrDefault(path, new HashMap<>());
@@ -68,7 +81,7 @@ public class FieldDataCollector {
                 Long count = set.getOrDefault(value, 0L);
                 set.put(value, count + 1);
             }
-            uniqueValues.put(path, set);
+            uniqueValues.put(normalizedName, set);
         }
     }
 

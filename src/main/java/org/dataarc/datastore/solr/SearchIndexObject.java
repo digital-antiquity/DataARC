@@ -1,9 +1,7 @@
 package org.dataarc.datastore.solr;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +12,7 @@ import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.legacy.search.IndexFields;
+import org.dataarc.util.SchemaUtils;
 import org.geojson.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +41,8 @@ public class SearchIndexObject {
     @Field
     private String source;
 
-    @Field
-    private Date dateCreated = new Date();
+//    @Field
+//    private Date dateCreated = new Date();
 
     @Field(value = "properties*")
     private Map<String, Object> properties;
@@ -96,6 +95,10 @@ public class SearchIndexObject {
         if ( MapUtils.isNotEmpty(entry.getProperties() )) {
             properties = new HashMap<>();
         }
+        
+        if (schema == null) {
+            return;
+        }
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
             // make sure that the schema field exists, is not a null type (i.e. we inspected it) and has a value
@@ -109,7 +112,7 @@ public class SearchIndexObject {
                     if (getData() == null) {
                         setData(new ArrayList<>());
                     }
-                    getData().add(new ExtraProperties(data));
+                    getData().add(new ExtraProperties(data, schema));
                     logger.trace("{}", data);
                 } else if (v instanceof List) {
                     if (getData() == null) {
@@ -118,10 +121,10 @@ public class SearchIndexObject {
                     List<Map<String, Object>> sites = (List<Map<String, Object>>) v;
                     logger.trace("{}", sites);
                     sites.forEach(s -> {
-                        getData().add(new ExtraProperties(s));
+                        getData().add(new ExtraProperties(s, schema));
                     });
                 } else if (v != null && field.getType() != null && !field.getName().equals("source")) {
-                    getProperties().put(String.format("%s_%s", schema.getName(), field.getName()), v);
+                    getProperties().put(SchemaUtils.formatForSolr(schema,field), v);
                 }
             }
         });
@@ -167,13 +170,13 @@ public class SearchIndexObject {
         this.source = source;
     }
 
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
+//    public Date getDateCreated() {
+//        return dateCreated;
+//    }
+//
+//    public void setDateCreated(Date dateCreated) {
+//        this.dateCreated = dateCreated;
+//    }
 
     public Set<String> getIndicators() {
         return indicators;

@@ -38,6 +38,9 @@ public class ObjectTraversalUtil {
 
                 });
             }
+            if (arg2 instanceof Map) {
+                traverseMap((Map<String, Object>) arg2, collect, parent,key);
+            }
         });
 
     }

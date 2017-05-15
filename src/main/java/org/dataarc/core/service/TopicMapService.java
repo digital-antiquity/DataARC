@@ -6,12 +6,13 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.dao.AssociationDao;
+import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
 import org.dataarc.core.dao.TopicMapDao;
@@ -48,6 +49,9 @@ public class TopicMapService {
 
     @Autowired
     AssociationDao assoicationDao;
+    
+    @Autowired
+    IndicatorDao indicatorDao;
 
     @Transactional(readOnly = true)
     public List<Topic> findFlattenedTopicsForIndicators() {
@@ -61,11 +65,25 @@ public class TopicMapService {
 
     @Transactional(readOnly = false)
     public TopicMap load(String file) throws JAXBException, SAXException {
+        List<String> mapped = deleteTopicMap();
         topicmap.v2_0.TopicMap topicMap_ = serializationService.readTopicMapFromFile(file);
         TopicMap topicMap = new TopicMap();
         topicMap.setName(file);
         Map<String, Topic> internalMap = new HashMap<>();
         List<Topic> topics = topicMap.getTopics();
+        for (Topic topic : topics){
+            if (CollectionUtils.isEmpty(mapped)) {
+                continue;
+            }
+            if (mapped.contains(topic.getIdentifier())) {
+                mapped.remove(topic.getIdentifier());
+            }
+        }
+        
+        if (CollectionUtils.isNotEmpty(mapped)) {
+            logger.debug("deleting mappings to indicators for topics that don't exist anymore: {}", mapped);
+           indicatorDao.deleteByIndentifier(mapped);
+        }
         List<Association> associations = topicMap.getAssociations();
         loadTopic(topicMap_, internalMap, topics);
         loadAssociations(topicMap_, internalMap, associations);
@@ -259,8 +277,8 @@ public class TopicMapService {
     }
 
     @Transactional(readOnly = false)
-    public void deleteTopicMap() {
-        topicDao.delete();
+    public List<String> deleteTopicMap() {
+        return topicDao.delete();
 
     }
 }

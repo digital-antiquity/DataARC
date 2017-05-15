@@ -60,4 +60,11 @@ public class IndicatorDao {
         
     }
 
+    public void deleteByIndentifier(List<String> mapped) {
+        Query query = manager.createQuery("delete from Indicator where identifier in :mapped");
+        query.setParameter("mapped", mapped);
+        query.executeUpdate();
+        
+    }
+
 }

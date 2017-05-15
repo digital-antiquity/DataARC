@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 public class TopicMapServiceTest extends AbstractServiceTest {
 
+    
     @Autowired
     TopicMapService topicMapService;
 

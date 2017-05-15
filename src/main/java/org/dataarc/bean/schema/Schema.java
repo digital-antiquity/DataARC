@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.AbstractPersistable;
 
 @Entity
@@ -58,4 +59,5 @@ public class Schema extends AbstractPersistable {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
 }

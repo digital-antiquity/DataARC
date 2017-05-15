@@ -67,25 +67,39 @@ public class SolrIndexingService {
             Iterable<DataEntry> entries = sourceDao.findAll();
             int count = 0;
             for (DataEntry entry : entries) {
-                // indexRow(entry);
-                Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
-                SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema);
-                DocumentObjectBinder b = new DocumentObjectBinder();
-                SolrInputDocument doc = b.toSolrInputDocument(searchIndexObject);
-                logger.debug("{}", doc);
-                UpdateResponse addBean = client.addBean(DATA_ARC, searchIndexObject);
+                SolrInputDocument doc;
+                SearchIndexObject searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     logger.debug("{} - {}", searchIndexObject.getId(), searchIndexObject.getTitle());
                     client.commit(DATA_ARC);
                 }
                 count++;
+                doc = null;
             }
 
             client.commit(DATA_ARC);
         } catch (Exception ex) {
-            logger.error("exception indexing", ex);
+            logger.error("exception indexing:", ex);
         }
         logger.debug("done reindexing");
+    }
+
+    private SearchIndexObject indexRow(DataEntry entry) {
+        // indexRow(entry);
+        SolrInputDocument doc = null;
+        try {
+            Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
+            SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema);
+            DocumentObjectBinder b = new DocumentObjectBinder();
+            doc = b.toSolrInputDocument(searchIndexObject);
+            // logger.trace("{}", doc);
+            UpdateResponse addBean = client.addBean(DATA_ARC, searchIndexObject);
+            return searchIndexObject;
+        } catch (Throwable e) {
+            logger.error("exception indexing: {}", doc, e);
+
+        }
+        return null;
     }
 
     private void setupSchema() throws SolrServerException, IOException {
@@ -140,7 +154,7 @@ public class SolrIndexingService {
                 if (field.getType() != null && !field.getName().equals("source")) {
                     logger.debug("{} - {} {}", schema, field, field.getType());
                     try {
-                        addSchemaField(String.format("%s_%s", schema.getName(), field.getName()), toSolrType(field.getType()), false);
+                        addSchemaField(SchemaUtils.formatForSolr(schema, field), toSolrType(field.getType()), false);
                     } catch (SolrServerException | IOException e) {
                         logger.error("exception in adding schema field: {}", e, e);
                     }
@@ -154,8 +168,10 @@ public class SolrIndexingService {
         switch (type) {
             case DATE:
                 return "date";
-            case NUMBER:
+            case FLOAT:
                 return "float";
+            case LONG:
+                return "int";
             case STRING:
             default:
                 return "string";

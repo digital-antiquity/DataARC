@@ -4,10 +4,11 @@ import java.text.Normalizer;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dataarc.bean.schema.Schema;
 
 public class SchemaUtils {
     private static final Pattern PATTERN_NON_ASCII = Pattern.compile("[^\\p{ASCII}]");
-    private static final Pattern PATTERN_NONWORD = Pattern.compile("[^\\w\\s-]");
+    private static final Pattern PATTERN_NONWORD = Pattern.compile("[^\\w\\.\\s-]");
     private static final Pattern PATTERN_WHITESPACE = Pattern.compile("[-\\s]+");
     private static final Pattern PATTERN_AFFIX_SLUG = Pattern.compile("(^-)|(-$)");
 
@@ -41,6 +42,10 @@ public class SchemaUtils {
         input = replaceAll(input, PATTERN_WHITESPACE, "_");
         input = replaceAll(input, PATTERN_AFFIX_SLUG, "");
         return input.toLowerCase();
+    }
+
+    public static String formatForSolr(Schema schema, org.dataarc.bean.schema.Field field) {
+        return String.format("%s_%s", schema.getName(), field.getName());
     }
 
 }

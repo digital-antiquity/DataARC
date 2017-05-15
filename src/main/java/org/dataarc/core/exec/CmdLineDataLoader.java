@@ -44,7 +44,6 @@ public class CmdLineDataLoader extends AbstractDataLoader {
         logger.debug("done loading data");
         try {
             logger.debug("loading wandora");
-            topicMapService.deleteTopicMap();
             topicMapService.load("src/main/data/landscape_wandora.xtm");
             logger.debug("done loading wandora");
         } catch (Exception e) {

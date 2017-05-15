@@ -38,12 +38,13 @@ public class TopicDao {
 
     }
 
-    public void delete() {
-        manager.createNativeQuery("delete from topic_indicator").executeUpdate();
+    public List<String> delete() {
+        List<String> list = manager.createNativeQuery("select distinct topic_id from topic_indicator").getResultList();
         manager.createQuery("delete from Association").executeUpdate();
         manager.createNativeQuery("delete from topic_name_varients").executeUpdate();        
         manager.createQuery("delete from Topic").executeUpdate();
         manager.createQuery("delete from TopicMap").executeUpdate();
+        return list;
 
     }
 
