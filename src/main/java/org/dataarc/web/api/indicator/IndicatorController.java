@@ -24,8 +24,12 @@ public class IndicatorController extends AbstractRestController {
     
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) Indicator indicator) throws Exception {
+        try {
         logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
         indicatorService.save(indicator);
+        } catch (Throwable t) {
+            logger.error("error saving indicator", t);
+        }
         return indicator.getId();
 
     }

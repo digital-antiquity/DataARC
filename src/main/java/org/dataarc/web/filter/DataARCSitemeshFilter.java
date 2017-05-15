@@ -7,12 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.sitemesh.DecoratorSelector;
-import org.sitemesh.content.ContentProcessor;
 import org.sitemesh.webapp.SiteMeshFilter;
-import org.sitemesh.webapp.WebAppContext;
 import org.sitemesh.webapp.contentfilter.ResponseMetaData;
-import org.sitemesh.webapp.contentfilter.Selector;
 
 public class DataARCSitemeshFilter extends SiteMeshFilter {
 

@@ -1,6 +1,5 @@
 package org.dataarc.web.api.topic;
 
-import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.service.TopicMapService;
 import org.dataarc.core.service.topic.InternalTopicMap;
 import org.dataarc.web.api.AbstractRestController;

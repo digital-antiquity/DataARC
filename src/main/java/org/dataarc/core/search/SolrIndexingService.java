@@ -46,7 +46,7 @@ public class SolrIndexingService {
     // SpatialContext ctx = SpatialContext.GEO;
     // SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     // RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
-    List<String> singleFields = Arrays.asList(IndexFields.START, IndexFields.END, IndexFields.POINT, IndexFields.SOURCE);
+    List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND);
 
     @Autowired
     private SolrClient client;
@@ -141,10 +141,10 @@ public class SolrIndexingService {
                 continue;
             }
             logger.debug("adding field to schema: {}", field);
-            if (singleFields.contains(field)) {
-                addSchemaField(field, schemaFields.get(field), false);
-            } else {
+            if (multipleFields.contains(field)) {
                 addSchemaField(field, schemaFields.get(field), true);
+            } else {
+                addSchemaField(field, schemaFields.get(field), false);
             }
         }
 

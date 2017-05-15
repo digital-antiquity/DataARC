@@ -31,7 +31,6 @@ import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.lucene.spatial.query.SpatialArgs;
 import org.apache.lucene.spatial.query.SpatialOperation;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.solr.search.Filter;
 import org.dataarc.core.search.SearchQueryObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;

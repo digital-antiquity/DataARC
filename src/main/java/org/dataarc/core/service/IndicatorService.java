@@ -46,20 +46,20 @@ public class IndicatorService {
     public void save(Indicator indicator) {
         logger.debug("{}", indicator.getTopicIdentifiers());
         List<Topic> topics = new ArrayList<>();
-        List<Long> ids = new ArrayList<>();
-        indicator.getTopics().forEach(t -> {ids.add(t.getId());});
+        List<String> ids = new ArrayList<>();
+        indicator.getTopics().forEach(t -> {ids.add(t.getIdentifier());});
         indicator.getTopicIdentifiers().forEach(ident -> {
             Topic topic = topicDao.findTopicByIdentifier(ident);
             topics.add(topic);
             logger.debug("  topic: {}", topic);
             indicator.getTopics().add(topic);
-            ids.remove(topic.getId());
+            ids.remove(topic.getIdentifier());
         });
         ids.forEach(id -> {
             Iterator<Topic> iterator = indicator.getTopics().iterator();
             while (iterator.hasNext()) {
                 Topic topic = iterator.next();
-                if (Objects.equal(topic.getId(), id)) {
+                if (Objects.equal(topic.getIdentifier(), id)) {
                     iterator.remove();
                 }
             }
