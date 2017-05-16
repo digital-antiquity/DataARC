@@ -20,6 +20,8 @@ import org.dataarc.bean.AbstractPersistable;
 @Entity
 public class Topic extends AbstractPersistable {
 
+    private static final long serialVersionUID = 4436249058757559474L;
+
     @Column(length = 255)
     private String name;
 

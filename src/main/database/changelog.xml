@@ -254,5 +254,11 @@
             <column name="display_name" type="varchar(100)" />
         </addColumn>
     </changeSet>
+    <changeSet id="alpha-19" author="abrin">
+        <dropColumn tableName="topic_indicator" columnName="topic_id"/>
+        <addColumn tableName="topic_indicator">
+        <column name="topic_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

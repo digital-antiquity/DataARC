@@ -287,7 +287,7 @@
                     <template id="spart-template">
                         <div>
                             <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()" class="form-control">
-                                <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.name }} </option>
+                                <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
                             </select>
                             <select name='type' v-model="part.type" class="form-control">
                                 <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>

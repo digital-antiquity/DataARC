@@ -16,6 +16,9 @@ import org.dataarc.bean.AbstractPersistable;
 @Table(name="topic_map")
 public class TopicMap extends AbstractPersistable {
 
+    private static final long serialVersionUID = -1653971032063184550L;
+
+
     private String name;
 
 

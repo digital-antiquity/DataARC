@@ -1,5 +1,7 @@
 package org.dataarc.bean;
 
+import java.io.Serializable;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +24,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  */
 @MappedSuperclass
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-public abstract class AbstractPersistable {
+public abstract class AbstractPersistable implements Serializable {
+
+    private static final long serialVersionUID = -478523777995582558L;
 
     @Transient
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());

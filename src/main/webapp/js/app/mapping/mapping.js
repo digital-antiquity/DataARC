@@ -33,7 +33,7 @@
               if (f.type == undefined) {
                   return 'number';
               }
-              if (f.type === 'NUMBER'){
+              if (f.type === 'FLOAT' || f.type === 'LONG'){
                   return "number";
               } else if (f.type == 'DATE') {
                   return 'date';

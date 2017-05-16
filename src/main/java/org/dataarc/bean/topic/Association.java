@@ -11,6 +11,8 @@ import org.dataarc.bean.AbstractPersistable;
 @Table(name="association")
 public class Association extends AbstractPersistable {
 
+    private static final long serialVersionUID = -1761609019419532654L;
+
     @Column(length = 255)
     private String identifier;
 

@@ -67,14 +67,12 @@ public class SolrIndexingService {
             Iterable<DataEntry> entries = sourceDao.findAll();
             int count = 0;
             for (DataEntry entry : entries) {
-                SolrInputDocument doc;
                 SearchIndexObject searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     logger.debug("{} - {}", searchIndexObject.getId(), searchIndexObject.getTitle());
                     client.commit(DATA_ARC);
                 }
                 count++;
-                doc = null;
             }
 
             client.commit(DATA_ARC);

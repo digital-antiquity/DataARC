@@ -21,6 +21,8 @@ import org.hibernate.annotations.TypeDefs;
 @TypeDefs({ @TypeDef(name = "QueryJsonObject", typeClass = QueryJsonType.class) })
 public class Indicator extends AbstractPersistable {
 
+    private static final long serialVersionUID = 4928837828590131513L;
+
     public List<Topic> getTopics() {
         return topics;
     }
