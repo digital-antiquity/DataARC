@@ -41,14 +41,14 @@ public class SearchIndexObject {
     @Field
     private String source;
 
-    @Field
-    private List<Integer> decade;
+    @Field(value=IndexFields.DECADE)
+    private List<Integer> decade = new ArrayList<>();
 
-    @Field
-    private List<Integer> century;
+    @Field(value=IndexFields.CENTURY)
+    private List<Integer> century = new ArrayList<>();
 
-    @Field
-    private List<Integer> millenium;
+    @Field(value=IndexFields.MILLENIUM)
+    private List<Integer> millenium = new ArrayList<>();
 
     @Field
     private List<String> country;

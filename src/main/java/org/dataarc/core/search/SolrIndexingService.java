@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
@@ -64,7 +66,8 @@ public class SolrIndexingService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND);
+    List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
+            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY);
 
     @Autowired
     private SolrClient client;
@@ -118,6 +121,9 @@ public class SolrIndexingService {
     }
 
     private void applyTopics(SearchIndexObject searchIndexObject) {
+        if (CollectionUtils.isEmpty(searchIndexObject.getTopicIdentifiers())) {
+            return;
+        }
         for (String topicId : searchIndexObject.getTopicIdentifiers()) {
             Topic topic = topicDao.findTopicByIdentifier(topicId);
             Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
@@ -236,10 +242,18 @@ public class SolrIndexingService {
         schemaDao.findAll().forEach(name -> {
             Schema schema = schemaDao.getSchemaByName(name);
             schema.getFields().forEach(field -> {
-                if (field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
-                    logger.debug("{} - {} {}", schema, field, field.getType());
+                if (field.getType() != null) {
                     try {
-                        addSchemaField(SchemaUtils.formatForSolr(schema, field), toSolrType(field.getType()), false);
+                        String solrName = SchemaUtils.formatForSolr(schema, field);
+                        if (!schemaFields.containsKey(solrName)) {
+                            deleteField(solrName);
+                            // hard coding special case for nabone to force to float
+                            if (StringUtils.containsIgnoreCase(solrName, "perc.")) {
+                                field.setType(FieldType.FLOAT);
+                            }
+                            logger.debug("{} - {} {}", schema, field, field.getType());
+                            addSchemaField(solrName, toSolrType(field.getType()), false);
+                        }
                     } catch (SolrServerException | IOException e) {
                         logger.error("exception in adding schema field: {}", e, e);
                     }
