@@ -1,4 +1,4 @@
-package org.dataarc.datastore.solr;
+package org.dataarc.core.search;
 
 import java.util.HashMap;
 import java.util.Map;

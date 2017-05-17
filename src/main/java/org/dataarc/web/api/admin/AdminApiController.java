@@ -1,6 +1,6 @@
 package org.dataarc.web.api.admin;
 
-import org.dataarc.core.legacy.search.LuceneIndexingService;
+import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.web.api.AbstractRestController;
 import org.dataarc.web.api.schema.UrlConstants;
@@ -15,8 +15,7 @@ public class AdminApiController extends AbstractRestController {
     @Autowired
     private IndicatorService indicatorService;
 
-    @Autowired
-    private LuceneIndexingService indexingService;
+    private SolrIndexingService indexingService;
 
     @RequestMapping(path = UrlConstants.REINDEX, method = RequestMethod.POST)
     public void reindex() throws Exception {

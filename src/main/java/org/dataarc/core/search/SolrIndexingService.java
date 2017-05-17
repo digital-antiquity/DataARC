@@ -26,8 +26,6 @@ import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
-import org.dataarc.core.legacy.search.IndexFields;
-import org.dataarc.datastore.solr.SearchIndexObject;
 import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SolrIndexingService {
 
+    private static final String PERC = "perc.";
     private static final String STRING = "string";
     private static final String LOCATION_RPT = "location_rpt";
     private static final String INT = "int";
@@ -248,7 +247,7 @@ public class SolrIndexingService {
                         if (!schemaFields.containsKey(solrName)) {
                             deleteField(solrName);
                             // hard coding special case for nabone to force to float
-                            if (StringUtils.containsIgnoreCase(solrName, "perc.")) {
+                            if (StringUtils.containsIgnoreCase(solrName, PERC)) {
                                 field.setType(FieldType.FLOAT);
                             }
                             logger.debug("{} - {} {}", schema, field, field.getType());

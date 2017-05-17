@@ -1,4 +1,4 @@
-package org.dataarc.datastore.solr;
+package org.dataarc.core.search;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.Schema;
-import org.dataarc.core.legacy.search.IndexFields;
 import org.dataarc.util.SchemaUtils;
 import org.geojson.Feature;
 import org.slf4j.Logger;

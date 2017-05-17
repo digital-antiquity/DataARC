@@ -1,4 +1,4 @@
-package org.dataarc.core.legacy.search;
+package org.dataarc.core.search;
 
 /**
  * FIeld Name constants

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.schema.Schema;
-import org.dataarc.core.legacy.search.IndexFields;
+import org.dataarc.core.search.IndexFields;
 
 public class SchemaUtils {
     private static final Pattern PATTERN_NON_ASCII = Pattern.compile("[^\\p{ASCII}]");
