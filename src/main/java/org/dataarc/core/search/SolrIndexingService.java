@@ -1,6 +1,7 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +33,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
 
 @Service
 public class SolrIndexingService {
@@ -146,6 +150,14 @@ public class SolrIndexingService {
     private void applyFacets(SearchIndexObject searchIndexObject) {
         if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
             applyDateFacets(searchIndexObject);
+            // get the shapes
+            // convert to geometry
+            for (Geometry g : new ArrayList<Geometry>()) {
+                if (g.contains(searchIndexObject.getGeometry())) {
+                    // get id
+                    // add it to the right facet
+                }
+            }
 
         }
 

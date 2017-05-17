@@ -17,7 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -40,13 +43,13 @@ public class SearchIndexObject {
     @Field
     private String source;
 
-    @Field(value=IndexFields.DECADE)
+    @Field(value = IndexFields.DECADE)
     private List<Integer> decade = new ArrayList<>();
 
-    @Field(value=IndexFields.CENTURY)
+    @Field(value = IndexFields.CENTURY)
     private List<Integer> century = new ArrayList<>();
 
-    @Field(value=IndexFields.MILLENIUM)
+    @Field(value = IndexFields.MILLENIUM)
     private List<Integer> millenium = new ArrayList<>();
 
     @Field
@@ -87,8 +90,8 @@ public class SearchIndexObject {
     @Field(value = IndexFields.POINT)
     private String position;
 
-    private Coordinate coordinate;
-    // private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+    private Geometry geometry;
+    private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     public SearchIndexObject() {
     }
@@ -96,14 +99,15 @@ public class SearchIndexObject {
     @SuppressWarnings("unchecked")
     public SearchIndexObject(DataEntry entry, Schema schema) {
         if (entry.getX() != null && entry.getY() != null) {
-            setCoordinate(new Coordinate(entry.getX(), entry.getY()));
-            position = WKTWriter.toPoint(getCoordinate());
+            Coordinate coord = new Coordinate(entry.getX(), entry.getY());
+            geometry = geometryFactory.createPoint(coord);
+            position = WKTWriter.toPoint(coord);
         }
         id = entry.getId();
         start = entry.getStart();
         end = entry.getEnd();
         source = entry.getSource();
-        
+
         if (CollectionUtils.isNotEmpty(entry.getIndicators())) {
             indicators = entry.getIndicators();
             values.addAll(indicators);
@@ -123,10 +127,7 @@ public class SearchIndexObject {
         if (schema == null) {
             return;
         }
-        
-        
-        
-        
+
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
             // make sure that the schema field exists, is not a null type (i.e. we inspected it) and has a value
@@ -387,12 +388,8 @@ public class SearchIndexObject {
         return type;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+    public Geometry getGeometry() {
+        return geometry;
     }
 
 }
