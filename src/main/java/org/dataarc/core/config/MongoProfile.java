@@ -30,6 +30,7 @@ import com.mongodb.MongoCredential;
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 public class MongoProfile extends DataArcConfiguration {
 
+    private static final String ADMIN = "admin";
     static final int _27017 = 27017;
     static final String LOCALHOST = "localhost";
     static final String DB_NAME = "mongoNname";
@@ -38,35 +39,19 @@ public class MongoProfile extends DataArcConfiguration {
     static final String USERNAME = "monogUser";
     static final String PASSWORD = "mongoPassword";
     static final String DATABASE_NAME = "dataarc";
-    private boolean embedded = false;
-    // @Bean(name = "mongoEntityManager")
-    // public LocalContainerEntityManagerFactoryBean mongoEntityManager() throws Throwable {
-    // Map<String, Object> properties = new HashMap<String, Object>();
-    // properties.put("javax.persistence.transactionType", "resource_local");
-    // properties.put("hibernate.ogm.datastore.provider", "mongodb");
-    // properties.put("hibernate.ogm.datastore.host", env.getProperty(DB_HOST, LOCALHOST));
-    // properties.put("hibernate.ogm.datastore.port", env.getProperty(DB_PORT, Integer.class, _27017));
-    // properties.put("hibernate.ogm.datastore.database", DATABASE_NAME);
-    // properties.put("hibernate.ogm.datastore.create_database", "true");
-    //
-    // LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
-    // entityManager.setPackagesToScan("org.dataarc.bean");
-    // entityManager.setPersistenceUnitName("mongoPersistenceUnit");
-    // entityManager.setJpaPropertyMap(properties);
-    // entityManager.setPersistenceProviderClass(HibernateOgmPersistence.class);
-    // return entityManager;
-    // }
+    private static final String SOLR_LOCAL_PATH = "solr.local_path";
+    private static final String SOLR_URL = "solr.url";
 
     @Bean
     SolrClient solrClient() throws FileNotFoundException {
-        if (embedded) {
+        if (env.getProperty("solr.embedded", Boolean.class, Boolean.TRUE)) {
             // env.getProperty(DB_HOST, LOCALHOST)
-            String solrHome = ResourceUtils.getURL("src/main/resources/solr").getPath();
+            String solrHome = ResourceUtils.getURL(env.getProperty(SOLR_LOCAL_PATH, "src/main/resources/solr")).getPath();
             CoreContainer container = CoreContainer.createAndLoad(new File(solrHome).toPath());
 
             return new EmbeddedSolrServer(container, "dataArc");
         } else {
-            String urlString = "http://localhost:8983/solr";
+            String urlString = env.getProperty(SOLR_URL, "http://localhost:8983/solr");
             SolrClient solr = new HttpSolrClient.Builder(urlString).build();
             return solr;
         }
@@ -78,7 +63,7 @@ public class MongoProfile extends DataArcConfiguration {
         String password = env.getProperty(PASSWORD, "");
         MongoClient mongo = new MongoClient();
         if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-            MongoCredential creds = MongoCredential.createCredential(username, "admin", password.toCharArray());
+            MongoCredential creds = MongoCredential.createCredential(username, ADMIN, password.toCharArray());
             mongo.getCredentialsList().add(creds);
         }
         return new SimpleMongoDbFactory(mongo, env.getProperty(DB_NAME, DATABASE_NAME));
