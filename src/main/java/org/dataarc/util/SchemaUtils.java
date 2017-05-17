@@ -1,10 +1,13 @@
 package org.dataarc.util;
 
 import java.text.Normalizer;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.core.legacy.search.IndexFields;
 
 public class SchemaUtils {
     private static final Pattern PATTERN_NON_ASCII = Pattern.compile("[^\\p{ASCII}]");
@@ -44,7 +47,12 @@ public class SchemaUtils {
         return input.toLowerCase();
     }
 
+    private static final List<String> ignorePrefix = Arrays.asList(IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.TITLE);
+
     public static String formatForSolr(Schema schema, org.dataarc.bean.schema.Field field) {
+        if (ignorePrefix.contains(field.getName())) {
+            return field.getName();
+        }
         return String.format("%s_%s", schema.getName(), field.getName());
     }
 

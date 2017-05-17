@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.math3.util.MathUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
@@ -31,6 +32,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SolrIndexingService {
 
+    private static final String MULTI_VALUED = "multiValued";
+    private static final String STORED = "stored";
+    private static final String NAME = "name";
+    private static final String TYPE = "type";
+
     static final String DATA_ARC = "dataArc";
 
     @Autowired
@@ -43,9 +49,6 @@ public class SolrIndexingService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    // SpatialContext ctx = SpatialContext.GEO;
-    // SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
-    // RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
     List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND);
 
     @Autowired
@@ -83,21 +86,58 @@ public class SolrIndexingService {
     }
 
     private SearchIndexObject indexRow(DataEntry entry) {
-        // indexRow(entry);
         SolrInputDocument doc = null;
         try {
             Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
             SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema);
-            DocumentObjectBinder b = new DocumentObjectBinder();
-            doc = b.toSolrInputDocument(searchIndexObject);
-            // logger.trace("{}", doc);
-            UpdateResponse addBean = client.addBean(DATA_ARC, searchIndexObject);
+            applyFacets(searchIndexObject);
+            doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
+            client.addBean(DATA_ARC, searchIndexObject);
             return searchIndexObject;
         } catch (Throwable e) {
             logger.error("exception indexing: {}", doc, e);
 
         }
         return null;
+    }
+
+    private void applyFacets(SearchIndexObject searchIndexObject) {
+        if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
+            applyDateFacets(searchIndexObject);
+            
+        }
+
+    }
+
+    private void applyDateFacets(SearchIndexObject searchIndexObject) {
+        int s = searchIndexObject.getStart().intValue();
+        int e = searchIndexObject.getEnd().intValue();
+        int startM = s - (s % 1_000);
+        int endM = e - (e % 1_000);
+        if (e % 1_000 != 0) {
+            endM += 1_000;
+        }
+        for (int i = startM; i <= endM; i = i + 1_000) {
+            searchIndexObject.getMillenium().add(i);
+        }
+
+        int startC = s - (s % 100);
+        int endC = e - (e % 100);
+        if (e % 100 != 0) {
+            endC += 100;
+        }
+        for (int i = startC; i <= endC; i = i + 100) {
+            searchIndexObject.getCentury().add(i);
+        }
+
+        int startD = s - (s % 10);
+        int endD = e - (e % 10);
+        if (e % 10 != 0) {
+            endD += 10;
+        }
+        for (int i = startD; i <= endD; i = i + 10) {
+            searchIndexObject.getDecade().add(i);
+        }
     }
 
     private void setupSchema() throws SolrServerException, IOException {
@@ -113,11 +153,21 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.TOPIC, "text_general");
         schemaFields.put(IndexFields.TOPIC_ID, "strings");
         schemaFields.put(IndexFields.TOPIC_ID_2ND, "strings");
+        schemaFields.put(IndexFields.TOPIC_ID_3RD, "strings");
+        schemaFields.put(IndexFields.DECADE, "strings");
+        schemaFields.put(IndexFields.CENTURY, "strings");
+        schemaFields.put(IndexFields.MILLENIUM, "strings");
+        schemaFields.put(IndexFields.REGION, "strings");
+        schemaFields.put(IndexFields.COUNTRY, "strings");
+        schemaFields.put(IndexFields.TYPE, "strings");
+        schemaFields.put(IndexFields.INTERNAL_TYPE, "strings");
+        schemaFields.put(IndexFields.CATEGORY, "strings");
+
         schemaFields.put(IndexFields.INDICATOR, "text_general");
         schemaFields.put(IndexFields.KEYWORD, "text_general");
         schemaFields.put(IndexFields.SOURCE, "text_general");
         schemaFields.put(IndexFields.POINT, "location_rpt");
-        schemaFields.put("type", "string");
+        schemaFields.put(IndexFields.TYPE, "string");
         for (String field : schemaFields.keySet()) {
             boolean seen = false;
             boolean deleted = false;
@@ -125,9 +175,9 @@ public class SolrIndexingService {
                 if (seen) {
                     continue;
                 }
-                if (field.equals(solrField.get("name"))) {
+                if (field.equals(solrField.get(NAME))) {
                     logger.debug("{}: {}", field, solrField);
-                    if (!schemaFields.get(field).equals(solrField.get("type"))) {
+                    if (!schemaFields.get(field).equals(solrField.get(TYPE))) {
                         logger.debug(" deleting .. {}", field);
                         deleteField(field);
                         deleted = true;
@@ -149,7 +199,7 @@ public class SolrIndexingService {
         schemaDao.findAll().forEach(name -> {
             Schema schema = schemaDao.getSchemaByName(name);
             schema.getFields().forEach(field -> {
-                if (field.getType() != null && !field.getName().equals("source")) {
+                if (field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
                     logger.debug("{} - {} {}", schema, field, field.getType());
                     try {
                         addSchemaField(SchemaUtils.formatForSolr(schema, field), toSolrType(field.getType()), false);
@@ -178,27 +228,23 @@ public class SolrIndexingService {
 
     private void addSchemaField(String field, String string, boolean b) throws SolrServerException, IOException {
         Map<String, Object> attr = new HashMap<>();
-        attr.put("name", field);
-        attr.put("type", string);
-        attr.put("stored", true);
-        attr.put("multiValued", b);
+        attr.put(NAME, field);
+        attr.put(TYPE, string);
+        attr.put(STORED, true);
+        attr.put(MULTI_VALUED, b);
         logger.debug("adding field: {}", attr);
         SchemaRequest.AddField addFieldUpdateSchemaRequest = new SchemaRequest.AddField(attr);
-        SchemaResponse.UpdateResponse addFieldResponse = addFieldUpdateSchemaRequest.process(client, DATA_ARC);
+        addFieldUpdateSchemaRequest.process(client, DATA_ARC);
     }
 
     private void addDynamicField(Map<String, Object> fieldAttributes_) throws SolrServerException, IOException {
         SchemaRequest.AddDynamicField addFieldUpdateSchemaRequest_ = new SchemaRequest.AddDynamicField(fieldAttributes_);
-        SchemaResponse.UpdateResponse addFieldResponse_ = addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
+        addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
     }
 
     private void deleteField(String field) throws SolrServerException, IOException {
         SchemaRequest.DeleteField addFieldUpdateSchemaRequest = new SchemaRequest.DeleteField(field);
-        SchemaResponse.UpdateResponse addFieldResponse = addFieldUpdateSchemaRequest.process(client, DATA_ARC);
-    }
-
-    private void addSchemaField(Map<String, Object> fieldAttributes) throws SolrServerException, IOException {
-
+        addFieldUpdateSchemaRequest.process(client, DATA_ARC);
     }
 
 }

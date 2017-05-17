@@ -41,8 +41,26 @@ public class SearchIndexObject {
     @Field
     private String source;
 
-//    @Field
-//    private Date dateCreated = new Date();
+    @Field
+    private List<Integer> decade;
+
+    @Field
+    private List<Integer> century;
+
+    @Field
+    private List<Integer> millenium;
+
+    @Field
+    private List<String> country;
+
+    @Field
+    private List<String> region;
+
+    @Field
+    private ObjectType type;
+
+    @Field
+    private Concept concept;
 
     @Field(value = "properties*")
     private Map<String, Object> properties;
@@ -50,13 +68,15 @@ public class SearchIndexObject {
     @Field(child = true)
     private List<ExtraProperties> data;
 
-    @Field
-    private String type = "object";
+    @Field(value = IndexFields.INTERNAL_TYPE)
+    private String internalType = "object";
 
     @Field(value = IndexFields.INDICATOR)
     private Set<String> indicators;
     @Field(value = IndexFields.TOPIC_ID_2ND)
     private Set<String> topic_2nd;
+    @Field(value = IndexFields.TOPIC_ID_3RD)
+    private Set<String> topic_3rd;
     @Field(value = IndexFields.TOPIC)
     private Set<String> topics;
     @Field(value = IndexFields.TOPIC_ID)
@@ -67,19 +87,24 @@ public class SearchIndexObject {
 
     @Field(value = IndexFields.POINT)
     private String position;
+
+    private Coordinate coordinate;
     // private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     public SearchIndexObject() {
     }
 
+    @SuppressWarnings("unchecked")
     public SearchIndexObject(DataEntry entry, Schema schema) {
         if (entry.getX() != null && entry.getY() != null) {
-            position = WKTWriter.toPoint(new Coordinate(entry.getX(), entry.getY()));
+            setCoordinate(new Coordinate(entry.getX(), entry.getY()));
+            position = WKTWriter.toPoint(getCoordinate());
         }
         id = entry.getId();
         start = entry.getStart();
         end = entry.getEnd();
         source = entry.getSource();
+        
         if (CollectionUtils.isNotEmpty(entry.getIndicators())) {
             indicators = entry.getIndicators();
             values.addAll(indicators);
@@ -92,13 +117,17 @@ public class SearchIndexObject {
             topicIdentifiers = entry.getTopicIdentifiers();
         }
         values.add(source);
-        if ( MapUtils.isNotEmpty(entry.getProperties() )) {
+        if (MapUtils.isNotEmpty(entry.getProperties())) {
             properties = new HashMap<>();
         }
-        
+
         if (schema == null) {
             return;
         }
+        
+        
+        
+        
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
             // make sure that the schema field exists, is not a null type (i.e. we inspected it) and has a value
@@ -123,8 +152,8 @@ public class SearchIndexObject {
                     sites.forEach(s -> {
                         getData().add(new ExtraProperties(s, schema));
                     });
-                } else if (v != null && field.getType() != null && !field.getName().equals("source")) {
-                    getProperties().put(SchemaUtils.formatForSolr(schema,field), v);
+                } else if (v != null && field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
+                    getProperties().put(SchemaUtils.formatForSolr(schema, field), v);
                 }
             }
         });
@@ -169,14 +198,6 @@ public class SearchIndexObject {
     public void setSource(String source) {
         this.source = source;
     }
-
-//    public Date getDateCreated() {
-//        return dateCreated;
-//    }
-//
-//    public void setDateCreated(Date dateCreated) {
-//        this.dateCreated = dateCreated;
-//    }
 
     public Set<String> getIndicators() {
         return indicators;
@@ -269,14 +290,6 @@ public class SearchIndexObject {
         this.data = data;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public Set<String> getTopic_2nd() {
         return topic_2nd;
     }
@@ -285,6 +298,102 @@ public class SearchIndexObject {
         this.topic_2nd = topic_2nd;
     }
 
+    public void setType(ObjectType type) {
+        this.type = type;
+    }
+
+    public Concept getConcept() {
+        return concept;
+    }
+
+    public void setConcept(Concept concept) {
+        this.concept = concept;
+    }
+
+    public String getInternalType() {
+        return internalType;
+    }
+
+    public void setInternalType(String internalType) {
+        this.internalType = internalType;
+    }
+
     private @Field("*_txt") Map<String, List<String>> textMap;
+
+    public List<Integer> getDecade() {
+        return decade;
+    }
+
+    public void setDecade(List<Integer> decade) {
+        this.decade = decade;
+    }
+
+    public List<Integer> getCentury() {
+        return century;
+    }
+
+    public void setCentury(List<Integer> century) {
+        this.century = century;
+    }
+
+    public List<Integer> getMillenium() {
+        return millenium;
+    }
+
+    public void setMillenium(List<Integer> millenium) {
+        this.millenium = millenium;
+    }
+
+    public List<String> getCountry() {
+        return country;
+    }
+
+    public void setCountry(List<String> country) {
+        this.country = country;
+    }
+
+    public List<String> getRegion() {
+        return region;
+    }
+
+    public void setRegion(List<String> region) {
+        this.region = region;
+    }
+
+    public Set<String> getTopic_3rd() {
+        return topic_3rd;
+    }
+
+    public void setTopic_3rd(Set<String> topic_3rd) {
+        this.topic_3rd = topic_3rd;
+    }
+
+    public List<String> getValues() {
+        return values;
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
+    }
+
+    public Map<String, List<String>> getTextMap() {
+        return textMap;
+    }
+
+    public void setTextMap(Map<String, List<String>> textMap) {
+        this.textMap = textMap;
+    }
+
+    public ObjectType getType() {
+        return type;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
 
 }

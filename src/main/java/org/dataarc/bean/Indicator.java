@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import org.dataarc.bean.topic.Topic;
@@ -41,6 +42,10 @@ public class Indicator extends AbstractPersistable {
     @Type(type = "QueryJsonObject")
     private FilterQuery query;
 
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private DataArcUser user;
+    
     @ManyToMany
     @JoinTable(name = "topic_indicator", joinColumns = @JoinColumn(name = "indicator_id"), inverseJoinColumns= @JoinColumn(name="topic_id",referencedColumnName="identifier"))
     private List<Topic> topics = new ArrayList<>();

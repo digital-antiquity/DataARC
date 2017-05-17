@@ -8,8 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.dataarc.bean.Indicator;
+import org.dataarc.util.PersistableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -57,14 +59,18 @@ public class IndicatorDao {
 
     public void delete(Indicator findById) {
         manager.remove(findById);
-        
+
     }
 
     public void deleteByIdentifier(List<String> mapped) {
-        Query query = manager.createQuery("delete from Indicator i join i.topics t where t.identifier in :mapped");
+        Query query = manager.createQuery(" from Indicator i left join i.topics t where t.identifier in :mapped");
         query.setParameter("mapped", mapped);
-        query.executeUpdate();
-        
+        List<Indicator> resultList = query.getResultList();
+        if (CollectionUtils.isNotEmpty(resultList)) {
+            Query delete = manager.createQuery("delete from Indicator i where i.id in :indicators");
+            delete.setParameter("indicators", PersistableUtils.extractIds(resultList));
+            delete.executeUpdate();
+        }
     }
 
 }
