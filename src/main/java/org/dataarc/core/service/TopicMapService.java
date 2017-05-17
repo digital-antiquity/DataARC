@@ -75,14 +75,15 @@ public class TopicMapService {
             if (CollectionUtils.isEmpty(mapped)) {
                 continue;
             }
-            if (mapped.contains(topic.getIdentifier())) {
-                mapped.remove(topic.getIdentifier());
+            String identifier = topic.getIdentifier();
+            if (mapped.contains(identifier)) {
+                mapped.remove(identifier);
             }
         }
         
         if (CollectionUtils.isNotEmpty(mapped)) {
             logger.debug("deleting mappings to indicators for topics that don't exist anymore: {}", mapped);
-           indicatorDao.deleteByIndentifier(mapped);
+           indicatorDao.deleteByIdentifier(mapped);
         }
         List<Association> associations = topicMap.getAssociations();
         loadTopic(topicMap_, internalMap, topics);
