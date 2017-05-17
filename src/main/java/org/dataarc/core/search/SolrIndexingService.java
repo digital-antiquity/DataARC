@@ -3,23 +3,27 @@ package org.dataarc.core.search;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.apache.commons.math3.util.MathUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
-import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.FieldType;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.bean.topic.Topic;
+import org.dataarc.core.dao.AssociationDao;
 import org.dataarc.core.dao.ImportDao;
+import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
+import org.dataarc.core.dao.TopicDao;
 import org.dataarc.core.legacy.search.IndexFields;
 import org.dataarc.datastore.solr.SearchIndexObject;
 import org.dataarc.util.SchemaUtils;
@@ -32,6 +36,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SolrIndexingService {
 
+    private static final String STRING = "string";
+    private static final String LOCATION_RPT = "location_rpt";
+    private static final String INT = "int";
+    private static final String TEXT_GENERAL = "text_general";
+    private static final String STRINGS = "strings";
     private static final String MULTI_VALUED = "multiValued";
     private static final String STORED = "stored";
     private static final String NAME = "name";
@@ -43,6 +52,12 @@ public class SolrIndexingService {
     ImportDao sourceDao;
     @Autowired
     SchemaDao schemaDao;
+    @Autowired
+    IndicatorDao indicatorDao;
+    @Autowired
+    TopicDao topicDao;
+    @Autowired
+    AssociationDao associationDao;
 
     @Autowired
     SerializationDao serializationService;
@@ -91,6 +106,7 @@ public class SolrIndexingService {
             Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
             SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema);
             applyFacets(searchIndexObject);
+            applyTopics(searchIndexObject);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
             client.addBean(DATA_ARC, searchIndexObject);
             return searchIndexObject;
@@ -101,10 +117,31 @@ public class SolrIndexingService {
         return null;
     }
 
+    private void applyTopics(SearchIndexObject searchIndexObject) {
+        for (String topicId : searchIndexObject.getTopicIdentifiers()) {
+            Topic topic = topicDao.findTopicByIdentifier(topicId);
+            Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
+            Set<Topic> grandChildren = new HashSet<>();
+            for (Topic child : children) {
+                grandChildren.addAll(associationDao.findRelatedTopics(child));
+            }
+            grandChildren.removeAll(children);
+            grandChildren.remove(topic);
+            searchIndexObject.setTopic_2nd(new HashSet<>());
+            searchIndexObject.setTopic_3rd(new HashSet<>());
+            for (Topic t : children) {
+                searchIndexObject.getTopic_2nd().add(t.getIdentifier());
+            }
+            for (Topic t : grandChildren) {
+                searchIndexObject.getTopic_3rd().add(t.getIdentifier());
+            }
+        }
+    }
+
     private void applyFacets(SearchIndexObject searchIndexObject) {
         if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
             applyDateFacets(searchIndexObject);
-            
+
         }
 
     }
@@ -146,28 +183,28 @@ public class SolrIndexingService {
         List<Map<String, Object>> solrFields = response.getSchemaRepresentation().getFields();
         logger.debug("fields: {}", solrFields);
         Map<String, String> schemaFields = new HashMap<>();
-        schemaFields.put(IndexFields.COUNTRY, "text_general");
-        schemaFields.put(IndexFields.START, "int");
-        schemaFields.put(IndexFields.END, "int");
-        schemaFields.put(IndexFields.TITLE, "text_general");
-        schemaFields.put(IndexFields.TOPIC, "text_general");
-        schemaFields.put(IndexFields.TOPIC_ID, "strings");
-        schemaFields.put(IndexFields.TOPIC_ID_2ND, "strings");
-        schemaFields.put(IndexFields.TOPIC_ID_3RD, "strings");
-        schemaFields.put(IndexFields.DECADE, "strings");
-        schemaFields.put(IndexFields.CENTURY, "strings");
-        schemaFields.put(IndexFields.MILLENIUM, "strings");
-        schemaFields.put(IndexFields.REGION, "strings");
-        schemaFields.put(IndexFields.COUNTRY, "strings");
-        schemaFields.put(IndexFields.TYPE, "strings");
-        schemaFields.put(IndexFields.INTERNAL_TYPE, "strings");
-        schemaFields.put(IndexFields.CATEGORY, "strings");
+        schemaFields.put(IndexFields.COUNTRY, TEXT_GENERAL);
+        schemaFields.put(IndexFields.START, INT);
+        schemaFields.put(IndexFields.END, INT);
+        schemaFields.put(IndexFields.TITLE, TEXT_GENERAL);
+        schemaFields.put(IndexFields.TOPIC, TEXT_GENERAL);
+        schemaFields.put(IndexFields.TOPIC_ID, STRINGS);
+        schemaFields.put(IndexFields.TOPIC_ID_2ND, STRINGS);
+        schemaFields.put(IndexFields.TOPIC_ID_3RD, STRINGS);
+        schemaFields.put(IndexFields.DECADE, STRINGS);
+        schemaFields.put(IndexFields.CENTURY, STRINGS);
+        schemaFields.put(IndexFields.MILLENIUM, STRINGS);
+        schemaFields.put(IndexFields.REGION, STRINGS);
+        schemaFields.put(IndexFields.COUNTRY, STRINGS);
+        schemaFields.put(IndexFields.TYPE, STRINGS);
+        schemaFields.put(IndexFields.INTERNAL_TYPE, STRINGS);
+        schemaFields.put(IndexFields.CATEGORY, STRINGS);
 
-        schemaFields.put(IndexFields.INDICATOR, "text_general");
-        schemaFields.put(IndexFields.KEYWORD, "text_general");
-        schemaFields.put(IndexFields.SOURCE, "text_general");
-        schemaFields.put(IndexFields.POINT, "location_rpt");
-        schemaFields.put(IndexFields.TYPE, "string");
+        schemaFields.put(IndexFields.INDICATOR, TEXT_GENERAL);
+        schemaFields.put(IndexFields.KEYWORD, TEXT_GENERAL);
+        schemaFields.put(IndexFields.SOURCE, TEXT_GENERAL);
+        schemaFields.put(IndexFields.POINT, LOCATION_RPT);
+        schemaFields.put(IndexFields.TYPE, STRING);
         for (String field : schemaFields.keySet()) {
             boolean seen = false;
             boolean deleted = false;
@@ -219,10 +256,10 @@ public class SolrIndexingService {
             case FLOAT:
                 return "float";
             case LONG:
-                return "int";
+                return INT;
             case STRING:
             default:
-                return "string";
+                return STRING;
         }
     }
 
