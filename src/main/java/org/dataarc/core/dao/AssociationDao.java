@@ -26,16 +26,20 @@ public class AssociationDao {
     }
 
     public Set<Topic> findRelatedTopics(Topic topic) {
-        TypedQuery<Association> query = manager.createQuery("from Association where from.id=:id or to.id=:id",Association.class);
-        query.setParameter("id", topic.getId());
         Set<Topic> topics = new HashSet<>();
-        for (Association association : query.getResultList()) {
-            if (!association.getFrom().equals(topic)) {
-                topics.add(association.getFrom());
+        try {
+            TypedQuery<Association> query = manager.createQuery("SELECT assoc from Association assoc where assoc.from.id=:id or assoc.to.id=:id ",Association.class);
+            query.setParameter("id", topic.getId());
+            for (Association association : query.getResultList()) {
+                if (!association.getFrom().equals(topic)) {
+                    topics.add(association.getFrom());
+                }
+                if (!association.getTo().equals(topic)) {
+                    topics.add(association.getTo());
+                }
             }
-            if (!association.getTo().equals(topic)) {
-                topics.add(association.getTo());
-            }
+        } catch (Throwable t) {
+            logger.error("{}",t,t);
         }
         return topics;
     }

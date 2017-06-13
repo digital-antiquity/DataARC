@@ -76,6 +76,7 @@ public class SchemaDao {
         if (schema == null) {
             schema = new Schema();
             schema.setName(name);
+            schema.setDisplayName(collector.getDisplayName());
         }
         for (String fieldName : collector.getNames()) {
             Field field = schema.getFieldByName(fieldName);

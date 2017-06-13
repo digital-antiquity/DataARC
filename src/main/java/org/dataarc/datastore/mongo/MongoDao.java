@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.QueryDao;
+import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.Operator;
 import org.dataarc.core.query.QueryPart;
@@ -34,6 +37,9 @@ public class MongoDao implements ImportDao, QueryDao {
     @Autowired
     MongoTemplate template;
 
+    @Autowired
+    SchemaDao schemaDao;
+    
     @Autowired
     SourceRepository repository;
 
@@ -63,7 +69,16 @@ public class MongoDao implements ImportDao, QueryDao {
     @Override
     public List<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
         Query q = new Query();
-        q.addCriteria(Criteria.where("source").is(fq.getSchema()));
+        Set<String> findAll = schemaDao.findAll();
+        Schema schema = null;
+        String lookup = fq.getSchema().trim();
+        
+        for (String name : findAll) {
+            if (name.toLowerCase().equals(lookup)) {
+                schema = schemaDao.findByName(name);
+                q.addCriteria(Criteria.where("source").is(schema.getDisplayName()));
+            }
+        }
 
         Criteria group = new Criteria();
         List<Criteria> criteria = new ArrayList<>();
@@ -102,6 +117,7 @@ public class MongoDao implements ImportDao, QueryDao {
             group = group.orOperator(criteria.toArray(new Criteria[0]));
         }
         q.addCriteria(group);
+        logger.debug(" :: query :: {}", q);
         List<DataEntry> find = template.find(q, DataEntry.class);
         return find;
     }

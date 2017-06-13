@@ -21,9 +21,11 @@ public class FieldDataCollector {
     private Map<String,String> displayNames = new HashMap<>();
     private Map<String, FieldType> fieldTypes = new HashMap<>();
     private Map<String, Map<Object, Long>> uniqueValues = new HashMap<>();
+    private String displayName;
 
     public FieldDataCollector(String schema) {
         this.setSchemaName(schema);
+        this.setDisplayName(schema);
     }
 
     public void add(String parent, String key, Object value) {
@@ -111,6 +113,14 @@ public class FieldDataCollector {
 
     public String getDisplayName(String field) {
         return displayNames.getOrDefault(field, field);
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
 }

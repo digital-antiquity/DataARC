@@ -80,7 +80,7 @@ public class SolrIndexingService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
-            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY);
+            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY,IndexFields.KEYWORD, IndexFields.TOPIC_ID_3RD);
 
     @Autowired
     private SolrClient client;
@@ -129,7 +129,7 @@ public class SolrIndexingService {
             applyFacets(searchIndexObject);
             applyTopics(searchIndexObject);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
-            client.addBean(DATA_ARC, searchIndexObject);
+            client.add(DATA_ARC, doc);
             return searchIndexObject;
         } catch (Throwable e) {
             logger.error("exception indexing: {}", doc, e);

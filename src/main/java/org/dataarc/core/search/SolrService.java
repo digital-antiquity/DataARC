@@ -63,7 +63,7 @@ public class SolrService {
 
         int limit = 1_000_000;
         FeatureCollection fc = new FeatureCollection();
-        StringBuilder bq = new StringBuilder("");
+        StringBuilder bq = new StringBuilder();
         bq.append(createDateRangeQueryPart(sqo.getStart(), sqo.getEnd()));
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
@@ -71,8 +71,8 @@ public class SolrService {
         appendSpatial(sqo, bq);
         SolrQuery params = new SolrQuery(bq.toString());
         params.setParam("rows", Integer.toString(limit));
-        params.setFilterQueries("type:object");
 
+        params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
         params.setFields("*","[child parentFilter=\"type:object\"]");       
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
@@ -85,7 +85,7 @@ public class SolrService {
         // aggregate results in a map by point
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
-            logger.debug("{}", document);
+//            logger.debug("{}", document);
             try {
                 // create a point for each result
                 String point = (String) document.get(IndexFields.POINT);
@@ -178,7 +178,9 @@ public class SolrService {
     private void appendSpatial(SearchQueryObject sqo, StringBuilder bq) {
         double[] topLeft = sqo.getTopLeft();
         double[] bottomRight = sqo.getBottomRight();
-
+        if (topLeft == null || bottomRight == null) {
+            return;
+        }
         // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
         StringBuilder spatial = new StringBuilder();
         //*** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** // 

@@ -23,8 +23,8 @@ public class LegacyJsonController extends AbstractController {
 
     @RequestMapping("/json")
     public FeatureCollection greeting(@RequestParam(value = "x1", required = false, defaultValue = "-66.005859375") Double x1,
-            @RequestParam(value = "x2", required = false, defaultValue = "-124.716798875") Double x2,
-            @RequestParam(value = "y1", required = false, defaultValue = "24.17431945794909") Double y1,
+            @RequestParam(value = "x2", required = false) Double x2,
+            @RequestParam(value = "y1", required = false) Double y1,
             @RequestParam(value = "y2", required = false, defaultValue = "49.359122687528746") Double y2,
             @RequestParam(value = "start", required = false, defaultValue = "-9999") Integer start,
             @RequestParam(value = "end", required = false, defaultValue = "9999") Integer end,
@@ -32,8 +32,12 @@ public class LegacyJsonController extends AbstractController {
             @RequestParam(value = "topicId", required = false) String topicId,
             @RequestParam(value = "types", required = false) List<String> types) throws IOException, ParseException, Exception {
         SearchQueryObject sqo = new SearchQueryObject();
-        sqo.setTopLeft(new double[] {x1,y1});
+        if (x1 != null && y1 != null){
+            sqo.setTopLeft(new double[] {x1,y1});
+        }
+        if (x2 != null && y2 != null){
         sqo.setBottomRight(new double[] {x2,y2});
+        }
         sqo.setStart(start);
         sqo.setEnd(end);
         if (StringUtils.isNotBlank(term)) {
