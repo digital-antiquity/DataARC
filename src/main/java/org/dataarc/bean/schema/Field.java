@@ -20,6 +20,8 @@ import org.dataarc.util.FieldDataCollector;
 @Table(name = "schema_field")
 public class Field extends AbstractPersistable {
 
+    private static final long serialVersionUID = -274948984918121197L;
+
     @Column(length = 100)
     private String name;
 

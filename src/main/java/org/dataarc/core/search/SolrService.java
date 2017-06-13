@@ -35,7 +35,6 @@ import com.vividsolutions.jts.io.WKTReader;
 public class SolrService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final int START = 0;
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
@@ -61,8 +60,6 @@ public class SolrService {
      */
     public FeatureCollection search(SearchQueryObject sqo)
             throws IOException, ParseException, SolrServerException {
-        double[] topLeft = sqo.getTopLeft();
-        double[] bottomRight = sqo.getBottomRight();
 
         int limit = 1_000_000;
         FeatureCollection fc = new FeatureCollection();
@@ -71,7 +68,7 @@ public class SolrService {
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
-        appendSpatial(topLeft, bottomRight, bq);
+        appendSpatial(sqo, bq);
         SolrQuery params = new SolrQuery(bq.toString());
         params.setParam("rows", Integer.toString(limit));
         params.setFilterQueries("type:object");
@@ -178,7 +175,10 @@ public class SolrService {
 
         return false;
     }
-    private void appendSpatial(double[] topLeft, double[] bottomRight, StringBuilder bq) {
+    private void appendSpatial(SearchQueryObject sqo, StringBuilder bq) {
+        double[] topLeft = sqo.getTopLeft();
+        double[] bottomRight = sqo.getBottomRight();
+
         // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
         StringBuilder spatial = new StringBuilder();
         //*** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** // 

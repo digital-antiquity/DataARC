@@ -7,7 +7,9 @@
     </Appenders>
     <Loggers>
         <Logger name="org.dataarc" level="debug" />
-        <!-- <Logger name="org" level="trace" /> -->
+<!--         <Logger name="liquibase" level="debug" />
+ -->
+         <!-- <Logger name="org" level="trace" /> -->
         <Root level="warn">
             <AppenderRef ref="STDOUT" />
         </Root>

@@ -1,9 +1,12 @@
 package org.dataarc.web.config;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
 import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.web.interceptor.RequestLoggingInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,10 +19,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "org.dataarc.web", "org.dataarc.core" })
 public class DataArcWebConfig extends WebMvcConfigurerAdapter {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SolrIndexingService indexingService;
@@ -52,6 +57,8 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
         freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/content/");
         return freeMarkerConfigurer;
     }
+    
+
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {

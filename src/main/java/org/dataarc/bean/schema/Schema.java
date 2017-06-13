@@ -15,6 +15,8 @@ import org.dataarc.bean.AbstractPersistable;
 @Entity
 public class Schema extends AbstractPersistable {
 
+    private static final long serialVersionUID = -5169843883562531248L;
+
     @Column(length = 100)
     private String name;
 

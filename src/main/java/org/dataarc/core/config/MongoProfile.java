@@ -8,6 +8,8 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.core.CoreContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,7 @@ import org.springframework.util.ResourceUtils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 
+
 @Configuration
 // @EnableSolrRepositories(multicoreSupport = true, basePackages = DataArcConfiguration.ORG_DATAARC_SOLR)
 @EnableMongoRepositories(basePackages = { DataArcConfiguration.ORG_DATAARC_MONGO })
@@ -29,6 +32,8 @@ import com.mongodb.MongoCredential;
 @Profile("mongo")
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 public class MongoProfile extends DataArcConfiguration {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String ADMIN = "admin";
     static final int _27017 = 27017;

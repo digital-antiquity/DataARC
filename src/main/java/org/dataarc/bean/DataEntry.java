@@ -1,5 +1,6 @@
 package org.dataarc.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,8 +13,9 @@ import javax.persistence.Transient;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
-public class DataEntry {
+public class DataEntry  implements Serializable {
 
+    private static final long serialVersionUID = 4332245430867484835L;
     private GeoJsonPoint position;
 
     public DataEntry() {

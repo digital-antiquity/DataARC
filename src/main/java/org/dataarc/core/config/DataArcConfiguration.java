@@ -6,11 +6,14 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -37,8 +40,13 @@ public class DataArcConfiguration {
     static final String ORG_DATAARC_CORE = "org.dataarc.core";
     static final String ORG_DATAARC_SOLR = "org.dataarc.datastore.solr";
     private static final String ORG_DATAARC_BEAN = "org.dataarc.bean";
+    
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    
     @Resource
     protected Environment env;
+    
 
     public DataArcConfiguration() {
         System.setProperty("java.util.logging.manager","org.apache.logging.log4j.jul.LogManager");
@@ -76,9 +84,11 @@ public class DataArcConfiguration {
     }
 
     @Bean
-    public SpringLiquibase getLiquibase() {
+//    @Order(value=0)
+    public SpringLiquibase getLiquibase(DataSource dataSource) {
+        logger.debug(" ~~~ running liquibase ~~~");
         SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource());
+        liquibase.setDataSource(dataSource);
         liquibase.setChangeLog("classpath:changelog.xml");
         liquibase.setContexts("test, production");
         return liquibase;

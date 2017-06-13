@@ -5,11 +5,12 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd 
    http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial 
-      http://lonnyj.github.com/liquibase-spatial/liquibase-spatial.xsd">
+      http://lonnyj.github.com/liquibase-spatial/liquibase-spatial.xsd"
+      logicalFilePath="changelog.xml">
     <!-- assumes .. create database dataarc; CREATE EXTENSION postgis; CREATE 
         EXTENSION postgis_topology; -->
 
-    <changeSet id="alpha-1" author="abrin">
+    <changeSet id="alpha-1" author="abrin" >
         <createTable tableName="source_data">
             <column name="id" autoIncrement="true" type="bigserial" />
             <column name="data" type="json" />
@@ -296,5 +297,27 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="alpha-22" author="abrin">
+        <createTable tableName="json_file">
+            <column name="path" type="varchar(1024)" />
+            <column name="name" type="varchar(255)" />
+        </createTable>
+        <createTable tableName="data_file">
+            <column name="path" type="varchar(1024)" />
+            <column name="name" type="varchar(255)" />
+            <column name="schema_id" type="bigint">
+                <constraints referencedTableName="schema"
+                    foreignKeyName="schema_file_schema_id" />
+            </column>            
+        </createTable>
+    </changeSet>
+    <changeSet id="alpha-23" author="abrin">
+        <addColumn tableName="json_file">
+            <column name="id" autoIncrement="true" type="bigserial" />
+        </addColumn>
 
+        <addColumn tableName="data_file">
+            <column name="id" autoIncrement="true" type="bigserial" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

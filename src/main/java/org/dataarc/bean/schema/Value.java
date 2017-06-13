@@ -10,6 +10,8 @@ import org.dataarc.bean.AbstractPersistable;
 @Table(name = "field_value")
 public class Value extends AbstractPersistable {
 
+    private static final long serialVersionUID = -6506478293196706253L;
+
     public static final int VALUE_LENGTH = 100;
 
     @Column(length = VALUE_LENGTH, name = "field_value")

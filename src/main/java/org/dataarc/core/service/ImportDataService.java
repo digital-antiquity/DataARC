@@ -6,9 +6,12 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.dataarc.bean.file.DataFile;
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.SchemaDao;
+import org.dataarc.core.dao.file.DataFileDao;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.ObjectTraversalUtil;
 import org.geojson.Feature;
@@ -31,6 +34,8 @@ public class ImportDataService {
     
     @Autowired
     SchemaDao schemaDao;
+    @Autowired
+    DataFileDao dataFileDao;
 
     @Transactional(readOnly=false)
     public void deleteAll() {
@@ -55,8 +60,14 @@ public class ImportDataService {
 
     @Transactional(readOnly=false)
     public void importAndLoad(InputStream inputStream, String originalFilename, String schemaName) throws Exception {
+        Schema schema = schemaDao.findByName(schemaName);
         Filestore filestore = Filestore.getInstance();
         File imported = filestore.store(schemaName, inputStream, originalFilename);
+        DataFile dataFile = new DataFile();
+        dataFile.setName(imported.getName());
+        dataFile.setPath(imported.getPath());
+        dataFile.setSchema(schema);
+        dataFileDao.save(dataFile);
         FieldDataCollector collector = new FieldDataCollector(schemaName);
         FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(imported), FeatureCollection.class);
         deleteBySource(schemaName);

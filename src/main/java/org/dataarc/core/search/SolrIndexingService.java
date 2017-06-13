@@ -1,7 +1,8 @@
 package org.dataarc.core.search;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -18,6 +20,7 @@ import org.apache.solr.client.solrj.request.schema.SchemaRequest;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.file.JsonFile;
 import org.dataarc.bean.schema.FieldType;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
@@ -27,15 +30,19 @@ import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
+import org.dataarc.core.dao.file.JsonFileDao;
 import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wololo.geojson.Feature;
+import org.wololo.geojson.FeatureCollection;
+import org.wololo.geojson.GeoJSONFactory;
+import org.wololo.jts2geojson.GeoJSONReader;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 
 @Service
 public class SolrIndexingService {
@@ -55,6 +62,9 @@ public class SolrIndexingService {
 
     @Autowired
     ImportDao sourceDao;
+    @Autowired
+    JsonFileDao jsonFileDao;
+
     @Autowired
     SchemaDao schemaDao;
     @Autowired
@@ -93,7 +103,12 @@ public class SolrIndexingService {
             for (DataEntry entry : entries) {
                 SearchIndexObject searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
-                    logger.debug("{} - {}", searchIndexObject.getId(), searchIndexObject.getTitle());
+                    if (searchIndexObject != null) {
+                        logger.debug("{} - {}", searchIndexObject.getId(), searchIndexObject.getTitle());
+                        logger.debug(" {}", searchIndexObject.copyToFeature());
+                    } else {
+                        logger.debug("null object");
+                    }
                     client.commit(DATA_ARC);
                 }
                 count++;
@@ -147,15 +162,28 @@ public class SolrIndexingService {
         }
     }
 
+    /**
+     * this could use a *ton* of optimization
+     * @param searchIndexObject
+     */
     private void applyFacets(SearchIndexObject searchIndexObject) {
         if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
             applyDateFacets(searchIndexObject);
-            // get the shapes
-            // convert to geometry
-            for (Geometry g : new ArrayList<Geometry>()) {
-                if (g.contains(searchIndexObject.getGeometry())) {
-                    // get id
-                    // add it to the right facet
+            List<JsonFile> files = jsonFileDao.findAll();
+            for (JsonFile file : files) {
+                try {
+                    File file_ = new File(file.getPath(), file.getName());
+                    FeatureCollection featureCollection = (FeatureCollection) GeoJSONFactory.create(IOUtils.toString(new FileReader(file_)));
+                    for (Feature feature : featureCollection.getFeatures()) {
+                        GeoJSONReader reader = new GeoJSONReader();
+                        Geometry geometry = reader.read(feature.getGeometry());
+                        if (geometry.contains(searchIndexObject.getGeometry())) {
+                            searchIndexObject.getRegion().add(file.getId() + "-" + feature.getId());
+                        }
+
+                    }
+                } catch (IOException e) {
+                    logger.error("erorr indexing spatial facet - {}",e,e);
                 }
             }
 

@@ -38,6 +38,9 @@ public class SchemaDao {
 
     public Set<Value> getDistinctValues(String source, final String fieldName) throws Exception {
         Schema schema = getSchemaByName(source);
+        if (schema == null) {
+            return null;
+        }
         Field field = schema.getFields().stream().filter(fld -> StringUtils.equals(fld.getName(), fieldName)).findFirst().get();
         logger.debug("field {}", field);
         return field.getValues();
@@ -54,7 +57,11 @@ public class SchemaDao {
     }
 
     public Set<Field> getFields(String source) {
-        return getSchemaByName(source).getFields();
+        Schema schema = getSchemaByName(source);
+        if (schema == null) {
+            return null;
+        }
+        return schema.getFields();
     }
 
     public Set<String> findAll() {
@@ -89,6 +96,10 @@ public class SchemaDao {
         ;
         save(schema);
 
+    }
+
+    public Schema findByName(String schemaName) {
+        return getSchemaByName(schemaName);
     }
 
 }
