@@ -8,6 +8,8 @@ import org.dataarc.core.service.IndicatorService;
 import org.dataarc.web.api.AbstractRestController;
 import org.dataarc.web.api.schema.UrlConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,17 @@ public class IndicatorController extends AbstractRestController {
     @Autowired
     private IndicatorService indicatorService;
 
+    private void getUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            // https://stackoverflow.com/questions/32052076/how-to-get-the-current-logged-in-user-object-from-spring-security
+            // http://www.baeldung.com/get-user-in-spring-security
+        String username = ((UserDetails)principal).getUsername();
+        } else {
+        String username = principal.toString();
+        }
+    }
     
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) Indicator indicator) throws Exception {
