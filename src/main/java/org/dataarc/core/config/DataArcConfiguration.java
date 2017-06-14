@@ -2,6 +2,7 @@ package org.dataarc.core.config;
 
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -82,7 +83,8 @@ public class DataArcConfiguration {
         properties.setProperty("hibernate.dialect", org.hibernate.spatial.dialect.postgis.PostgisDialect.class.getName());
         return properties;
     }
-
+    
+    
     @Bean
 //    @Order(value=0)
     public SpringLiquibase getLiquibase(DataSource dataSource) {

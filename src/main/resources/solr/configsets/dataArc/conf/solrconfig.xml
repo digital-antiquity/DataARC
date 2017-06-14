@@ -28,6 +28,7 @@
        You may also specify a fully qualified Java classname if you
        have your own custom plugins.
     -->
+<unlockOnStartup>true</unlockOnStartup>
 
   <!-- Controls what version of Lucene various components of Solr
        adhere to.  Generally, you want to use the latest version to
@@ -207,7 +208,7 @@
          More details on the nuances of each LockFactory...
          http://wiki.apache.org/lucene-java/AvailableLockFactories
     -->
-    <lockType>${solr.lock.type:native}</lockType>
+    <lockType>${solr.lock.type:single}</lockType>
 
     <!-- Commit Deletion Policy
          Custom deletion policies can be specified here. The class must
