@@ -259,7 +259,11 @@ public class SolrIndexingService {
                 }
                 if (field.equals(solrField.get(NAME))) {
                     logger.debug("{}: {}", field, solrField);
-                    if (!schemaFields.get(field).equals(solrField.get(TYPE))) {
+                    Boolean multi = (Boolean) solrField.get(MULTI_VALUED);
+                    if (!schemaFields.get(field).equals(solrField.get(TYPE)) || // missmatch type
+                            multipleFields.contains(field) && multi == false || // was multi but in solr as single
+                            (multi == true && !multipleFields.contains(field) && schemaFields.containsKey(field)) // was single, but in solr as multi
+                            ) {
                         logger.debug(" deleting .. {}", field);
                         deleteField(field);
                         deleted = true;

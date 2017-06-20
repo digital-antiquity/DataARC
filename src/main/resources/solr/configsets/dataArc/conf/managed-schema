@@ -422,7 +422,7 @@
   <field name="isleif_tags" type="string" multiValued="false" stored="true"/>
   <field name="isleif_type_of_site" type="string" multiValued="false" stored="true"/>
   <field name="isleif_what" type="string" multiValued="false" stored="true"/>
-  <field name="keywords" type="text_general" multiValued="false" stored="true"/>
+  <field name="keywords" type="text_general" multiValued="true" stored="true"/>
   <field name="millenium" type="strings" multiValued="true" stored="true"/>
   <field name="mortuary_description" type="string" multiValued="false" stored="true"/>
   <field name="mortuary_identifier" type="string" multiValued="false" stored="true"/>
@@ -431,7 +431,7 @@
   <field name="mortuary_tags" type="string" multiValued="false" stored="true"/>
   <field name="mortuary_type_of_site" type="string" multiValued="false" stored="true"/>
   <field name="nabone_description" type="string" multiValued="false" stored="true"/>
-  <field name="nabone_domperc" type="float" multiValued="false" stored="true"/>
+  <field name="nabone_domperc" type="string" multiValued="false" stored="true"/>
   <field name="nabone_domperc.bos_dom_" type="float" multiValued="false" stored="true"/>
   <field name="nabone_domperc.canis_dom_" type="float" multiValued="false" stored="true"/>
   <field name="nabone_domperc.cap_dom_" type="float" multiValued="false" stored="true"/>
@@ -441,7 +441,7 @@
   <field name="nabone_domperc.ovi_dom_" type="float" multiValued="false" stored="true"/>
   <field name="nabone_domperc.sus_dom_" type="float" multiValued="false" stored="true"/>
   <field name="nabone_nisp" type="int" multiValued="false" stored="true"/>
-  <field name="nabone_perc" type="float" multiValued="false" stored="true"/>
+  <field name="nabone_perc" type="string" multiValued="false" stored="true"/>
   <field name="nabone_perc.bird_" type="float" multiValued="false" stored="true"/>
   <field name="nabone_perc.caribou_" type="float" multiValued="false" stored="true"/>
   <field name="nabone_perc.dom_" type="float" multiValued="false" stored="true"/>
@@ -524,6 +524,7 @@
   <field name="topic" type="text_general" multiValued="true" stored="true"/>
   <field name="topic_id" type="strings" multiValued="true" stored="true"/>
   <field name="topic_id_2" type="strings" multiValued="true" stored="true"/>
+  <field name="topic_id_3" type="strings" multiValued="true" stored="true"/>
   <field name="topid_id_3" type="strings" multiValued="false" stored="true"/>
   <field name="type" type="string" multiValued="false" stored="true"/>
   <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true"/>

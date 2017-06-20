@@ -14,7 +14,7 @@ public class ListSchema extends AbstractRestController {
     @Autowired
     private SchemaService schemaService;
 
-    @RequestMapping(UrlConstants.SCHEMA_LIST)
+    @RequestMapping(path=UrlConstants.SCHEMA_LIST, produces={"application/json;charset=UTF-8"})
     public Set<String> listSchema() throws Exception {
         return schemaService.getSchema();
     }
