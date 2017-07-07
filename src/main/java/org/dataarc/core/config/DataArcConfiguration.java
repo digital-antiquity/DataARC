@@ -2,7 +2,6 @@ package org.dataarc.core.config;
 
 import java.util.Properties;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -30,10 +28,8 @@ import liquibase.integration.spring.SpringLiquibase;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO, DataArcConfiguration.ORG_DATAARC_SOLR })
-// @ComponentScan(excludeFilters = @Filter(
-// type = FilterType.REGEX, pattern = { "regex for distribution 1" }
-// ))
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:crowd.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class DataArcConfiguration {
 

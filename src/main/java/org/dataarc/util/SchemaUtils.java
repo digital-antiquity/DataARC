@@ -50,6 +50,10 @@ public class SchemaUtils {
     private static final List<String> ignorePrefix = Arrays.asList(IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.TITLE);
 
     public static String formatForSolr(Schema schema, org.dataarc.bean.schema.Field field) {
+        if (field == null) {
+            return null;
+        }
+        
         if (ignorePrefix.contains(field.getName())) {
             return field.getName();
         }
