@@ -1,4 +1,4 @@
-package org.dataarc.web.config;
+package org.dataarc.web.security;
 
 import java.util.Properties;
 
@@ -53,11 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         super.configure(web);
         web.csrf().ignoringAntMatchers("/api/**","/json/**").disable();
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-//            web.authorizeRequests();
+            web.authorizeRequests().antMatchers("/mapping/**","/admin/**").hasRole("TDAR_USERS").and().formLogin();
+//            web.formLogin()
+//            web.exceptionHandling()
+//            .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+//            .accessDeniedHandler(new RestAccessDeniedHandler());
         }
-//        web.exceptionHandling()
-//        .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-//        .accessDeniedHandler(new RestAccessDeniedHandler());
     }
 
 

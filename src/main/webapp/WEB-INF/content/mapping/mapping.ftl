@@ -20,6 +20,7 @@
         <script src="${contextPath}/components/vee-validate/dist/vee-validate.min.js"></script>
         <script src="${contextPath}/components/vue-resource/dist/vue-resource.min.js"></script>
         <link href="${contextPath}/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="${contextPath}/css/mapping.css" rel="stylesheet" media="screen">
         <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
         <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script>
@@ -27,105 +28,13 @@
                 return "${contextPath}";
             }
         </script>
-        <style>
-            /*
-            * Base structure
-            */
-            /* Move down content because we have a fixed navbar that is 50px tall */
-            body {
-            padding-top: 0px;
-            }
-            /*
-            * Global add-ons
-            */
-            .sub-header {
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            }
-            /*
-            * Top navigation
-            * Hide default border to remove 1px line.
-            */
-            .navbar-fixed-top {
-            border: 0;
-            }
-            /*
-            * Sidebar
-            */
-            /* Hide for mobile, show later */
-            .sidebar {
-            display: none;
-            }
-            @media (min-width: 768px) {
-            .sidebar {
-            position: fixed;
-            top:0px;
-            bottom: 0;
-            left: 0;
-            z-index: 1000;
-            display: block;
-            padding: 20px;
-            overflow-x: hidden;
-            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-            background-color: #A9C9DC;
-            border-right: 1px solid #eee;
-            }
-            }
-            /* Sidebar navigation */
-            .nav-sidebar {
-            margin-right: -21px; /* 20px padding + 1px border */
-            margin-bottom: 20px;
-            margin-left: -20px;
-            }
-            .nav-sidebar > li > a {
-            padding-right: 20px;
-            padding-left: 20px;
-            }
-            .nav-sidebar > .active > a,
-            .nav-sidebar > .active > a:hover,
-            .nav-sidebar > .active > a:focus {
-            color: #fff;
-            background-color: #428bca;
-            }
-            /*
-            * Main content
-            */
-            .main {
-            padding: 20px;
-            }
-            @media (min-width: 768px) {
-            .main {
-            padding-right: 40px;
-            padding-left: 40px;
-            }
-            }
-            .main .page-header {
-            margin-top: 0;
-            }
-            /*
-            * Placeholder dashboard ideas
-            */
-            .placeholders {
-            margin-bottom: 30px;
-            text-align: center;
-            }
-            .placeholders h4 {
-            margin-bottom: 0;
-            }
-            .placeholder {
-            margin-bottom: 20px;
-            }
-            .placeholder img {
-            display: inline-block;
-            border-radius: 50%;
-            }
-        </style>
     </head>
     <body data-contextPath="${contextPath}">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <img src="${contextPath}/images/dataarc_logo_final.png" alt="DataARC Logo" class="img-responsive"/>
+    <b>${currentUserName!'none' }</b>
                     <ul class="nav nav-sidebar">
                         <li><a href="#">Indicators</a></li>
                         <li><a href="#">Admin</a></li>

@@ -1,4 +1,4 @@
-package org.dataarc.web.config;
+package org.dataarc.web.security;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.dataarc.web.config;
+package org.dataarc.web.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
