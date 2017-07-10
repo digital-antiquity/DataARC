@@ -5,7 +5,7 @@ import java.util.Set;
 import org.dataarc.core.service.ImportDataService;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.AbstractController;
-import org.dataarc.web.api.schema.UrlConstants;
+import org.dataarc.web.UrlConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

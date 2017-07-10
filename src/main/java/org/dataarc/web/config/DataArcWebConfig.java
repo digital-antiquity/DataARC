@@ -1,7 +1,6 @@
 package org.dataarc.web.config;
 
 import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
 
 import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.web.interceptor.RequestLoggingInterceptor;

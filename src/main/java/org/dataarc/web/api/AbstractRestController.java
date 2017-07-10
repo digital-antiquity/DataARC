@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.AbstractJsonpResponseBodyAdvice;
 
-@ResponseBody
+//@ResponseBody
 public abstract class AbstractRestController extends AbstractController {
 
     @ControllerAdvice

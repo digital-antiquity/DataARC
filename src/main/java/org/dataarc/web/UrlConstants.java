@@ -1,4 +1,4 @@
-package org.dataarc.web.api.schema;
+package org.dataarc.web;
 
 public interface UrlConstants {
 

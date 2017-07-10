@@ -3,6 +3,7 @@ package org.dataarc.web.api.schema;
 import java.util.Set;
 
 import org.dataarc.core.service.SchemaService;
+import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

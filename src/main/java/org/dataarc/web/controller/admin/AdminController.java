@@ -1,7 +1,7 @@
 package org.dataarc.web.controller.admin;
 
 import org.dataarc.web.AbstractController;
-import org.dataarc.web.api.schema.UrlConstants;
+import org.dataarc.web.UrlConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

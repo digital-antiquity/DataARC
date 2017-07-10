@@ -5,7 +5,7 @@ import org.dataarc.AbstractServiceTest;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.MatchType;
 import org.dataarc.core.query.QueryPart;
-import org.dataarc.web.api.schema.UrlConstants;
+import org.dataarc.web.UrlConstants;
 import org.dataarc.web.config.DataArcWebConfig;
 import org.junit.Before;
 import org.junit.Test;
