@@ -1,7 +1,9 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,9 +14,11 @@ import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.locationtech.spatial4j.context.SpatialContext;
@@ -58,9 +62,9 @@ public class SolrService {
      * @throws ParseException
      * @throws SolrServerException
      */
-    public FeatureCollection search(SearchQueryObject sqo)
+    public SearchResultObject search(SearchQueryObject sqo)
             throws IOException, ParseException, SolrServerException {
-
+        SearchResultObject result = new SearchResultObject();
         int limit = 1_000_000;
         FeatureCollection fc = new FeatureCollection();
         StringBuilder bq = new StringBuilder();
@@ -73,15 +77,26 @@ public class SolrService {
         params.setParam("rows", Integer.toString(limit));
 
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
+        params.addFacetField(IndexFields.CATEGORY, IndexFields.CENTURY, IndexFields.COUNTRY, IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND, IndexFields.TOPIC_ID_3RD, IndexFields.REGION);
         params.setFields("*","[child parentFilter=\"type:object\"]");       
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
+        
         logger.debug(String.format("query: %s, total: %s", bq.toString(), topDocs.getNumFound()));
+        logger.debug("{}",query.getExpandedResults());
         if (topDocs.isEmpty()) {
-            return fc;
+            return result;
         }
         WKTReader reader = new WKTReader();
 
+        for (FacetField facet : query.getFacetFields()) {
+            Map<String, Long> map = new HashMap<>();
+            facet.getValues().forEach(val -> {
+                map.put(val.getName(), val.getCount());
+            });
+            result.getFacets().put(facet.getName(), map);
+        }
+        
         // aggregate results in a map by point
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
@@ -105,6 +120,8 @@ public class SolrService {
                 feature.setProperty(IndexFields.COUNTRY, document.get(IndexFields.COUNTRY));
                 feature.setProperty(IndexFields.START, document.get(IndexFields.START));
                 feature.setProperty(IndexFields.END, document.get(IndexFields.END));
+//                logger.debug("{}", document);
+//                logger.debug("{}", document.getChildDocumentCount());
                 if (CollectionUtils.isNotEmpty(document.getChildDocuments() )) {
                     logger.debug("child docs: " +  document.getChildDocuments());
                     feature.setProperty("data", document.getChildDocuments());
@@ -128,7 +145,8 @@ public class SolrService {
                 logger.error("{}", t, t);
             }
         }
-        return fc;
+        result.setResults(fc);
+        return result;
     }
 
     private String formateDate(SolrDocument document) {

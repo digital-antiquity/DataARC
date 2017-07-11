@@ -18,6 +18,7 @@ import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.Operator;
 import org.dataarc.core.query.QueryPart;
 import org.dataarc.core.search.IndexFields;
+import org.eclipse.jetty.deploy.bindings.StandardUndeployer;
 import org.geojson.Feature;
 import org.geojson.GeoJsonObject;
 import org.slf4j.Logger;
@@ -141,8 +142,11 @@ public class MongoDao implements ImportDao, QueryDao {
 
         DataEntry entry = new DataEntry(source, json);
         entry.setEnd(parseIntProperty(props.getOrDefault("End", props.get(IndexFields.END))));
-        entry.setEnd(parseIntProperty(props.getOrDefault("Title", props.get(IndexFields.TITLE))));
-        entry.setEnd(parseIntProperty(props.getOrDefault("Start", props.get(IndexFields.START))));
+        Object title = props.getOrDefault("Title", props.get(IndexFields.TITLE));
+        if (title != null && StringUtils.isNotBlank((String)title)) {
+            entry.setTitle((String)title);
+        }
+        entry.setStart(parseIntProperty(props.getOrDefault("Start", props.get(IndexFields.START))));
 
         GeoJsonObject geometry = feature.getGeometry();
         // template.save(feature, "dataEntry");

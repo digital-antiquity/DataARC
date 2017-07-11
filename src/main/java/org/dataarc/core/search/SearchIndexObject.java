@@ -1,6 +1,7 @@
 package org.dataarc.core.search;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +32,16 @@ public class SearchIndexObject {
     @Field()
     public String id;
 
-    @Field
+    @Field(value=IndexFields.START)
     private Integer start;
 
-    @Field
+    @Field(value=IndexFields.END)
     private Integer end;
 
-    @Field
+    @Field(value=IndexFields.TITLE)
     private String title;
 
-    @Field
+    @Field(value=IndexFields.SOURCE)
     private String source;
 
     @Field(value = IndexFields.DECADE)
@@ -52,16 +53,16 @@ public class SearchIndexObject {
     @Field(value = IndexFields.MILLENIUM)
     private List<Integer> millenium = new ArrayList<>();
 
-    @Field
+    @Field(value=IndexFields.COUNTRY)
     private List<String> country;
 
-    @Field
+    @Field(value=IndexFields.REGION)
     private List<String> region;
 
-    @Field
+    @Field(value=IndexFields.TYPE)
     private ObjectType type;
 
-    @Field
+    @Field()
     private Concept concept;
 
     @Field(value = "properties*")
@@ -143,7 +144,7 @@ public class SearchIndexObject {
                     }
                     getData().add(new ExtraProperties(data, schema));
                     logger.trace("{}", data);
-                } else if (v instanceof List) {
+                } else if (v instanceof Collection) {
                     if (getData() == null) {
                         setData(new ArrayList<>());
                     }

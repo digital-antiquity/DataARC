@@ -9,7 +9,6 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.dataarc.core.search.SearchQueryObject;
 import org.dataarc.core.search.SolrService;
 import org.dataarc.web.AbstractController;
-import org.geojson.FeatureCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +21,7 @@ public class LegacyJsonController extends AbstractController {
     private SolrService luceneService;
 
     @RequestMapping("/json")
-    public FeatureCollection greeting(@RequestParam(value = "x1", required = false, defaultValue = "-66.005859375") Double x1,
+    public SearchResultObject greeting(@RequestParam(value = "x1", required = false, defaultValue = "-66.005859375") Double x1,
             @RequestParam(value = "x2", required = false) Double x2,
             @RequestParam(value = "y1", required = false) Double y1,
             @RequestParam(value = "y2", required = false, defaultValue = "49.359122687528746") Double y2,

@@ -129,6 +129,9 @@ public class SolrIndexingService {
             applyFacets(searchIndexObject);
             applyTopics(searchIndexObject);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
+            if (logger.isTraceEnabled()) {
+                logger.debug("{}",doc);
+            }
             client.add(DATA_ARC, doc);
             return searchIndexObject;
         } catch (Throwable e) {
@@ -167,27 +170,29 @@ public class SolrIndexingService {
      * @param searchIndexObject
      */
     private void applyFacets(SearchIndexObject searchIndexObject) {
+        logger.debug("start: {}, end: {}", searchIndexObject.getStart(), searchIndexObject.getEnd());
         if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
             applyDateFacets(searchIndexObject);
-            List<JsonFile> files = jsonFileDao.findAll();
-            for (JsonFile file : files) {
-                try {
-                    File file_ = new File(file.getPath(), file.getName());
-                    FeatureCollection featureCollection = (FeatureCollection) GeoJSONFactory.create(IOUtils.toString(new FileReader(file_)));
-                    for (Feature feature : featureCollection.getFeatures()) {
-                        GeoJSONReader reader = new GeoJSONReader();
-                        Geometry geometry = reader.read(feature.getGeometry());
-                        if (geometry.contains(searchIndexObject.getGeometry())) {
-                            searchIndexObject.getRegion().add(file.getId() + "-" + feature.getId());
-                        }
-
-                    }
-                } catch (IOException e) {
-                    logger.error("erorr indexing spatial facet - {}",e,e);
-                }
-            }
-
+            logger.debug("mil: {}, cent: {}, dec: {}", searchIndexObject.getMillenium(), searchIndexObject.getCentury(), searchIndexObject.getDecade());
         }
+        List<JsonFile> files = jsonFileDao.findAll();
+        for (JsonFile file : files) {
+            try {
+                File file_ = new File(file.getPath(), file.getName());
+                FeatureCollection featureCollection = (FeatureCollection) GeoJSONFactory.create(IOUtils.toString(new FileReader(file_)));
+                for (Feature feature : featureCollection.getFeatures()) {
+                    GeoJSONReader reader = new GeoJSONReader();
+                    Geometry geometry = reader.read(feature.getGeometry());
+                    if (geometry.contains(searchIndexObject.getGeometry())) {
+                        searchIndexObject.getRegion().add(file.getId() + "-" + feature.getId());
+                    }
+
+                }
+            } catch (IOException e) {
+                logger.error("erorr indexing spatial facet - {}",e,e);
+            }
+        }
+
 
     }
 
