@@ -12,6 +12,7 @@ import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.file.DataFileDao;
+import org.dataarc.core.search.IndexFields;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.ObjectTraversalUtil;
 import org.geojson.Feature;
@@ -75,6 +76,7 @@ public class ImportDataService {
             Feature feature = iterator.next();
             logger.trace("feature: {}", feature);
             Map<String, Object> properties = feature.getProperties();
+            properties.put(IndexFields.SOURCE, schemaName);
             enhanceProperties(feature, properties);
             ObjectTraversalUtil.traverse(properties, collector);
             load(feature, properties);

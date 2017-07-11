@@ -63,7 +63,7 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver=new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
-        resolver.setMaxUploadSize(100_000);
+        resolver.setMaxUploadSize(5_000_000);
         return resolver;
     }
     

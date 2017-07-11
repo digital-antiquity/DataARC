@@ -37,7 +37,7 @@ public class FieldDataCollector {
         }
 
         FieldType type = FieldType.STRING;
-        if (value instanceof Number || value instanceof String && NumberUtils.isNumber((String) value)) {
+        if (value instanceof Number || value instanceof String && ((String)(value)).matches("^[-+]?([0-9]*\\.[0-9]+|[0-9]+)$")) {
             if (value instanceof Float || value instanceof Double) {
                 type = FieldType.FLOAT;
             }
@@ -66,9 +66,15 @@ public class FieldDataCollector {
         getNames().add(normalizedName);
         displayNames.put(normalizedName, path);
 
-        FieldType _type = fieldTypes.getOrDefault(normalizedName, type);
-        if ((type == FieldType.FLOAT || type == FieldType.LONG) && _type == FieldType.STRING) {
+        FieldType existingType = fieldTypes.getOrDefault(normalizedName, type);
+        // try to defer to more compelling type
+        if (existingType == FieldType.STRING) {
             type = FieldType.STRING;
+        }
+
+        // if we've got a mix of INTs and FLOATs, use FLOAT to be more accurate
+        if ((existingType == FieldType.FLOAT) && type == FieldType.LONG) {
+            type = FieldType.FLOAT;
         }
 
         fieldTypes.put(normalizedName, type);

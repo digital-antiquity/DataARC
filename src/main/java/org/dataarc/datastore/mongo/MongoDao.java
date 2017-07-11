@@ -17,6 +17,7 @@ import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.Operator;
 import org.dataarc.core.query.QueryPart;
+import org.dataarc.core.search.IndexFields;
 import org.geojson.Feature;
 import org.geojson.GeoJsonObject;
 import org.slf4j.Logger;
@@ -76,7 +77,7 @@ public class MongoDao implements ImportDao, QueryDao {
         for (String name : findAll) {
             if (name.toLowerCase().equals(lookup)) {
                 schema = schemaDao.findByName(name);
-                q.addCriteria(Criteria.where("source").is(schema.getDisplayName()));
+                q.addCriteria(Criteria.where(IndexFields.SOURCE).is(schema.getDisplayName()));
             }
         }
 
@@ -134,17 +135,18 @@ public class MongoDao implements ImportDao, QueryDao {
 
     @Override
     public void load(Feature feature, Map<String, Object> properties) throws Exception {
-        String source = (String) feature.getProperties().get("source");
+        Map<String, Object> props = feature.getProperties();
+        String source = (String) props.get(IndexFields.SOURCE);
         String json = new ObjectMapper().writeValueAsString(feature);
 
         DataEntry entry = new DataEntry(source, json);
-        entry.setEnd(parseIntProperty(feature.getProperties().get("End")));
-        entry.setTitle((String) feature.getProperties().get("Title"));
-        entry.setStart(parseIntProperty(feature.getProperties().get("Start")));
+        entry.setEnd(parseIntProperty(props.getOrDefault("End", props.get(IndexFields.END))));
+        entry.setEnd(parseIntProperty(props.getOrDefault("Title", props.get(IndexFields.TITLE))));
+        entry.setEnd(parseIntProperty(props.getOrDefault("Start", props.get(IndexFields.START))));
 
         GeoJsonObject geometry = feature.getGeometry();
         // template.save(feature, "dataEntry");
-        entry.setProperties(feature.getProperties());
+        entry.setProperties(props);
         if (geometry instanceof org.geojson.Point) {
             org.geojson.Point point_ = (org.geojson.Point) geometry;
             if (point_.getCoordinates() != null) {
