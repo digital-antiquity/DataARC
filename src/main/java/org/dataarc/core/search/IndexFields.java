@@ -47,4 +47,5 @@ public interface IndexFields {
     static final String CENTURY = "century";
     static final String DECADE = "decade";
     static final String INTERNAL_TYPE = "internalType";
+    static final String CONCEPT = "concept";
 }

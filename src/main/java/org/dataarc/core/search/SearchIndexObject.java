@@ -62,7 +62,7 @@ public class SearchIndexObject {
     @Field(value=IndexFields.TYPE)
     private ObjectType type;
 
-    @Field()
+    @Field(value=IndexFields.CONCEPT)
     private Concept concept;
 
     @Field(value = "properties*")
@@ -319,7 +319,8 @@ public class SearchIndexObject {
         this.internalType = internalType;
     }
 
-    private @Field("*_txt") Map<String, List<String>> textMap;
+    @Field("*_txt")
+    private Map<String, List<String>> textMap;
 
     public List<Integer> getDecade() {
         return decade;

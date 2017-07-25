@@ -78,7 +78,7 @@ public class SolrService {
 
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
         params.addFacetField(IndexFields.CATEGORY, IndexFields.CENTURY, IndexFields.COUNTRY, IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND, IndexFields.TOPIC_ID_3RD, IndexFields.REGION);
-        params.setFields("*","[child parentFilter=\"type:object\"]");       
+        params.setFields("*","[child parentFilter=\"internalType:object\"]");       
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
         

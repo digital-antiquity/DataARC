@@ -80,7 +80,7 @@ public class SolrIndexingService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
-            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY,IndexFields.KEYWORD, IndexFields.TOPIC_ID_3RD);
+            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY,IndexFields.KEYWORD, IndexFields.TOPIC_ID_3RD, IndexFields.CONCEPT);
 
     @Autowired
     private SolrClient client;
@@ -93,6 +93,7 @@ public class SolrIndexingService {
     @Transactional(readOnly = true)
     public void reindex() {
         logger.debug("begin reindexing");
+        SearchIndexObject searchIndexObject = null;
         try {
             client.deleteByQuery(DATA_ARC, "*:*");
             client.commit(DATA_ARC);
@@ -101,7 +102,7 @@ public class SolrIndexingService {
             Iterable<DataEntry> entries = sourceDao.findAll();
             int count = 0;
             for (DataEntry entry : entries) {
-                SearchIndexObject searchIndexObject = indexRow(entry);
+                searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     if (searchIndexObject != null) {
                         logger.debug("{} - {}", searchIndexObject.getId(), searchIndexObject.getTitle());
@@ -117,6 +118,7 @@ public class SolrIndexingService {
             client.commit(DATA_ARC);
         } catch (Exception ex) {
             logger.error("exception indexing:", ex);
+            logger.error("{}",searchIndexObject);
         }
         logger.debug("done reindexing");
     }
@@ -170,10 +172,12 @@ public class SolrIndexingService {
      * @param searchIndexObject
      */
     private void applyFacets(SearchIndexObject searchIndexObject) {
-        logger.debug("start: {}, end: {}", searchIndexObject.getStart(), searchIndexObject.getEnd());
+        logger.trace("start: {}, end: {}", searchIndexObject.getStart(), searchIndexObject.getEnd());
         if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
             applyDateFacets(searchIndexObject);
-            logger.debug("mil: {}, cent: {}, dec: {}", searchIndexObject.getMillenium(), searchIndexObject.getCentury(), searchIndexObject.getDecade());
+            if (logger.isTraceEnabled()) {
+            logger.trace("mil: {}, cent: {}, dec: {}", searchIndexObject.getMillenium(), searchIndexObject.getCentury(), searchIndexObject.getDecade());
+            }
         }
         List<JsonFile> files = jsonFileDao.findAll();
         for (JsonFile file : files) {
@@ -249,7 +253,7 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.TYPE, STRINGS);
         schemaFields.put(IndexFields.INTERNAL_TYPE, STRINGS);
         schemaFields.put(IndexFields.CATEGORY, STRINGS);
-
+        schemaFields.put(IndexFields.CONCEPT, STRINGS);
         schemaFields.put(IndexFields.INDICATOR, TEXT_GENERAL);
         schemaFields.put(IndexFields.KEYWORD, TEXT_GENERAL);
         schemaFields.put(IndexFields.SOURCE, TEXT_GENERAL);
