@@ -83,8 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CrowdAuthenticationProvider crowdAuthenticationProvider() {
-        return new CrowdAuthenticationProvider(crowdClient());
+    public LocalCrowdAuthenticationProvider crowdAuthenticationProvider() {
+        return new LocalCrowdAuthenticationProvider(crowdClient());
     }
 
     @Override

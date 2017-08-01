@@ -17,13 +17,13 @@ import com.atlassian.crowd.model.group.Group;
 import com.atlassian.crowd.model.user.User;
 import com.atlassian.crowd.service.client.CrowdClient;
 
-public class CrowdAuthenticationProvider implements AuthenticationProvider {
+public class LocalCrowdAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(CrowdAuthenticationProvider.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private CrowdClient crowdClient;
 
     @Autowired
-    public CrowdAuthenticationProvider(CrowdClient crowdClient) {
+    public LocalCrowdAuthenticationProvider(CrowdClient crowdClient) {
         this.crowdClient = crowdClient;
     }
 
@@ -71,7 +71,7 @@ public class CrowdAuthenticationProvider implements AuthenticationProvider {
 
             upAuth = new UsernamePasswordAuthenticationToken(user.getName(), "", grantedAuthorities);
             upAuth.setDetails(user);
-            this.logger.debug("LOGIN attempt for user " + user.getName() + " successful");
+            logger.debug("LOGIN attempt for user " + user.getName() + " successful");
         }
 
         return upAuth;
