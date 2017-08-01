@@ -123,7 +123,7 @@ public class SolrService {
 //                logger.debug("{}", document);
 //                logger.debug("{}", document.getChildDocumentCount());
                 if (CollectionUtils.isNotEmpty(document.getChildDocuments() )) {
-                    logger.debug("child docs: " +  document.getChildDocuments());
+//                    logger.debug("child docs: " +  document.getChildDocuments());
                     feature.setProperty("data", document.getChildDocuments());
                 }
                 String date = formateDate(document);

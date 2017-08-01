@@ -235,7 +235,7 @@ public class SolrIndexingService {
         SchemaRequest sr = new SchemaRequest();
         SchemaResponse response = sr.process(client, DATA_ARC);
         List<Map<String, Object>> solrFields = response.getSchemaRepresentation().getFields();
-        logger.debug("fields: {}", solrFields);
+        logger.trace("fields: {}", solrFields);
         Map<String, String> schemaFields = new HashMap<>();
         schemaFields.put(IndexFields.COUNTRY, TEXT_GENERAL);
         schemaFields.put(IndexFields.START, INT);
@@ -267,7 +267,7 @@ public class SolrIndexingService {
                     continue;
                 }
                 if (field.equals(solrField.get(NAME))) {
-                    logger.debug("{}: {}", field, solrField);
+                    logger.trace("{}: {}", field, solrField);
                     Boolean multi = (Boolean) solrField.get(MULTI_VALUED);
                     if (!schemaFields.get(field).equals(solrField.get(TYPE)) || // missmatch type
                             multipleFields.contains(field) && multi == false || // was multi but in solr as single
@@ -303,7 +303,7 @@ public class SolrIndexingService {
                             if (StringUtils.containsIgnoreCase(solrName, PERC)) {
                                 field.setType(FieldType.FLOAT);
                             }
-                            logger.debug("{} - {} {}", schema, field, field.getType());
+                            logger.trace("{} - {} {}", schema, field, field.getType());
                             addSchemaField(solrName, toSolrType(field.getType()), false);
                         }
                     } catch (SolrServerException | IOException e) {
@@ -335,7 +335,7 @@ public class SolrIndexingService {
         attr.put(TYPE, string);
         attr.put(STORED, true);
         attr.put(MULTI_VALUED, b);
-        logger.debug("adding field: {}", attr);
+        logger.trace("adding field: {}", attr);
         SchemaRequest.AddField addFieldUpdateSchemaRequest = new SchemaRequest.AddField(attr);
         addFieldUpdateSchemaRequest.process(client, DATA_ARC);
     }
