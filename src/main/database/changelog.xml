@@ -6,16 +6,17 @@
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd 
    http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial 
       http://lonnyj.github.com/liquibase-spatial/liquibase-spatial.xsd"
-      logicalFilePath="changelog.xml">
+    logicalFilePath="changelog.xml">
     <!-- assumes .. create database dataarc; CREATE EXTENSION postgis; CREATE 
         EXTENSION postgis_topology; -->
 
-    <changeSet id="alpha-1" author="abrin" >
+    <changeSet id="alpha-1" author="abrin">
         <createTable tableName="source_data">
             <column name="id" autoIncrement="true" type="bigserial" />
             <column name="data" type="json" />
             <column name="source" type="varchar(255)" />
-            <column name="date_created" type="timestamp" defaultValue="now()" />
+            <column name="date_created" type="timestamp"
+                defaultValue="now()" />
         </createTable>
     </changeSet>
     <changeSet id="alpha-2" author="abrin">
@@ -272,28 +273,31 @@
             </column>
             <column name="email" type="varchar(512)" />
             <column name="institution" type="varchar(1024)" />
-            <column name="date_created" type="timestamp" defaultValue="now()" />
-            <column name="admin" type="boolean" defaultValueBoolean="false" />
+            <column name="date_created" type="timestamp"
+                defaultValue="now()" />
+            <column name="admin" type="boolean"
+                defaultValueBoolean="false" />
         </createTable>
 
         <createTable tableName="state">
             <column name="id" autoIncrement="true" type="bigserial" />
             <column name="uid" type="varchar(255)" />
             <column name="parent_id" type="bigint">
-                            <constraints referencedTableName="state"
+                <constraints referencedTableName="state"
                     foreignKeyName="state_parent_id" />
             </column>
             <column name="views" type="bigint" />
-            <column name="date_created" type="timestamp" defaultValue="now()" />
+            <column name="date_created" type="timestamp"
+                defaultValue="now()" />
             <column name="data" type="json" />
         </createTable>
     </changeSet>
     <changeSet id="alpha-21" author="abrin">
         <addColumn tableName="indicator">
             <column name="user_id" type="bigint">
-                    <constraints referencedTableName="user"
+                <constraints referencedTableName="user"
                     foreignKeyName="indicator_user_id" />
-            
+
             </column>
         </addColumn>
     </changeSet>
@@ -308,7 +312,7 @@
             <column name="schema_id" type="bigint">
                 <constraints referencedTableName="schema"
                     foreignKeyName="schema_file_schema_id" />
-            </column>            
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="alpha-23" author="abrin">
@@ -319,5 +323,16 @@
         <addColumn tableName="data_file">
             <column name="id" autoIncrement="true" type="bigserial" />
         </addColumn>
+    </changeSet>
+    <changeSet id="alpha-24" author="abrin">
+        <addColumn tableName="user">
+            <column name="external_id" type="varchar(255)" />
+            <column name="enabled" type="boolean"
+                defaultValueBoolean="true" />
+            <column name="last_login" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    <changeSet id="alpha-25" author="abrin">
+    <renameTable newTableName="data_arc_user" oldTableName="user"/>
     </changeSet>
 </databaseChangeLog>

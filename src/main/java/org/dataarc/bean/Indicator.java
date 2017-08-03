@@ -74,5 +74,13 @@ public class Indicator extends AbstractPersistable {
         this.topicIdentifiers = topicIdentifiers;
     }
 
+    public DataArcUser getUser() {
+        return user;
+    }
+
+    public void setUser(DataArcUser user) {
+        this.user = user;
+    }
+
     
 }

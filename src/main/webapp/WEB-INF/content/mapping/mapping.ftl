@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <img src="${contextPath}/images/dataarc_logo_final.png" alt="DataARC Logo" class="img-responsive"/>
-    <b>${currentUserName!'none' }</b>
+    <b>${currentUserDisplayName!'none' }</b>
                     <ul class="nav nav-sidebar">
                         <li><a href="#">Indicators</a></li>
                         <li><a href="#">Admin</a></li>

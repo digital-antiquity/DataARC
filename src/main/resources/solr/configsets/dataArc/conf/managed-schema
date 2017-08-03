@@ -402,6 +402,7 @@
   <field name="_version_" type="long" indexed="false" stored="false"/>
   <field name="category" type="strings" multiValued="false" stored="true"/>
   <field name="century" type="strings" multiValued="true" stored="true"/>
+  <field name="concept" type="strings" multiValued="true" stored="true"/>
   <field name="country" type="strings" multiValued="false" stored="true"/>
   <field name="decade" type="strings" multiValued="true" stored="true"/>
   <field name="end" type="int" multiValued="false" stored="true"/>
@@ -430,6 +431,108 @@
   <field name="mortuary_placename" type="string" multiValued="false" stored="true"/>
   <field name="mortuary_tags" type="string" multiValued="false" stored="true"/>
   <field name="mortuary_type_of_site" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.area" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.au_group" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.autonumber" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.b" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.bd" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.bfd" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.bfp" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.bp" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.bt" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.btrim" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.burning" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.col_count" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.col_date" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.col_path" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.col_size" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.context" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.context_notes" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.dates" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.dl" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.dm" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.dp4" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.fish_a_measurement" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.fish_b_measurement" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.fusion_state" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.gb" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.gl" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.gll" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.glm" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.id_row_tdar" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.l" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m1" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m2" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m3" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m3_m1" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m3_p2" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m3_p4" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m3b" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.m3l" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.occupationperiod" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.other_context_1" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.other_context_2" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.p4" type="int" multiValued="false" stored="true"/>
+  <field name="nabone2_data.phase" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.ref_" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.ref__2" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.sd" type="float" multiValued="false" stored="true"/>
+  <field name="nabone2_data.side" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.site" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.su" type="string" multiValued="false" stored="true"/>
+  <field name="nabone2_data.taxon" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.area" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.au_group" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.autonumber" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.b" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.bd" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.bfd" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.bfp" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.bp" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.bt" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.btrim" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.burning" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.col_count" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.col_date" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.col_path" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.col_size" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.context" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.context_notes" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.dates" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.dl" type="float" multiValued="false" stored="true"/>
+  <field name="nabone_data.dm" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.dp4" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.fish_a_measurement" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.fish_b_measurement" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.fusion_state" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.gb" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.gl" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.gll" type="float" multiValued="false" stored="true"/>
+  <field name="nabone_data.glm" type="float" multiValued="false" stored="true"/>
+  <field name="nabone_data.id_row_tdar" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.l" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.m1" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.m2" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.m3" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.m3_m1" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.m3_p2" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.m3_p4" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.m3b" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.m3l" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.occupationperiod" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.other_context_1" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.other_context_2" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.p4" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.phase" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.ref_" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.ref__2" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.sd" type="int" multiValued="false" stored="true"/>
+  <field name="nabone_data.side" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.site" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.su" type="string" multiValued="false" stored="true"/>
+  <field name="nabone_data.taxon" type="string" multiValued="false" stored="true"/>
   <field name="nabone_description" type="string" multiValued="false" stored="true"/>
   <field name="nabone_domperc" type="string" multiValued="false" stored="true"/>
   <field name="nabone_domperc.bos_dom_" type="float" multiValued="false" stored="true"/>

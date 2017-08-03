@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.dataarc.bean.DataArcUser;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
 import org.dataarc.bean.topic.Topic;
@@ -45,8 +46,9 @@ public class IndicatorService {
 
     @Transactional(readOnly = false)
     @PreAuthorize("hasPermission('Indicator', 'CREATE_EDIT')")
-    public void save(Indicator indicator) {
+    public void save(Indicator indicator, DataArcUser user) {
         logger.debug("{}", indicator.getTopicIdentifiers());
+        indicator.setUser(user);
         List<Topic> topics = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         indicator.getTopics().forEach(t -> {ids.add(t.getIdentifier());});
@@ -117,7 +119,7 @@ public class IndicatorService {
     }
 
     @Transactional(readOnly=false)
-    public void delete(Indicator findById) {
+    public void delete(Indicator findById, DataArcUser dataArcUser) {
         indicatorDao.delete(findById);
         
     }

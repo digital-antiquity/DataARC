@@ -4,8 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity(name = "user")
+@Entity
+@Table(name = "data_arc_user")
 public class DataArcUser extends AbstractPersistable {
 
     private static final long serialVersionUID = 8179515553625706719L;
@@ -25,6 +27,12 @@ public class DataArcUser extends AbstractPersistable {
     private boolean admin;
     @Column(name = "date_created")
     private Date dateCreated;
+    @Column(name = "last_login")
+    private Date lastLogin;
+    @Column(name = "external_id", length = 255)
+    private String externalId;
+    @Column
+    private boolean enabled;
 
     public String getUsername() {
         return username;
@@ -80,6 +88,34 @@ public class DataArcUser extends AbstractPersistable {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public String getDisplayName() {
+        return String.format("%s %s", firstName, lastName);
     }
 
 }
