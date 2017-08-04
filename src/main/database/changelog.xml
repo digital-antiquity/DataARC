@@ -7,35 +7,7 @@
    http://www.liquibase.org/xml/ns/dbchangelog-ext/liquibase-spatial 
       http://lonnyj.github.com/liquibase-spatial/liquibase-spatial.xsd"
     logicalFilePath="changelog.xml">
-    <!-- assumes .. create database dataarc; CREATE EXTENSION postgis; CREATE 
-        EXTENSION postgis_topology; -->
 
-    <changeSet id="alpha-1" author="abrin">
-        <createTable tableName="source_data">
-            <column name="id" autoIncrement="true" type="bigserial" />
-            <column name="data" type="json" />
-            <column name="source" type="varchar(255)" />
-            <column name="date_created" type="timestamp"
-                defaultValue="now()" />
-        </createTable>
-    </changeSet>
-    <changeSet id="alpha-2" author="abrin">
-        <addColumn tableName="source_data">
-            <column name="start" type="int" />
-        </addColumn>
-        <addColumn tableName="source_data">
-            <column name="end" type="int" />
-        </addColumn>
-        <addColumn tableName="source_data">
-            <column name="position" type="geometry(Point,4326)" />
-        </addColumn>
-    </changeSet>
-    <changeSet id="alpha-3" author="abrin">
-        <renameColumn tableName="source_data"
-            oldColumnName="start" newColumnName="date_start" />
-        <renameColumn tableName="source_data"
-            oldColumnName="end" newColumnName="date_end" />
-    </changeSet>
 
     <changeSet id="alpha-4" author="abrin">
         <createTable tableName="schema">
