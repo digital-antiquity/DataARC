@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: kartoza/postgis:9.4-2.1
+    image: postgres:9.6
   mongo:
     image: mongo:3.4
   web:
