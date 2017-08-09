@@ -38,7 +38,7 @@ public class MongoProfile extends DataArcConfiguration {
     private static final String ADMIN = "admin";
     static final int _27017 = 27017;
     static final String LOCALHOST = "localhost";
-    static final String DB_NAME = "mongoNname";
+    static final String DB_NAME = "mongoName";
     static final String DB_HOST = "mongoHost";
     static final String DB_PORT = "db.port";
     static final String USERNAME = "monogUser";
@@ -66,7 +66,7 @@ public class MongoProfile extends DataArcConfiguration {
     public MongoDbFactory mongoDbFactory() throws Exception {
         String username = env.getProperty(USERNAME, "");
         String password = env.getProperty(PASSWORD, "");
-        MongoClient mongo = new MongoClient();
+        MongoClient mongo = new MongoClient(env.getProperty(DB_HOST, LOCALHOST));
         if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
             MongoCredential creds = MongoCredential.createCredential(username, ADMIN, password.toCharArray());
             mongo.getCredentialsList().add(creds);
