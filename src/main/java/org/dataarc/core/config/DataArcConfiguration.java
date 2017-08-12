@@ -23,7 +23,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @EnableTransactionManagement
@@ -43,7 +42,6 @@ public class DataArcConfiguration {
     
     @Resource
     protected Environment env;
-    private SpringLiquibase liquibase;
     
 
     public DataArcConfiguration() {
@@ -72,11 +70,6 @@ public class DataArcConfiguration {
         dataSource.setUrl(String.format("jdbc:postgresql_postGIS://%s:5432/%s", host, database));
         dataSource.setUsername(env.getProperty("pgUsername", "dataarc"));
         dataSource.setPassword(env.getProperty("pgPassword", ""));
-        logger.debug(" ~~~ running liquibase ~~~");
-        liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource);
-        liquibase.setChangeLog("classpath:changelog.xml");
-        liquibase.setContexts("test, production");
 
         return dataSource;
     }
@@ -88,11 +81,6 @@ public class DataArcConfiguration {
     }
     
     
-    @Bean
-//    @Order(value=0)
-    public SpringLiquibase getLiquibase(DataSource dataSource) {
-        return liquibase;
-    }
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {

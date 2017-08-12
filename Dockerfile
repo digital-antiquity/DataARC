@@ -1,6 +1,6 @@
 FROM ubuntu:xenial
 
-MAINTAINER adam.brin@asu.edu
+LABEL MAINTAINER=adam.brin@asu.edu
 
 
 
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y  --no-install-recommends software-prope
   && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   add-apt-repository -y ppa:webupd8team/java && \
   apt-get update && \
-  apt-get install -y oracle-java8-installer && \
+  apt-get install -y oracle-java8-installer postgresql-client && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /var/cache/oracle-jdk8-installer
   
@@ -46,5 +46,5 @@ ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
   ADD . /app
 
 # RUN mvn clean compile jetty:run
-  ENTRYPOINT ["/usr/bin/mvn", "clean", "compile", "jetty:run"]
+  ENTRYPOINT ["/bin/sh","/app/docker/startup.sh"]
   EXPOSE 8280

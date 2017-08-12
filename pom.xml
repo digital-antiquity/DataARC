@@ -901,9 +901,11 @@
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <configuration>
                             <username>dataarc</username>
-                            <url>jdbc:postgresql_postGIS://localhost/dataarc</url>
+                            <password>dataarc</password>
+                            <url>jdbc:postgresql_postGIS://db/dataarc</url>
                             <driver>org.postgis.DriverWrapper</driver>
                             <changeLogFile>src/main/database/changelog.xml</changeLogFile>
+                            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                         </configuration>
                         <executions>
                             <execution>
