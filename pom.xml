@@ -770,6 +770,66 @@
 
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/resources/dataarc.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+<!--                     <execution>
+                        <id>test</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/test/resources/dataarc.properties</file>
+                            </files>
+                        </configuration>
+                    </execution> -->
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <username>${pgUser}</username>
+                    <password>${pgPassword}</password>
+                    <url>jdbc:postgresql_postGIS://${pgHost}/${pgDatabase}</url>
+                    <driver>org.postgis.DriverWrapper</driver>
+                    <changeLogFile>src/main/database/changelog.xml</changeLogFile>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+<!--                     <execution>
+                        <id>default-test</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>dropAll</goal>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+ -->                </executions>
+            </plugin>
+
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>1.8</source>
@@ -884,8 +944,68 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse 
+                    m2e settings only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.liquibase</groupId>
+                                        <artifactId>
+                                            liquibase-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [3.2.2,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>update</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
     <profiles>
+        <profile>
+            <id>test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>properties-maven-plugin</artifactId>
+                        <version>1.0-alpha-1</version>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>read-project-properties</goal>
+                                </goals>
+                                <configuration>
+                                    <files>
+                                        <file>src/test/resources/dataarc.properties</file>
+                                    </files>
+                                </configuration>
+
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <!-- this profile is "temporary" and is not run in isolation. 
                 It should be run along with jetty:run which will setup the properties files 
@@ -893,16 +1013,16 @@
                 process and "deploy" process. Enabling this profile activates the liquibase.properties 
                 and sets skipUpgradeLiquibase="false" which means that liquibase is processed 
                 during the setup process. -->
-            <id>liquibase</id>
+            <id>liquibase-test</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.liquibase</groupId>
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <configuration>
-                            <username>dataarc</username>
-                            <password>dataarc</password>
-                            <url>jdbc:postgresql_postGIS://db/dataarc</url>
+                            <username>${pgUser}</username>
+                            <password>${pgPassword}</password>
+                            <url>jdbc:postgresql_postGIS://${pgHost}/${pgDatabase}</url>
                             <driver>org.postgis.DriverWrapper</driver>
                             <changeLogFile>src/main/database/changelog.xml</changeLogFile>
                             <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>

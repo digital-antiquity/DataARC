@@ -32,6 +32,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class DataArcConfiguration {
 
+    private static final String PG_PASSWORD = "pgPassword";
+    private static final String PG_USERNAME = "pgUsername";
+    private static final String PG_DATABASE = "pgDatabase";
+    private static final String PG_HOST = "pgHost";
     static final String ORG_DATAARC_MONGO = "org.dataarc.datastore.mongo";
     static final String ORG_DATAARC_CORE = "org.dataarc.core";
     static final String ORG_DATAARC_SOLR = "org.dataarc.datastore.solr";
@@ -65,11 +69,11 @@ public class DataArcConfiguration {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(org.postgis.DriverWrapper.class.getName());
-        String host = env.getProperty("pgHost","localhost");
-        String database = env.getProperty("pgDatabase","dataarc");
+        String host = env.getProperty(PG_HOST,"localhost");
+        String database = env.getProperty(PG_DATABASE,"dataarc");
         dataSource.setUrl(String.format("jdbc:postgresql_postGIS://%s:5432/%s", host, database));
-        dataSource.setUsername(env.getProperty("pgUsername", "dataarc"));
-        dataSource.setPassword(env.getProperty("pgPassword", ""));
+        dataSource.setUsername(env.getProperty(PG_USERNAME, "dataarc"));
+        dataSource.setPassword(env.getProperty(PG_PASSWORD, ""));
 
         return dataSource;
     }
