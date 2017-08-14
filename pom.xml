@@ -803,7 +803,7 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <configuration>
-                    <username>${pgUser}</username>
+                    <username>${pgUsername}</username>
                     <password>${pgPassword}</password>
                     <url>jdbc:postgresql_postGIS://${pgHost}/${pgDatabase}</url>
                     <driver>org.postgis.DriverWrapper</driver>
@@ -1020,7 +1020,7 @@
                         <groupId>org.liquibase</groupId>
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <configuration>
-                            <username>${pgUser}</username>
+                            <username>${pgUsername}</username>
                             <password>${pgPassword}</password>
                             <url>jdbc:postgresql_postGIS://${pgHost}/${pgDatabase}</url>
                             <driver>org.postgis.DriverWrapper</driver>

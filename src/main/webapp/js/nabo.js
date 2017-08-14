@@ -426,7 +426,7 @@ function drawGrid() {
                 // and other properties
             }
         }
-        var layer_ = L.geoJson(data, {
+        var layer_ = L.geoJson(data.results, {
             onEachFeature : addPointsToMap,
             pointToLayer : function(feature, latlng) {
                 // http://stackoverflow.com/questions/15543141/label-for-circle-marker-in-leaflet
