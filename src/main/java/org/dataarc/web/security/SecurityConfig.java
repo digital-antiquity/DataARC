@@ -53,11 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         super.configure(web);
         web.csrf().ignoringAntMatchers("/api/**","/json/**").disable();
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.authorizeRequests().antMatchers("/mapping/**","/admin/**").hasRole("TDAR_USERS").and().formLogin();
-//            web.formLogin()
-//            web.exceptionHandling()
-//            .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-//            .accessDeniedHandler(new RestAccessDeniedHandler());
+            web.authorizeRequests().antMatchers("/mapping/**","/admin/**").hasRole("TDAR_USERS").
+            and().formLogin().loginPage("/login")
+            .permitAll().defaultSuccessUrl("/mapping").and().logout().permitAll();
+            web.exceptionHandling()
+            .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+            .accessDeniedHandler(new RestAccessDeniedHandler());
         }
     }
 

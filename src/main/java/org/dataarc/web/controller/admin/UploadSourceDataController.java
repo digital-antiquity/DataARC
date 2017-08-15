@@ -42,19 +42,42 @@ public class UploadSourceDataController extends AbstractController {
      * Upload single file using Spring Controller
      */
     @RequestMapping(value = UrlConstants.ADMIN_SOURCE_UPLOAD_FILE, method = RequestMethod.POST)
-    public @ResponseBody String uploadFileHandler(@RequestParam("name") String schemaName,
+    public String uploadFileHandler(@RequestParam("name") String schemaName,
             @RequestParam("file") MultipartFile file) {
-
+        setSchemaName(schemaName);
         if (!file.isEmpty()) {
             try {
                 importService.importAndLoad(file.getInputStream(), file.getOriginalFilename(), schemaName);
-                return "You successfully uploaded file=" + schemaName;
+                return "admin/source-success";
             } catch (Exception e) {
-                return "You failed to upload " + schemaName + " => " + e.getMessage();
+                setErrorMessage(e.getMessage());
+                return "admin/source-failed";
             }
         } else {
-            return "You failed to upload " + schemaName + " because the file was empty.";
+            return "admin/source-failed";
         }
     }
 
+    private String schemaName;
+    private String errorMessage;
+    
+    @ModelAttribute
+    public String getSchemaName() {
+        return schemaName;
+    }
+
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
+    }
+
+    @ModelAttribute
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    
 }

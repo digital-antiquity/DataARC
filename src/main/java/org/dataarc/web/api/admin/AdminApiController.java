@@ -15,6 +15,7 @@ public class AdminApiController extends AbstractRestController {
     @Autowired
     private IndicatorService indicatorService;
 
+    @Autowired
     private SolrIndexingService indexingService;
 
     @RequestMapping(path = UrlConstants.REINDEX, method = RequestMethod.POST)

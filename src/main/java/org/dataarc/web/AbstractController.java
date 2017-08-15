@@ -43,6 +43,25 @@ public abstract class AbstractController {
         return entity.getExternalId();
     }
     
+    @ModelAttribute("authenticated")
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return false;
+        }
+        return true;
+    }
+
+    @ModelAttribute("admin")
+    public boolean isAdmin() {
+        DataArcUser user = getUser();
+        if (user == null) {
+            return false;
+        }
+        return user.isAdmin();
+    } 
+
+    
     @ModelAttribute("currentUser")
     public DataArcUser getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -77,6 +96,7 @@ public abstract class AbstractController {
         }
         return null;
     }
+    
     
     
     @ModelAttribute("currentUserDisplayName")
