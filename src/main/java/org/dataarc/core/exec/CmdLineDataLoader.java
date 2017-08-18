@@ -1,5 +1,8 @@
 package org.dataarc.core.exec;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.core.service.ImportService;
 import org.dataarc.core.service.IndicatorService;
@@ -44,7 +47,8 @@ public class CmdLineDataLoader extends AbstractDataLoader {
         logger.debug("done loading data");
         try {
             logger.debug("loading wandora");
-            topicMapService.load("src/main/data/landscape_wandora.xtm");
+            File file = new File("src/main/data/landscape_wandora.xtm");
+            topicMapService.importAndLoad(new FileInputStream(file), file.getName());
             logger.debug("done loading wandora");
         } catch (Exception e) {
             logger.error("{}", e,e);

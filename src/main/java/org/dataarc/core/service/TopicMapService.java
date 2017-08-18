@@ -1,5 +1,9 @@
 package org.dataarc.core.service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.bean.topic.TopicMap;
+import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.AssociationDao;
 import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SerializationDao;
@@ -281,5 +286,13 @@ public class TopicMapService {
     public List<String> deleteTopicMap() {
         return topicDao.delete();
 
+    }
+
+    @Transactional(readOnly=false)
+    public void importAndLoad(InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException, JAXBException, SAXException {
+        Filestore filestore = Filestore.getInstance();
+        File imported = filestore.store("topicMap", inputStream, originalFilename);
+        load(imported.getAbsolutePath());
+        
     }
 }
