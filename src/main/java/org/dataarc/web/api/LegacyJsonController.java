@@ -29,6 +29,7 @@ public class LegacyJsonController extends AbstractController {
             @RequestParam(value = "end", required = false, defaultValue = "9999") Integer end,
             @RequestParam(value = "term", required = false) String term,
             @RequestParam(value = "topicId", required = false) String topicId,
+            @RequestParam(value = "idOnly", required = false) boolean idOnly,
             @RequestParam(value = "types", required = false) List<String> types) throws IOException, ParseException, Exception {
         SearchQueryObject sqo = new SearchQueryObject();
         if (x1 != null && y1 != null){
@@ -47,6 +48,9 @@ public class LegacyJsonController extends AbstractController {
         }
         if (StringUtils.isNotBlank(topicId)) {
             sqo.getTopicIds().add(topicId);
+        }
+        if (idOnly) {
+            sqo.setIdOnly(true);
         }
         return luceneService.search(sqo);
     }

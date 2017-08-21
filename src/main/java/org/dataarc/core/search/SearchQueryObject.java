@@ -9,6 +9,7 @@ public class SearchQueryObject {
     private double[] bottomRight;
     private Integer start;
     private Integer end;
+    private boolean idOnly = false;
     private List<String> keywords = new ArrayList<>();
     private List<String> topicIds = new ArrayList<>();
     private List<String> sources = new ArrayList<>();
@@ -67,6 +68,14 @@ public class SearchQueryObject {
 
     public void setSources(List<String> source) {
         this.sources = source;
+    }
+
+    public boolean isIdOnly() {
+        return idOnly;
+    }
+
+    public void setIdOnly(boolean idOnly) {
+        this.idOnly = idOnly;
     }
 
 }

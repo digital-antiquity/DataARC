@@ -2,8 +2,10 @@ package org.dataarc.core.search;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +39,8 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @Service
 public class SolrService {
+    private static final String BCE = " BCE ";
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     SpatialContext ctx = SpatialContext.GEO;
@@ -67,18 +71,9 @@ public class SolrService {
         SearchResultObject result = new SearchResultObject();
         int limit = 1_000_000;
         FeatureCollection fc = new FeatureCollection();
-        StringBuilder bq = new StringBuilder();
-        bq.append(createDateRangeQueryPart(sqo.getStart(), sqo.getEnd()));
-        appendTypes(sqo.getSources(), bq);
-        appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
-        appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
-        appendSpatial(sqo, bq);
-        SolrQuery params = new SolrQuery(bq.toString());
-        params.setParam("rows", Integer.toString(limit));
-
-        params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
-        params.addFacetField(IndexFields.CATEGORY, IndexFields.CENTURY, IndexFields.COUNTRY, IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND, IndexFields.TOPIC_ID_3RD, IndexFields.REGION);
-        params.setFields("*","[child parentFilter=\"internalType:object\"]");       
+        Set<String> idList = new HashSet<>();
+        StringBuilder bq = buildQuery(sqo);
+        SolrQuery params = setupQueryWithFacetsAndFilters(limit, bq);       
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
         
@@ -89,13 +84,7 @@ public class SolrService {
         }
         WKTReader reader = new WKTReader();
 
-        for (FacetField facet : query.getFacetFields()) {
-            Map<String, Long> map = new HashMap<>();
-            facet.getValues().forEach(val -> {
-                map.put(val.getName(), val.getCount());
-            });
-            result.getFacets().put(facet.getName(), map);
-        }
+        buildResultsFacets(result, query);
         
         // aggregate results in a map by point
         for (int i = 0; i < topDocs.size(); i++) {
@@ -107,46 +96,87 @@ public class SolrService {
                 if (point == null) {
                     continue;
                 }
-                Feature feature = new Feature();
-                try {
 
-                    com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
-                    feature.setGeometry(new org.geojson.Point(read.getX(), read.getY()));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (sqo.isIdOnly()) {
+                    idList.add((String)document.get(IndexFields.ID));
+                    result.setResults(idList);
+                } else {
+                    appendFeatureResult(document, reader, fc, point);
+                    result.setResults(fc);
                 }
-
-                feature.setProperty(IndexFields.SOURCE, document.get(IndexFields.SOURCE));
-                feature.setProperty(IndexFields.COUNTRY, document.get(IndexFields.COUNTRY));
-                feature.setProperty(IndexFields.START, document.get(IndexFields.START));
-                feature.setProperty(IndexFields.END, document.get(IndexFields.END));
-//                logger.debug("{}", document);
-//                logger.debug("{}", document.getChildDocumentCount());
-                if (CollectionUtils.isNotEmpty(document.getChildDocuments() )) {
-//                    logger.debug("child docs: " +  document.getChildDocuments());
-                    feature.setProperty("data", document.getChildDocuments());
-                }
-                String date = formateDate(document);
-                feature.setProperty(IndexFields.DATE, date);
-
-                for (String name : document.getFieldNames()) {
-                    Object v = document.get(name);
-                    // hide certain fields
-                    if (v == null || name.equals(IndexFields.X) || name.equals(IndexFields.Y) ||
-                            name.equals(IndexFields.COUNTRY) || name.equals(IndexFields.POINT) ||
-                            name.equals(IndexFields.SOURCE) || name.equals(IndexFields.START)) {
-                    } else {
-                        feature.getProperties().put(name, v);
-                    }
-
-                }
-                fc.add(feature);
-            } catch (Throwable t) {
+              } catch (Throwable t) {
                 logger.error("{}", t, t);
             }
         }
-        result.setResults(fc);
         return result;
+    }
+
+    private void appendFeatureResult(SolrDocument document, WKTReader reader, FeatureCollection fc, String point) {
+        Feature feature = new Feature();
+        try {
+
+            com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
+            feature.setGeometry(new org.geojson.Point(read.getX(), read.getY()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        feature.setProperty(IndexFields.SOURCE, document.get(IndexFields.SOURCE));
+        feature.setProperty(IndexFields.COUNTRY, document.get(IndexFields.COUNTRY));
+        feature.setProperty(IndexFields.START, document.get(IndexFields.START));
+        feature.setProperty(IndexFields.END, document.get(IndexFields.END));
+//        logger.debug("{}", document);
+//        logger.debug("{}", document.getChildDocumentCount());
+        if (CollectionUtils.isNotEmpty(document.getChildDocuments() )) {
+//            logger.debug("child docs: " +  document.getChildDocuments());
+            feature.setProperty("data", document.getChildDocuments());
+        }
+        String date = formateDate(document);
+        feature.setProperty(IndexFields.DATE, date);
+
+        for (String name : document.getFieldNames()) {
+            Object v = document.get(name);
+            // hide certain fields
+            if (v == null || name.equals(IndexFields.X) || name.equals(IndexFields.Y) ||
+                    name.equals(IndexFields.COUNTRY) || name.equals(IndexFields.POINT) ||
+                    name.equals(IndexFields.SOURCE) || name.equals(IndexFields.START)) {
+            } else {
+                feature.getProperties().put(name, v);
+            }
+
+        }
+        fc.add(feature);
+        
+    }
+
+    private void buildResultsFacets(SearchResultObject result, QueryResponse query) {
+        for (FacetField facet : query.getFacetFields()) {
+            Map<String, Long> map = new HashMap<>();
+            facet.getValues().forEach(val -> {
+                map.put(val.getName(), val.getCount());
+            });
+            result.getFacets().put(facet.getName(), map);
+        }
+    }
+
+    private StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
+        StringBuilder bq = new StringBuilder();
+        bq.append(createDateRangeQueryPart(sqo.getStart(), sqo.getEnd()));
+        appendTypes(sqo.getSources(), bq);
+        appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
+        appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
+        appendSpatial(sqo, bq);
+        return bq;
+    }
+
+    private SolrQuery setupQueryWithFacetsAndFilters(int limit, StringBuilder bq) {
+        SolrQuery params = new SolrQuery(bq.toString());
+        params.setParam("rows", Integer.toString(limit));
+        params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
+        params.addFacetField(IndexFields.CATEGORY, IndexFields.CENTURY, IndexFields.COUNTRY, IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND, IndexFields.TOPIC_ID_3RD, IndexFields.REGION);
+        params.setFields("*","[child parentFilter=\"internalType:object\"]");
+        params.setFacetMinCount(1);
+        return params;
     }
 
     private String formateDate(SolrDocument document) {
@@ -157,7 +187,7 @@ public class SolrService {
         if (start_ != null && start_ != -1) {
             date += Math.abs(start_);
             if (start_ < 0) {
-                date += " BCE ";
+                date += BCE;
             }
             date += " – ";
         }
@@ -165,7 +195,7 @@ public class SolrService {
         if (end_ != null && end_ != -1) {
             date += Math.abs(end_);
             if (end_ < 0) {
-                date += " BCE ";
+                date += BCE;
             }
         }
         return date;
