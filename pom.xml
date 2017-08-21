@@ -121,7 +121,11 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.5</version>
             </dependency>
-
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
@@ -143,6 +147,11 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
                 <version>${liquibase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>5.3.5.Final</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -201,6 +210,17 @@
             <name>Open Source Geospatial Foundation Repository</name>
             <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
+        <repository>
+            <id>atlassian-m2-repository</id>
+            <url>https://m2proxy.atlassian.com/repository/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
 
     </repositories>
     <dependencies>
@@ -252,6 +272,17 @@
             <artifactId>crowd-integration-springsecurity</artifactId>
             <version>${crowd.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-security</artifactId>
+            <version>1.2.1.RELEASE</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
@@ -536,6 +567,12 @@
             <artifactId>commons-dbcp2</artifactId>
             <version>2.1.1</version>
             <!-- LICENSE: APACHE 2.0 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- hibernate and JPA persistence -->
         <dependency>
@@ -543,12 +580,24 @@
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
             <!-- LICENSE: LGPL 2.1 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-spatial -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-spatial</artifactId>
             <version>${hibernate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -556,12 +605,24 @@
             <artifactId>hibernate-ehcache</artifactId>
             <version>${hibernate.version}</version>
             <!-- LICENSE: LGPL 2.1 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
             <version>${hibernate.version}</version>
             <!-- LICENSE: LGPL 2.1 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- <dependency> -->
         <!-- this attempts to use the META-INF/ configuraiton for the right 
@@ -572,7 +633,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.2.4.Final</version>
+            <version>5.3.5.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.logging</groupId>
@@ -625,6 +686,10 @@
                     <groupId>org.ow2.asm</groupId>
                     <artifactId>asm-tree</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                </exclusion>
             </exclusions>
 
         </dependency>
@@ -635,13 +700,14 @@
         <dependency>
             <groupId>org.hibernate.common</groupId>
             <artifactId>hibernate-commons-annotations</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
-        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -785,24 +851,17 @@
                             </files>
                         </configuration>
                     </execution>
-<!--                     <execution>
-                        <id>test</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>src/test/resources/dataarc.properties</file>
-                            </files>
-                        </configuration>
-                    </execution> -->
+                    <!-- <execution> <id>test</id> <phase>generate-test-sources</phase> 
+                        <goals> <goal>read-project-properties</goal> </goals> <configuration> <files> 
+                        <file>src/test/resources/dataarc.properties</file> </files> </configuration> 
+                        </execution> -->
                 </executions>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <configuration>
+                     <skip>${liquibase.should.run}</skip>
                     <username>${pgUsername}</username>
                     <password>${pgPassword}</password>
                     <url>jdbc:postgresql_postGIS://${pgHost}/${pgDatabase}</url>
@@ -818,15 +877,9 @@
                             <goal>update</goal>
                         </goals>
                     </execution>
-<!--                     <execution>
-                        <id>default-test</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>dropAll</goal>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
- -->                </executions>
+                    <!-- <execution> <id>default-test</id> <phase>process-test-resources</phase> 
+                        <goals> <goal>dropAll</goal> <goal>update</goal> </goals> </execution> -->
+                </executions>
             </plugin>
 
             <plugin>
@@ -1020,6 +1073,7 @@
                         <groupId>org.liquibase</groupId>
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <configuration>
+                            <skip>${liquibase.should.run}</skip>
                             <username>${pgUsername}</username>
                             <password>${pgPassword}</password>
                             <url>jdbc:postgresql_postGIS://${pgHost}/${pgDatabase}</url>
