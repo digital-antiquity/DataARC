@@ -1,5 +1,5 @@
 <div class="col-sm-3 col-md-2 sidebar">
-    <img src="${contextPath}/images/dataarc_logo_final.png" alt="DataARC Logo" class="img-responsive"/>
+    <a href="/"><img src="${contextPath}/images/dataarc_logo_final.png" alt="DataARC Logo" class="img-responsive"/></a>
     <hr>
     <br>
     <#if authenticated>

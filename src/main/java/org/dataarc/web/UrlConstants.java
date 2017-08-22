@@ -14,7 +14,7 @@ public interface UrlConstants {
     String REINDEX = "/api/admin/reindex";
     String ADMIN = "/admin";
     String ADMIN_SOURCE_DATA = "/admin/source";
-    String ADMIN_SOURCE_UPLOAD_FILE = "/admin/uploadFile";
+    String ADMIN_SOURCE_UPLOAD_FILE = "/admin/uploadSourceFile";
     String ADMIN_TOPIC_IMPORT = "/admin/uploadTopic";
     String ADMIN_TOPIC_DATA = "/admin/topic";
     String ADMIN_TOPIC_UPLOAD_FILE = "/admin/topicUploadFile";

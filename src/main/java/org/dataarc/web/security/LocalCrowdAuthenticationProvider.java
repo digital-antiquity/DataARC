@@ -3,6 +3,8 @@ package org.dataarc.web.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dataarc.bean.DataArcUser;
+import org.dataarc.core.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,10 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
     public LocalCrowdAuthenticationProvider(CrowdClient crowdClient) {
         this.crowdClient = crowdClient;
     }
+    
+    @Autowired
+    private UserService userService;
+    
 
     /**
      * @see org.springframework.security.authentication.AuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
@@ -41,7 +47,7 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
             }
             logger.debug("user:{}", user);
             return getAuthenticationForUser(user);
-
+ 
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -68,7 +74,17 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
                     grantedAuthorities.add(new SimpleGrantedAuthority(group.getName()));
                 }
             }
-
+            
+            DataArcUser user_ = userService.findByExternalId(user.getExternalId());
+            if (user_.isAdmin()) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(UserService.EDITOR_ROLE));
+                grantedAuthorities.add(new SimpleGrantedAuthority(UserService.ADMIN_ROLE));
+            }
+            if (user_.isEditor()) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(UserService.EDITOR_ROLE));
+            }
+            
+            
             upAuth = new UsernamePasswordAuthenticationToken(user.getName(), "", grantedAuthorities);
             upAuth.setDetails(user);
             logger.debug("LOGIN attempt for user " + user.getName() + " successful");

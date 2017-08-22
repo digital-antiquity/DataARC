@@ -4,21 +4,29 @@ import java.util.Set;
 
 import org.dataarc.core.service.ImportDataService;
 import org.dataarc.core.service.SchemaService;
+import org.dataarc.core.service.UserService;
 import org.dataarc.web.AbstractController;
 import org.dataarc.web.UrlConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@Secured(UserService.ADMIN_ROLE)
 public class UploadSourceDataController extends AbstractController {
+
+    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String EXCEPTION = "exception";
+    private static final String ADMIN_SOURCE_SUCCESS = "/admin/source-success";
+    private static final String ADMIN_SOURCE_FAILED = "/admin/source-failed";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -28,56 +36,29 @@ public class UploadSourceDataController extends AbstractController {
     @Autowired
     private ImportDataService importService;
 
-    @ModelAttribute
+    @ModelAttribute("schema")
     public Set<String> getSchema() {
         return schemaService.getSchema();
-    }
-
-    @RequestMapping(UrlConstants.ADMIN_SOURCE_DATA)
-    public String index() {
-        return "admin/source";
     }
 
     /**
      * Upload single file using Spring Controller
      */
     @RequestMapping(value = UrlConstants.ADMIN_SOURCE_UPLOAD_FILE, method = RequestMethod.POST)
-    public String uploadFileHandler(@RequestParam("name") String schemaName,
+    public ModelAndView uploadFileHandler(@RequestParam("name") String schemaName,
             @RequestParam("file") MultipartFile file) {
-        setSchemaName(schemaName);
+        ModelAndView mav = new ModelAndView(ADMIN_SOURCE_FAILED);
+        mav.addObject("schemaName", schemaName);
         if (!file.isEmpty()) {
             try {
                 importService.importAndLoad(file.getInputStream(), file.getOriginalFilename(), schemaName);
-                return "admin/source-success";
+                mav.setViewName(ADMIN_SOURCE_SUCCESS);
             } catch (Exception e) {
-                setErrorMessage(e.getMessage());
-                return "admin/source-failed";
+                mav.addObject(ERROR_MESSAGE, e.getMessage());
+                mav.addObject(EXCEPTION, e.getMessage());
             }
-        } else {
-            return "admin/source-failed";
         }
+        return mav;
     }
-
-    private String schemaName;
-    private String errorMessage;
-    
-    @ModelAttribute
-    public String getSchemaName() {
-        return schemaName;
-    }
-
-    public void setSchemaName(String schemaName) {
-        this.schemaName = schemaName;
-    }
-
-    @ModelAttribute
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
     
 }

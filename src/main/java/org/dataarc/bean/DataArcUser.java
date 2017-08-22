@@ -25,6 +25,8 @@ public class DataArcUser extends AbstractPersistable {
     private String email;
     @Column(name = "admin")
     private boolean admin;
+    @Column(name = "editor")
+    private boolean editor;
     @Column(name = "date_created")
     private Date dateCreated;
     @Column(name = "last_login")
@@ -116,6 +118,14 @@ public class DataArcUser extends AbstractPersistable {
 
     public String getDisplayName() {
         return String.format("%s %s", firstName, lastName);
+    }
+
+    public boolean isEditor() {
+        return editor;
+    }
+
+    public void setEditor(boolean editor) {
+        this.editor = editor;
     }
 
 }

@@ -28,8 +28,11 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.common.AuthenticationScheme;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
 import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
@@ -42,14 +45,16 @@ import com.atlassian.crowd.service.client.CrowdClient;
 
 @Configuration
 @EnableWebSecurity
-@EnableOAuth2Sso
+//@EnableOAuth2Sso
+//@EnableOAuth2Client
+//@RestController
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    @Autowired
-    OAuth2ClientContext oauth2ClientContext;
+//    @Autowired
+//    OAuth2ClientContext oauth2ClientContext;
 
     
     @Autowired
@@ -82,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             web.exceptionHandling()
             .defaultAuthenticationEntryPointFor(new RestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
             .accessDeniedHandler(new RestAccessDeniedHandler());
-            web.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+//            web.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
         }
     }
 
@@ -118,40 +123,57 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     
     @Bean
-    @ConfigurationProperties("facebook.client")
+//    @ConfigurationProperties("facebook.client")
     public AuthorizationCodeResourceDetails facebook() {
-      return new AuthorizationCodeResourceDetails();
+      AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
+      details.setClientId("");
+      details.setClientSecret("");
+//      details.setR
+      details.setAccessTokenUri("https://graph.facebook.com/oauth/access_token");
+      details.setUserAuthorizationUri("https://www.facebook.com/dialog/oauth");
+      details.setTokenName("oauth_token");
+      details.setAuthenticationScheme(AuthenticationScheme.query);
+      details.setClientAuthenticationScheme(AuthenticationScheme.form);
+      return details;
     }
     
     @Bean
-    @ConfigurationProperties("facebook.resource")
+//    @ConfigurationProperties("facebook.resource")
     public ResourceServerProperties facebookResource() {
-      return new ResourceServerProperties();
+      ResourceServerProperties prop = new ResourceServerProperties();
+      prop.setUserInfoUri("https://graph.facebook.com/me");
+      
+      return prop;
     }
     
-    
-    @Bean
-    public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
-      FilterRegistrationBean registration = new FilterRegistrationBean();
-      registration.setFilter(filter);
-      registration.setOrder(-100);
-      return registration;
-    }
-    
-    private Filter ssoFilter() {
-        CompositeFilter filter = new CompositeFilter();
-        List<Filter> filters = new ArrayList<>();
-        OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
-        OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
-        facebookFilter.setRestTemplate(facebookTemplate);
-        UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
-        tokenServices.setRestTemplate(facebookTemplate);
-        facebookFilter.setTokenServices(tokenServices);
-        filters.add(facebookFilter);
-        
-        
-        filter.setFilters(filters);
-        return filter;
-      }
+    /*
+     * http://www.baeldung.com/facebook-authentication-with-spring-security-and-social
+     * http://www.baeldung.com/spring-security-oauth2-authentication-with-reddit
+     * https://spring.io/guides/tutorials/spring-boot-oauth2/#_social_login_github
+     */
+//    
+//    @Bean
+//    public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
+//      FilterRegistrationBean registration = new FilterRegistrationBean();
+//      registration.setFilter(filter);
+//      registration.setOrder(-100);
+//      return registration;
+//    }
+//    
+//    private Filter ssoFilter() {
+//        CompositeFilter filter = new CompositeFilter();
+//        List<Filter> filters = new ArrayList<>();
+//        OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
+//        OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
+//        facebookFilter.setRestTemplate(facebookTemplate);
+//        UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
+//        tokenServices.setRestTemplate(facebookTemplate);
+//        facebookFilter.setTokenServices(tokenServices);
+//        filters.add(facebookFilter);
+//        
+//        
+//        filter.setFilters(filters);
+//        return filter;
+//      }
 
 }

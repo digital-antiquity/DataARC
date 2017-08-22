@@ -81,17 +81,7 @@ public abstract class AbstractController {
             userId = userEntity.getExternalId();
             logger.trace("     userId: {}", userId);
             DataArcUser user = userService.findByExternalId(userId);
-            if (user == null) {
-                user = new DataArcUser();
-                user.setDateCreated(new Date());
-                user.setExternalId(userEntity.getExternalId());
-            }
-            user.setEmail(userEntity.getEmailAddress());
-            user.setUsername(userEntity.getName());
-            user.setFirstName(userEntity.getFirstName());
-            user.setLastName(userEntity.getLastName());
-            user.setLastLogin(new Date());
-            userService.save(user);
+            userService.saveOrUpdateUser(user, userEntity);
             return user;
         }
         return null;

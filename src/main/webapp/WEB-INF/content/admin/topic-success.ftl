@@ -11,7 +11,7 @@
     <@body.body>
 
         <h1>Add Datafile</h1>
-        <B>Upload Succeeed for ${schemaName}</b>
+        <B>Upload Succeeed for ${topicName}</b>
     </form> 
     
     </@body.body>
