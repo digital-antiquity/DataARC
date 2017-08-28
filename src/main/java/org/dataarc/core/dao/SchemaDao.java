@@ -42,7 +42,7 @@ public class SchemaDao {
             return null;
         }
         Field field = schema.getFields().stream().filter(fld -> StringUtils.equals(fld.getName(), fieldName)).findFirst().get();
-        logger.debug("field {}", field);
+        logger.debug("field {} --> {}", field, field.getValues());
         return field.getValues();
     }
 

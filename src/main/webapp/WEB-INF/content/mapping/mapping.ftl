@@ -68,10 +68,12 @@
                     </ul>
                 </div>
             </div>
+            
+            
             <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-10 col-sm-offset-1">
                     <ul class="list-group" v-for="(part, rowNum) in indicators[currentIndicator].query.conditions">
-                        <spart :rowindex="rowNum" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"></spart>
+                        <spart :rowindex="rowNum" :schema="schemaName" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"></spart>
                     </ul>
                 </div>
                 <div class="col-sm-1">
@@ -155,14 +157,24 @@
             </div>
             
         <template id="spart-template">
-            <div>
+            <div> 
                 <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()" class="form-control">
                     <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
                 </select>
                 <select name='type' v-model="part.type" class="form-control">
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-                <input name='value' value="" v-bind:type="getHtmlFieldType(part.fieldName)" v-model="part.value" class="form-control"/>
+                  <autocomplete-input @select="onOptionSelect" v-bind:type="getHtmlFieldType(part.fieldName)" v-bind:field="part.fieldName"  v-bind:schema="schema" >
+                    <template slot="item" scope="option">
+                      <article class="media">
+                        <p>
+                          <strong>{{ option.value }} ({{option.occurrence}})</strong>
+                        </p>
+                      </article>
+                    </template>
+                  </autocomplete-input>
+
+                
                 <span v-show="rowindex > 0">
                 <button class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
                 </span>
@@ -174,6 +186,21 @@
         <template id="spart-template">
             hi {{part}}
         </template>
+
+<template id="autocomplete-input-template" >
+  <div class="autocomplete-input">
+                    {{options}}
+    <p class="control">
+      <input  v-model="keyword" class="input is-large" placeholder="Search..." 
+        @input="onInput($event.target.value)" 
+        @keyup.esc="isOpen = false" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" 
+        @keydown.enter="select" >
+      <i class="fa fa-angle-down"></i>
+    </p>
+  </div>
+</template>
+
+
 
         </@body.body>
 </html>

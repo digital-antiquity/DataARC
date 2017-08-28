@@ -4,8 +4,7 @@ require.config({
     'vue': '/components/vue/dist/vue.min',
     'jquery' : '/components/jquery/dist/jquery',
     'vue-resource': '/components/vue-resource/dist/vue-resource.min',
-    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min',
-    'vue-autocomplete': '/components/vue2-autocomplete/dist/vue2-autocomplete'
+    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min'
   },
   shim: {
     vue: {
@@ -16,29 +15,92 @@ require.config({
 
 });
 require([
-    'vue','jquery','vue-resource','bootstrap','vue-autocomplete'
-    ], function(Vue,JQuery,VueResource,Bootstrap,VueAutocomplete){
+    'vue','jquery','vue-resource','bootstrap'
+    ], function(Vue,JQuery,VueResource,Bootstrap){
   
     var Resource = require('vue-resource');
-//    var autocomplete = require('vue-autocomplete');
     Vue.use(Resource);
-//    Vue.use(autocomplete);
 
-    //Vue.use(VeeValidate); // good to go.
-//Vue.http.options.emulateJSON = true; // send as 
-
-
-// var Vue = require('vue');
-  Vue.config.errorHandler = function (err, vm) {
+    Vue.config.errorHandler = function (err, vm) {
       console.log(err);
       console.log(vm);
-  }
+   }
 
 
+  Vue.component('autocomplete-input', {
+      template: '#autocomplete-input-template',
+      props: ["field","schema"],
+      data: function() {
+        return {
+          isOpen: false,
+          highlightedPosition: 0,
+          keyword: '',
+          options:[]
+        }
+      },
+      watch: {
+          field: function(fld) {
+              window.console.log(fld, this.schema, this.field);
+              this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': this.schema,'field':this.field}})
+              .then(function (request) {
+                Vue.set(this, 'options', request.body);
+                window.console.log(request.body);
+              })
+              .catch(function (err) {
+                console.err(err);
+              });
+
+          }
+          
+      },
+      computed: {
+        fOptions: function() {
+            window.console.log("foptions:" ,this.field);
+        }
+      },
+      methods: {
+        onInput(value) {
+            window.console.log("onInput:", value);
+            var re = new RegExp(value, 'i');
+            var filtered = this.options.filter(o => o.value.match(re));
+            window.console.log("opt:", this.options);
+            window.console.log("filt:", filtered);
+            Vue.set(this, 'options', filtered);
+            
+            this.highlightedPosition = 0
+            this.isOpen = !!value
+          },
+          moveDown() {
+            if (!this.isOpen) {
+              return
+            }
+            this.highlightedPosition =
+              (this.highlightedPosition + 1) % this.options.length
+          },
+          moveUp() {
+            if (!this.isOpen) {
+              return
+            }
+            this.highlightedPosition = this.highlightedPosition - 1 < 0 ? this.options.length - 1 : this.highlightedPosition - 1
+          },
+          select() {
+            var selectedOption = this.options[this.highlightedPosition]
+            this.$emit('select', selectedOption)
+            this.isOpen = false
+            this.keyword = selectedOption.title
+          }
+      }
+    });
+
+
+  
+  
  Vue.component('spart', {
       template: "#spart-template",
-      props: ['fields', "part","rowindex","parts"],
-      computed: {
+      props: ['fields', "part","rowindex","parts","onOptionSelect","schema"],
+      data() {
+          return {
+          }
       },
       methods: {
           getLimits :  function() {
@@ -51,6 +113,9 @@ require([
               }
               return r;
           },
+          onOptionSelect(option) {
+              console.log('Selected option:', option)
+            },
           getHtmlFieldType(name){
               if (name == undefined || name == '') {
                   return "text";
@@ -93,6 +158,7 @@ var Hack = new Vue({
   data: {
     schemum: { name: ''},
     schema: [],
+    schemaName: "",
     fields: [],
     uniqueValues: [],
     indicators: [] ,
@@ -202,6 +268,7 @@ var Hack = new Vue({
         },
         selectSchema: function () {
             var s = this.schema[this.currentSchema];
+            Vue.set(this,"schemaName",s.name);
             Vue.set(this,"indicators",[]);
             Vue.set(this,"fields",[]);
             console.log("fetch fields for "+ s.name);
