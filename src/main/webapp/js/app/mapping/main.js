@@ -1,4 +1,30 @@
-//Vue.use(VeeValidate); // good to go.
+require.config({
+  baseUrl: "",
+  paths: {
+    'vue': '/components/vue/dist/vue.min',
+    'jquery' : '/components/jquery/dist/jquery',
+    'vue-resource': '/components/vue-resource/dist/vue-resource.min',
+    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min',
+    'vue-autocomplete': '/components/vue2-autocomplete/dist/vue2-autocomplete'
+  },
+  shim: {
+    vue: {
+      exports: 'Vue'
+    },
+    bootstrap : { "deps" :['jquery'] }
+  }
+
+});
+require([
+    'vue','jquery','vue-resource','bootstrap','vue-autocomplete'
+    ], function(Vue,JQuery,VueResource,Bootstrap,VueAutocomplete){
+  
+    var Resource = require('vue-resource');
+//    var autocomplete = require('vue-autocomplete');
+    Vue.use(Resource);
+//    Vue.use(autocomplete);
+
+    //Vue.use(VeeValidate); // good to go.
 //Vue.http.options.emulateJSON = true; // send as 
 
 
@@ -153,8 +179,8 @@ var Hack = new Vue({
     this.fetchTopics();
     this.$nextTick(function () {
           console.log('hi');
-          $('[data-toggle="tooltip"]').tooltip();
-          $('[data-toggle="popover"]').popover({'trigger':'focus','placement':'left'});
+          JQuery('[data-toggle="tooltip"]').tooltip();
+          JQuery('[data-toggle="popover"]').popover({'trigger':'focus','placement':'left'});
       })},
   methods: {
       fetchSchema: function () {
@@ -324,4 +350,5 @@ var Hack = new Vue({
         return this.conditions;
     }
   }
+});
 });

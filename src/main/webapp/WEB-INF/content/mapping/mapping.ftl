@@ -7,6 +7,9 @@
             Indicator Creation Tool
         </title>
     <#include "/includes/header.ftl"/>
+
+        <script data-main="/js/app/mapping/main" src="${contextPath}/components/requirejs/require.js"></script>
+
     <#import "/macros/body.ftl" as body />
     </head>
     
@@ -168,7 +171,6 @@
                 </span>
             </div>
         </template>
-        <script src="${contextPath}/js/app/mapping/mapping.js"></script>
         <template id="spart-template">
             hi {{part}}
         </template>
