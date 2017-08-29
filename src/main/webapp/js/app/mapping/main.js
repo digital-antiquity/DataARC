@@ -83,7 +83,19 @@ require([
             }
             this.highlightedPosition = this.highlightedPosition - 1 < 0 ? this.options.length - 1 : this.highlightedPosition - 1
           },
+          focus() {
+              window.console.log("onFocus:", this.keyword);
+              var re = new RegExp(this.keyword, 'i');
+              var filtered = this.options.filter(o => o.value.match(re));
+              window.console.log("opt:", this.options);
+              window.console.log("filt:", filtered);
+              Vue.set(this, 'options', filtered);
+
+              this.isOpen = true;
+              
+          },
           select() {
+              window.console.log("onSelect:", this.keyword);
             var selectedOption = this.options[this.highlightedPosition]
             this.$emit('select', selectedOption)
             this.isOpen = false

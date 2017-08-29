@@ -165,7 +165,8 @@
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
                   <autocomplete-input @select="onOptionSelect" v-bind:type="getHtmlFieldType(part.fieldName)" v-bind:field="part.fieldName"  v-bind:schema="schema" >
-                    <template slot="item" scope="option">
+
+                    <template slot="item" scope="option" v-for="(option, rowNum) in options">
                       <article class="media">
                         <p>
                           <strong>{{ option.value }} ({{option.occurrence}})</strong>
@@ -192,7 +193,7 @@
                     {{options}}
     <p class="control">
       <input  v-model="keyword" class="input is-large" placeholder="Search..." 
-        @input="onInput($event.target.value)" 
+        @input="onInput($event.target.value)"  @focus="focus"
         @keyup.esc="isOpen = false" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" 
         @keydown.enter="select" >
       <i class="fa fa-angle-down"></i>
