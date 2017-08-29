@@ -9,7 +9,35 @@
     <#include "/includes/header.ftl"/>
 
         <script data-main="/js/app/mapping/main" src="${contextPath}/components/requirejs/require.js"></script>
+<style>
 
+ul.options-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: -12px;
+  border: 1px solid #dbdbdb;
+  border-radius: 0 0 3px 3px;
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+}
+
+ul.options-list li {
+  width: 100%;
+  flex-wrap: wrap;
+  background: white;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+  color: #363636;
+  padding: 7px;
+  cursor: pointer;
+}
+
+ul.options-list li.highlighted {
+  background: #f8f8f8
+}
+
+</style>
     <#import "/macros/body.ftl" as body />
     </head>
     
@@ -166,10 +194,10 @@
                 </select>
                   <autocomplete-input @select="onOptionSelect" v-bind:type="getHtmlFieldType(part.fieldName)" v-bind:field="part.fieldName"  v-bind:schema="schema" >
 
-                    <template slot="item" scope="option" v-for="(option, rowNum) in options">
+                    <template slot="item" scope="option">
                       <article class="media">
                         <p>
-                          <strong>{{ option.value }} ({{option.occurrence}})</strong>
+                          <strong>{{ option.value }}</strong>  ({{option.occurrence}})
                         </p>
                       </article>
                     </template>
@@ -197,6 +225,15 @@
         @keyup.esc="isOpen = false" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" 
         @keydown.enter="select" >
       <i class="fa fa-angle-down"></i>
+          <ul v-show="isOpen" class="options-list">
+        <li v-for="(option, index) in options" :class="{
+          'highlighted': index === highlightedPosition
+        }" @mouseenter="highlightedPosition = index" @mousedown="select">
+        <slot name="item" :value="option.value" :occurrence="option.occurrence" :option="option">
+      </li>
+    </ul>
+      
+      
     </p>
   </div>
 </template>

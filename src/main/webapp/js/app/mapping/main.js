@@ -99,7 +99,7 @@ require([
             var selectedOption = this.options[this.highlightedPosition]
             this.$emit('select', selectedOption)
             this.isOpen = false
-            this.keyword = selectedOption.title
+            this.keyword = selectedOption.value
           }
       }
     });
