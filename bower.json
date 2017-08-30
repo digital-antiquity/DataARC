@@ -34,9 +34,7 @@
     "vee-validate": "2.0.0-beta.18",
     "vue": "^2.1.6",
     "vue-resource": "^1.0.3",
-    "requirejs": "^2.3.5",
-    "vuejs-autocomplete": "*",
-    "vue2-autocomplete": "^0.1.0"
+    "requirejs": "^2.3.5"
   },
   "resolutions": {
     "d3": "3.5.5"
