@@ -12,11 +12,11 @@ public interface UrlConstants {
     String VIEW_INDICATOR = "/api/indicator/{id}";
     String LIST_INDICATORS = "/api/indicator";
     String REINDEX = "/api/admin/reindex";
-    String ADMIN = "/admin";
-    String ADMIN_SOURCE_DATA = "/admin/source";
-    String ADMIN_SOURCE_UPLOAD_FILE = "/admin/uploadSourceFile";
-    String ADMIN_TOPIC_IMPORT = "/admin/uploadTopic";
-    String ADMIN_TOPIC_DATA = "/admin/topic";
-    String ADMIN_TOPIC_UPLOAD_FILE = "/admin/topicUploadFile";
+    String ADMIN = "/a/admin";
+    String ADMIN_SOURCE_DATA = "/a/admin/source";
+    String ADMIN_SOURCE_UPLOAD_FILE = "/a/admin/uploadSourceFile";
+    String ADMIN_TOPIC_IMPORT = "/a/admin/uploadTopic";
+    String ADMIN_TOPIC_DATA = "/a/admin/topic";
+    String ADMIN_TOPIC_UPLOAD_FILE = "/a/admin/topicUploadFile";
 
 }

@@ -1,19 +1,17 @@
 package org.dataarc.web.security;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Properties;
 
 import javax.annotation.Resource;
-import javax.servlet.Filter;
 
+import org.dataarc.core.service.UserService;
+import org.dataarc.web.security.openid.OpenIdConnectFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,15 +23,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.filter.CompositeFilter;
 
 import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
 import com.atlassian.crowd.integration.http.CrowdHttpAuthenticatorImpl;
@@ -45,23 +42,25 @@ import com.atlassian.crowd.service.client.CrowdClient;
 
 @Configuration
 @EnableWebSecurity
-//@EnableOAuth2Sso
-//@EnableOAuth2Client
-//@RestController
+@EnableOAuth2Sso
+@EnableOAuth2Client
+// @RestController
+// @SpringBootApplication
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    OAuth2ClientContext oauth2ClientContext;
 
-//    @Autowired
-//    OAuth2ClientContext oauth2ClientContext;
+    @Autowired
+    private OAuth2RestTemplate restTemplate;
 
-    
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
-    
+
     @Resource
     protected Environment env;
 
@@ -69,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**","/css/**","/components/**","/images/**","/data/**","/","/json","/api/topicmap/view");
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view");
         } else {
             web.ignoring().antMatchers("/**");
         }
@@ -78,19 +77,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity web) throws Exception {
         super.configure(web);
-        web.csrf().ignoringAntMatchers("/api/**","/json/**").disable();
-        
+        web.csrf().ignoringAntMatchers("/api/**", "/json/**").disable();
+
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.authorizeRequests().antMatchers("/mapping/**","/admin/**").hasRole("TDAR_USERS").
-            and().formLogin().loginPage("/login")
-            .permitAll().defaultSuccessUrl("/mapping").and().logout().permitAll();
+            web.addFilterAfter(new OAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+                    .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
+            web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", "")).antMatchers("/a/admin/**")
+                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().formLogin().loginPage("/login")
+                    .permitAll().defaultSuccessUrl("/a/mapping");
+            web.httpBasic().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/google-login"))
+                    .and().authorizeRequests();
+            web.logout().permitAll();
             web.exceptionHandling()
-            .defaultAuthenticationEntryPointFor(new RestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
-            .accessDeniedHandler(new RestAccessDeniedHandler());
-//            web.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+                    .defaultAuthenticationEntryPointFor(new RestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
+                    .accessDeniedHandler(new RestAccessDeniedHandler());
         }
     }
 
+    @Bean
+    public OpenIdConnectFilter myFilter() {
+        final OpenIdConnectFilter filter = new OpenIdConnectFilter("/google-login");
+        filter.setRestTemplate(restTemplate);
+        return filter;
+    }
 
     public ClientPropertiesImpl clientProperties() {
         Properties p = new Properties();
@@ -104,12 +113,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CrowdClient crowdClient() {
-        return new RestCrowdClientFactory().newInstance( clientProperties());
+        return new RestCrowdClientFactory().newInstance(clientProperties());
     }
 
     @Bean
     public CrowdHttpAuthenticator crowdHttpAuthenticator() {
-        return new CrowdHttpAuthenticatorImpl(crowdClient(), clientProperties(), CrowdHttpTokenHelperImpl.getInstance(CrowdHttpValidationFactorExtractorImpl.getInstance()));
+        return new CrowdHttpAuthenticatorImpl(crowdClient(), clientProperties(),
+                CrowdHttpTokenHelperImpl.getInstance(CrowdHttpValidationFactorExtractorImpl.getInstance()));
     }
 
     @Bean
@@ -121,59 +131,118 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(crowdAuthenticationProvider());
     }
-    
+
     @Bean
-//    @ConfigurationProperties("facebook.client")
-    public AuthorizationCodeResourceDetails facebook() {
-      AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
-      details.setClientId("");
-      details.setClientSecret("");
-//      details.setR
-      details.setAccessTokenUri("https://graph.facebook.com/oauth/access_token");
-      details.setUserAuthorizationUri("https://www.facebook.com/dialog/oauth");
-      details.setTokenName("oauth_token");
-      details.setAuthenticationScheme(AuthenticationScheme.query);
-      details.setClientAuthenticationScheme(AuthenticationScheme.form);
-      return details;
+    public AuthorizationCodeResourceDetails google() {
+        AuthorizationCodeResourceDetails details = setupGoogle();
+        details.setScope(Arrays.asList("profile"));
+        return details;
     }
-    
+
+    private AuthorizationCodeResourceDetails setupGoogle() {
+        AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
+        details.setAccessTokenUri("https://www.googleapis.com/oauth2/v3/token");
+        details.setUserAuthorizationUri("https://accounts.google.com/o/oauth2/auth");
+        details.setUseCurrentUri(true);
+        details.setTokenName("oauth_token");
+        details.setAuthenticationScheme(AuthenticationScheme.query);
+        details.setClientAuthenticationScheme(AuthenticationScheme.form);
+        return details;
+    }
+
+    // @Bean
+    // @ConfigurationProperties("security.oauth2.resource")
+    public ResourceServerProperties googleResource() {
+        ResourceServerProperties properties = new ResourceServerProperties();
+        properties.setUserInfoUri("https://www.googleapis.com/userinfo/v2/me");
+        properties.setPreferTokenInfo(false);
+        return properties;
+    }
+
     @Bean
-//    @ConfigurationProperties("facebook.resource")
-    public ResourceServerProperties facebookResource() {
-      ResourceServerProperties prop = new ResourceServerProperties();
-      prop.setUserInfoUri("https://graph.facebook.com/me");
-      
-      return prop;
+    public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(filter);
+        registration.setOrder(-100);
+        return registration;
     }
-    
+
+    @Bean
+    public OAuth2ProtectedResourceDetails googleOpenId() {
+        final AuthorizationCodeResourceDetails details = setupGoogle();
+        details.setScope(Arrays.asList("openid", "email", "profile"));
+        return details;
+    }
+
+    @Bean
+    public OAuth2RestTemplate googleOpenIdTemplate(final OAuth2ClientContext clientContext) {
+        final OAuth2RestTemplate template = new OAuth2RestTemplate(googleOpenId(), clientContext);
+        return template;
+    }
+
     /*
-     * http://www.baeldung.com/facebook-authentication-with-spring-security-and-social
+     * private Filter ssoGoogleFilter() {
+     * OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
+     * OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oauth2ClientContext);
+     * googleFilter.setRestTemplate(googleTemplate);
+     * googleFilter.setTokenServices(new UserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId()));
+     * return googleFilter;
+     * }
+     * 
+     * 
+     * 
+     * @Bean
+     * // @ConfigurationProperties("facebook.client")
+     * public AuthorizationCodeResourceDetails facebook() {
+     * AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
+     * details.setClientId("");
+     * details.setClientSecret("");
+     * // details.setR
+     * details.setAccessTokenUri("https://graph.facebook.com/oauth/access_token");
+     * details.setUserAuthorizationUri("https://www.facebook.com/dialog/oauth");
+     * details.setTokenName("oauth_token");
+     * details.setAuthenticationScheme(AuthenticationScheme.query);
+     * details.setClientAuthenticationScheme(AuthenticationScheme.form);
+     * return details;
+     * }
+     * 
+     * @Bean
+     * // @ConfigurationProperties("facebook.resource")
+     * public ResourceServerProperties facebookResource() {
+     * ResourceServerProperties prop = new ResourceServerProperties();
+     * prop.setUserInfoUri("https://graph.facebook.com/me");
+     * 
+     * return prop;
+     * }
+     * 
+     */
+    /*
      * http://www.baeldung.com/spring-security-oauth2-authentication-with-reddit
      * https://spring.io/guides/tutorials/spring-boot-oauth2/#_social_login_github
      */
-//    
-//    @Bean
-//    public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
-//      FilterRegistrationBean registration = new FilterRegistrationBean();
-//      registration.setFilter(filter);
-//      registration.setOrder(-100);
-//      return registration;
-//    }
-//    
-//    private Filter ssoFilter() {
-//        CompositeFilter filter = new CompositeFilter();
-//        List<Filter> filters = new ArrayList<>();
-//        OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
-//        OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
-//        facebookFilter.setRestTemplate(facebookTemplate);
-//        UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
-//        tokenServices.setRestTemplate(facebookTemplate);
-//        facebookFilter.setTokenServices(tokenServices);
-//        filters.add(facebookFilter);
-//        
-//        
-//        filter.setFilters(filters);
-//        return filter;
-//      }
+    //
+    // @Bean
+    // public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
+    // FilterRegistrationBean registration = new FilterRegistrationBean();
+    // registration.setFilter(filter);
+    // registration.setOrder(-100);
+    // return registration;
+    // }
+    //
+    // private Filter ssoFilter() {
+    // CompositeFilter filter = new CompositeFilter();
+    // List<Filter> filters = new ArrayList<>();
+    // OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
+    // OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
+    // facebookFilter.setRestTemplate(facebookTemplate);
+    // UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
+    // tokenServices.setRestTemplate(facebookTemplate);
+    // facebookFilter.setTokenServices(tokenServices);
+    // filters.add(facebookFilter);
+    //
+    //
+    // filter.setFilters(filters);
+    // return filter;
+    // }
 
 }

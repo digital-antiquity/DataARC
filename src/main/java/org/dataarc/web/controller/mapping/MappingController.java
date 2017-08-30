@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MappingController extends AbstractController {
 
-    @RequestMapping("/mapping/")
+    @RequestMapping("/a/mapping/")
     public String mapping() {
         return "mapping/mapping";
     }

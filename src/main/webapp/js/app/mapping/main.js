@@ -26,7 +26,7 @@ require([
       console.log(vm);
    }
 
-
+/** https://jsfiddle.net/krn9v4vr/59/ **/
   Vue.component('autocomplete-input', {
       template: '#autocomplete-input-template',
       props: ["field","schema"],

@@ -16,11 +16,11 @@
  
    ${currentUserDisplayName!'none' }</b>
     <ul class="nav nav-sidebar">
-        <li><a href="/mapping/">Indicators</a></li>
+        <li><a href="/a/mapping/">Indicators</a></li>
         <#if admin>
-        <li><a href="/admin">Admin</a><ul>
-            <li><a href="/admin">Reindex</a></li>
-            <li><a href="/admin/source">Add Datafile</a></li>
+        <li><a href="/a/admin">Admin</a><ul>
+            <li><a href="/a/admin">Reindex</a></li>
+            <li><a href="/a/admin/source">Add Datafile</a></li>
         </ul></li>
         </#if>
     </ul>
