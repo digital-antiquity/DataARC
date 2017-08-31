@@ -29,5 +29,6 @@ ${param}
     <tr><td>Password:</td><td><input type='password' name='password'/></td></tr>
     <tr><td colspan='2'><input name="submit" type="submit" value="Login"/></td></tr>
 </table>
+<a href="/google-login">Login with Google</a> | <a href="/facebook-login">Login with Facebook</a>
 </@body.body>
 </html>

@@ -26,6 +26,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -36,6 +37,7 @@ import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
 import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
@@ -70,11 +72,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     protected Environment env;
 
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view");
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/login**");
         } else {
             web.ignoring().antMatchers("/**");
         }
@@ -88,15 +91,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         if (env.getProperty("security.enabled", Boolean.class, true)) {
             web.addFilterAfter(new OAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                     .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
+
             web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", "")).antMatchers("/a/admin/**")
-                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().formLogin().loginPage("/login")
-                    .permitAll().defaultSuccessUrl("/a/mapping");
-            web.httpBasic().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/google-login"))
-                    .and().authorizeRequests();
+                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/mapping");
+
             web.logout().permitAll();
-            // web.exceptionHandling()
-            // .defaultAuthenticationEntryPointFor(new RestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
-            // .accessDeniedHandler(new RestAccessDeniedHandler());
+
+            web.exceptionHandling()
+                    .defaultAuthenticationEntryPointFor(new RestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
+                    .accessDeniedHandler(new RestAccessDeniedHandler());
         }
     }
 
@@ -154,8 +157,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(crowdAuthenticationProvider());
     }
 
-    // @Bean
-    // @ConfigurationProperties("security.oauth2.resource")
+    @Bean
     public ResourceServerProperties googleResource() {
         ResourceServerProperties properties = new ResourceServerProperties();
         properties.setUserInfoUri("https://www.googleapis.com/userinfo/v2/me");
@@ -179,6 +181,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         details.setClientId(env.getProperty("google.clientId"));
         details.setClientSecret(env.getProperty("google.clientSecret"));
         details.setUseCurrentUri(true);
+        details.setPreEstablishedRedirectUri("http://localhost:8020/a/mapping");
         details.setTokenName("oauth_token");
         details.setAuthenticationScheme(AuthenticationScheme.query);
         details.setClientAuthenticationScheme(AuthenticationScheme.form);
@@ -193,7 +196,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return template;
     }
 
-     @Bean
+//    @Bean
     // @ConfigurationProperties("security.oauth2.resource")
     public ResourceServerProperties facebookResource() {
         ResourceServerProperties properties = new ResourceServerProperties();
@@ -223,61 +226,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final OAuth2RestTemplate template = new OAuth2RestTemplate(facebookOpenId(), clientContext);
         return template;
     }
-
-    /*
-     * 
-     * @Bean
-     * // @ConfigurationProperties("facebook.client")
-     * public AuthorizationCodeResourceDetails facebook() {
-     * AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
-     * details.setClientId("");
-     * details.setClientSecret("");
-     * // details.setR
-     * details.setAccessTokenUri("https://graph.facebook.com/oauth/access_token");
-     * details.setUserAuthorizationUri("https://www.facebook.com/dialog/oauth");
-     * details.setTokenName("oauth_token");
-     * details.setAuthenticationScheme(AuthenticationScheme.query);
-     * details.setClientAuthenticationScheme(AuthenticationScheme.form);
-     * return details;
-     * }
-     * 
-     * @Bean
-     * // @ConfigurationProperties("facebook.resource")
-     * public ResourceServerProperties facebookResource() {
-     * ResourceServerProperties prop = new ResourceServerProperties();
-     * prop.setUserInfoUri("https://graph.facebook.com/me");
-     * 
-     * return prop;
-     * }
-     * 
-     */
-    /*
-     * http://www.baeldung.com/spring-security-oauth2-authentication-with-reddit
-     * https://spring.io/guides/tutorials/spring-boot-oauth2/#_social_login_github
-     */
-    //
-    // @Bean
-    // public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // registration.setFilter(filter);
-    // registration.setOrder(-100);
-    // return registration;
-    // }
-    //
-    // private Filter ssoFilter() {
-    // CompositeFilter filter = new CompositeFilter();
-    // List<Filter> filters = new ArrayList<>();
-    // OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
-    // OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
-    // facebookFilter.setRestTemplate(facebookTemplate);
-    // UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
-    // tokenServices.setRestTemplate(facebookTemplate);
-    // facebookFilter.setTokenServices(tokenServices);
-    // filters.add(facebookFilter);
-    //
-    //
-    // filter.setFilters(filters);
-    // return filter;
-    // }
 
 }

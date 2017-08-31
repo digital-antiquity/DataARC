@@ -1,12 +1,15 @@
 package org.dataarc.core.service;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.dao.DataArcUserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +48,25 @@ public class UserService {
         user.setUsername(userEntity.getName());
         user.setFirstName(userEntity.getFirstName());
         user.setLastName(userEntity.getLastName());
+        user.setLastLogin(new Date());
+        save(user);
+
+    }
+
+    @Transactional(readOnly = false)
+    public void saveOrUpdateUser(DataArcUser user_, OAuth2Authentication userEntity) {
+        DataArcUser user = user_;
+        if (user == null) {
+            user = new DataArcUser();
+            user.setDateCreated(new Date());
+            user.setExternalId(userEntity.getPrincipal().toString());
+        }
+        
+        LinkedHashMap<String, Object> details = (LinkedHashMap<String, Object>) userEntity.getUserAuthentication().getDetails();
+        user.setEmail((String) details.get("email"));
+        user.setUsername((String) details.get("name"));
+        user.setFirstName((String) details.get("given_name"));
+        user.setLastName((String) details.get("family_name"));
         user.setLastLogin(new Date());
         save(user);
 
