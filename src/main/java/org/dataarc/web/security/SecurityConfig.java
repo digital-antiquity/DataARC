@@ -6,6 +6,7 @@ import java.util.Properties;
 import javax.annotation.Resource;
 
 import org.dataarc.core.service.UserService;
+import org.dataarc.web.security.crowd.LocalCrowdAuthenticationProvider;
 import org.dataarc.web.security.openid.OpenIdConnectFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,6 +144,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
         details.setAccessTokenUri("https://www.googleapis.com/oauth2/v3/token");
         details.setUserAuthorizationUri("https://accounts.google.com/o/oauth2/auth");
+        details.setClientId(env.getProperty("google.clientId"));
+        details.setClientSecret(env.getProperty("google.clientSecret"));
         details.setUseCurrentUri(true);
         details.setTokenName("oauth_token");
         details.setAuthenticationScheme(AuthenticationScheme.query);

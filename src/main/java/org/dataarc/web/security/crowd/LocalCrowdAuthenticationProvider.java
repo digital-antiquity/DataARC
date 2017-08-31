@@ -1,4 +1,4 @@
-package org.dataarc.web.security;
+package org.dataarc.web.security.crowd;
 
 import java.util.ArrayList;
 import java.util.List;
