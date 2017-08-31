@@ -919,6 +919,7 @@
                     <webAppConfig>
                         <contextPath>/</contextPath>
                         <descriptor>${basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
+                        <webInfIncludeJarPattern>.*/spring-[^/]*\.jar$|.*/classes/.*</webInfIncludeJarPattern>
                     </webAppConfig>
                 </configuration>
                 <dependencies>
