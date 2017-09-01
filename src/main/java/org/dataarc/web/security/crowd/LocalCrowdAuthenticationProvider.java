@@ -76,13 +76,7 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
             }
             
             DataArcUser user_ = userService.findByExternalId(user.getExternalId());
-            if (user_.isAdmin()) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(UserService.EDITOR_ROLE));
-                grantedAuthorities.add(new SimpleGrantedAuthority(UserService.ADMIN_ROLE));
-            }
-            if (user_.isEditor()) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(UserService.EDITOR_ROLE));
-            }
+            userService.enhanceGroupMembership(user_, grantedAuthorities);
             
             
             upAuth = new UsernamePasswordAuthenticationToken(user.getName(), "", grantedAuthorities);

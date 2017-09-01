@@ -24,7 +24,6 @@ import org.springframework.util.ResourceUtils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 
-
 @Configuration
 // @EnableSolrRepositories(multicoreSupport = true, basePackages = DataArcConfiguration.ORG_DATAARC_SOLR)
 @EnableMongoRepositories(basePackages = { DataArcConfiguration.ORG_DATAARC_MONGO })
@@ -32,6 +31,9 @@ import com.mongodb.MongoCredential;
 @Profile("mongo")
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 public class MongoProfile extends DataArcConfiguration {
+
+    private static final String HTTP_LOCALHOST_8983_SOLR = "http://localhost:8983/solr";
+    private static final String SRC_MAIN_RESOURCES_SOLR = "src/main/resources/solr";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -51,12 +53,12 @@ public class MongoProfile extends DataArcConfiguration {
     SolrClient solrClient() throws FileNotFoundException {
         if (env.getProperty("solr.embedded", Boolean.class, Boolean.TRUE)) {
             // env.getProperty(DB_HOST, LOCALHOST)
-            String solrHome = ResourceUtils.getURL(env.getProperty(SOLR_LOCAL_PATH, "src/main/resources/solr")).getPath();
+            String solrHome = ResourceUtils.getURL(env.getProperty(SOLR_LOCAL_PATH, SRC_MAIN_RESOURCES_SOLR)).getPath();
             CoreContainer container = CoreContainer.createAndLoad(new File(solrHome).toPath());
 
             return new EmbeddedSolrServer(container, "dataArc");
         } else {
-            String urlString = env.getProperty(SOLR_URL, "http://localhost:8983/solr");
+            String urlString = env.getProperty(SOLR_URL, HTTP_LOCALHOST_8983_SOLR);
             SolrClient solr = new HttpSolrClient.Builder(urlString).build();
             return solr;
         }

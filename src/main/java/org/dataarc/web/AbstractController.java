@@ -1,10 +1,5 @@
 package org.dataarc.web;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
-import java.util.Collection;
-import java.util.Date;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,14 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.atlassian.crowd.integration.rest.entity.UserEntity;
-
 public abstract class AbstractController {
+
+    private static final String CONTENT_LENGTH = "Content-Length";
+
 
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -65,42 +59,21 @@ public abstract class AbstractController {
     } 
 
     
+    private DataArcUser user = null;
+    
     @ModelAttribute("currentUser")
     public DataArcUser getUser() {
+        if (user != null) {
+            return user;
+        }
+        
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return null;
         }
-        logger.debug("{}", authentication);
-        String username = authentication.getName();
-        String userId = null;
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Object details = authentication.getDetails();
-        logger.trace("   username: {}", username);
-        logger.trace("authorities: {}", authorities);
-        logger.trace("    details: {}", details);
-        if (authentication instanceof OAuth2Authentication) {
-            OAuth2Authentication userEntity = (OAuth2Authentication) authentication;
-            userId = userEntity.getName();
-            logger.debug("    details: {} | {}", details, details.getClass());
-            logger.debug("    principal: {} | {}", authentication.getPrincipal(), authentication.getPrincipal().getClass());
-            logger.debug("{}", userEntity.getUserAuthentication());
-            logger.debug("{}", userEntity.getCredentials());
-            logger.trace("     userId: {}", userId);
-            DataArcUser user = userService.findByExternalId(userId);
-            userService.saveOrUpdateUser(user, userEntity);
-            return user;
-        }
 
-        if (details instanceof UserEntity) {
-            UserEntity userEntity = (UserEntity) details;
-            userId = userEntity.getExternalId();
-            logger.trace("     userId: {}", userId);
-            DataArcUser user = userService.findByExternalId(userId);
-            userService.saveOrUpdateUser(user, userEntity);
-            return user;
-        }
-        return null;
+        user = userService.reconcileUser(authentication);
+        return user;
     }
     
     
@@ -116,7 +89,7 @@ public abstract class AbstractController {
 
     @ModelAttribute
     public void setVaryResponseHeader(HttpServletResponse response) {
-        response.setHeader("Content-Length", "-1");
+        response.setHeader(CONTENT_LENGTH, "-1");
     }
 
 }

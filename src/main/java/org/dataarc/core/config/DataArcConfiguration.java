@@ -23,7 +23,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO, DataArcConfiguration.ORG_DATAARC_SOLR })
@@ -32,6 +31,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class DataArcConfiguration {
 
+    private static final String LOCALHOST = "localhost";
+    private static final String DATAARC = "dataarc";
+    private static final String JDBC_POSTGRESQL_POST_GIS_S_5432_S = "jdbc:postgresql_postGIS://%s:5432/%s";
     private static final String PG_PASSWORD = "pgPassword";
     private static final String PG_USERNAME = "pgUsername";
     private static final String PG_DATABASE = "pgDatabase";
@@ -40,18 +42,16 @@ public class DataArcConfiguration {
     static final String ORG_DATAARC_CORE = "org.dataarc.core";
     static final String ORG_DATAARC_SOLR = "org.dataarc.datastore.solr";
     private static final String ORG_DATAARC_BEAN = "org.dataarc.bean";
-    
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    
     @Resource
     protected Environment env;
-    
 
     public DataArcConfiguration() {
-        System.setProperty("java.util.logging.manager","org.apache.logging.log4j.jul.LogManager");
+        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
     }
-    
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -69,10 +69,10 @@ public class DataArcConfiguration {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(org.postgis.DriverWrapper.class.getName());
-        String host = env.getProperty(PG_HOST,"localhost");
-        String database = env.getProperty(PG_DATABASE,"dataarc");
-        dataSource.setUrl(String.format("jdbc:postgresql_postGIS://%s:5432/%s", host, database));
-        dataSource.setUsername(env.getProperty(PG_USERNAME, "dataarc"));
+        String host = env.getProperty(PG_HOST, LOCALHOST);
+        String database = env.getProperty(PG_DATABASE, DATAARC);
+        dataSource.setUrl(String.format(JDBC_POSTGRESQL_POST_GIS_S_5432_S, host, database));
+        dataSource.setUsername(env.getProperty(PG_USERNAME, DATAARC));
         dataSource.setPassword(env.getProperty(PG_PASSWORD, ""));
 
         return dataSource;
@@ -83,8 +83,6 @@ public class DataArcConfiguration {
         properties.setProperty("hibernate.dialect", org.hibernate.spatial.dialect.postgis.PostgisDialect.class.getName());
         return properties;
     }
-    
-    
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {

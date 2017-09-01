@@ -3,11 +3,13 @@ package org.dataarc.web.security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
 
+import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.service.UserService;
 import org.dataarc.web.security.crowd.LocalCrowdAuthenticationProvider;
 import org.dataarc.web.security.openid.ClientResources;
@@ -15,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedAuthoritiesExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -26,7 +30,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -35,7 +39,6 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
@@ -71,6 +74,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     protected Environment env;
+
+    @Autowired
+    private AuthoritiesExtractor authoritiesExtractor;
 
 
     @Override
@@ -110,6 +116,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UserInfoTokenServices tokenServices = new UserInfoTokenServices(
                 client.getResource().getUserInfoUri(), client.getClient().getClientId());
         tokenServices.setRestTemplate(template);
+        tokenServices.setAuthoritiesExtractor(authoritiesExtractor);
         filter.setTokenServices(tokenServices);
         return filter;
     }
@@ -227,4 +234,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return template;
     }
 
+    @Bean
+    public AuthoritiesExtractor authoritiesExtractor() {
+        return new AuthoritiesExtractor() {
+
+            @Autowired
+            private UserService userService;
+            @Override
+            public List<GrantedAuthority> extractAuthorities(Map<String, Object> map) {
+                DataArcUser user = userService.findByExternalId(map.get("id").toString());
+                ArrayList<GrantedAuthority> auths = new ArrayList<>();
+                userService.enhanceGroupMembership(user, auths);
+                return auths;
+            }
+        };
+    }
 }
