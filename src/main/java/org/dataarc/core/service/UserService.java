@@ -78,7 +78,7 @@ public class UserService {
 
     @Transactional(readOnly = false)
     public DataArcUser reconcileUser(Authentication authentication) {
-        logger.debug("{}", authentication);
+        logger.trace("{}", authentication);
         String username = authentication.getName();
         String userId = null;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
