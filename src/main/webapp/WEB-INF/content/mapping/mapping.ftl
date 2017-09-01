@@ -18,14 +18,14 @@ ul.options-list {
   border: 1px solid #dbdbdb;
   border-radius: 0 0 3px 3px;
   position: absolute;
-  width: 100%;
   overflow: hidden;
+  list-style: none;
 }
 
 ul.options-list li {
-  width: 100%;
   flex-wrap: wrap;
   background: white;
+  
   margin: 0;
   border-bottom: 1px solid #eee;
   color: #363636;
@@ -101,7 +101,9 @@ ul.options-list li.highlighted {
             <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-10 col-sm-offset-1">
                     <ul class="list-group" v-for="(part, rowNum) in indicators[currentIndicator].query.conditions">
-                        <spart :rowindex="rowNum" :schema="schemaName" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"></spart>
+                        <spart :rowindex="rowNum" :schema="schemaName" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"
+                        @select="onValidChange"
+                        ></spart>
                     </ul>
                 </div>
                 <div class="col-sm-1">
@@ -150,7 +152,6 @@ ul.options-list li.highlighted {
             <br/>
             <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-12">
-                    <button class="btn btn-xs btn-default" v-on:click="runQuery()" v-bind:disabled='cannotSearch'>Search / Test Query</button>
                     <button class="btn btn-xs btn-success" v-on:click="saveIndicator()" v-bind:disabled='cannotSubmit'>Save Indicator</button>
                     <button class="btn btn-xs btn-danger" v-on:click="deleteIndicator()" >Delete Indicator</button>
                 </div>
@@ -195,10 +196,8 @@ ul.options-list li.highlighted {
                   <autocomplete-input @select="onOptionSelect" v-bind:type="getHtmlFieldType(part.fieldName)" v-bind:field="part.fieldName"  v-bind:schema="schema" >
 
                     <template slot="item" scope="option">
-                      <article class="media">
-                        <p>
+                      <article class="span2">
                           <strong>{{ option.value }}</strong>  ({{option.occurrence}})
-                        </p>
                       </article>
                     </template>
                   </autocomplete-input>
@@ -212,21 +211,19 @@ ul.options-list li.highlighted {
                 </span>
             </div>
         </template>
-        <template id="spart-template">
+<!--        <template id="spart-template">
             hi {{part}}
         </template>
-
+-->
 <template id="autocomplete-input-template" >
-  <div class="autocomplete-input">
-                    {{options}}
-    <p class="control">
-      <input  v-model="keyword" class="input is-large" placeholder="Search..." 
+    <span class="control autocomplete-input" style="display:inline-block">
+      <input  v-model="keyword" class="input is-large" placeholder="Search..."  
         @input="onInput($event.target.value)"  @focus="focus"
         @keyup.esc="isOpen = false" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" 
         @keydown.enter="select" >
       <i class="fa fa-angle-down"></i>
-          <ul v-show="isOpen" class="options-list">
-        <li v-for="(option, index) in options" :class="{
+          <ul v-show="isOpen" class="options-list span2">
+        <li v-for="(option, index) in options" :class=" {
           'highlighted': index === highlightedPosition
         }" @mouseenter="highlightedPosition = index" @mousedown="select">
         <slot name="item" :value="option.value" :occurrence="option.occurrence" :option="option">
@@ -234,8 +231,7 @@ ul.options-list li.highlighted {
     </ul>
       
       
-    </p>
-  </div>
+    </span>
 </template>
 
 

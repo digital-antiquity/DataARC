@@ -96,10 +96,10 @@ require([
           },
           select() {
               window.console.log("onSelect:", this.keyword);
-            var selectedOption = this.options[this.highlightedPosition]
-            this.$emit('select', selectedOption)
-            this.isOpen = false
-            this.keyword = selectedOption.value
+            var selectedOption = this.options[this.highlightedPosition];
+            this.$emit('select', selectedOption);
+            this.isOpen = false;
+            this.keyword = selectedOption.value;
           }
       }
     });
@@ -126,7 +126,8 @@ require([
               return r;
           },
           onOptionSelect(option) {
-              console.log('Selected option:', option)
+              console.log('Selected option:', option);
+              this.$emit('select', option);
             },
           getHtmlFieldType(name){
               if (name == undefined || name == '') {
@@ -155,7 +156,7 @@ require([
               this.parts.push({});
           },
           removePart: function(idx) {
-            this.parts.splice(idx,1);  
+            this.parts.splice(idx ,1);  
           },
           updateTest() {
               // FIXME: hack, replace with component and proper binding?
@@ -166,7 +167,7 @@ require([
   
 var Hack = new Vue({
   el: '#schema',
-
+  props: ["onValidChange"],
   data: {
     schemum: { name: ''},
     schema: [],
@@ -205,31 +206,7 @@ var Hack = new Vue({
           return false;
       },
       cannotSearch: function() {
-          return false;
-          if (this.currentIndicator != undefined) {
-              var ind = this.indicators[this.currentIndicator];
-              console.log(ind.query.conditions.length);
-              if (ind.query.conditions.length == 0) {
-                  return true;
-              }
-              var disabled = false;
-              ind.query.conditions.forEach(function(cond){
-                  console.log(cond);
-                  if (cond.fieldName == undefined || cond.fieldName == '') {
-                      console.log('invalid field name:' + cond);
-                      disabled = true;
-                      return;
-                  }
-                  if (cond.type == undefined || cond.type == '') {
-                      console.log('invalid field type:' + cond);
-                      disabled = true;
-                      return;
-                  }
-              });
-              if (disabled) {
-                  return true;
-              }
-          }
+          this.runQuery();
           return false;
       }
 
@@ -261,6 +238,9 @@ var Hack = new Vue({
           JQuery('[data-toggle="popover"]').popover({'trigger':'focus','placement':'left'});
       })},
   methods: {
+      onValidChange() {
+          this.runQuery();
+      },
       fetchSchema: function () {
           var events = [];
           console.log("fetch schema");
@@ -356,13 +336,14 @@ var Hack = new Vue({
           },
           runQuery() {
               var query = this.indicators[this.currentIndicator].query;
-              console.log(JSON.stringify(query));
+              window.console.log("RunQuery-->", query);
+//              window.console.log(JSON.stringify(query));
               this.$http.post(getContextPath() + '/api/query/datastore' , JSON.stringify(query), {emulateJSON:true,
                   headers: {
                       'Content-Type': 'application/json'
                   }})
               .then(function (request) {
-                  console.log(JSON.stringify(request.body));
+//                  console.log(JSON.stringify(request.body));
                   Vue.set(this,"results",request.body);
               })
               .catch(function (err) {
