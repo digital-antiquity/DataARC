@@ -241,7 +241,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             private UserService userService;
             @Override
             public List<GrantedAuthority> extractAuthorities(Map<String, Object> map) {
-                DataArcUser user = userService.findByExternalId(map.get("id").toString());
+                //for google:
+                
+                logger.debug("{}", map);
+                DataArcUser user = userService.findSaveUpdateUser(map);
+//                DataArcUser user = userService.findByExternalId(map.get("id").toString());
                 ArrayList<GrantedAuthority> auths = new ArrayList<>();
                 userService.enhanceGroupMembership(user, auths);
                 return auths;

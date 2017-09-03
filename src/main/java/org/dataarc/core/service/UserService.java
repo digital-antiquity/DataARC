@@ -3,6 +3,7 @@ package org.dataarc.core.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.dao.DataArcUserDao;
@@ -122,6 +123,26 @@ public class UserService {
             collection.add(new SimpleGrantedAuthority(UserService.EDITOR_ROLE));
         }
         
+    }
+
+    @Transactional(readOnly=false)
+    public DataArcUser findSaveUpdateUser(Map<String, Object> map) {
+            String id = (String) map.get("id");
+            DataArcUser user = findByExternalId(id);
+            if (user == null) {
+                user = new DataArcUser();
+                user.setDateCreated(new Date());
+                user.setExternalId(id);
+            }
+
+            user.setEmail((String) map.get("email"));
+            user.setUsername((String) map.get("name"));
+            user.setFirstName((String) map.get("given_name"));
+            user.setLastName((String) map.get("family_name"));
+            user.setLastLogin(new Date());
+            save(user);
+            
+            return user;
     }
 
 }
