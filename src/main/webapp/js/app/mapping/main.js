@@ -109,7 +109,7 @@ require([
   
  Vue.component('spart', {
       template: "#spart-template",
-      props: ['fields', "part","rowindex","parts","onOptionSelect","schema"],
+      props: ['fields', "part","rowindex","parts","schema"],
       data() {
           return {
           }
@@ -167,7 +167,7 @@ require([
   
 var Hack = new Vue({
   el: '#schema',
-  props: ["onValidChange"],
+
   data: {
     schemum: { name: ''},
     schema: [],

@@ -178,7 +178,7 @@ ul.options-list li.highlighted {
                         <td>{{result.properties.Start}}</td>
                         <td>{{result.properties.End}}</td>
                         <td><a v-show="result.properties['Link'] != undefined && result.properties['Link'] != ''" target="_blank" v-bind:href="result.properties['Link']"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a></td>
-                        <td><textarea>{{result.properties | json}}</textarea></td>
+                        <td><textarea>{{result.properties }}</textarea></td>
                     </tr>
                     </tbody>
                 </table>
