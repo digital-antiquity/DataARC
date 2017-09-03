@@ -2,21 +2,20 @@
  * Service for sending network requests.
  */
 
-const CUSTOM_HEADERS = {'X-Requested-With': 'XMLHttpRequest'};
 const COMMON_HEADERS = {'Accept': 'application/json, text/plain, */*'};
 const JSON_CONTENT_TYPE = {'Content-Type': 'application/json;charset=utf-8'};
 
 import cors from './interceptor/cors';
-import body from './interceptor/body';
+import form from './interceptor/form';
+import json from './interceptor/json';
 import jsonp from './interceptor/jsonp';
 import before from './interceptor/before';
 import method from './interceptor/method';
 import header from './interceptor/header';
-import timeout from './interceptor/timeout';
 import Client from './client/index';
 import Request from './request';
 import Promise from '../promise';
-import { assign, defaults, error } from '../util';
+import { assign, defaults, error, isString, isFunction } from '../util';
 
 export default function Http(options) {
 
@@ -24,15 +23,23 @@ export default function Http(options) {
 
     defaults(options || {}, self.$options, Http.options);
 
-    Http.interceptors.forEach((handler) => {
-        client.use(handler);
+    Http.interceptors.forEach(handler => {
+
+        if (isString(handler)) {
+            handler = Http.interceptor[handler];
+        }
+
+        if (isFunction(handler)) {
+            client.use(handler);
+        }
+
     });
 
-    return client(new Request(options)).then((response) => {
+    return client(new Request(options)).then(response => {
 
         return response.ok ? response : Promise.reject(response);
 
-    }, (response) => {
+    }, response => {
 
         if (response instanceof Error) {
             error(response);
@@ -49,13 +56,14 @@ Http.headers = {
     post: JSON_CONTENT_TYPE,
     patch: JSON_CONTENT_TYPE,
     delete: JSON_CONTENT_TYPE,
-    custom: CUSTOM_HEADERS,
-    common: COMMON_HEADERS
+    common: COMMON_HEADERS,
+    custom: {}
 };
 
-Http.interceptors = [before, timeout, method, body, jsonp, header, cors];
+Http.interceptor = {before, method, jsonp, json, form, header, cors};
+Http.interceptors = ['before', 'method', 'jsonp', 'json', 'form', 'header', 'cors'];
 
-['get', 'delete', 'head', 'jsonp'].forEach((method) => {
+['get', 'delete', 'head', 'jsonp'].forEach(method => {
 
     Http[method] = function (url, options) {
         return this(assign(options || {}, {url, method}));
@@ -63,7 +71,7 @@ Http.interceptors = [before, timeout, method, body, jsonp, header, cors];
 
 });
 
-['post', 'put', 'patch'].forEach((method) => {
+['post', 'put', 'patch'].forEach(method => {
 
     Http[method] = function (url, body, options) {
         return this(assign(options || {}, {url, method, body}));

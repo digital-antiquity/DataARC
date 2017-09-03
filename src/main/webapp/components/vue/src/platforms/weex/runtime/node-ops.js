@@ -1,4 +1,5 @@
-import renderer from './config'
+/* globals renderer */
+// renderer is injected by weex factory wrapper
 
 export const namespaceMap = {}
 
@@ -34,6 +35,10 @@ export function insertBefore (node, target, before) {
 }
 
 export function removeChild (node, child) {
+  if (child.nodeType === 3) {
+    node.setAttr('value', '')
+    return
+  }
   node.removeChild(child)
 }
 

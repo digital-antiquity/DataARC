@@ -1,12 +1,12 @@
 /**
- * XMLHttp client.
+ * XMLHttp client (Browser).
  */
 
 import Promise from '../../promise';
 import { each, trim } from '../../util';
 
 export default function (request) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
 
         var xhr = new XMLHttpRequest(), handler = (event) => {
 
@@ -17,7 +17,7 @@ export default function (request) {
                 }
             );
 
-            each(trim(xhr.getAllResponseHeaders()).split('\n'), (row) => {
+            each(trim(xhr.getAllResponseHeaders()).split('\n'), row => {
                 response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
             });
 
@@ -36,21 +36,30 @@ export default function (request) {
 
         xhr.open(request.method, request.getUrl(), true);
 
-        if ('responseType' in xhr) {
-            xhr.responseType = 'blob';
+        if (request.timeout) {
+            xhr.timeout = request.timeout;
         }
 
-        if (request.credentials === true) {
+        if (request.responseType && 'responseType' in xhr) {
+            xhr.responseType = request.responseType;
+        }
+
+        if (request.withCredentials || request.credentials) {
             xhr.withCredentials = true;
+        }
+
+        if (!request.crossOrigin) {
+            request.headers.set('X-Requested-With', 'XMLHttpRequest');
         }
 
         request.headers.forEach((value, name) => {
             xhr.setRequestHeader(name, value);
         });
 
-        xhr.timeout = 0;
         xhr.onload = handler;
+        xhr.onabort = handler;
         xhr.onerror = handler;
+        xhr.ontimeout = handler;
         xhr.send(request.getBody());
     });
 }

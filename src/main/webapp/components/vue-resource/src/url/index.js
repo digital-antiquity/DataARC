@@ -2,9 +2,6 @@
  * Service for URL templating.
  */
 
-const ie = document.documentMode;
-const el = document.createElement('a');
-
 import root from './root';
 import query from './query';
 import template from './template';
@@ -21,7 +18,15 @@ export default function Url(url, params) {
     options = merge({}, Url.options, self.$options, options);
 
     Url.transforms.forEach(handler => {
-        transform = factory(handler, transform, self.$vm);
+
+        if (isString(handler)) {
+            handler = Url.transform[handler];
+        }
+
+        if (isFunction(handler)) {
+            transform = factory(handler, transform, self.$vm);
+        }
+
     });
 
     return transform(options);
@@ -41,7 +46,8 @@ Url.options = {
  * Url transforms.
  */
 
-Url.transforms = [template, query, root];
+Url.transform = {template, query, root};
+Url.transforms = ['template', 'query', 'root'];
 
 /**
  * Encodes a Url parameter string.
@@ -79,7 +85,9 @@ Url.params = function (obj) {
 
 Url.parse = function (url) {
 
-    if (ie) {
+    var el = document.createElement('a');
+
+    if (document.documentMode) {
         el.href = url;
         url = el.href;
     }
@@ -99,7 +107,7 @@ Url.parse = function (url) {
 };
 
 function factory(handler, next, vm) {
-    return (options) => {
+    return options => {
         return handler.call(vm, options, next);
     };
 }

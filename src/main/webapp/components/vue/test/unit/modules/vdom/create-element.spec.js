@@ -132,6 +132,15 @@ describe('create-element', () => {
     expect(vnode.children[0].componentOptions).toBeUndefined()
   })
 
+  it('render svg foreignObject with correct namespace', () => {
+    const vm = new Vue({})
+    const h = vm.$createElement
+    const vnode = h('svg', [h('foreignObject', [h('p')])])
+    expect(vnode.ns).toBe('svg')
+    expect(vnode.children[0].ns).toBe('svg')
+    expect(vnode.children[0].children[0].ns).toBeUndefined()
+  })
+
   it('warn observed data objects', () => {
     new Vue({
       data: {
@@ -142,5 +151,51 @@ describe('create-element', () => {
       }
     }).$mount()
     expect('Avoid using observed data object as vnode data').toHaveBeenWarned()
+  })
+
+  it('warn non-primitive key', () => {
+    new Vue({
+      render (h) {
+        return h('div', { key: {}})
+      }
+    }).$mount()
+    expect('Avoid using non-primitive value as key').toHaveBeenWarned()
+  })
+
+  it('doesn\'t warn boolean key', () => {
+    new Vue({
+      render (h) {
+        return h('div', { key: true })
+      }
+    }).$mount()
+    expect('Avoid using non-primitive value as key').not.toHaveBeenWarned()
+  })
+
+  it('nested child elements should be updated correctly', done => {
+    const vm = new Vue({
+      data: { n: 1 },
+      render (h) {
+        const list = []
+        for (let i = 0; i < this.n; i++) {
+          list.push(h('span', i))
+        }
+        const input = h('input', {
+          attrs: {
+            value: 'a',
+            type: 'text'
+          }
+        })
+        return h('div', [[...list, input]])
+      }
+    }).$mount()
+    expect(vm.$el.innerHTML).toContain('<span>0</span><input')
+    const el = vm.$el.querySelector('input')
+    el.value = 'b'
+    vm.n++
+    waitForUpdate(() => {
+      expect(vm.$el.innerHTML).toContain('<span>0</span><span>1</span><input')
+      expect(vm.$el.querySelector('input')).toBe(el)
+      expect(vm.$el.querySelector('input').value).toBe('b')
+    }).then(done)
   })
 })

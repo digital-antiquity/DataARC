@@ -45,6 +45,7 @@ describe('Directive v-model text', () => {
     expect(vm.test).toBe(1)
     vm.$el.value = '2'
     triggerEvent(vm.$el, 'input')
+    expect(vm.test).toBe(2)
     // should let strings pass through
     vm.$el.value = 'f'
     triggerEvent(vm.$el, 'input')
@@ -204,30 +205,6 @@ describe('Directive v-model text', () => {
     })
   }
 
-  it('warn inline value attribute', () => {
-    const vm = new Vue({
-      data: {
-        test: 'foo'
-      },
-      template: '<input v-model="test" value="bar">'
-    }).$mount()
-    expect(vm.test).toBe('foo')
-    expect(vm.$el.value).toBe('foo')
-    expect('inline value attributes will be ignored').toHaveBeenWarned()
-  })
-
-  it('warn textarea inline content', function () {
-    const vm = new Vue({
-      data: {
-        test: 'foo'
-      },
-      template: '<textarea v-model="test">bar</textarea>'
-    }).$mount()
-    expect(vm.test).toBe('foo')
-    expect(vm.$el.value).toBe('foo')
-    expect('inline content inside <textarea> will be ignored').toHaveBeenWarned()
-  })
-
   it('warn invalid tag', () => {
     new Vue({
       data: {
@@ -235,7 +212,7 @@ describe('Directive v-model text', () => {
       },
       template: '<div v-model="test"></div>'
     }).$mount()
-    expect('v-model is not supported on element type: <div>').toHaveBeenWarned()
+    expect('<div v-model="test">: v-model is not supported on this element type').toHaveBeenWarned()
   })
 
   // #3468
@@ -272,4 +249,49 @@ describe('Directive v-model text', () => {
     }).$mount()
     expect('You are binding v-model directly to a v-for iteration alias').toHaveBeenWarned()
   })
+
+  if (!isAndroid) {
+    it('does not trigger extra input events with single compositionend', () => {
+      const spy = jasmine.createSpy()
+      const vm = new Vue({
+        data: {
+          a: 'a'
+        },
+        template: '<input v-model="a" @input="onInput">',
+        methods: {
+          onInput (e) {
+            spy(e.target.value)
+          }
+        }
+      }).$mount()
+      expect(spy.calls.count()).toBe(0)
+      vm.$el.value = 'b'
+      triggerEvent(vm.$el, 'input')
+      expect(spy.calls.count()).toBe(1)
+      triggerEvent(vm.$el, 'compositionend')
+      expect(spy.calls.count()).toBe(1)
+    })
+
+    it('triggers extra input on compositionstart + end', () => {
+      const spy = jasmine.createSpy()
+      const vm = new Vue({
+        data: {
+          a: 'a'
+        },
+        template: '<input v-model="a" @input="onInput">',
+        methods: {
+          onInput (e) {
+            spy(e.target.value)
+          }
+        }
+      }).$mount()
+      expect(spy.calls.count()).toBe(0)
+      vm.$el.value = 'b'
+      triggerEvent(vm.$el, 'input')
+      expect(spy.calls.count()).toBe(1)
+      triggerEvent(vm.$el, 'compositionstart')
+      triggerEvent(vm.$el, 'compositionend')
+      expect(spy.calls.count()).toBe(2)
+    })
+  }
 })

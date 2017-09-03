@@ -1,6 +1,6 @@
 /* @flow */
 
-import { makeMap } from 'shared/util'
+import { makeMap, cached } from 'shared/util'
 
 const isAttr = makeMap(
   'accept,accept-charset,accesskey,action,align,alt,async,autocomplete,' +
@@ -8,7 +8,7 @@ const isAttr = makeMap(
   'checked,cite,class,code,codebase,color,cols,colspan,content,http-equiv,' +
   'name,contenteditable,contextmenu,controls,coords,data,datetime,default,' +
   'defer,dir,dirname,disabled,download,draggable,dropzone,enctype,method,for,' +
-  'form,formaction,headers,<th>,height,hidden,high,href,hreflang,http-equiv,' +
+  'form,formaction,headers,height,hidden,high,href,hreflang,http-equiv,' +
   'icon,id,ismap,itemprop,keytype,kind,label,lang,language,list,loop,low,' +
   'manifest,max,maxlength,media,method,GET,POST,min,multiple,email,file,' +
   'muted,name,novalidate,open,optimum,pattern,ping,placeholder,poster,' +
@@ -33,4 +33,21 @@ export const propsToAttrMap = {
   className: 'class',
   htmlFor: 'for',
   httpEquiv: 'http-equiv'
+}
+
+const ESC = {
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  '&': '&amp;'
+}
+
+export function escape (s: string) {
+  return s.replace(/[<>"&]/g, escapeChar)
+}
+
+export const cachedEscape = cached(escape)
+
+function escapeChar (a) {
+  return ESC[a] || a
 }

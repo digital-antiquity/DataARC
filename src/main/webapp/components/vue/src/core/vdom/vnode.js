@@ -11,7 +11,7 @@ export default class VNode {
   functionalContext: Component | void; // only for functional component root nodes
   key: string | number | void;
   componentOptions: VNodeComponentOptions | void;
-  child: Component | void; // component instance
+  componentInstance: Component | void; // component instance
   parent: VNode | void; // component placeholder node
   raw: boolean; // contains raw HTML? (server only)
   isStatic: boolean; // hoisted static node
@@ -19,6 +19,10 @@ export default class VNode {
   isComment: boolean; // empty comment placeholder?
   isCloned: boolean; // is a cloned node?
   isOnce: boolean; // is a v-once node?
+  asyncFactory: Function | void; // async component factory function
+  asyncMeta: Object | void;
+  isAsyncPlaceholder: boolean;
+  ssrContext: Object | void;
 
   constructor (
     tag?: string,
@@ -27,7 +31,8 @@ export default class VNode {
     text?: string,
     elm?: Node,
     context?: Component,
-    componentOptions?: VNodeComponentOptions
+    componentOptions?: VNodeComponentOptions,
+    asyncFactory?: Function
   ) {
     this.tag = tag
     this.data = data
@@ -39,7 +44,7 @@ export default class VNode {
     this.functionalContext = undefined
     this.key = data && data.key
     this.componentOptions = componentOptions
-    this.child = undefined
+    this.componentInstance = undefined
     this.parent = undefined
     this.raw = false
     this.isStatic = false
@@ -47,12 +52,21 @@ export default class VNode {
     this.isComment = false
     this.isCloned = false
     this.isOnce = false
+    this.asyncFactory = asyncFactory
+    this.asyncMeta = undefined
+    this.isAsyncPlaceholder = false
+  }
+
+  // DEPRECATED: alias for componentInstance for backwards compat.
+  /* istanbul ignore next */
+  get child (): Component | void {
+    return this.componentInstance
   }
 }
 
-export const createEmptyVNode = () => {
+export const createEmptyVNode = (text: string = '') => {
   const node = new VNode()
-  node.text = ''
+  node.text = text
   node.isComment = true
   return node
 }
@@ -73,18 +87,21 @@ export function cloneVNode (vnode: VNode): VNode {
     vnode.text,
     vnode.elm,
     vnode.context,
-    vnode.componentOptions
+    vnode.componentOptions,
+    vnode.asyncFactory
   )
   cloned.ns = vnode.ns
   cloned.isStatic = vnode.isStatic
   cloned.key = vnode.key
+  cloned.isComment = vnode.isComment
   cloned.isCloned = true
   return cloned
 }
 
 export function cloneVNodes (vnodes: Array<VNode>): Array<VNode> {
-  const res = new Array(vnodes.length)
-  for (let i = 0; i < vnodes.length; i++) {
+  const len = vnodes.length
+  const res = new Array(len)
+  for (let i = 0; i < len; i++) {
     res[i] = cloneVNode(vnodes[i])
   }
   return res

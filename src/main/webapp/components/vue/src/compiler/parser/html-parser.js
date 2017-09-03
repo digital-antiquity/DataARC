@@ -10,7 +10,7 @@
  */
 
 import { makeMap, no } from 'shared/util'
-import { isNonPhrasingTag, canBeLeftOpenTag } from 'web/compiler/util'
+import { isNonPhrasingTag } from 'web/compiler/util'
 
 // Regular Expressions for parsing tags and attributes
 const singleAttrIdentifier = /([^\s"'<>/=]+)/
@@ -46,52 +46,39 @@ let IS_REGEX_CAPTURING_BROKEN = false
 })
 
 // Special Elements (can contain anything)
-const isScriptOrStyle = makeMap('script,style', true)
-const hasLang = attr => attr.name === 'lang' && attr.value !== 'html'
-const isSpecialTag = (tag, isSFC, stack) => {
-  if (isScriptOrStyle(tag)) {
-    return true
-  }
-  if (isSFC && stack.length === 1) {
-    // top-level template that has no pre-processor
-    if (tag === 'template' && !stack[0].attrs.some(hasLang)) {
-      return false
-    } else {
-      return true
-    }
-  }
-  return false
-}
-
+export const isPlainTextElement = makeMap('script,style,textarea', true)
 const reCache = {}
 
-const ltRE = /&lt;/g
-const gtRE = /&gt;/g
-const nlRE = /&#10;/g
-const ampRE = /&amp;/g
-const quoteRE = /&quot;/g
+const decodingMap = {
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&amp;': '&',
+  '&#10;': '\n'
+}
+const encodedAttr = /&(?:lt|gt|quot|amp);/g
+const encodedAttrWithNewLines = /&(?:lt|gt|quot|amp|#10);/g
+
+// #5992
+const isIgnoreNewlineTag = makeMap('pre,textarea', true)
+const shouldIgnoreFirstNewline = (tag, html) => tag && isIgnoreNewlineTag(tag) && html[0] === '\n'
 
 function decodeAttr (value, shouldDecodeNewlines) {
-  if (shouldDecodeNewlines) {
-    value = value.replace(nlRE, '\n')
-  }
-  return value
-    .replace(ltRE, '<')
-    .replace(gtRE, '>')
-    .replace(ampRE, '&')
-    .replace(quoteRE, '"')
+  const re = shouldDecodeNewlines ? encodedAttrWithNewLines : encodedAttr
+  return value.replace(re, match => decodingMap[match])
 }
 
 export function parseHTML (html, options) {
   const stack = []
   const expectHTML = options.expectHTML
   const isUnaryTag = options.isUnaryTag || no
+  const canBeLeftOpenTag = options.canBeLeftOpenTag || no
   let index = 0
   let last, lastTag
   while (html) {
     last = html
-    // Make sure we're not in a script or style element
-    if (!lastTag || !isSpecialTag(lastTag, options.sfc, stack)) {
+    // Make sure we're not in a plaintext content element like script/style
+    if (!lastTag || !isPlainTextElement(lastTag)) {
       let textEnd = html.indexOf('<')
       if (textEnd === 0) {
         // Comment:
@@ -99,6 +86,9 @@ export function parseHTML (html, options) {
           const commentEnd = html.indexOf('-->')
 
           if (commentEnd >= 0) {
+            if (options.shouldKeepComment) {
+              options.comment(html.substring(4, commentEnd))
+            }
             advance(commentEnd + 3)
             continue
           }
@@ -126,7 +116,7 @@ export function parseHTML (html, options) {
         if (endTagMatch) {
           const curIndex = index
           advance(endTagMatch[0].length)
-          parseEndTag(endTagMatch[0], endTagMatch[1], curIndex, index)
+          parseEndTag(endTagMatch[1], curIndex, index)
           continue
         }
 
@@ -134,12 +124,15 @@ export function parseHTML (html, options) {
         const startTagMatch = parseStartTag()
         if (startTagMatch) {
           handleStartTag(startTagMatch)
+          if (shouldIgnoreFirstNewline(lastTag, html)) {
+            advance(1)
+          }
           continue
         }
       }
 
       let text, rest, next
-      if (textEnd > 0) {
+      if (textEnd >= 0) {
         rest = html.slice(textEnd)
         while (
           !endTag.test(rest) &&
@@ -166,15 +159,18 @@ export function parseHTML (html, options) {
         options.chars(text)
       }
     } else {
-      var stackedTag = lastTag.toLowerCase()
-      var reStackedTag = reCache[stackedTag] || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'))
-      var endTagLength = 0
-      var rest = html.replace(reStackedTag, function (all, text, endTag) {
+      let endTagLength = 0
+      const stackedTag = lastTag.toLowerCase()
+      const reStackedTag = reCache[stackedTag] || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'))
+      const rest = html.replace(reStackedTag, function (all, text, endTag) {
         endTagLength = endTag.length
-        if (stackedTag !== 'script' && stackedTag !== 'style' && stackedTag !== 'noscript') {
+        if (!isPlainTextElement(stackedTag) && stackedTag !== 'noscript') {
           text = text
             .replace(/<!--([\s\S]*?)-->/g, '$1')
             .replace(/<!\[CDATA\[([\s\S]*?)]]>/g, '$1')
+        }
+        if (shouldIgnoreFirstNewline(stackedTag, text)) {
+          text = text.slice(1)
         }
         if (options.chars) {
           options.chars(text)
@@ -183,11 +179,14 @@ export function parseHTML (html, options) {
       })
       index += html.length - rest.length
       html = rest
-      parseEndTag('</' + stackedTag + '>', stackedTag, index - endTagLength, index)
+      parseEndTag(stackedTag, index - endTagLength, index)
     }
 
-    if (html === last && options.chars) {
-      options.chars(html)
+    if (html === last) {
+      options.chars && options.chars(html)
+      if (process.env.NODE_ENV !== 'production' && !stack.length && options.warn) {
+        options.warn(`Mal-formatted tag at end of template: "${html}"`)
+      }
       break
     }
   }
@@ -225,18 +224,18 @@ export function parseHTML (html, options) {
 
   function handleStartTag (match) {
     const tagName = match.tagName
-    let unarySlash = match.unarySlash
+    const unarySlash = match.unarySlash
 
     if (expectHTML) {
       if (lastTag === 'p' && isNonPhrasingTag(tagName)) {
-        parseEndTag('', lastTag)
+        parseEndTag(lastTag)
       }
       if (canBeLeftOpenTag(tagName) && lastTag === tagName) {
-        parseEndTag('', tagName)
+        parseEndTag(tagName)
       }
     }
 
-    const unary = isUnaryTag(tagName) || tagName === 'html' && lastTag === 'head' || !!unarySlash
+    const unary = isUnaryTag(tagName) || !!unarySlash
 
     const l = match.attrs.length
     const attrs = new Array(l)
@@ -259,9 +258,8 @@ export function parseHTML (html, options) {
     }
 
     if (!unary) {
-      stack.push({ tag: tagName, attrs: attrs })
+      stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs })
       lastTag = tagName
-      unarySlash = ''
     }
 
     if (options.start) {
@@ -269,16 +267,19 @@ export function parseHTML (html, options) {
     }
   }
 
-  function parseEndTag (tag, tagName, start, end) {
-    let pos
+  function parseEndTag (tagName, start, end) {
+    let pos, lowerCasedTagName
     if (start == null) start = index
     if (end == null) end = index
 
+    if (tagName) {
+      lowerCasedTagName = tagName.toLowerCase()
+    }
+
     // Find the closest opened tag of the same type
     if (tagName) {
-      const needle = tagName.toLowerCase()
       for (pos = stack.length - 1; pos >= 0; pos--) {
-        if (stack[pos].tag.toLowerCase() === needle) {
+        if (stack[pos].lowerCasedTag === lowerCasedTagName) {
           break
         }
       }
@@ -290,6 +291,14 @@ export function parseHTML (html, options) {
     if (pos >= 0) {
       // Close all the open elements, up the stack
       for (let i = stack.length - 1; i >= pos; i--) {
+        if (process.env.NODE_ENV !== 'production' &&
+          (i > pos || !tagName) &&
+          options.warn
+        ) {
+          options.warn(
+            `tag <${stack[i].tag}> has no matching end tag.`
+          )
+        }
         if (options.end) {
           options.end(stack[i].tag, start, end)
         }
@@ -298,11 +307,11 @@ export function parseHTML (html, options) {
       // Remove the open elements from the stack
       stack.length = pos
       lastTag = pos && stack[pos - 1].tag
-    } else if (tagName.toLowerCase() === 'br') {
+    } else if (lowerCasedTagName === 'br') {
       if (options.start) {
         options.start(tagName, [], true, start, end)
       }
-    } else if (tagName.toLowerCase() === 'p') {
+    } else if (lowerCasedTagName === 'p') {
       if (options.start) {
         options.start(tagName, [], false, start, end)
       }

@@ -1,9 +1,9 @@
 /* @flow */
 
-import { extend, toNumber } from 'shared/util'
+import { isDef, isUndef, extend, toNumber } from 'shared/util'
 
 function updateDOMProps (oldVnode: VNodeWithData, vnode: VNodeWithData) {
-  if (!oldVnode.data.domProps && !vnode.data.domProps) {
+  if (isUndef(oldVnode.data.domProps) && isUndef(vnode.data.domProps)) {
     return
   }
   let key, cur
@@ -11,12 +11,12 @@ function updateDOMProps (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   const oldProps = oldVnode.data.domProps || {}
   let props = vnode.data.domProps || {}
   // clone observed objects, as the user probably wants to mutate it
-  if (props.__ob__) {
+  if (isDef(props.__ob__)) {
     props = vnode.data.domProps = extend({}, props)
   }
 
   for (key in oldProps) {
-    if (props[key] == null) {
+    if (isUndef(props[key])) {
       elm[key] = ''
     }
   }
@@ -29,16 +29,14 @@ function updateDOMProps (oldVnode: VNodeWithData, vnode: VNodeWithData) {
       if (vnode.children) vnode.children.length = 0
       if (cur === oldProps[key]) continue
     }
+
     if (key === 'value') {
       // store value as _value as well since
       // non-string values will be stringified
       elm._value = cur
       // avoid resetting cursor position when value is the same
-      const strCur = cur == null ? '' : String(cur)
-      if (!elm.composing && (
-        (document.activeElement !== elm && elm.value !== strCur) ||
-        isValueChanged(vnode, strCur)
-      )) {
+      const strCur = isUndef(cur) ? '' : String(cur)
+      if (shouldUpdateValue(elm, vnode, strCur)) {
         elm.value = strCur
       }
     } else {
@@ -47,13 +45,38 @@ function updateDOMProps (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   }
 }
 
-function isValueChanged (vnode: VNodeWithData, newVal: string): boolean {
-  const value = vnode.elm.value
-  const modifiers = vnode.elm._vModifiers // injected by v-model runtime
-  if ((modifiers && modifiers.number) || vnode.elm.type === 'number') {
+// check platforms/web/util/attrs.js acceptValue
+type acceptValueElm = HTMLInputElement | HTMLSelectElement | HTMLOptionElement;
+
+function shouldUpdateValue (
+  elm: acceptValueElm,
+  vnode: VNodeWithData,
+  checkVal: string
+): boolean {
+  return (!elm.composing && (
+    vnode.tag === 'option' ||
+    isDirty(elm, checkVal) ||
+    isInputChanged(elm, checkVal)
+  ))
+}
+
+function isDirty (elm: acceptValueElm, checkVal: string): boolean {
+  // return true when textbox (.number and .trim) loses focus and its value is
+  // not equal to the updated value
+  let notInFocus = true
+  // #6157
+  // work around IE bug when accessing document.activeElement in an iframe
+  try { notInFocus = document.activeElement !== elm } catch (e) {}
+  return notInFocus && elm.value !== checkVal
+}
+
+function isInputChanged (elm: any, newVal: string): boolean {
+  const value = elm.value
+  const modifiers = elm._vModifiers // injected by v-model runtime
+  if (isDef(modifiers) && modifiers.number) {
     return toNumber(value) !== toNumber(newVal)
   }
-  if (modifiers && modifiers.trim) {
+  if (isDef(modifiers) && modifiers.trim) {
     return value.trim() !== newVal.trim()
   }
   return value !== newVal

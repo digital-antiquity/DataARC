@@ -1,15 +1,14 @@
 {
   "name": "vue",
   "homepage": "https://github.com/vuejs/vue",
-  "version": "2.1.6",
-  "_release": "2.1.6",
+  "version": "2.4.2",
+  "_release": "2.4.2",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.6",
-    "commit": "3df4020728c96ce6683ba203d74d7988cda25326"
+    "tag": "v2.4.2",
+    "commit": "bf7954f7820c78d72690ce78959358dd20d7d807"
   },
   "_source": "https://github.com/vuejs/vue.git",
-  "_target": "^2.1.6",
-  "_originalSource": "vue",
-  "_direct": true
+  "_target": "^2.4.2",
+  "_originalSource": "vue"
 }

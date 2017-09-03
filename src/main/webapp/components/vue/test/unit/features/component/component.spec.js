@@ -87,23 +87,52 @@ describe('Component', () => {
       },
       components: {
         'view-a': {
-          template: '<div>foo</div>',
+          template: '<div>foo {{view}}</div>',
           data () {
             return { view: 'a' }
           }
         },
         'view-b': {
-          template: '<div>bar</div>',
+          template: '<div>bar {{view}}</div>',
           data () {
             return { view: 'b' }
           }
         }
       }
     }).$mount()
-    expect(vm.$el.outerHTML).toBe('<div view="view-a">foo</div>')
+    expect(vm.$el.outerHTML).toBe('<div view="view-a">foo a</div>')
     vm.view = 'view-b'
     waitForUpdate(() => {
-      expect(vm.$el.outerHTML).toBe('<div view="view-b">bar</div>')
+      expect(vm.$el.outerHTML).toBe('<div view="view-b">bar b</div>')
+      vm.view = ''
+    })
+    .then(() => {
+      expect(vm.$el.nodeType).toBe(8)
+      expect(vm.$el.data).toBe('')
+    }).then(done)
+  })
+
+  it('dynamic with props', done => {
+    const vm = new Vue({
+      template: '<component :is="view" :view="view"></component>',
+      data: {
+        view: 'view-a'
+      },
+      components: {
+        'view-a': {
+          template: '<div>foo {{view}}</div>',
+          props: ['view']
+        },
+        'view-b': {
+          template: '<div>bar {{view}}</div>',
+          props: ['view']
+        }
+      }
+    }).$mount()
+    expect(vm.$el.outerHTML).toBe('<div>foo view-a</div>')
+    vm.view = 'view-b'
+    waitForUpdate(() => {
+      expect(vm.$el.outerHTML).toBe('<div>bar view-b</div>')
       vm.view = ''
     })
     .then(() => {
@@ -137,7 +166,7 @@ describe('Component', () => {
     const vm = new Vue({
       template:
         '<div>' +
-          '<component v-for="c in comps" :is="c.type"></component>' +
+          '<component v-for="c in comps" :key="c.type" :is="c.type"></component>' +
         '</div>',
       data: {
         comps: [{ type: 'one' }, { type: 'two' }]
@@ -155,6 +184,25 @@ describe('Component', () => {
     vm.comps[1].type = 'one'
     waitForUpdate(() => {
       expect(vm.$el.innerHTML).toBe('<span>one</span><span>one</span>')
+    }).then(done)
+  })
+
+  it('dynamic elements with domProps', done => {
+    const vm = new Vue({
+      template: '<component :is="view" :value.prop="val"></component>',
+      data: {
+        view: 'input',
+        val: 'hello'
+      }
+    }).$mount()
+    expect(vm.$el.tagName).toBe('INPUT')
+    expect(vm.$el.value).toBe('hello')
+    vm.view = 'textarea'
+    vm.val += ' world'
+    waitForUpdate(() => {
+      expect(vm.$el.tagName).toBe('TEXTAREA')
+      expect(vm.$el.value).toBe('hello world')
+      vm.view = ''
     }).then(done)
   })
 
@@ -229,6 +277,41 @@ describe('Component', () => {
     expect(vm.$el.outerHTML).toBe('<ul><li>1</li><li>2</li></ul>')
   })
 
+  it('should warn when using camelCased props in in-DOM template', () => {
+    new Vue({
+      data: {
+        list: [{ a: 1 }, { a: 2 }]
+      },
+      template: '<test :somecollection="list"></test>', // <-- simulate lowercased template
+      components: {
+        test: {
+          template: '<ul><li v-for="item in someCollection">{{item.a}}</li></ul>',
+          props: ['someCollection']
+        }
+      }
+    }).$mount()
+    expect(
+      'You should probably use "some-collection" instead of "someCollection".'
+    ).toHaveBeenTipped()
+  })
+
+  it('should warn when using camelCased events in in-DOM template', () => {
+    new Vue({
+      template: '<test @foobar="a++"></test>', // <-- simulate lowercased template
+      components: {
+        test: {
+          template: '<div></div>',
+          created () {
+            this.$emit('fooBar')
+          }
+        }
+      }
+    }).$mount()
+    expect(
+      'You should probably use "foo-bar" instead of "fooBar".'
+    ).toHaveBeenTipped()
+  })
+
   it('not found component should not throw', () => {
     expect(function () {
       new Vue({
@@ -300,6 +383,48 @@ describe('Component', () => {
     }).then(() => {
       expect(vm.$el.textContent).toBe('234') // should be able to recover
       Vue.config.errorHandler = null
+    }).then(done)
+  })
+
+  it('relocates node without error', done => {
+    const el = document.createElement('div')
+    document.body.appendChild(el)
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+
+    const Test = {
+      render (h) {
+        return h('div', { class: 'test' }, this.$slots.default)
+      },
+      mounted () {
+        target.appendChild(this.$el)
+      },
+      beforeDestroy () {
+        const parent = this.$el.parentNode
+        if (parent) {
+          parent.removeChild(this.$el)
+        }
+      }
+    }
+    const vm = new Vue({
+      data () {
+        return {
+          view: true
+        }
+      },
+      template: `<div><test v-if="view">Test</test></div>`,
+      components: {
+        test: Test
+      }
+    }).$mount(el)
+
+    expect(el.outerHTML).toBe('<div></div>')
+    expect(target.outerHTML).toBe('<div><div class="test">Test</div></div>')
+    vm.view = false
+    waitForUpdate(() => {
+      expect(el.outerHTML).toBe('<div></div>')
+      expect(target.outerHTML).toBe('<div></div>')
+      vm.$destroy()
     }).then(done)
   })
 })

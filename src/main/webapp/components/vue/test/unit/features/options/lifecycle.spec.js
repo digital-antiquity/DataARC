@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-describe('Options lifecyce hooks', () => {
+describe('Options lifecycle hooks', () => {
   let spy
   beforeEach(() => {
     spy = jasmine.createSpy('hook')
@@ -93,7 +93,7 @@ describe('Options lifecyce hooks', () => {
     it('should mount child parent in correct order', () => {
       const calls = []
       new Vue({
-        template: '<div><test></test><div>',
+        template: '<div><test></test></div>',
         mounted () {
           calls.push('parent')
         },
@@ -156,6 +156,34 @@ describe('Options lifecyce hooks', () => {
         expect(spy).toHaveBeenCalled()
       }).then(done)
     })
+
+    it('should be called after children are updated', done => {
+      const calls = []
+      const vm = new Vue({
+        template: '<div><test ref="child">{{ msg }}</test></div>',
+        data: { msg: 'foo' },
+        components: {
+          test: {
+            template: `<div><slot></slot></div>`,
+            updated () {
+              expect(this.$el.textContent).toBe('bar')
+              calls.push('child')
+            }
+          }
+        },
+        updated () {
+          expect(this.$el.textContent).toBe('bar')
+          calls.push('parent')
+        }
+      }).$mount()
+
+      expect(calls).toEqual([])
+      vm.msg = 'bar'
+      expect(calls).toEqual([])
+      waitForUpdate(() => {
+        expect(calls).toEqual(['child', 'parent'])
+      }).then(done)
+    })
   })
 
   describe('beforeDestroy', () => {
@@ -192,5 +220,30 @@ describe('Options lifecyce hooks', () => {
       expect(spy).toHaveBeenCalled()
       expect(spy.calls.count()).toBe(1)
     })
+  })
+
+  it('should emit hook events', () => {
+    const created = jasmine.createSpy()
+    const mounted = jasmine.createSpy()
+    const destroyed = jasmine.createSpy()
+    const vm = new Vue({
+      render () {},
+      beforeCreate () {
+        this.$on('hook:created', created)
+        this.$on('hook:mounted', mounted)
+        this.$on('hook:destroyed', destroyed)
+      }
+    })
+
+    expect(created).toHaveBeenCalled()
+    expect(mounted).not.toHaveBeenCalled()
+    expect(destroyed).not.toHaveBeenCalled()
+
+    vm.$mount()
+    expect(mounted).toHaveBeenCalled()
+    expect(destroyed).not.toHaveBeenCalled()
+
+    vm.$destroy()
+    expect(destroyed).toHaveBeenCalled()
   })
 })

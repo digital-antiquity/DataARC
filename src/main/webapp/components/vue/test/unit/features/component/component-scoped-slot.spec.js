@@ -31,6 +31,40 @@ describe('Component scoped slot', () => {
     }).then(done)
   })
 
+  it('with v-bind', done => {
+    const vm = new Vue({
+      template: `
+        <test ref="test">
+          <template scope="props">
+            <span>{{ props.msg }} {{ props.msg2 }} {{ props.msg3 }}</span>
+          </template>
+        </test>
+      `,
+      components: {
+        test: {
+          data () {
+            return {
+              msg: 'hello',
+              obj: { msg2: 'world', msg3: '.' }
+            }
+          },
+          template: `
+            <div>
+              <slot :msg="msg" v-bind="obj" msg3="!"></slot>
+            </div>
+          `
+        }
+      }
+    }).$mount()
+
+    expect(vm.$el.innerHTML).toBe('<span>hello world !</span>')
+    vm.$refs.test.msg = 'bye'
+    vm.$refs.test.obj.msg2 = 'bye'
+    waitForUpdate(() => {
+      expect(vm.$el.innerHTML).toBe('<span>bye bye !</span>')
+    }).then(done)
+  })
+
   it('template slot', done => {
     const vm = new Vue({
       template: `
@@ -291,6 +325,41 @@ describe('Component scoped slot', () => {
     expect(vm.$el.innerHTML).toBe('<span>hello</span>')
   })
 
+  // #4779
+  it('should support dynamic slot target', done => {
+    const Child = {
+      template: `
+        <div>
+          <slot name="a" msg="a" />
+          <slot name="b" msg="b" />
+        </div>
+      `
+    }
+
+    const vm = new Vue({
+      data: {
+        a: 'a',
+        b: 'b'
+      },
+      template: `
+        <child>
+          <template :slot="a" scope="props">A {{ props.msg }}</template>
+          <template :slot="b" scope="props">B {{ props.msg }}</template>
+        </child>
+      `,
+      components: { Child }
+    }).$mount()
+
+    expect(vm.$el.textContent.trim()).toBe('A a B b')
+
+    // switch slots
+    vm.a = 'b'
+    vm.b = 'a'
+    waitForUpdate(() => {
+      expect(vm.$el.textContent.trim()).toBe('B a A b')
+    }).then(done)
+  })
+
   it('render function usage (JSX)', () => {
     const vm = new Vue({
       render (h) {
@@ -312,5 +381,40 @@ describe('Component scoped slot', () => {
       }
     }).$mount()
     expect(vm.$el.innerHTML).toBe('<span>hello</span>')
+  })
+
+  // #5615
+  it('scoped slot with v-for', done => {
+    const vm = new Vue({
+      data: { names: ['foo', 'bar'] },
+      template: `
+        <test ref="test">
+          <template v-for="n in names" :slot="n" scope="props">
+            <span>{{ props.msg }}</span>
+          </template>
+          <template slot="abc" scope="props">
+            <span>{{ props.msg }}</span>
+          </template>
+        </test>
+      `,
+      components: {
+        test: {
+          data: () => ({ msg: 'hello' }),
+          template: `
+            <div>
+              <slot name="foo" :msg="msg + ' foo'"></slot>
+              <slot name="bar" :msg="msg + ' bar'"></slot>
+              <slot name="abc" :msg="msg + ' abc'"></slot>
+            </div>
+          `
+        }
+      }
+    }).$mount()
+
+    expect(vm.$el.innerHTML).toBe('<span>hello foo</span> <span>hello bar</span> <span>hello abc</span>')
+    vm.$refs.test.msg = 'world'
+    waitForUpdate(() => {
+      expect(vm.$el.innerHTML).toBe('<span>world foo</span> <span>world bar</span> <span>world abc</span>')
+    }).then(done)
   })
 })

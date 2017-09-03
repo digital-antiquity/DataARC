@@ -1,9 +1,9 @@
 require.config({
   baseUrl: "",
   paths: {
-    'vue': '/components/vue/dist/vue.min',
+    'vue': '/components/vue/dist/vue',
     'jquery' : '/components/jquery/dist/jquery',
-    'vue-resource': '/components/vue-resource/dist/vue-resource.min',
+    'vue-resource': '/components/vue-resource/dist/vue-resource',
     'bootstrap': '/components/bootstrap/dist/js/bootstrap.min'
   },
   shim: {
