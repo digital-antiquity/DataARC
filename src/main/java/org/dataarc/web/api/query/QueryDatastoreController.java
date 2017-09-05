@@ -43,6 +43,7 @@ public class QueryDatastoreController extends AbstractRestController {
         try {
             return queryService.getMatchingRows(fq);
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("{}", e, e);
             throw e;
         }

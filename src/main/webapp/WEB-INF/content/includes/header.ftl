@@ -16,10 +16,11 @@
 <script src="${contextPath}/components/vue-resource/dist/vue-resource.min.js"></script>
 
 -->
+
 <link href="${contextPath}/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="${contextPath}/css/mapping.css" rel="stylesheet" media="screen">
 <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
-<script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script> -->
 <script>
     function getContextPath() {
         return "${contextPath}";

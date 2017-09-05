@@ -26,10 +26,20 @@ require([
       console.log(vm);
    }
 
+    
+Vue.directive('popover', function(el, binding){
+    $(el).popover({
+             content: $(binding.value).html(),
+             html:true,
+             placement: binding.arg,
+             trigger: 'hover'             
+         })
+})
+    
 /** https://jsfiddle.net/krn9v4vr/59/ **/
   Vue.component('autocomplete-input', {
       template: '#autocomplete-input-template',
-      props: ["field","schema"],
+      props: ["field","type","schema","rowindex"],
       data: function() {
         return {
           isOpen: false,
@@ -38,44 +48,39 @@ require([
           options:[]
         }
       },
-      watch: {
-          field: function(fld) {
-              window.console.log(fld, this.schema, this.field);
-              this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': this.schema,'field':this.field}})
-              .then(function (request) {
-                Vue.set(this, 'options', request.body);
-                window.console.log(request.body);
-              })
-              .catch(function (err) {
-                console.err(err);
-              });
-
-          }
-          
-      },
       computed: {
         fOptions: function() {
             window.console.log("foptions:" ,this.field);
         }
       },
       methods: {
+        updateOptions() {
+            window.console.log("updateOptions::", this.schema, this.field);
+            if (this.field != undefined) {
+                this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': this.schema,'field':this.field}})
+                .then(function (request) {
+                  Vue.set(this, 'options', request.body);
+                })
+                .catch(function (err) {
+                  console.err(err);
+                });
+            }
+        },
         onInput(value) {
             window.console.log("onInput:", value);
             var re = new RegExp(value, 'i');
             var filtered = this.options.filter(o => o.value.match(re));
-            window.console.log("opt:", this.options);
-            window.console.log("filt:", filtered);
             Vue.set(this, 'options', filtered);
-            
+            this.$emit('select', this.value);            
             this.highlightedPosition = 0
             this.isOpen = !!value
-          },
+            this.$parent.updateValue(value, this.rowindex);
+        },
           moveDown() {
             if (!this.isOpen) {
               return
             }
-            this.highlightedPosition =
-              (this.highlightedPosition + 1) % this.options.length
+            this.highlightedPosition = (this.highlightedPosition + 1) % this.options.length
           },
           moveUp() {
             if (!this.isOpen) {
@@ -85,21 +90,21 @@ require([
           },
           focus() {
               window.console.log("onFocus:", this.keyword);
+              this.updateOptions();
               var re = new RegExp(this.keyword, 'i');
               var filtered = this.options.filter(o => o.value.match(re));
-              window.console.log("opt:", this.options);
-              window.console.log("filt:", filtered);
               Vue.set(this, 'options', filtered);
 
               this.isOpen = true;
               
           },
           select() {
-              window.console.log("onSelect:", this.keyword);
+            window.console.log("onSelect:", this.keyword);
             var selectedOption = this.options[this.highlightedPosition];
-            this.$emit('select', selectedOption);
             this.isOpen = false;
             this.keyword = selectedOption.value;
+            this.$emit('select', this.keyword);
+            this.$parent.updateValue(this.keyword, this.rowindex);
           }
       }
     });
@@ -115,6 +120,10 @@ require([
           }
       },
       methods: {
+          onValidChange : function() {
+            window.console.log("ON VALID CHANGE");
+            this.$parent.runQuery();
+          },
           getLimits :  function() {
               var r = [{'text':'Equals', 'value': 'EQUALS'},{'text':'Does not Equal', 'value': 'DOES_NOT_EQUAL'}];
               if (this.getHtmlFieldType(this.part.fieldName) != 'text') {
@@ -126,8 +135,8 @@ require([
               return r;
           },
           onOptionSelect(option) {
-              console.log('Selected option:', option);
-              this.$emit('select', option);
+//              console.log('Selected option:', option);
+//              this.$emit('select', option);
             },
           getHtmlFieldType(name){
               if (name == undefined || name == '') {
@@ -152,8 +161,12 @@ require([
               }
               return -1;
           },
+          updateValue: function(value,index) {
+              this.parts[index].value = value;
+              this.$parent.runQuery();
+          },
           addPart: function() {
-              this.parts.push({});
+              this.parts.push({type:'EQUALS'});
           },
           removePart: function(idx) {
             this.parts.splice(idx ,1);  
@@ -220,7 +233,7 @@ var Hack = new Vue({
       'currentIndicator' : function(val, oldVal) {
           if (val === "new") {
               console.log("setup new indicator");
-              var indicator = {name:'',citation:'',query: {conditions:[{}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
+              var indicator = {name:'New Indicator',citation:'',query: {conditions:[{type:'EQUALS'}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
               this.indicators.push(indicator);
               console.log(indicator);
               Vue.set(this,"currentIndicator", this.indicators.length -1);
@@ -232,9 +245,6 @@ var Hack = new Vue({
     this.fetchSchema();
     this.fetchTopics();
     this.$nextTick(function () {
-          console.log('hi');
-          JQuery('[data-toggle="tooltip"]').tooltip();
-          JQuery('[data-toggle="popover"]').popover({'trigger':'focus','placement':'left'});
       })},
   methods: {
       onValidChange() {
@@ -335,8 +345,8 @@ var Hack = new Vue({
           },
           runQuery() {
               var query = this.indicators[this.currentIndicator].query;
-              window.console.log("RunQuery-->", query);
-//              window.console.log(JSON.stringify(query));
+              window.console.log("RunQuery-->", JSON.stringify(query));
+//              window.console.log();
               this.$http.post(getContextPath() + '/api/query/datastore' , JSON.stringify(query), {emulateJSON:true,
                   headers: {
                       'Content-Type': 'application/json'
