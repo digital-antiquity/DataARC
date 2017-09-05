@@ -114,7 +114,7 @@ Vue.directive('popover', function(el, binding){
   
  Vue.component('spart', {
       template: "#spart-template",
-      props: ['fields', "part","rowindex","parts","schema"],
+      props: ['fields', "part","rowindex","parts","schema","operator"],
       data() {
           return {
           }
@@ -233,7 +233,7 @@ var Hack = new Vue({
       'currentIndicator' : function(val, oldVal) {
           if (val === "new") {
               console.log("setup new indicator");
-              var indicator = {name:'New Indicator',citation:'',query: {conditions:[{type:'EQUALS'}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
+              var indicator = {name:'New Indicator',citation:'',description:'',query: {conditions:[{type:'EQUALS'}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
               this.indicators.push(indicator);
               console.log(indicator);
               Vue.set(this,"currentIndicator", this.indicators.length -1);
@@ -415,7 +415,6 @@ var Hack = new Vue({
 
           },
     getQuery: function() {
-        console.log(this.conditions);
         return this.conditions;
     }
   }

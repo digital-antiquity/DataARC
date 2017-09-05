@@ -34,6 +34,7 @@ public class FilterQuery implements Serializable {
         StringBuilder sb = new StringBuilder("q=");
         sb.append(StringUtils.join(conditions, " " + operator.name() + " "));
         sb.append(" ( " + schema + ")");
+        sb.append(" :: " + operator);
         return sb.toString();
     }
 

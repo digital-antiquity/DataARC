@@ -59,7 +59,6 @@
             </div>
 
 
-
             <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
             <label><span class="badge badge-info">3</span> Query: </label> 
                 <div class="col-sm-10 col-sm-offset-1">
@@ -68,6 +67,7 @@
                         @select="onValidChange"
                         ></spart>
                     </ul>
+                    <div v-if="indicators[currentIndicator].query.conditions.length > 1">{{ indicators[currentIndicator].query.operator }}</div>
                 </div>
                 <div class="col-sm-1">
                 <span class="glyphicon glyphicon-question-sign" v-popover:right="'#help_indicator_query'"></span>
@@ -84,9 +84,24 @@
 
             <span class='debug hidden'>{{ indicators[currentIndicator] }}</span>
 
+
+
+                <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
+                <div class="col-sm-11">
+                        <label for="indicatorDescription" class="control-label "><span class="badge badge-info">4</span> Description:</label>
+                        <textarea id="indicatorDescription" name="indicatorDescription" v-model="indicators[currentIndicator].description" class="form-control">
+                        </textarea>
+                    </div>
+                    <div class="col-sm-1">
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+                            data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
+                    </div>
+                </div>
+
+
             <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-11">
-                    <label for="chooseTopic" class="control-label col-sm-4"><span class="badge badge-info">4</span> Assign Topic:</label>
+                    <label for="chooseTopic" class="control-label col-sm-4"><span class="badge badge-info">5</span> Assign Topic:</label>
                     <br/>
                     <!-- fixme: was indicators[currentIndicator].topicIdentifers[_idx]  -->
 					<ul class="list-unstyled">
@@ -113,7 +128,7 @@
             <span  v-if="fields != undefined && fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
 	            <div class="row border" >
 	            <div class="col-sm-11">
-	                    <label for="indicatorName" class="control-label col-sm-4"><span class="badge badge-info">5</span> Combinator Name:</label>
+	                    <label for="indicatorName" class="control-label col-sm-4"><span class="badge badge-info">6</span> Combinator Name:</label>
 	                    <input id="indicatorName" name="indicatorName" v-model="indicators[currentIndicator].name" class="form-control"/>
 	
 	                </div>
@@ -124,7 +139,7 @@
 	            </div>
 	            <div class="row border" >
 	            <div class="col-sm-11">
-	                    <label for="indicatorCitation" class="control-label "><span class="badge badge-info">6</span> Citation / Description:</label>
+	                    <label for="indicatorCitation" class="control-label "><span class="badge badge-info">7</span> Citation:</label>
 	                    <textarea id="indicatorCitation" name="indicatorCitation" v-model="indicators[currentIndicator].citation" class="form-control">
 	                    </textarea>
 	                </div>

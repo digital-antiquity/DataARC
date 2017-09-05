@@ -33,6 +33,11 @@ public class Indicator extends AbstractPersistable {
     @Type(type = "org.hibernate.type.TextType")
     private String citation;
 
+    @Column()
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String description;
+
     @Transient
     private List<String> topicIdentifiers = new ArrayList<>();
 
@@ -95,6 +100,14 @@ public class Indicator extends AbstractPersistable {
     
     public void setTopics(List<Topic> topics) {
         this.topics = topics;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

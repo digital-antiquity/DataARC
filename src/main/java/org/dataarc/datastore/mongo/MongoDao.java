@@ -113,10 +113,15 @@ public class MongoDao implements ImportDao, QueryDao {
             }
             criteria.add(where);
         }
-        if (fq.getOperator() == Operator.AND) {
-            group = group.andOperator(criteria.toArray(new Criteria[0]));
-        } else {
-            group = group.orOperator(criteria.toArray(new Criteria[0]));
+        switch (fq.getOperator()) {
+            case AND:
+                group = group.andOperator(criteria.toArray(new Criteria[0]));
+                break;
+            case EXCEPT:
+                    group = group.norOperator(criteria.toArray(new Criteria[0]));
+                break;
+                default:
+                    group = group.orOperator(criteria.toArray(new Criteria[0]));
         }
         q.addCriteria(group);
         logger.debug(" :: query :: {}", q);

@@ -318,4 +318,10 @@
         </addColumn>
     </changeSet>
     
+    <changeSet id="alpha-28" author="abrin">
+        <addColumn tableName="indicator">
+            <column name="description" type="text"/>
+        </addColumn>
+    </changeSet>
+    
 </databaseChangeLog>
