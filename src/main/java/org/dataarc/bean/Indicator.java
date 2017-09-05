@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -24,16 +25,13 @@ public class Indicator extends AbstractPersistable {
 
     private static final long serialVersionUID = 4928837828590131513L;
 
-    public List<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(List<Topic> topics) {
-        this.topics = topics;
-    }
-
     @Column(length = 100)
     private String name;
+
+    @Column()
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String citation;
 
     @Transient
     private List<String> topicIdentifiers = new ArrayList<>();
@@ -82,5 +80,21 @@ public class Indicator extends AbstractPersistable {
         this.user = user;
     }
 
+    public String getCitation() {
+        return citation;
+    }
+
+    public void setCitation(String citation) {
+        this.citation = citation;
+    }
+
+    
+    public List<Topic> getTopics() {
+        return topics;
+    }
+    
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
+    }
     
 }

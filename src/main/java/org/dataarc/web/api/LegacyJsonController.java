@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.dataarc.core.search.SearchQueryObject;
 import org.dataarc.core.search.SolrService;
+import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.web.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,13 +33,13 @@ public class LegacyJsonController extends AbstractController {
             @RequestParam(value = "types", required = false) List<String> types) throws IOException, ParseException, Exception {
         SearchQueryObject sqo = new SearchQueryObject();
         if (x1 != null && y1 != null){
-            sqo.setTopLeft(new double[] {x1,y1});
+            sqo.getSpatial().setTopLeft(new double[] {x1,y1});
         }
         if (x2 != null && y2 != null){
-        sqo.setBottomRight(new double[] {x2,y2});
+        sqo.getSpatial().setBottomRight(new double[] {x2,y2});
         }
-        sqo.setStart(start);
-        sqo.setEnd(end);
+        sqo.getTemporal().setStart(start);
+        sqo.getTemporal().setEnd(end);
         if (StringUtils.isNotBlank(term)) {
             sqo.getKeywords().add(term);
         }

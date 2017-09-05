@@ -18,5 +18,6 @@ public interface UrlConstants {
     String ADMIN_TOPIC_IMPORT = "/a/admin/uploadTopic";
     String ADMIN_TOPIC_DATA = "/a/admin/topic";
     String ADMIN_TOPIC_UPLOAD_FILE = "/a/admin/topicUploadFile";
+    String SEARCH = "/api/search";
 
 }

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>
-            Indicator Creation Tool
+            Connect your data to DataArc’s core shared concepts 
         </title>
     <#include "/includes/header.ftl"/>
 
@@ -42,9 +42,18 @@ ul.options-list li.highlighted {
     </head>
     
     <@body.body>
-        <h1 class="page-header">Indicator Mapping</h1>
+        <h1 class="page-header">Connect your data to DataArc's core shared concepts</h1>
         <div class="container-fluid" id="schema">
-
+			<div class="row">
+				<div class="col-sm-12">
+				<p>DataArc's concept map is a network of high-level ideas such as 'land degradation' or 'exchange' that are 
+				important when we think about human ecodynamics in the North Atlantic. On this page you can connect individual
+				 categories of base-level data, usually represented as individual fields in your database or spreadsheet, or 
+				 combinations of categories of base-level data, to these high-level concepts. These connections are created by 
+				 defining a mid-level idea, which we call a combinator, which acts as a bridge between your data and the concept 
+				 map.</p>
+				</div>
+			</div>
             <div class="row">
                 <div class="col-sm-11">
                     <label for="datasource" class="control-label col-sm-3">Choose a Data Source:</label> 
@@ -77,17 +86,7 @@ ul.options-list li.highlighted {
                 </div>
             </div>
 
-            <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
-            <div class="col-sm-11">
-                    <label for="indicatorName" class="control-label col-sm-3">Indicator Name:</label>
-                    <input id="indicatorName" name="indicatorName" v-model="indicators[currentIndicator].name" class="form-control"/>
 
-                </div>
-                <div class="col-sm-1">
-                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
-                        data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
-                </div>
-            </div>
 
             <div class="row" v-show="currentIndicator != undefined">
                 <div class="col-sm-11 col-sm-offset-1">
@@ -149,6 +148,31 @@ ul.options-list li.highlighted {
                     <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                 </div>
             </div>
+            <span  v-if="fields != undefined && fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
+	            <div class="row" >
+	            <div class="col-sm-11">
+	                    <label for="indicatorName" class="control-label col-sm-3">Indicator Name:</label>
+	                    <input id="indicatorName" name="indicatorName" v-model="indicators[currentIndicator].name" class="form-control"/>
+	
+	                </div>
+	                <div class="col-sm-1">
+	                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+	                        data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
+	                </div>
+	            </div>
+	            <div class="row" >
+	            <div class="col-sm-11">
+	                    <label for="indicatorCitation" class="control-label col-sm-3">Citation / Description:</label>
+	                    <textarea id="indicatorCitation" name="indicatorCitation" v-model="indicators[currentIndicator].citation" class="form-control">
+	                    </textarea>
+	
+	                </div>
+	                <div class="col-sm-1">
+	                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+	                        data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
+	                </div>
+	            </div>
+            </span>
             <br/>
             <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-12">

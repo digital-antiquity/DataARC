@@ -20,7 +20,7 @@ import topicmap.v2_0.TopicMap;
 @Component
 public class SerializationDao {
 
-    public String serialize(FilterQuery query) throws IOException {
+    public String serialize(Object query) throws IOException {
         return new ObjectMapper().writeValueAsString(query);
     }
 

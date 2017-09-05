@@ -6,6 +6,7 @@ import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.MatchType;
 import org.dataarc.core.query.QueryPart;
+import org.dataarc.core.search.query.SearchQueryObject;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,13 @@ public class SerializationServiceTest {
         logger.debug(result);
         FilterQuery query2 = serializationService.deSerialize(result);
         logger.debug("{}", query2);
+    }
+    
+    @Test
+    public void testQuerySerialization() throws IOException {
+        SearchQueryObject sqo = new SearchQueryObject();
+        String string = serializationService.serialize(sqo);
+        logger.debug(string);
     }
 
 }

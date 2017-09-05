@@ -20,6 +20,7 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
@@ -161,7 +162,7 @@ public class SolrService {
 
     private StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
         StringBuilder bq = new StringBuilder();
-        bq.append(createDateRangeQueryPart(sqo.getStart(), sqo.getEnd()));
+        bq.append(createDateRangeQueryPart(sqo.getTemporal().getStart(), sqo.getTemporal().getEnd()));
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
@@ -224,8 +225,8 @@ public class SolrService {
         return false;
     }
     private void appendSpatial(SearchQueryObject sqo, StringBuilder bq) {
-        double[] topLeft = sqo.getTopLeft();
-        double[] bottomRight = sqo.getBottomRight();
+        double[] topLeft = sqo.getSpatial().getTopLeft();
+        double[] bottomRight = sqo.getSpatial().getBottomRight();
         if (topLeft == null || bottomRight == null) {
             return;
         }

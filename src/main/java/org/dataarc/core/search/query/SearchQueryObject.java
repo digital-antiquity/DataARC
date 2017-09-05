@@ -1,50 +1,18 @@
-package org.dataarc.core.search;
+package org.dataarc.core.search.query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchQueryObject {
 
-    private double[] topLeft;
-    private double[] bottomRight;
-    private Integer start;
-    private Integer end;
+    private Spatial spatial = new Spatial();
+    private Temporal temporal = new Temporal();
     private boolean idOnly = false;
+    
     private List<String> keywords = new ArrayList<>();
     private List<String> topicIds = new ArrayList<>();
     private List<String> sources = new ArrayList<>();
 
-    public double[] getBottomRight() {
-        return bottomRight;
-    }
-
-    public void setBottomRight(double[] bottomRight) {
-        this.bottomRight = bottomRight;
-    }
-
-    public double[] getTopLeft() {
-        return topLeft;
-    }
-
-    public void setTopLeft(double[] topLeft) {
-        this.topLeft = topLeft;
-    }
-
-    public Integer getEnd() {
-        return end;
-    }
-
-    public void setEnd(Integer end) {
-        this.end = end;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public void setStart(Integer start) {
-        this.start = start;
-    }
 
     public List<String> getKeywords() {
         return keywords;
@@ -76,6 +44,22 @@ public class SearchQueryObject {
 
     public void setIdOnly(boolean idOnly) {
         this.idOnly = idOnly;
+    }
+
+    public Spatial getSpatial() {
+        return spatial;
+    }
+
+    public void setSpatial(Spatial spatial) {
+        this.spatial = spatial;
+    }
+
+    public Temporal getTemporal() {
+        return temporal;
+    }
+
+    public void setTemporal(Temporal temporal) {
+        this.temporal = temporal;
     }
 
 }
