@@ -192,7 +192,8 @@ var Hack = new Vue({
     results: undefined,
     currentSchema: undefined,
     currentField: undefined,
-    currentIndicator: undefined
+    currentIndicator: undefined,
+    saveStatus: ''
   },
   computed: {
       cannotSubmit: function() {
@@ -359,10 +360,14 @@ var Hack = new Vue({
                 console.err(err);
               });
           },
+          resetSave() {
+              Vue.set(this,"saveStatus","");
+          },
           saveIndicator() {
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
               indicator.topicIdentifiers = this.selectedTopics;
+              Vue.set(this,"saveStatus","saving...");
               if (indicator.id == -1 || indicator.id == undefined) {
                   this.$http.post(getContextPath() + '/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
                       headers: {
@@ -371,9 +376,14 @@ var Hack = new Vue({
                   .then(function (request) {
                       console.log(JSON.stringify(request.body));
                       indicatorId = request.body;
+                      Vue.set(this,"saveStatus","successful");
+                      setTimeout(this.resetSave, 2000);
+
                   })
                   .catch(function (err) {
                       console.log(err);
+                      Vue.set(this,"saveStatus",err);
+
                     console.err(err);
                   });
               } else {
