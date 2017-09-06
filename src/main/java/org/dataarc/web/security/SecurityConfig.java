@@ -187,7 +187,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         details.setClientId(env.getProperty("google.clientId"));
         details.setClientSecret(env.getProperty("google.clientSecret"));
         details.setUseCurrentUri(true);
-        details.setPreEstablishedRedirectUri("http://localhost:8020/a/mapping");
+        details.setPreEstablishedRedirectUri("http://"+env.getProperty("hostname","localhost:8280")+"/a/mapping");
         details.setTokenName("oauth_token");
         details.setAuthenticationScheme(AuthenticationScheme.query);
         details.setClientAuthenticationScheme(AuthenticationScheme.form);
