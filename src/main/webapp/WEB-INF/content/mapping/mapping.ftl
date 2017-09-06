@@ -13,11 +13,11 @@
     </head>
     
     <@body.body>
-        <h1 class="page-header">Connect your data to DataArc's core shared concepts</h1>
+        <h1 class="page-header">Connect your data to DataARC's core shared concepts</h1>
         <div class="container-fluid" id="schema">
 			<div class="row">
 				<div class="col-sm-12">
-				<p>DataArc's concept map is a network of high-level ideas such as 'land degradation' or 'exchange' that are 
+				<p>DataARC's concept map is a network of high-level ideas such as 'land degradation' or 'exchange' that are 
 				important when we think about human ecodynamics in the North Atlantic. On this page you can connect individual
 				 categories of base-level data, usually represented as individual fields in your database or spreadsheet, or 
 				 combinations of categories of base-level data, to these high-level concepts. These connections are created by 
@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-sm-1">
                     <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
-                            data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
+                    v-popover:right="'#help_choose_indicator'"></span>
                     </div>
                 </div>
 
@@ -137,7 +137,7 @@
 	                </div>
 	                <div class="col-sm-1">
 	                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
-	                        data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
+	                        v-popover:right="'#help_choose_name'"></span>
 	                </div>
 	            </div>
 	            <div class="row border" >
@@ -147,8 +147,7 @@
                         </textarea>
 	                </div>
 	                <div class="col-sm-1">
-	                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
-	                        data-toggle="tooltip" title="Choose a unique title for your indicator" ></span>
+	                <span class="glyphicon glyphicon-question-sign" aria-hidden="true" v-popover:right="'#help_citation'" ></span>
 	                </div>
 	            </div>
             </span>
@@ -261,19 +260,35 @@
     Queries for Combinators can be simple or complex, and utilize the combination of fields and values
     </div>
     <div id="help_choose_indicator">
-     In the drop down list, you will see combinators, or mid-level concepts, that have already been defined. Hover over an combinator to see a short description.  Select an combinator to which you want to connect data or define a new combinator. Remember, the combinator should summarize or combine in some way individual base-level data categories. These will generally be metrics that would be readily recognized by a specialist in your field. For a pollen or insects specialist, this might be an ecological area type. For a zooarchaeologist, this might be a metric like NISP or an age/gender ratio. 
+     In the drop down list, you will see combinators, or mid-level concepts, that have already been defined. Hover over an combinator to see a short description.  
+     Select an combinator to which you want to connect data or define a new combinator. 
+     Remember, the combinator should summarize or combine in some way individual base-level data categories.
+      These will generally be metrics that would be readily recognized by a specialist in your field. 
+      For a pollen or insects specialist, this might be an ecological area type. For a zooarchaeologist, this might be a metric like NISP or an age/gender ratio. 
+     
     </div>
-    
+    <div id="help_descript_query">
+    Write a brief description and explanation of the combinator you have created, intended for a non-specialist audience. 
+    This text will appear in the general search results as part of the 'results' section. You
+     can cite widely available documents here to provide more precise information to fellow specialists. 
+     Be careful to avoid technical jargon or abbreviations when writing this text.
+    </div>
     <div id="help_assign_topic">
-        The combinator you have defined should speak to one or more of DataArc's core shared concepts. 
+        The combinator you have defined should speak to one or more of DataARC's core shared concepts. 
         You can select concepts from the dropdown list. Each concept will appear with a number next to it that tells you how many combinators are connected to it.
-        You can connect your combinator to any number of concepts. Add more connections by pressing the “+” button. 
+        You can connect your combinator to any number of concepts. Add more connections by pressing the "+" button. 
         It is recommended that you connect your combinator to the topics to which it is most directly relevant. 
-        The topics are connected to one another, so those ‘second degree’ connections are made through the topic map.
+        The topics are connected to one another, so those 'second degree' connections are made through the topic map.
 
     </div>
-
-
+    <div id="help_citation">
+     Write a brief explanation of the connection you see between the combinator and the concept. 
+     This text will appear in the 'why' section of the general search results. You can provide citations here for work you feel supports the connection. 
+     Be careful to avoid technical jargon or abbreviations when writing this text.
+    </div>
+    <div id="help_choose_name">
+        Choose a name.
+    </div>
 </div>
 
         </@body.body>
