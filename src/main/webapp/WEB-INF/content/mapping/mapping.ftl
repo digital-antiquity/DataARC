@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>
-            Connect your data to DataArc’s core shared concepts 
+            Connect your data to DataARC's core shared concepts 
         </title>
     <#include "/includes/header.ftl"/>
 
@@ -27,6 +27,7 @@
 			</div>
 			<div class="row">
 			<div class="col-sm-8">
+			<form>
             <div class="row">
                 <div class="col-sm-11">
                     <label for="datasource" class="control-label col-sm-4"><span class="badge badge-info">1</span> Choose a Data Source:</label> 
@@ -60,17 +61,18 @@
 
 
             <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
-            <label><span class="badge badge-info">3</span> Query: </label> 
-                <div class="col-sm-10 col-sm-offset-1">
+            <div class="col-sm-11"><label class="control-label col-sm-4"><span class="badge badge-info">3</span> Query: </label></div> 
+            <div class="col-sm-1">
+                <span class="glyphicon glyphicon-question-sign" v-popover:right="'#help_indicator_query'"></span>
+                </div>
+
+            <div class="col-sm-11 col-sm-offset-1">
                     <ul class="list-group" v-for="(part, rowNum) in indicators[currentIndicator].query.conditions">
                         <spart :rowindex="rowNum" :schema="schemaName" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"
                         @select="onValidChange"
                         ></spart>
                     </ul>
                     <div v-if="indicators[currentIndicator].query.conditions.length > 1">{{ indicators[currentIndicator].query.operator }}</div>
-                </div>
-                <div class="col-sm-1">
-                <span class="glyphicon glyphicon-question-sign" v-popover:right="'#help_indicator_query'"></span>
                 </div>
             </div>
 
@@ -88,8 +90,8 @@
 
                 <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-11">
-                        <label for="indicatorDescription" class="control-label "><span class="badge badge-info">4</span> Description:</label>
-                        <textarea id="indicatorDescription" name="indicatorDescription" v-model="indicators[currentIndicator].description" class="form-control">
+                        <label for="indicatorDescription" class="control-label col-sm-4 "><span class="badge badge-info">4</span> Description:</label>
+                        <textarea id="indicatorDescription" name="indicatorDescription" v-model="indicators[currentIndicator].description" class="col-sm-7">
                         </textarea>
                     </div>
                     <div class="col-sm-1">
@@ -102,11 +104,11 @@
             <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-11">
                     <label for="chooseTopic" class="control-label col-sm-4"><span class="badge badge-info">5</span> Assign Topic:</label>
-                    <br/>
+                    <div class="col-sm-7">
                     <!-- fixme: was indicators[currentIndicator].topicIdentifers[_idx]  -->
 					<ul class="list-unstyled">
                         <li v-for="(ident, _idx) in selectedTopics"  >
-                                <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control">
+                                <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control col-sm-6">
                                     <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
                                 </select>
                         <span v-show="_idx > 0">
@@ -119,6 +121,7 @@
 
                         </li>
                     </ul>
+                    </div>
                 </div>
                 <div class="col-sm-1">
                     <span class="glyphicon glyphicon-question-sign" v-popover:right="'#help_assign_topic'"></span>
@@ -129,7 +132,7 @@
 	            <div class="row border" >
 	            <div class="col-sm-11">
 	                    <label for="indicatorName" class="control-label col-sm-4"><span class="badge badge-info">6</span> Combinator Name:</label>
-	                    <input id="indicatorName" name="indicatorName" v-model="indicators[currentIndicator].name" class="form-control"/>
+	                    <input id="indicatorName" name="indicatorName" v-model="indicators[currentIndicator].name" class="col-sm-7"/>
 	
 	                </div>
 	                <div class="col-sm-1">
@@ -139,9 +142,9 @@
 	            </div>
 	            <div class="row border" >
 	            <div class="col-sm-11">
-	                    <label for="indicatorCitation" class="control-label "><span class="badge badge-info">7</span> Citation:</label>
-	                    <textarea id="indicatorCitation" name="indicatorCitation" v-model="indicators[currentIndicator].citation" class="form-control">
-	                    </textarea>
+	                    <label for="indicatorCitation" class="control-label col-sm-4"><span class="badge badge-info">7</span> Citation:</label>
+                        <textarea  id="indicatorCitation" name="indicatorCitation" v-model="indicators[currentIndicator].citation"  class="col-sm-7">
+                        </textarea>
 	                </div>
 	                <div class="col-sm-1">
 	                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
@@ -208,11 +211,12 @@
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
+                
                   <autocomplete-input :rowindex="rowindex" @select="onOptionSelect" v-bind:value="part.value" v-bind:type="getHtmlFieldType(part.fieldName)" v-bind:field="part.fieldName"  v-bind:schema="schema" >
 
                     <template slot="item" scope="option">
                       <article class="span2">
-                          <strong>{{ option.value }}</strong>  ({{option.occurrence}})
+                          <strong>{{ option.value }}</strong>  ({{option.occurrence}} {{ option.percent }} {{option.percentUnique}})
                       </article>
                     </template>
                   </autocomplete-input>

@@ -3,6 +3,7 @@ package org.dataarc.core.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.dataarc.bean.DataArcUser;
@@ -143,6 +144,26 @@ public class UserService {
             save(user);
             
             return user;
+    }
+
+    @Transactional(readOnly=true)
+    public List<DataArcUser> findAll() {
+        return userDao.findAll();
+    }
+
+    @Transactional(readOnly=false)
+    public void makeAdmin(String userId) {
+        DataArcUser findByUserId = userDao.findByUserId(userId);
+        findByUserId.setAdmin(true);
+        save(findByUserId);
+    }
+
+    
+    @Transactional(readOnly=false)
+    public void makeEditor(String userId) {
+        DataArcUser findByUserId = userDao.findByUserId(userId);
+        findByUserId.setEditor(true);
+        save(findByUserId);
     }
 
 }

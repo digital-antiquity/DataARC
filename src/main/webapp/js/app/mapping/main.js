@@ -27,14 +27,14 @@ require([
    }
 
     
-Vue.directive('popover', function(el, binding){
-    $(el).popover({
-             content: $(binding.value).html(),
-             html:true,
-             placement: binding.arg,
-             trigger: 'hover'             
-         })
-})
+    Vue.directive('popover', function(el, binding){
+        $(el).popover({
+                 content: $(binding.value).html(),
+                 html:true,
+                 placement: binding.arg,
+                 trigger: 'hover'             
+             })
+    })
     
 /** https://jsfiddle.net/krn9v4vr/59/ **/
   Vue.component('autocomplete-input', {
@@ -57,8 +57,25 @@ Vue.directive('popover', function(el, binding){
         updateOptions() {
             window.console.log("updateOptions::", this.schema, this.field);
             if (this.field != undefined) {
-                this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': this.schema,'field':this.field}})
+                var field = this.field;
+                this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': this.schema,'field': field}})
                 .then(function (request) {
+                  var total =0;
+                  var totalRows = 0;
+                  
+                  this.$parent.$parent.fields.forEach(function(f) {
+                      if (field == f.name) {
+                          f.values.forEach(function(e){
+                              total++;
+                              totalRows += e.occurrence;
+                          });
+                      }
+                  });
+                  window.console.log(total, totalRows);
+                  request.body.forEach(function(o) {
+                      o.percentUnique = (o.occurrence / parseFloat(total)) * 100.0;
+                      o.percent = (o.occurrence / parseFloat(totalRows)) * 100.0;
+                  });
                   Vue.set(this, 'options', request.body);
                 })
                 .catch(function (err) {
