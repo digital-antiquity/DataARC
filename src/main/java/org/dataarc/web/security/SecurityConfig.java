@@ -181,6 +181,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // @Bean
     public OAuth2ProtectedResourceDetails googleOpenId() {
+        // MANAGED FROM: https://console.developers.google.com/apis/credentials/oauthclient
         AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
         details.setAccessTokenUri("https://www.googleapis.com/oauth2/v3/token");
         details.setUserAuthorizationUri("https://accounts.google.com/o/oauth2/auth");
