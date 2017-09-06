@@ -6,6 +6,7 @@ import java.util.Set;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
+import org.dataarc.core.dao.FieldDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.util.FieldDataCollector;
 import org.slf4j.Logger;
@@ -23,6 +24,9 @@ public class SchemaService {
     @Autowired
     SchemaDao schemaDao;
 
+    @Autowired
+    FieldDao fieldDao;
+
     @Transactional(readOnly = true)
     public Map<String, String> getSchema(String name) throws Exception {
         return null;
@@ -36,6 +40,11 @@ public class SchemaService {
     @Transactional(readOnly = false)
     public void save(Schema schema) {
         schemaDao.save(schema);
+    }
+
+    @Transactional(readOnly = false)
+    public void saveField(Field field) {
+        fieldDao.save(field);
     }
 
     @Transactional(readOnly = false)
@@ -53,8 +62,20 @@ public class SchemaService {
         return schemaDao.findAll();
     }
 
+    @Transactional(readOnly = false)
     public void saveSchema(FieldDataCollector collector) {
         schemaDao.saveSchema(collector);
     }
 
+    @Transactional(readOnly = false)
+    public Field updateFieldDisplayName(String source, String fieldName, String displayName) {
+        for (Field field : schemaDao.getFields(source)) {
+            if (field.getName().equals(fieldName)) {
+                field.setDisplayName(displayName);
+                saveField(field);
+                return field;
+            }
+        }
+        return null;
+    }
 }

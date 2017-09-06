@@ -5,9 +5,11 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.Indicator;
 import org.dataarc.core.service.IndicatorService;
+import org.dataarc.core.service.UserService;
 import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Secured(UserService.EDITOR_ROLE)
 public class IndicatorController extends AbstractRestController {
 
     @Autowired
