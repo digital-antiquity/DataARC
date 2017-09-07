@@ -74,7 +74,9 @@ public class UserService {
         user.setEmail((String) details.get("email"));
         user.setUsername((String) details.get("name"));
         user.setFirstName((String) details.get("given_name"));
+        //google
         user.setLastName((String) details.get("family_name"));
+        // facebook
         if (details.get("last_name") != null && StringUtils.isNotBlank((String)details.get("last_name"))) {
             user.setLastName((String)details.get("last_name"));
         }
