@@ -291,7 +291,7 @@ public class SolrIndexingService {
             }
         }
 
-        schemaDao.findAll().forEach(name -> {
+        schemaDao.findAllSchemaNames().forEach(name -> {
             Schema schema = schemaDao.getSchemaByName(name);
             schema.getFields().forEach(field -> {
                 if (field.getType() != null) {

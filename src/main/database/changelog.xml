@@ -323,5 +323,11 @@
             <column name="description" type="text"/>
         </addColumn>
     </changeSet>
+    <changeSet id="alpha-29" author="abrin">
+        <addColumn tableName="schema">
+            <column name="description" type="text"/>
+            <column name="url" type="varchar(1024)"/>
+        </addColumn>
+    </changeSet>
     
 </databaseChangeLog>

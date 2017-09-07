@@ -17,6 +17,7 @@
    ${currentUserDisplayName!'none' }</b>
     <ul class="nav nav-sidebar">
         <li><a href="/a/mapping/">Indicators</a></li>
+        <li><a href="/a/schema/">Data Sources</a></li>
         <#if admin>
         <li><a href="/a/admin">Admin</a><ul>
             <li><a href="/a/admin">Reindex</a></li>

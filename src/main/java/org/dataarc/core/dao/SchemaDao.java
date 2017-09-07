@@ -1,5 +1,6 @@
 package org.dataarc.core.dao;
 
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -64,7 +65,11 @@ public class SchemaDao {
         return schema.getFields();
     }
 
-    public Set<String> findAll() {
+    public List<Schema> findAll() {
+        return manager.createQuery("from Schema", Schema.class).getResultList();
+    }
+
+    public Set<String> findAllSchemaNames() {
         return manager.createQuery("from Schema", Schema.class).getResultList().stream()
                 .map(schema -> schema.getName())
                 .collect(Collectors.toSet());

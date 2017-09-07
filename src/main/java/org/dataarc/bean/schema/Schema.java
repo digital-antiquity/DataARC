@@ -8,9 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import org.dataarc.bean.AbstractPersistable;
+import org.hibernate.annotations.Type;
 
 @Entity
 public class Schema extends AbstractPersistable {
@@ -23,6 +25,15 @@ public class Schema extends AbstractPersistable {
     @Column(length = 100, name="display_name")
     private String displayName;
 
+    @Column(length = 1024)
+    private String url;
+
+    @Column()
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String description;
+
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "schema_id", nullable = false)
     private Set<Field> fields = new HashSet<>();
@@ -59,6 +70,22 @@ public class Schema extends AbstractPersistable {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

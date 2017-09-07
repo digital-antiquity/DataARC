@@ -71,7 +71,7 @@ public class MongoDao implements ImportDao, QueryDao {
     @Override
     public List<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
         Query q = new Query();
-        Set<String> findAll = schemaDao.findAll();
+        Set<String> findAll = schemaDao.findAllSchemaNames();
         Schema schema = null;
         String lookup = fq.getSchema().trim();
         

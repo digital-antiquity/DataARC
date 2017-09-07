@@ -1,5 +1,6 @@
 package org.dataarc.core.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,7 +29,12 @@ public class SchemaService {
     FieldDao fieldDao;
 
     @Transactional(readOnly = true)
-    public Map<String, String> getSchema(String name) throws Exception {
+    public Schema getSchema(String name) throws Exception {
+        for (Schema schema: findAll()){
+            if (schema.getName().equals(name)) {
+                return schema;
+            }
+        }
         return null;
     }
 
@@ -59,7 +65,7 @@ public class SchemaService {
 
     @Transactional(readOnly = true)
     public Set<String> getSchema() {
-        return schemaDao.findAll();
+        return schemaDao.findAllSchemaNames();
     }
 
     @Transactional(readOnly = false)
@@ -77,5 +83,10 @@ public class SchemaService {
             }
         }
         return null;
+    }
+
+    @Transactional(readOnly=true)
+    public List<Schema> findAll() {
+        return schemaDao.findAll();
     }
 }

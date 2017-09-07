@@ -23,5 +23,7 @@ public interface UrlConstants {
     String ADMIN_MAKE_ADMIN = "/api/admin/makeAdmin";
     String ADMIN_LIST_USERS = "/api/admin/listUsers";
     String UPDATE_FIELD_DISPLAY_NAME = "/api/fields/updateDisplayName";
+    String LIST_SCHEMA = "/a/schema";
+    String VIEW_SCHEMA = "/a/schema/{name}";
 
 }

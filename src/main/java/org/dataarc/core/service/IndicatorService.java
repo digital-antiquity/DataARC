@@ -109,7 +109,7 @@ public class IndicatorService {
 
     @Transactional(readOnly = false)
     public void applyIndicators() {
-        schemoDao.findAll().forEach(name -> {
+        schemoDao.findAllSchemaNames().forEach(name -> {
             try {
                 applyIndicators(name);
             } catch (Exception e) {
