@@ -69,6 +69,7 @@ public class UserService {
         }
 
         LinkedHashMap<String, Object> details = (LinkedHashMap<String, Object>) userEntity.getUserAuthentication().getDetails();
+        logger.debug("details:{}", details);
         user.setEmail((String) details.get("email"));
         user.setUsername((String) details.get("name"));
         user.setFirstName((String) details.get("given_name"));
@@ -87,14 +88,14 @@ public class UserService {
         Object details = authentication.getDetails();
         logger.trace("   username: {}", username);
         logger.trace("authorities: {}", authorities);
-        logger.trace("    details: {}", details);
+        logger.debug("    details: {}", details);
         if (authentication instanceof OAuth2Authentication) {
             OAuth2Authentication userEntity = (OAuth2Authentication) authentication;
             userId = userEntity.getName();
             logger.trace("    details: {} | {}", details, details.getClass());
             logger.trace("    principal: {} | {}", authentication.getPrincipal(), authentication.getPrincipal().getClass());
-            logger.trace("{}", userEntity.getUserAuthentication());
-            logger.trace("{}", userEntity.getCredentials());
+            logger.debug("{}", userEntity.getUserAuthentication());
+            logger.debug("{}", userEntity.getCredentials());
             logger.trace("     userId: {}", userId);
             DataArcUser user = findByExternalId(userId);
 //            authentication.set
