@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.dao.DataArcUserDao;
 import org.slf4j.Logger;
@@ -74,6 +75,9 @@ public class UserService {
         user.setUsername((String) details.get("name"));
         user.setFirstName((String) details.get("given_name"));
         user.setLastName((String) details.get("family_name"));
+        if (details.get("last_name") != null && StringUtils.isNotBlank((String)details.get("last_name"))) {
+            user.setLastName((String)details.get("last_name"));
+        }
         user.setLastLogin(new Date());
         save(user);
 

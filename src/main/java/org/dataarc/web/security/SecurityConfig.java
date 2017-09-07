@@ -207,7 +207,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // @ConfigurationProperties("security.oauth2.resource")
     public ResourceServerProperties facebookResource() {
         ResourceServerProperties properties = new ResourceServerProperties();
-        properties.setUserInfoUri("https://graph.facebook.com/me");
+        properties.setUserInfoUri("https://graph.facebook.com/me?fields=id,name,email,first_name,last_name");
+
         properties.setPreferTokenInfo(false);
         return properties;
     }
