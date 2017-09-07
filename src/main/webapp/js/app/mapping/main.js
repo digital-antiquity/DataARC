@@ -4,7 +4,9 @@ require.config({
     'vue': '/components/vue/dist/vue',
     'jquery' : '/components/jquery/dist/jquery',
     'vue-resource': '/components/vue-resource/dist/vue-resource',
-    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min'
+    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min',
+    "typeahead" : 'http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle',
+    "handlebar" : 'http://twitter.github.io/typeahead.js/js/handlebars',
   },
   shim: {
     vue: {
@@ -15,8 +17,8 @@ require.config({
 
 });
 require([
-    'vue','jquery','vue-resource','bootstrap'
-    ], function(Vue,JQuery,VueResource,Bootstrap){
+    'vue','jquery','vue-resource','bootstrap','typeahead'
+    ], function(Vue,JQuery,VueResource,Bootstrap,Typeahead){
   
     var Resource = require('vue-resource');
     Vue.use(Resource);
@@ -34,6 +36,21 @@ require([
                  placement: binding.arg,
                  trigger: 'hover'             
              })
+    })
+    Vue.directive('typeahead', function(el, binding){
+        $(el).typeahead(null, {
+            name: 'best-pictures',
+            display: 'value',
+            source: binding.value,
+            templates: {
+              empty: [
+                '<div class="empty-message">',
+                  'unable to find any Best Picture winners that match the current query',
+                '</div>'
+              ].join('\n'),
+              suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{year}}</div>')
+            }
+          });
     })
     
 /** https://jsfiddle.net/krn9v4vr/59/ **/
@@ -177,6 +194,14 @@ require([
                   }
               }
               return -1;
+          },
+          getFieldValues: function(name) {
+              var index = this.getFieldIndex(name);
+              if (index == -1)  {
+                  return [];
+              }
+              var fld = this.fields[index];
+              return fld.values;
           },
           updateValue: function(value,index) {
               this.parts[index].value = value;

@@ -14,7 +14,7 @@
     
     <@body.body>
         <h1 class="page-header">Connect your data to DataARC's core shared concepts</h1>
-        <div class="container-fluid" id="schema">
+        <div class="container-fluid form-inline" id="schema">
 			<div class="row">
 				<div class="col-sm-12">
 				<p>DataARC's concept map is a network of high-level ideas such as 'land degradation' or 'exchange' that are 
@@ -201,7 +201,7 @@
             
             </div>
             </div>
-            
+
         <template id="spart-template">
             <div> 
                 <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()" class="form-control">
@@ -210,7 +210,10 @@
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-                
+                <#-- 
+                <div class="custom-templates">
+				  <input class="typeahead" type="text" placeholder="Oscar winners for Best Picture" v-typeahead="getFieldValues(part.fieldName)">
+				</div> -->
                   <autocomplete-input :rowindex="rowindex" @select="onOptionSelect" v-bind:value="part.value" v-bind:type="getHtmlFieldType(part.fieldName)" v-bind:field="part.fieldName"  v-bind:schema="schema" >
 
                     <template slot="item" scope="option">

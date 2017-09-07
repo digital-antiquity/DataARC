@@ -10,25 +10,58 @@
     
     <@body.body>
 <h1>Editing: ${schema.name}</h1>
+ <div class="col-sm-12">
+    <form method="POST" action="${contextPath}/a/schema/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
+		<input type="hidden" name="id" value="${schema.id?c}" />
+		<div class="form-group">
+	        <label for="schemaName" class="control-label">Name:</label>
+	        <input type="text" id="schemaName" name="displayName" value="${schema.displayName}" class="form-control"/>
+		</div>
+		<div class="form-group">
+	        <label for="schemaUrl" class="control-label">Url:</label>
+	        <input type="text" id="schemaUrl" name="url" value="${schema.url!''}" class="form-control"/>
+		</div>
+		<div class="form-group">
+	        <label for="schemaDescription" class="control-label">Description:</label>
+	        <textarea id="schemaDescription" name="description" class="form-control">
+	        ${schema.description!''}
+	        </textarea>
+		</div>
+        <input type="submit" value="Save" class="button btn btn-primary"> 
 
-<ul>
-<li>upload new data file</li>
-<li>change display name</li>
-<li>description</li>
-<li>url</li>
-</ul>
+    </form>
+    </div>
+     <div class="col-sm-12">
+
+    <form method="POST" action="${contextPath}/a/admin/uploadSourceFile" enctype="multipart/form-data">
+        <h3>Update Data (GeoJSON)</h3>
+         <input type="file" name="file">
+      <input type="hidden" name="name" value="${schema.name}"/>
+      <br/>
+        <input type="submit" value="Upload" class="button btn btn-primary"> 
+      <br/>
+    </form> 
+</div>
+ <div class="col-sm-12">
+
 <table class="table">
 <#list schema.fields as field>
 	<tr>
 	<td>${field.id?c}</td>
 	<td>${field.name}</td>
-	<td>${field.displayName}</td>
+	<td>
+	   <div class="input-group">
+         <input type="text" value="${field.displayName}" class="form-control"/>
+         <span class="input-group-btn">
+           <button class="btn btn-default" type="button">Save</button>
+          </span>
+     </div>
+	</td>
 	<td>${field.type}</td>
-	<td>edit display name</td>
 	</tr>
 </#list>
 </table>
-
-delete | save
+</div>
+<button name="delete" class="button btn btn-danger" value="Delete">Delete Data Source</button>
 </@body.body>
 </html>
