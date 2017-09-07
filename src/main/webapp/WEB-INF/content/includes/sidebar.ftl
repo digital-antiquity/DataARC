@@ -24,6 +24,7 @@
             <li><a href="/a/admin/source">Add Datafile</a></li>
         </ul></li>
         </#if>
+        <li><a href="/logout">Log Out</a></li>
     </ul>
     </#if>
 </div>

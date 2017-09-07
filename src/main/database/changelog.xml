@@ -329,5 +329,8 @@
             <column name="url" type="varchar(1024)"/>
         </addColumn>
     </changeSet>
+    <changeSet id="alpha-30" author="abrin">
+        <dropUniqueConstraint tableName="data_arc_user" constraintName="user_username_key"/>
+    </changeSet>
     
 </databaseChangeLog>

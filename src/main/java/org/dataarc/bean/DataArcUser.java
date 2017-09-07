@@ -12,7 +12,8 @@ public class DataArcUser extends AbstractPersistable {
 
     private static final long serialVersionUID = 8179515553625706719L;
 
-    @Column(unique = true)
+    @Column()
+    // should be renamed full name
     private String username;
 
     @Column(name = "first_name", length = 255)
