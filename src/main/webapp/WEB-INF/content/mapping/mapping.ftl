@@ -112,11 +112,11 @@
                                     <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
                                 </select>
                         <span v-show="_idx > 0">
-                            <button class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>
+                            <button type="button" class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>
                         </span>
 
                         <span v-show="_idx == selectedTopics.length -1">
-                            <button class="btn btn-xs btn-default" v-on:click="addTopic()">+</button>
+                            <button type="button" class="btn btn-xs btn-default" v-on:click="addTopic()">+</button>
                         </span>
 
                         </li>
@@ -225,10 +225,10 @@
 
                 
                 <span v-show="rowindex > 0">
-                <button class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
+                <button type="button" class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
                 </span>
                 <span v-show="rowindex == parts.length -1">
-                <button class="btn btn-xs btn-default" v-on:click="addPart()">+</button>
+                <button type="button" class="btn btn-xs btn-default" v-on:click="addPart()">+</button>
                 </span>
             </div>
         </template>

@@ -25,8 +25,8 @@ public class UploadSourceDataController extends AbstractController {
 
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final String EXCEPTION = "exception";
-    private static final String ADMIN_SOURCE_SUCCESS = "/a/admin/source-success";
-    private static final String ADMIN_SOURCE_FAILED = "/a/admin/source-failed";
+    private static final String ADMIN_SOURCE_SUCCESS = "/admin/source-success";
+    private static final String ADMIN_SOURCE_FAILED = "/admin/source-failed";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -54,6 +54,7 @@ public class UploadSourceDataController extends AbstractController {
                 importService.importAndLoad(file.getInputStream(), file.getOriginalFilename(), schemaName);
                 mav.setViewName(ADMIN_SOURCE_SUCCESS);
             } catch (Exception e) {
+                logger.error("{}",e,e);
                 mav.addObject(ERROR_MESSAGE, e.getMessage());
                 mav.addObject(EXCEPTION, e.getMessage());
             }

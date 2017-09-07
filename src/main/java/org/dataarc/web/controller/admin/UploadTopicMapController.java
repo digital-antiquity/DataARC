@@ -42,6 +42,7 @@ public class UploadTopicMapController extends AbstractController {
                 topicMapService.importAndLoad(file.getInputStream(), file.getOriginalFilename());
                 return ADMIN_TOPIC_SUCCESS;
             } catch (Exception e) {
+                logger.error("{}",e,e);
                 mav.addObject(ERROR_MESSAGE , e.getMessage());
                 return ADMIN_TOPIC_FAILED;
             }
