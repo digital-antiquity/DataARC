@@ -17,14 +17,14 @@
 </form>
 
 <h2>Add / Update Source</h2>
-    <form method="POST" action="${contextPath}/admin/uploadSourceFile" enctype="multipart/form-data">
+    <form method="POST" action="${contextPath}/a/admin/uploadSourceFile" enctype="multipart/form-data">
         File to upload: <input type="file" name="file">
         Name: <input type="text" name="name">
         <input type="submit" value="Upload"> Press here to upload the file!
     </form> 
 
 <h2>Update Topic Map</h2>
-   <form method="POST" action="${contextPath}/admin/topicUploadFile" enctype="multipart/form-data">
+   <form method="POST" action="${contextPath}/a/admin/topicUploadFile" enctype="multipart/form-data">
         File to upload: <input type="file" name="file">
         <input type="submit" value="Upload"> Press here to upload the file!
     </form> 

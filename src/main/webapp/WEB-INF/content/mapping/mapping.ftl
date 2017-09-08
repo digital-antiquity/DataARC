@@ -154,8 +154,8 @@
             <br/>
             <div class="row"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-12">
-                    <button class="btn btn-xs btn-success" v-on:click="saveIndicator()" v-bind:disabled='cannotSubmit'>Save Indicator {{saveStatus}}</button>
-                    <button class="btn btn-xs btn-danger" v-on:click="deleteIndicator()" >Delete Indicator</button>
+                    <button type="button" class="btn btn-xs btn-success" v-on:click="saveIndicator()" v-bind:disabled='cannotSubmit'>Save Indicator {{saveStatus}}</button>
+                    <button type="button" class="btn btn-xs btn-danger" v-on:click="deleteIndicator()" >Delete Indicator</button>
                 </div>
             </div>
             <br/>
