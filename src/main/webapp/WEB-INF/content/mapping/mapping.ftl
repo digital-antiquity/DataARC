@@ -11,7 +11,6 @@
         <script data-main="/js/app/mapping/main" src="${contextPath}/components/requirejs/require.js"></script>
     <#import "/macros/body.ftl" as body />
     </head>
-    
     <@body.body>
         <h1 class="page-header">Connect your data to DataARC's core shared concepts</h1>
         <div class="container-fluid form-inline" id="schema">
@@ -210,19 +209,9 @@
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-                <#-- 
-                <div class="custom-templates">
-				  <input class="typeahead" type="text" placeholder="Oscar winners for Best Picture" v-typeahead="getFieldValues(part.fieldName)">
-				</div> -->
-                  <autocomplete-input :rowindex="rowindex" @select="onOptionSelect" v-bind:value="part.value" v-bind:type="getHtmlFieldType(part.fieldName)" v-bind:field="part.fieldName"  v-bind:schema="schema" >
-
-                    <template slot="item" scope="option">
-                      <article class="span2">
-                          <strong>{{ option.value }}</strong>  ({{option.occurrence}} {{ option.percent }} {{option.percentUnique}})
-                      </article>
-                    </template>
-                  </autocomplete-input>
-
+				 
+  			    <input class="typeahead" type="text" placeholder="Search" v-typeahead="getFieldValues(part.fieldName)"
+  			    @input="runQuery()">
                 
                 <span v-show="rowindex > 0">
                 <button type="button" class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
@@ -233,22 +222,6 @@
             </div>
         </template>
 
-<template id="autocomplete-input-template" >
-    <span class="control autocomplete-input" style="display:inline-block">
-      <input  v-model="keyword" class="input is-large" placeholder="Search..."  
-        @input="onInput($event.target.value)"  @focus="focus"
-        @keyup.esc="isOpen = false" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" 
-        @keydown.enter="select" >
-      <i class="fa fa-angle-down"></i>
-          <ul v-show="isOpen" class="options-list span2">
-        <li v-for="(option, index) in options" :class=" {
-          'highlighted': index === highlightedPosition
-        }" @mouseenter="highlightedPosition = index" @mousedown="select">
-        <slot name="item" :value="option.value" :occurrence="option.occurrence" :option="option">
-      </li>
-    </ul>
-      
-      
     </span>
 </template>
 <div id="helpsection" class="hidden">
