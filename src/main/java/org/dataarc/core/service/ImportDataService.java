@@ -2,6 +2,8 @@ package org.dataarc.core.service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
@@ -62,13 +64,8 @@ public class ImportDataService {
     @Transactional(readOnly=false)
     public void importAndLoad(InputStream inputStream, String originalFilename, String schemaName) throws Exception {
         Schema schema = schemaDao.findByName(schemaName);
-        Filestore filestore = Filestore.getInstance();
-        File imported = filestore.store(schemaName, inputStream, originalFilename);
-        DataFile dataFile = new DataFile();
-        dataFile.setName(imported.getName());
-        dataFile.setPath(imported.getPath());
-        dataFile.setSchema(schema);
-        dataFileDao.save(dataFile);
+        File imported = storeDataFile(inputStream, originalFilename, schemaName, schema);
+        
         FieldDataCollector collector = new FieldDataCollector(schemaName);
         FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(imported), FeatureCollection.class);
         deleteBySource(schemaName);
@@ -83,6 +80,17 @@ public class ImportDataService {
         }
         schemaDao.saveSchema(collector);
         
+    }
+
+    private File storeDataFile(InputStream inputStream, String originalFilename, String schemaName, Schema schema) throws FileNotFoundException, IOException {
+        Filestore filestore = Filestore.getInstance();
+        File imported = filestore.store(schemaName, inputStream, originalFilename);
+        DataFile dataFile = new DataFile();
+        dataFile.setName(imported.getName());
+        dataFile.setPath(imported.getPath());
+        dataFile.setSchema(schema);
+        dataFileDao.save(dataFile);
+        return imported;
     }
 
 }

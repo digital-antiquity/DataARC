@@ -1,5 +1,7 @@
 package org.dataarc.core.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -18,6 +20,8 @@ import org.dataarc.util.FieldDataCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import com.mongodb.client.model.CollationAlternate;
 
 @Component
 public class SchemaDao {
@@ -83,14 +87,18 @@ public class SchemaDao {
             schema.setName(name);
             schema.setDisplayName(collector.getDisplayName());
         }
+        Set<Field> toRemove = new HashSet<>(schema.getFields());
         for (String fieldName : collector.getNames()) {
             Field field = schema.getFieldByName(fieldName);
             if (field == null) {
                 field = new Field(fieldName, collector);
                 schema.getFields().add(field);
+            } else {
+                toRemove.remove(field);
             }
             // reset existing values
             field.getValues().clear();
+            field.setType(collector.getType(fieldName));
             for (Entry<Object, Long> entry : collector.getUniqueValues(fieldName).entrySet()) {
                 Value val = new Value(entry.getKey().toString(), new Long(entry.getValue()).intValue());
                 field.getValues().add(val);
@@ -99,7 +107,7 @@ public class SchemaDao {
             logger.debug("{} {} ({})", name, fieldName, collector.getType(fieldName));
             logger.debug("\t{}", collector.getUniqueValues(fieldName));
         }
-        ;
+        schema.getFields().removeAll(toRemove);
         save(schema);
 
     }

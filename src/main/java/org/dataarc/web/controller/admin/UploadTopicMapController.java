@@ -21,8 +21,8 @@ public class UploadTopicMapController extends AbstractController {
 
     private static final String TOPIC_NAME = "topicName";
     private static final String ERROR_MESSAGE = "errorMessage";
-    private static final String ADMIN_TOPIC_FAILED = "/a/admin/topic-failed";
-    private static final String ADMIN_TOPIC_SUCCESS = "/a/admin/topic-success";
+    private static final String ADMIN_TOPIC_FAILED = "/admin/topic-failed";
+    private static final String ADMIN_TOPIC_SUCCESS = "/admin/topic-success";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

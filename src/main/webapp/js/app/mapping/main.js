@@ -128,7 +128,11 @@
               if (name == undefined || name == '') {
                   return "text";
               }
+//              console.log(name, this.getFieldIndex(name));
               var f = this.fields[this.getFieldIndex(name)];
+              if (f == undefined) {
+                  return undefined;
+              }
               if (f.type == undefined) {
                   return 'number';
               }
