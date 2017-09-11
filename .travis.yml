@@ -15,6 +15,11 @@ before_install:
     - jdk_switcher use oraclejdk8
     - env
 addons:
+  hosts:
+    - db
+    - localhost
+    - mongo
+    - web
   firefox: "latest"
   postgresql: "9.6"
   apt:
