@@ -22,7 +22,7 @@
 <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
 <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script> 
 <script src="${contextPath}/components/typeahead.js/dist/typeahead.bundle.js"></script>
-<script src="${contextPath}/handlebars/handlebars.js"></script>
+<script src="${contextPath}/components/handlebars/handlebars.js"></script>
 <link href="${contextPath}/css/typeahead.css" rel="stylesheet" media="screen">
 <script>
     function getContextPath() {

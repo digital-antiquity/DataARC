@@ -60,6 +60,15 @@ public abstract class AbstractController {
         return user.isAdmin();
     } 
 
+    @ModelAttribute("editor")
+    public boolean isEditor() {
+        DataArcUser user = getUser();
+        if (user == null) {
+            return false;
+        }
+        return user.isEditor();
+    } 
+
     
     private DataArcUser user = null;
     
