@@ -102,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/login**");
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/api/search", "/login**");
         } else {
             web.ignoring().antMatchers("/**");
         }
