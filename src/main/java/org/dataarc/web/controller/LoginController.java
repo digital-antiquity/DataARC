@@ -12,9 +12,12 @@ public class LoginController extends AbstractController {
 
     @RequestMapping("/login")
     public String login() {
+        if (isAuthenticated()) {
+            return "redirect:/a/home";
+        }
         return "login";
     }
-
+    
 
     @RequestMapping("/logout")
     public String logout() {

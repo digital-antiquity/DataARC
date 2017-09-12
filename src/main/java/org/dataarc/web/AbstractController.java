@@ -8,18 +8,16 @@ import org.dataarc.core.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-@Scope("prototype")
 public abstract class AbstractController {
 
     private static final String CONTENT_LENGTH = "Content-Length";
 
-
+    private ThreadLocal<DataArcUser> user = new ThreadLocal<>();
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
 
@@ -60,13 +58,19 @@ public abstract class AbstractController {
         return user.isAdmin();
     } 
 
-    
-    private DataArcUser user = null;
+    @ModelAttribute("editor")
+    public boolean isEditor() {
+        DataArcUser user = getUser();
+        if (user == null) {
+            return false;
+        }
+        return user.isEditor();
+    } 
     
     @ModelAttribute("currentUser")
     public DataArcUser getUser() {
-        if (user != null) {
-            return user;
+        if (user.get() != null) {
+            return user.get();
         }
         
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -74,8 +78,9 @@ public abstract class AbstractController {
             return null;
         }
 
-        user = userService.reconcileUser(authentication);
-        return user;
+        DataArcUser value = userService.reconcileUser(authentication);
+        user.set(value);
+        return value;
     }
     
     

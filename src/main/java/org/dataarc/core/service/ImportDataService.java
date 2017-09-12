@@ -31,45 +31,47 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ImportDataService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    
+
     @Autowired
     ImportDao importDao;
-    
+
     @Autowired
     SchemaDao schemaDao;
     @Autowired
     DataFileDao dataFileDao;
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void deleteAll() {
         importDao.deleteAll();
 
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void load(Feature feature, Map<String, Object> properties) throws Exception {
         importDao.load(feature, properties);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public void enhanceProperties(Feature feature, Map<String, Object> properties) {
         importDao.enhanceProperties(feature, properties);
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void deleteBySource(String name) {
         importDao.deleteBySource(name);
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void importAndLoad(InputStream inputStream, String originalFilename, String schemaName) throws Exception {
         Schema schema = schemaDao.findByName(schemaName);
         File imported = storeDataFile(inputStream, originalFilename, schemaName, schema);
-        
+
         FieldDataCollector collector = new FieldDataCollector(schemaName);
         FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(imported), FeatureCollection.class);
         deleteBySource(schemaName);
+        int rows = 0;
         for (Iterator<Feature> iterator = featureCollection.getFeatures().iterator(); iterator.hasNext();) {
+            rows++;
             Feature feature = iterator.next();
             logger.trace("feature: {}", feature);
             Map<String, Object> properties = feature.getProperties();
@@ -78,8 +80,8 @@ public class ImportDataService {
             ObjectTraversalUtil.traverse(properties, collector);
             load(feature, properties);
         }
-        schemaDao.saveSchema(collector);
-        
+        schemaDao.saveSchema(collector, rows);
+
     }
 
     private File storeDataFile(InputStream inputStream, String originalFilename, String schemaName, Schema schema) throws FileNotFoundException, IOException {

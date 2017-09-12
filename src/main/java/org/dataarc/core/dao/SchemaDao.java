@@ -76,7 +76,7 @@ public class SchemaDao {
                 .collect(Collectors.toSet());
     }
 
-    public void saveSchema(FieldDataCollector collector) {
+    public void saveSchema(FieldDataCollector collector, int rows) {
         String name = collector.getSchemaName();
         Schema schema = getSchemaByName(name);
         if (schema == null) {
@@ -84,6 +84,7 @@ public class SchemaDao {
             schema.setName(name);
             schema.setDisplayName(collector.getDisplayName());
         }
+        schema.setRows(rows);
         Set<Field> toRemove = new HashSet<>(schema.getFields());
         for (String fieldName : collector.getNames()) {
             Field field = schema.getFieldByName(fieldName);
@@ -93,6 +94,7 @@ public class SchemaDao {
             } else {
                 toRemove.remove(field);
             }
+            field.setMongoName(collector.getDisplayName(field.getName()));
             // reset existing values
             field.getValues().clear();
             field.setType(collector.getType(fieldName));

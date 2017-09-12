@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.QueryDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.query.FilterQuery;
-import org.dataarc.core.query.Operator;
 import org.dataarc.core.query.QueryPart;
 import org.dataarc.core.search.IndexFields;
-import org.eclipse.jetty.deploy.bindings.StandardUndeployer;
 import org.geojson.Feature;
 import org.geojson.GeoJsonObject;
 import org.slf4j.Logger;
@@ -91,7 +91,16 @@ public class MongoDao implements ImportDao, QueryDao {
             if (StringUtils.isBlank(part.getFieldName())) {
                 throw new QueryException("invalid query (no field specified)");
             }
-            Criteria where = Criteria.where("properties." + part.getFieldName());
+            String name = "properties.";
+            for (Field f: schema.getFields()){
+                if (f.getId() == part.getFieldId()) {
+                    name += f.getMongoName();
+                }
+                if (Objects.equals(f.getName() , part.getFieldName())) {
+                    name += f.getMongoName();
+                }
+            }
+            Criteria where = Criteria.where(name);
             switch (part.getType()) {
                 case CONTAINS:
                     where.regex(Pattern.compile(part.getValue(), Pattern.MULTILINE));

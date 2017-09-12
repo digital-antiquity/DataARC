@@ -36,9 +36,11 @@ public class ImportService {
     public void loadData(String filename) {
         importDataService.deleteAll();
         schemaService.deleteAll();
+        int rows = 0;
         try {
             FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(filename), FeatureCollection.class);
             for (Iterator<Feature> iterator = featureCollection.getFeatures().iterator(); iterator.hasNext();) {
+                rows++;
                 Feature feature = iterator.next();
                 // logger.debug("feature: {}", feature);
                 // String source = (String) feature.getProperties().get("source");
@@ -50,15 +52,11 @@ public class ImportService {
                 ObjectTraversalUtil.traverse(properties, collector);
                 importDataService.load(feature, properties);
             }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("{}", e, e);
         }
         for (FieldDataCollector collector : collectors.values()) {
-            schemaService.saveSchema(collector);
+            schemaService.saveSchema(collector, rows);
         }
     }
 

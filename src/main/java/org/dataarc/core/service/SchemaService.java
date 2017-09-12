@@ -72,8 +72,8 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public void saveSchema(FieldDataCollector collector) {
-        schemaDao.saveSchema(collector);
+    public void saveSchema(FieldDataCollector collector, int rows) {
+        schemaDao.saveSchema(collector,rows);
     }
 
     @Transactional(readOnly = false)

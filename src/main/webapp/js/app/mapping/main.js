@@ -1,34 +1,56 @@
-require.config({
-  baseUrl: "",
-  paths: {
-    'vue': '/components/vue/dist/vue',
-    'jquery' : '/components/jquery/dist/jquery',
-    'vue-resource': '/components/vue-resource/dist/vue-resource',
-    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min',
-    "typeahead" : 'http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle',
-    "handlebar" : 'http://twitter.github.io/typeahead.js/js/handlebars',
-  },
-  shim: {
-    vue: {
-      exports: 'Vue'
-    },
-    bootstrap : { "deps" :['jquery'] }
-  }
-
-});
-require([
-    'vue','jquery','vue-resource','bootstrap','typeahead'
-    ], function(Vue,JQuery,VueResource,Bootstrap,Typeahead){
+//require.config({
+//  baseUrl: "",
+//  paths: {
+//    'vue': '/components/vue/dist/vue',
+//    'jquery' : '/components/jquery/dist/jquery',
+//    'vue-resource': '/components/vue-resource/dist/vue-resource',
+//    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min',
+//    "typeahead" : '/components/typeahead.js/dist/typeahead.bundle',
+//    "handlebar" : 'http://twitter.github.io/typeahead.js/js/handlebars',
+//  },
+//  shim: {
+//    vue: {
+//      exports: 'Vue'
+//    },
+//    bootstrap : { "deps" :['jquery'] },
+//    typeaead: { "deps" :['jquery'] }
+//  }
+//
+//});
+//require([
+//    'vue','jquery','vue-resource','bootstrap','typeahead',"handlebar"
+//    ], function(Vue,JQuery,VueResource,Bootstrap,Typeahead,Handlebars){
   
-    var Resource = require('vue-resource');
-    Vue.use(Resource);
+//    var Resource = require('vue-resource');
+    Vue.use(VueResource);
 
     Vue.config.errorHandler = function (err, vm) {
       console.log(err);
       console.log(vm);
    }
 
-    
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+          var matches, substringRegex;
+
+          // an array that will be populated with substring matches
+          matches = [];
+
+          // regex used to determine if a string contains the substring `q`
+          substrRegex = new RegExp(q, 'i');
+
+          // iterate through the pool of strings and for any string that
+          // contains the substring `q`, add it to the `matches` array
+          $.each(strs, function(i, str) {
+              console.log(str.value);
+            if (substrRegex.test(str.value)) {
+              matches.push(str);
+            }
+          });
+
+          cb(matches);
+        };
+      };
     Vue.directive('popover', function(el, binding){
         $(el).popover({
                  content: $(binding.value).html(),
@@ -37,121 +59,45 @@ require([
                  trigger: 'hover'             
              })
     })
-    Vue.directive('typeahead', function(el, binding){
-        $(el).typeahead(null, {
-            name: 'best-pictures',
-            display: 'value',
-            source: binding.value,
-            templates: {
-              empty: [
-                '<div class="empty-message">',
-                  'unable to find any Best Picture winners that match the current query',
-                '</div>'
-              ].join('\n'),
-              suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{year}}</div>')
-            }
-          });
-    })
     
+    var setupTypeahead = function(el_, binding) {
+        $(el_).typeahead('destroy');
+        $(el_).typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+          },
+          {
+            name: 'states',
+            display: 'value',
+            source: substringMatcher(binding.value),
+            templates: {
+                suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
+              }
+          });    }
+    Vue.directive('typeahead', {
+        update : function(el_,binding){
+            setupTypeahead(el_,binding);
+
+        },
+        inserted:  function(el_, binding) {
+            setupTypeahead(el_,binding);
+        }
+    })
+/**
+
+ */    
 /** https://jsfiddle.net/krn9v4vr/59/ **/
-  Vue.component('autocomplete-input', {
-      template: '#autocomplete-input-template',
-      props: ["field","type","schema","rowindex"],
-      data: function() {
-        return {
-          isOpen: false,
-          highlightedPosition: 0,
-          keyword: '',
-          options:[]
-        }
-      },
-      computed: {
-        fOptions: function() {
-            window.console.log("foptions:" ,this.field);
-        }
-      },
-      methods: {
-        updateOptions() {
-            window.console.log("updateOptions::", this.schema, this.field);
-            if (this.field != undefined) {
-                var field = this.field;
-                this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': this.schema,'field': field}})
-                .then(function (request) {
-                  var total =0;
-                  var totalRows = 0;
-                  
-                  this.$parent.$parent.fields.forEach(function(f) {
-                      if (field == f.name) {
-                          f.values.forEach(function(e){
-                              total++;
-                              totalRows += e.occurrence;
-                          });
-                      }
-                  });
-                  window.console.log(total, totalRows);
-                  request.body.forEach(function(o) {
-                      o.percentUnique = (o.occurrence / parseFloat(total)) * 100.0;
-                      o.percent = (o.occurrence / parseFloat(totalRows)) * 100.0;
-                  });
-                  Vue.set(this, 'options', request.body);
-                })
-                .catch(function (err) {
-                  console.err(err);
-                });
-            }
-        },
-        onInput(value) {
-            window.console.log("onInput:", value);
-            var re = new RegExp(value, 'i');
-            var filtered = this.options.filter(o => o.value.match(re));
-            Vue.set(this, 'options', filtered);
-            this.$emit('select', this.value);            
-            this.highlightedPosition = 0
-            this.isOpen = !!value
-            this.$parent.updateValue(value, this.rowindex);
-        },
-          moveDown() {
-            if (!this.isOpen) {
-              return
-            }
-            this.highlightedPosition = (this.highlightedPosition + 1) % this.options.length
-          },
-          moveUp() {
-            if (!this.isOpen) {
-              return
-            }
-            this.highlightedPosition = this.highlightedPosition - 1 < 0 ? this.options.length - 1 : this.highlightedPosition - 1
-          },
-          focus() {
-              window.console.log("onFocus:", this.keyword);
-              this.updateOptions();
-              var re = new RegExp(this.keyword, 'i');
-              var filtered = this.options.filter(o => o.value.match(re));
-              Vue.set(this, 'options', filtered);
 
-              this.isOpen = true;
-              
-          },
-          select() {
-            window.console.log("onSelect:", this.keyword);
-            var selectedOption = this.options[this.highlightedPosition];
-            this.isOpen = false;
-            this.keyword = selectedOption.value;
-            this.$emit('select', this.keyword);
-            this.$parent.updateValue(this.keyword, this.rowindex);
-          }
-      }
-    });
-
-
-  
-  
+    
  Vue.component('spart', {
       template: "#spart-template",
       props: ['fields', "part","rowindex","parts","schema","operator"],
       data() {
           return {
           }
+      },
+      computed: {
       },
       methods: {
           onValidChange : function() {
@@ -474,5 +420,5 @@ var Hack = new Vue({
         return this.conditions;
     }
   }
-});
+//});
 });

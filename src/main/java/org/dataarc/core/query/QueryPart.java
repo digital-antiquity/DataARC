@@ -6,6 +6,7 @@ public class QueryPart implements Serializable {
 
     private static final long serialVersionUID = -8597360418323132553L;
     private String fieldName;
+    private Long fieldId;
     private String value;
     private MatchType type;
 
@@ -45,5 +46,13 @@ public class QueryPart implements Serializable {
     @Override
     public String toString() {
         return "(" + fieldName + " " + type + " " + value + ")";
+    }
+
+    public Long getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(Long fieldId) {
+        this.fieldId = fieldId;
     }
 }

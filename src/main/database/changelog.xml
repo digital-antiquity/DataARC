@@ -332,5 +332,13 @@
     <changeSet id="alpha-30" author="abrin">
         <dropUniqueConstraint tableName="data_arc_user" constraintName="user_username_key"/>
     </changeSet>
+    <changeSet id="alpha-31" author="abrin">
+        <addColumn tableName="schema">
+            <column name="rows" type="integer"/>
+        </addColumn>
+         <addColumn tableName="schema_field">
+            <column name="mongo_name" type="varchar(100)"/>
+        </addColumn>
+     </changeSet>
     
 </databaseChangeLog>

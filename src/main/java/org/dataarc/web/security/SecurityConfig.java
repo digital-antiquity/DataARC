@@ -1,5 +1,6 @@
 package org.dataarc.web.security;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +9,9 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.service.UserService;
@@ -29,6 +33,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -38,6 +43,9 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
@@ -57,6 +65,18 @@ import com.atlassian.crowd.service.client.CrowdClient;
 // @RestController
 // @SpringBootApplication
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final class AuthenticationSuccessHandlerImplementation implements AuthenticationSuccessHandler {
+        private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+                throws IOException, ServletException {
+            redirectStrategy.sendRedirect(request, response, A_HOME);
+        }
+    }
+
+    private static final String A_HOME = "/a/home";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -82,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/login**");
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/api/search", "/login**");
         } else {
             web.ignoring().antMatchers("/**");
         }
@@ -98,7 +118,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
 
             web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", "")).antMatchers("/a/admin/**")
-                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/mapping");
+                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().
+                    formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME).loginPage("/login").permitAll();
 
             web.logout().permitAll();
 
@@ -106,6 +127,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .defaultAuthenticationEntryPointFor(new RestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
                     .accessDeniedHandler(new RestAccessDeniedHandler());
         }
+    }
+
+    
+    private void setupDetails(AuthorizationCodeResourceDetails details) {
+        details.setUseCurrentUri(true);
+//        details.setPreEstablishedRedirectUri("http://"+env.getProperty("hostname","localhost:8280")+"/a/home");
+        details.setTokenName("oauth_token");
+        details.setAuthenticationScheme(AuthenticationScheme.query);
+        details.setClientAuthenticationScheme(AuthenticationScheme.form);
     }
 
     private Filter ssoFilter(ClientResources client, String path) {
@@ -116,6 +146,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 client.getResource().getUserInfoUri(), client.getClient().getClientId());
         tokenServices.setRestTemplate(template);
         tokenServices.setAuthoritiesExtractor(authoritiesExtractor);
+        filter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandlerImplementation());
+
         filter.setTokenServices(tokenServices);
         return filter;
     }
@@ -157,11 +189,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public LocalCrowdAuthenticationProvider crowdAuthenticationProvider() {
         return new LocalCrowdAuthenticationProvider(crowdClient());
     }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(crowdAuthenticationProvider());
-    }
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(crowdAuthenticationProvider());
+//    }
 
     @Bean
     public ResourceServerProperties googleResource() {
@@ -187,12 +219,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         details.setUserAuthorizationUri("https://accounts.google.com/o/oauth2/auth");
         details.setClientId(env.getProperty("google.clientId"));
         details.setClientSecret(env.getProperty("google.clientSecret"));
-        details.setUseCurrentUri(true);
-        details.setPreEstablishedRedirectUri("http://"+env.getProperty("hostname","localhost:8280")+"/a/mapping");
-        details.setTokenName("oauth_token");
-        details.setAuthenticationScheme(AuthenticationScheme.query);
-        details.setClientAuthenticationScheme(AuthenticationScheme.form);
-
+        setupDetails(details);
+        
         details.setScope(Arrays.asList("openid", "email", "profile"));
         return details;
     }
@@ -220,14 +248,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         details.setUserAuthorizationUri("https://www.facebook.com/dialog/oauth");
         details.setClientId(env.getProperty("facebook.clientId"));
         details.setClientSecret(env.getProperty("facebook.clientSecret"));
-        details.setUseCurrentUri(true);
-        details.setTokenName("oauth_token");
-        details.setAuthenticationScheme(AuthenticationScheme.query);
-        details.setClientAuthenticationScheme(AuthenticationScheme.form);
+        setupDetails(details);
 
         details.setScope(Arrays.asList("email", "public_profile"));
         return details;
     }
+
 
     @Bean
     public OAuth2RestTemplate facebookOpenIdTemplate(final OAuth2ClientContext clientContext) {
