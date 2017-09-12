@@ -18,8 +18,6 @@ public class LoginController extends AbstractController {
         return "login";
     }
     
-   
-
 
     @RequestMapping("/logout")
     public String logout() {

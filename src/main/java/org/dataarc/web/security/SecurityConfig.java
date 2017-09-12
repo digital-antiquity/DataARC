@@ -118,7 +118,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
 
             web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", "")).antMatchers("/a/admin/**")
-                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME).loginPage("/login").permitAll();
+                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().
+                    formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME).loginPage("/login").permitAll();
 
             web.logout().permitAll();
 
@@ -188,11 +189,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public LocalCrowdAuthenticationProvider crowdAuthenticationProvider() {
         return new LocalCrowdAuthenticationProvider(crowdClient());
     }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(crowdAuthenticationProvider());
-    }
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(crowdAuthenticationProvider());
+//    }
 
     @Bean
     public ResourceServerProperties googleResource() {

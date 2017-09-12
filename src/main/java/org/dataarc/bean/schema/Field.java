@@ -28,6 +28,9 @@ public class Field extends AbstractPersistable {
     @Column(length = 100, name ="display_name")
     private String displayName;
 
+    @Column(length = 100, name ="mongo_name")
+    private String mongoName;
+
     @Column(name = "field_type")
     @Enumerated(EnumType.STRING)
     private FieldType type;
@@ -43,6 +46,7 @@ public class Field extends AbstractPersistable {
         this.name = field;
         this.type = collector.getType(field);
         this.displayName = collector.getDisplayName(field);
+        this.mongoName = collector.getDisplayName(field);
     }
 
     public String getName() {
@@ -80,5 +84,13 @@ public class Field extends AbstractPersistable {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getMongoName() {
+        return mongoName;
+    }
+
+    public void setMongoName(String mongoName) {
+        this.mongoName = mongoName;
     }
 }

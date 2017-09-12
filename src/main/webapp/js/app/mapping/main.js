@@ -59,23 +59,9 @@
                  trigger: 'hover'             
              })
     })
-    Vue.directive('typeahead', {
-        update : function(el_,binding){
-            $(el_).typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-              },
-              {
-                name: 'states',
-                display: 'value',
-                source: substringMatcher(binding.value),
-                templates: {
-                    suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
-                  }
-              });
-        },
-        inserted:  function(el_, binding) {
+    
+    var setupTypeahead = function(el_, binding) {
+        $(el_).typeahead('destroy');
         $(el_).typeahead({
             hint: true,
             highlight: true,
@@ -88,9 +74,15 @@
             templates: {
                 suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
               }
+          });    }
+    Vue.directive('typeahead', {
+        update : function(el_,binding){
+            setupTypeahead(el_,binding);
 
-          });
-    }
+        },
+        inserted:  function(el_, binding) {
+            setupTypeahead(el_,binding);
+        }
     })
 /**
 
@@ -104,6 +96,8 @@
       data() {
           return {
           }
+      },
+      computed: {
       },
       methods: {
           onValidChange : function() {

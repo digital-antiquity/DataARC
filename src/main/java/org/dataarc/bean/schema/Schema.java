@@ -33,6 +33,8 @@ public class Schema extends AbstractPersistable {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
+    @Column()
+    private Integer rows;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "schema_id", nullable = false)
@@ -86,6 +88,14 @@ public class Schema extends AbstractPersistable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getRows() {
+        return rows;
+    }
+
+    public void setRows(Integer rows) {
+        this.rows = rows;
     }
 
 }
