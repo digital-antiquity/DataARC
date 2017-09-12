@@ -77,7 +77,6 @@ public class SolrService {
         SolrQuery params = setupQueryWithFacetsAndFilters(limit, bq);       
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
-        
         logger.debug(String.format("query: %s, total: %s", bq.toString(), topDocs.getNumFound()));
         logger.debug("{}",query.getExpandedResults());
         if (topDocs.isEmpty()) {
@@ -162,16 +161,24 @@ public class SolrService {
 
     private StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
         StringBuilder bq = new StringBuilder();
-        bq.append(createDateRangeQueryPart(sqo.getTemporal().getStart(), sqo.getTemporal().getEnd()));
+        if (!sqo.emptyTemporal()) {
+            bq.append(createDateRangeQueryPart(sqo.getTemporal().getStart(), sqo.getTemporal().getEnd()));
+        }
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
-        appendSpatial(sqo, bq);
+        if (!sqo.emptySpatial()) {
+            appendSpatial(sqo, bq);
+        }
         return bq;
     }
 
     private SolrQuery setupQueryWithFacetsAndFilters(int limit, StringBuilder bq) {
-        SolrQuery params = new SolrQuery(bq.toString());
+        String q = bq.toString();
+        if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
+            q = "*:*";
+        }
+        SolrQuery params = new SolrQuery(q);
         params.setParam("rows", Integer.toString(limit));
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
         params.addFacetField(IndexFields.CATEGORY, IndexFields.CENTURY, IndexFields.COUNTRY, IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND, IndexFields.TOPIC_ID_3RD, IndexFields.REGION);
