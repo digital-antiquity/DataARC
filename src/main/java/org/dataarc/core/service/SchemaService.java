@@ -1,7 +1,6 @@
 package org.dataarc.core.service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.dataarc.bean.schema.Field;
@@ -88,5 +87,20 @@ public class SchemaService {
     @Transactional(readOnly=true)
     public List<Schema> findAll() {
         return schemaDao.findAll();
+    }
+
+    @Transactional(readOnly = false)
+    public void deleteSchema(Schema schema) {
+        schemaDao.deleteSchema(schema);
+        
+    }
+
+    @Transactional(readOnly = false)
+    public void updateSchema(Schema schema, String displayName, String description, String url) {
+        schema.setDescription(description);
+        schema.setDisplayName(displayName);
+        schema.setUrl(url);
+        schemaDao.save(schema);
+        
     }
 }

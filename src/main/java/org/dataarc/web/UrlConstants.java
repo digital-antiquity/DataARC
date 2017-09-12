@@ -25,5 +25,6 @@ public interface UrlConstants {
     String UPDATE_FIELD_DISPLAY_NAME = "/api/fields/updateDisplayName";
     String LIST_SCHEMA = "/a/schema";
     String VIEW_SCHEMA = "/a/schema/{name}";
+    String DELETE_SCHEMA = "/a/schema/{name}";
 
 }

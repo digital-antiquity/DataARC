@@ -116,4 +116,14 @@ public class SchemaDao {
         return getSchemaByName(schemaName);
     }
 
+    public void deleteSchema(Schema schema) {
+        schema.getFields().forEach(field ->{
+            field.getValues().forEach(val ->{
+                manager.remove(val);
+            });
+            manager.remove(field);
+        });
+        manager.remove(schema);
+    }
+
 }
