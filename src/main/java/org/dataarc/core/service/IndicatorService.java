@@ -52,7 +52,9 @@ public class IndicatorService {
         indicator.setUser(user);
         List<Topic> topics = new ArrayList<>();
         List<String> ids = new ArrayList<>();
-        indicator.getTopics().forEach(t -> {ids.add(t.getIdentifier());});
+        indicator.getTopics().forEach(t -> {
+            ids.add(t.getIdentifier());
+        });
         indicator.getTopicIdentifiers().forEach(ident -> {
             Topic topic = topicDao.findTopicByIdentifier(ident);
             topics.add(topic);
@@ -93,10 +95,10 @@ public class IndicatorService {
         for (Indicator indicator : findAllForSchema(schemaName)) {
             for (DataEntry entry : queryDao.getMatchingRows(indicator.getQuery())) {
                 entry.getIndicators().add(indicator.getName());
-                if (CollectionUtils.isNotEmpty(indicator.getTopics() )) {
+                if (CollectionUtils.isNotEmpty(indicator.getTopics())) {
                     List<String> topics = new ArrayList<>();
                     List<String> idents = new ArrayList<>();
-                    indicator.getTopics().forEach(topc-> {
+                    indicator.getTopics().forEach(topc -> {
                         topics.add(topc.getName());
                         idents.add(topc.getIdentifier());
                     });
@@ -119,24 +121,26 @@ public class IndicatorService {
         });
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void delete(Indicator findById, DataArcUser dataArcUser) {
         indicatorDao.delete(findById);
-        
+
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @PreAuthorize("hasPermission(#id, 'VIEW')")
     public Indicator view(Long id) {
         return findById(id);
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void deleteAllForSchema(Schema schema) {
-        findAllForSchema(schema.getName()).forEach(ind ->{
-            indicatorDao.delete(ind);
-        });
-        
+        List<Indicator> findAllForSchema = findAllForSchema(schema.getName());
+        if (CollectionUtils.isNotEmpty(findAllForSchema)) {
+            findAllForSchema.forEach(ind -> {
+                indicatorDao.delete(ind);
+            });
+        }
     }
 
 }
