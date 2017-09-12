@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.IndicatorDao;
@@ -128,6 +129,14 @@ public class IndicatorService {
     @PreAuthorize("hasPermission(#id, 'VIEW')")
     public Indicator view(Long id) {
         return findById(id);
+    }
+
+    @Transactional(readOnly=false)
+    public void deleteAllForSchema(Schema schema) {
+        findAllForSchema(schema.getName()).forEach(ind ->{
+            indicatorDao.delete(ind);
+        });
+        
     }
 
 }

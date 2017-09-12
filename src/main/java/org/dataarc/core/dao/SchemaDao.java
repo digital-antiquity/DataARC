@@ -1,6 +1,5 @@
 package org.dataarc.core.dao;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -20,8 +19,6 @@ import org.dataarc.util.FieldDataCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import com.mongodb.client.model.CollationAlternate;
 
 @Component
 public class SchemaDao {
@@ -123,6 +120,7 @@ public class SchemaDao {
             });
             manager.remove(field);
         });
+        
         manager.remove(schema);
     }
 
