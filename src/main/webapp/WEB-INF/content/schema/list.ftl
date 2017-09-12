@@ -11,6 +11,17 @@
     <@body.body>
 <h1> Schema</h1>
 <table class="table">
+<thead>
+<tr>
+<td>id</td>
+<td>name</td>
+<td>display name</td>
+<td>description</td>
+<td>url</td>
+<td>category</td>
+<td># of entries</td>
+</tr>
+</thead>
 <#list schema as schemum>
 	<tr>
 		<td>${schemum.id?c}</td>
@@ -18,6 +29,8 @@
 		<td>${schemum.displayName}</td>
 		<td>${schemum.description!''}</td>
 		<td>${schemum.url!''}</td>
+		<td>${schemum.category!''}</td>
+		<td>${(schemum.rows!0)?c}</td>
 		<td><a href="/a/schema/${schemum.name}">edit</a></td>
 	</tr>
 </#list>
