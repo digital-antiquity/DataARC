@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.dataarc.bean.Indicator;
+import org.dataarc.bean.schema.Category;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
@@ -101,9 +102,10 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public void updateSchema(Schema schema, String displayName, String description, String url) {
+    public void updateSchema(Schema schema, String displayName, String description, String url, Category category) {
         schema.setDescription(description);
         schema.setDisplayName(displayName);
+        schema.setCategory(category);
         schema.setUrl(url);
         schemaDao.save(schema);
         

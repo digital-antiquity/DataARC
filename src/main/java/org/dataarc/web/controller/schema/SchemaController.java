@@ -1,5 +1,6 @@
 package org.dataarc.web.controller.schema;
 
+import org.dataarc.bean.schema.Category;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.service.ImportDataService;
 import org.dataarc.core.service.SchemaService;
@@ -43,9 +44,10 @@ public class SchemaController extends AbstractController {
     public ModelAndView saveSchema(@PathVariable(value = "name", required = true) String name, 
             @RequestParam(value="description") String description, 
             @RequestParam(value="displayName") String displayName,
+            @RequestParam(value="category") Category category,
             @RequestParam(value="url") String url) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
-        schemaService.updateSchema(schemaService.getSchema(name), displayName, description, url);
+        schemaService.updateSchema(schemaService.getSchema(name), displayName, description, url, category);
         mav.addObject("schema", schemaService.getSchema(name));
         return mav;
     }

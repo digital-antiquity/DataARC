@@ -15,8 +15,8 @@ public class SearchController extends AbstractRestController {
     @Autowired
     private SolrService luceneService;
 
-    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST)
-    public SearchResultObject save(@RequestBody(required = true) SearchQueryObject query) throws Exception {
+    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET)
+    public SearchResultObject search(@RequestBody(required = true) SearchQueryObject query) throws Exception {
         try {
             return luceneService.search(query);
         } catch (Throwable t) {
@@ -24,6 +24,16 @@ public class SearchController extends AbstractRestController {
         }
         return null;
 
+    }
+
+    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST)
+    public SearchResultObject searchPpst(@RequestBody(required = true) SearchQueryObject query) throws Exception {
+        try {
+            return luceneService.search(query);
+        } catch (Throwable t) {
+            logger.error("error searching", t);
+        }
+        return null;
     }
 
 

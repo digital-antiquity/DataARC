@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -21,6 +23,10 @@ public class Schema extends AbstractPersistable {
 
     @Column(length = 100)
     private String name;
+
+    @Column(length = 100)
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Column(length = 100, name="display_name")
     private String displayName;
@@ -96,6 +102,14 @@ public class Schema extends AbstractPersistable {
 
     public void setRows(Integer rows) {
         this.rows = rows;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 }
