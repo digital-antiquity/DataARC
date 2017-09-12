@@ -62,7 +62,7 @@
 </#list>
 </table>
 </div>
-<form method="DELETE" action="${contextPath}/a/schema/delete/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
+<form method="POST" action="${contextPath}/a/schema/delete/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
     <button name="delete" class="button btn btn-danger" value="Delete">Delete Data Source</button>
 </form>
 </@body.body>
