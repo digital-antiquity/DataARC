@@ -8,7 +8,7 @@
             <Routes pattern="$${sd:type}">
                 <Route>
                     <RollingFile name="Rolling-${sd:type}" fileName="logs/dataarc-${date:yyyy-MM-dd}.log"
-                        filePattern="logs/dataarc.%d{yyyy-MM-dd-HH-mm}.log.gz">
+                        filePattern="logs/dataarc.%d{yyyy-MM-dd}.log.gz">
                         <PatternLayout>
                             <pattern>%d %p %c{1.} [%t] %m%n</pattern>
                         </PatternLayout>
