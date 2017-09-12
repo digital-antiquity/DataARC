@@ -52,8 +52,8 @@ public class SchemaController extends AbstractController {
         return mav;
     }
 
-    
-    @RequestMapping(path = UrlConstants.DELETE_SCHEMA, method = RequestMethod.DELETE)
+
+    @RequestMapping(path = UrlConstants.DELETE_SCHEMA, method = RequestMethod.POST)
     public ModelAndView deleteSchema(@PathVariable(value = "name", required = true) String name) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.getSchema(name);

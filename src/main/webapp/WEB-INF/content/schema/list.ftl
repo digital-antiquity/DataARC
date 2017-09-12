@@ -19,7 +19,6 @@
 		<td>${schemum.description!''}</td>
 		<td>${schemum.url!''}</td>
 		<td><a href="/a/schema/${schemum.name}">edit</a></td>
-		<td>delete</td>
 	</tr>
 </#list>
 </@body.body>
