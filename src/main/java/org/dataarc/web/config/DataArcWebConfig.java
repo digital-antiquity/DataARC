@@ -74,7 +74,7 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
 
     @PostConstruct
     public void reindex() {
-        indexingService.reindex();
+//        indexingService.reindex();
     }
 
 }

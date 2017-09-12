@@ -12,7 +12,7 @@ public class SearchResultObject implements Serializable {
 
     private Object results;
 
-    private Map<String, Map<String, Long>> facets = new HashMap<>();
+    private Map<String, Map<String, Object>> facets = new HashMap<>();
 
     public Object getResults() {
         return results;
@@ -22,7 +22,7 @@ public class SearchResultObject implements Serializable {
         this.results = results;
     }
 
-    public Map<String, Map<String, Long>> getFacets() {
+    public Map<String, Map<String, Object>> getFacets() {
         return facets;
     }
 }

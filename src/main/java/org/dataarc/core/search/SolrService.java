@@ -1,6 +1,8 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.similarities.IBSimilarity;
 import org.apache.lucene.spatial.prefix.RecursivePrefixTreeStrategy;
 import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
 import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
@@ -20,10 +23,12 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.util.SimpleOrderedMap;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
+import org.hibernate.hql.ast.origin.hql.parse.HQLParser.index_key_return;
 import org.locationtech.spatial4j.context.SpatialContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +45,13 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @Service
 public class SolrService {
+    private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM);
+    private static final String VAL = "val";
+    private static final String MISSING = "missing";
+    private static final String BUCKETS = "buckets";
+    private static final String COUNT = "count";
     private static final String BCE = " BCE ";
+    private static final boolean includeMissing = false;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -74,22 +85,42 @@ public class SolrService {
         FeatureCollection fc = new FeatureCollection();
         Set<String> idList = new HashSet<>();
         StringBuilder bq = buildQuery(sqo);
-        SolrQuery params = setupQueryWithFacetsAndFilters(limit, bq);       
+        String q = bq.toString();
+        if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
+            q = "*:*";
+        }
+        SolrQuery params = setupQueryWithFacetsAndFilters(limit, q);
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
-        logger.debug(String.format("query: %s, total: %s", bq.toString(), topDocs.getNumFound()));
-        logger.debug("{}",query.getExpandedResults());
+        logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
+        SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get("facets");
+
+        logger.debug("{}", facetMap);
+        for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
+            logger.debug("{}", field);
+            logger.debug("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
+            if (facetMap.get(field) instanceof SimpleOrderedMap) {
+                SimpleOrderedMap<?> object = (SimpleOrderedMap<?>) facetMap.get(field);
+                if (object == null || object.get(BUCKETS) == null) {
+                    continue;
+                }
+                Map<String, Object> map = appendChildren(object);
+                result.getFacets().put(field, map);
+                logger.debug("{}", map);
+            }
+        }
+
         if (topDocs.isEmpty()) {
             return result;
         }
         WKTReader reader = new WKTReader();
 
         buildResultsFacets(result, query);
-        
+
         // aggregate results in a map by point
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
-//            logger.debug("{}", document);
+            // logger.debug("{}", document);
             try {
                 // create a point for each result
                 String point = (String) document.get(IndexFields.POINT);
@@ -98,17 +129,60 @@ public class SolrService {
                 }
 
                 if (sqo.isIdOnly()) {
-                    idList.add((String)document.get(IndexFields.ID));
+                    idList.add((String) document.get(IndexFields.ID));
                     result.setResults(idList);
                 } else {
                     appendFeatureResult(document, reader, fc, point);
                     result.setResults(fc);
                 }
-              } catch (Throwable t) {
+            } catch (Throwable t) {
                 logger.error("{}", t, t);
             }
         }
         return result;
+    }
+
+    private Map<String, Object> appendChildren(SimpleOrderedMap<?> object) {
+        Map<String, Object> map = new HashMap<>();
+        List<?> list = (List<?>) object.get(BUCKETS);
+
+        for (Object obj : list) {
+            SimpleOrderedMap<?> f = (SimpleOrderedMap<?>) obj;
+            logger.debug(" --> {} ", f);
+            map.put(f.get(VAL).toString(), ((Number) f.get(COUNT)).longValue());
+            HashMap<String, SimpleOrderedMap<?>> subgroups = getSubgroups(f);
+            if (!subgroups.isEmpty()) {
+                Map<String,Object> subMap = new HashMap<>();
+                map.put(f.get(VAL).toString(), subMap);
+                for (String key : subgroups.keySet()) {
+                    subMap.put(key, appendChildren((SimpleOrderedMap<?>) subgroups.get(key)));
+                }
+            }
+            for (String subgroup : SUBGROUPS) {
+                Object sub = f.get(subgroup);
+                if (sub != null) {
+                }
+            }
+        }
+        if (includeMissing) {
+        Object miss = object.get(MISSING);
+        if (miss != null) {
+            SimpleOrderedMap<?> missing = (SimpleOrderedMap<?>)miss;
+            map.put("",((Number)missing.get(COUNT)).longValue());
+        }
+        }
+        return map;
+    }
+
+    private HashMap<String,SimpleOrderedMap<?>> getSubgroups(SimpleOrderedMap<?> f) {
+        HashMap<String,SimpleOrderedMap<?>> ret = new HashMap<>();
+        for (String subgroup : SUBGROUPS) {
+            Object sub = f.get(subgroup);
+            if (sub != null) {
+                ret.put(subgroup, (SimpleOrderedMap<?>) sub);
+            }
+        }
+        return ret;
     }
 
     private void appendFeatureResult(SolrDocument document, WKTReader reader, FeatureCollection fc, String point) {
@@ -125,10 +199,10 @@ public class SolrService {
         feature.setProperty(IndexFields.COUNTRY, document.get(IndexFields.COUNTRY));
         feature.setProperty(IndexFields.START, document.get(IndexFields.START));
         feature.setProperty(IndexFields.END, document.get(IndexFields.END));
-//        logger.debug("{}", document);
-//        logger.debug("{}", document.getChildDocumentCount());
-        if (CollectionUtils.isNotEmpty(document.getChildDocuments() )) {
-//            logger.debug("child docs: " +  document.getChildDocuments());
+        // logger.debug("{}", document);
+        // logger.debug("{}", document.getChildDocumentCount());
+        if (CollectionUtils.isNotEmpty(document.getChildDocuments())) {
+            // logger.debug("child docs: " + document.getChildDocuments());
             feature.setProperty("data", document.getChildDocuments());
         }
         String date = formateDate(document);
@@ -146,16 +220,18 @@ public class SolrService {
 
         }
         fc.add(feature);
-        
+
     }
 
     private void buildResultsFacets(SearchResultObject result, QueryResponse query) {
-        for (FacetField facet : query.getFacetFields()) {
-            Map<String, Long> map = new HashMap<>();
-            facet.getValues().forEach(val -> {
-                map.put(val.getName(), val.getCount());
-            });
-            result.getFacets().put(facet.getName(), map);
+        if (CollectionUtils.isNotEmpty(query.getFacetFields())) {
+            for (FacetField facet : query.getFacetFields()) {
+                Map<String, Object> map = new HashMap<>();
+                facet.getValues().forEach(val -> {
+                    map.put(val.getName(), val.getCount());
+                });
+                result.getFacets().put(facet.getName(), map);
+            }
         }
     }
 
@@ -173,16 +249,26 @@ public class SolrService {
         return bq;
     }
 
-    private SolrQuery setupQueryWithFacetsAndFilters(int limit, StringBuilder bq) {
-        String q = bq.toString();
-        if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
-            q = "*:*";
-        }
+    private SolrQuery setupQueryWithFacetsAndFilters(int limit, String q) {
         SolrQuery params = new SolrQuery(q);
+        String LIMIT = "limit:5";
+        String normal = "";
+        List<String> lst = Arrays.asList(IndexFields.CATEGORY, IndexFields.COUNTRY, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
+                IndexFields.TOPIC_ID_3RD, IndexFields.REGION, IndexFields.SOURCE, IndexFields.DECADE);
+        for (int i = 0; i < lst.size(); i++) {
+            String fld = lst.get(i);
+            normal += ", " + fld + ": {type:terms, missing:true, " + LIMIT + ", field: '" + fld + "'} ";
+        }
+
+        params.setParam("json.facet", "{temporal: { type:terms, field:" + IndexFields.CATEGORY + ", " + LIMIT + ", missing:true, facet: { "
+                + IndexFields.CENTURY + ": {type:'terms', missing:true, " + LIMIT + ", field:'" + IndexFields.CENTURY + "'}, "
+                + IndexFields.MILLENIUM + ": {type:'terms', missing:true, " + LIMIT + ", field:'" + IndexFields.MILLENIUM + "'},"
+                + IndexFields.DECADE + ": {type:terms, missing:true, " + LIMIT + ", field:'" + IndexFields.DECADE + "'} "
+                + "}} " + normal +
+                "}");
         params.setParam("rows", Integer.toString(limit));
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
-        params.addFacetField(IndexFields.CATEGORY, IndexFields.CENTURY, IndexFields.COUNTRY, IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND, IndexFields.TOPIC_ID_3RD, IndexFields.REGION);
-        params.setFields("*","[child parentFilter=\"internalType:object\"]");
+        params.setFields("*", "[child parentFilter=\"internalType:object\"]");
         params.setFacetMinCount(1);
         return params;
     }
@@ -209,7 +295,6 @@ public class SolrService {
         return date;
     }
 
-
     public static boolean crossesDateline(double minLongitude, double maxLongitude) {
         /*
          * below is the logic that was originally used in PostGIS -- it worked to help identify issues where a box was
@@ -231,6 +316,7 @@ public class SolrService {
 
         return false;
     }
+
     private void appendSpatial(SearchQueryObject sqo, StringBuilder bq) {
         double[] topLeft = sqo.getSpatial().getTopLeft();
         double[] bottomRight = sqo.getSpatial().getBottomRight();
@@ -239,29 +325,29 @@ public class SolrService {
         }
         // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
         StringBuilder spatial = new StringBuilder();
-        //*** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** // 
+        // *** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** //
         Double minLong = topLeft[0];
         Double maxLat = bottomRight[1];
         Double minLat = topLeft[1];
         Double maxLong = bottomRight[0];
-        if (crossesDateline(minLong,maxLong) && ! crossesPrimeMeridian(minLong,maxLong)) {
-            spatial.append (String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" OR"
+        if (crossesDateline(minLong, maxLong) && !crossesPrimeMeridian(minLong, maxLong)) {
+            spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" OR"
                     + "  %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-            minLong, -180d, maxLat,minLat,
-            IndexFields.POINT,
-            180d, minLong, maxLat,minLat));
+                    minLong, -180d, maxLat, minLat,
+                    IndexFields.POINT,
+                    180d, minLong, maxLat, minLat));
 
-        } else  if (crossesPrimeMeridian(minLong,maxLong)) {
-            spatial.append (String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-            minLong, maxLong,  maxLat,minLat));
+        } else if (crossesPrimeMeridian(minLong, maxLong)) {
+            spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+                    minLong, maxLong, maxLat, minLat));
         } else {
             if (minLat > maxLat) {
                 Double t = maxLat;
                 maxLat = minLat;
                 minLat = t;
             }
-            spatial.append (String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-                    minLong, maxLong,  maxLat,minLat));             
+            spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+                    minLong, maxLong, maxLat, minLat));
         }
         if (bq.length() > 0) {
             bq.append(" AND ");

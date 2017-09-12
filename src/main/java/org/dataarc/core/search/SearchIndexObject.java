@@ -11,6 +11,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.schema.Category;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.util.SchemaUtils;
 import org.geojson.Feature;
@@ -94,6 +95,9 @@ public class SearchIndexObject {
     private Geometry geometry;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
+    @Field(value=IndexFields.CATEGORY)
+    private Category category;
+
     public SearchIndexObject() {
     }
 
@@ -108,7 +112,7 @@ public class SearchIndexObject {
         start = entry.getStart();
         end = entry.getEnd();
         source = entry.getSource();
-
+        setCategory(schema.getCategory());
         if (CollectionUtils.isNotEmpty(entry.getIndicators())) {
             indicators = entry.getIndicators();
             values.addAll(indicators);
@@ -392,6 +396,14 @@ public class SearchIndexObject {
 
     public Geometry getGeometry() {
         return geometry;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 }
