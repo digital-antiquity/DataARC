@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,7 +17,7 @@ public class SearchController extends AbstractRestController {
     private SolrService luceneService;
 
     @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET)
-    public SearchResultObject search(@RequestBody(required = true) SearchQueryObject query) throws Exception {
+    public SearchResultObject search(@RequestParam(required = false, name="query") SearchQueryObject query) throws Exception {
         try {
             return luceneService.search(query);
         } catch (Throwable t) {
