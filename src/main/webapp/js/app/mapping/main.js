@@ -41,6 +41,7 @@
                   content: $(JsonHuman.format(binding.value)).html(),
                   html:true,
                   placement: 'left',
+                  delay: { "show": 1, "hide": 500 },
                   trigger: 'hover'          
               })
           })

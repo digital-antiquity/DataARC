@@ -173,7 +173,7 @@
                 <table class="table">
                 <thead>
                     <tr>
-                        <td colspan=10">Search Results: {{ results.length }} out of {{schema[currentSchema].rows}} total records</td>
+                        <td colspan=10">Search Results: {{ results.length }} out of {{ schema[currentSchema].rows }} total records</td>
                     </tr>
                     <tr>
                         <th>id</th>
@@ -182,7 +182,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="result in results" class="table">
-                        <td><span v-jsonpretty="result.properties">{{result.id}}</span></td>
+                        <td><p v-jsonpretty="result.properties">{{result.id}}</p></td>
                         <td><a v-show="result.properties['Link'] != undefined && result.properties['Link'] != ''" target="_blank" v-bind:href="result.properties['Link']"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a></td>
                     </tr>
                     </tbody>
