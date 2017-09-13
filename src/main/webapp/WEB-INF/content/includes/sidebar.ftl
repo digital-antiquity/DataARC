@@ -16,6 +16,7 @@
  
    ${currentUserDisplayName!'none' }</b>
     <ul class="nav nav-sidebar">
+    <#if editor>
         <li><a href="/a/schema/">Data Sources</a></li>
         <li><a href="/a/mapping/">Combinators</a></li>
         <#if admin>
@@ -23,6 +24,7 @@
             <li><a href="/a/admin">Reindex</a></li>
 <!--            <li><a href="/a/admin/source">Add Datafile</a></li> -->
         </ul></li>
+        </#if>
         </#if>
         <li><a href="/logout">Log Out</a></li>
     </ul>

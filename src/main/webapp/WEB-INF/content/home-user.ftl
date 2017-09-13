@@ -10,6 +10,6 @@
     
     <@body.body>
 <h1> Welcome User!</h1>
-
+<a href="mailto:abrin@digitalantiquity.org">Request Contributor Access</a>
 </@body.body>
 </html>
