@@ -13,6 +13,7 @@
 <!--
 -->
 <script src="${contextPath}/components/vue/dist/vue.min.js"></script>
+<script src="${contextPath}/components/json-human/src/json.human.js"></script>
 <script src="${contextPath}/components/vee-validate/dist/vee-validate.min.js"></script>
 <script src="${contextPath}/components/vue-resource/dist/vue-resource.min.js"></script>
 

@@ -27,15 +27,24 @@
           cb(matches);
         };
       };
-    Vue.directive('popover', function(el, binding){
-        $(el).popover({
-                 content: $(binding.value).html(),
-                 html:true,
-                 placement: binding.arg,
-                 trigger: 'hover'             
-             })
-    })
-    
+      Vue.directive('popover', function(el, binding){
+          $(el).popover({
+                   content: $(binding.value).html(),
+                   html:true,
+                   placement: binding.arg,
+                   trigger: 'hover'             
+               })
+      })
+
+          Vue.directive('jsonpretty', function(el, binding){
+              $(el).popover({
+                  content: $(JsonHuman.format(binding.value)).html(),
+                  html:true,
+                  placement: 'left',
+                  trigger: 'hover'          
+              })
+          })
+
     var setupTypeahead = function(el_, binding) {
         $(el_).typeahead('destroy');
         $(el_).typeahead({

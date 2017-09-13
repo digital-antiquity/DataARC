@@ -178,17 +178,12 @@
                     <tr>
                         <th>id</th>
                         <th>link</th>
-                        <th>raw</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="result in results" class="table">
-                        <td>{{result.id}}</td>
-<!--                        <td>{{result.properties.source}}</td>
-                        <td>{{result.properties.Start}}</td>
-                        <td>{{result.properties.End}}</td> -->
+                        <td><span v-jsonpretty="result.properties">{{result.id}}</span></td>
                         <td><a v-show="result.properties['Link'] != undefined && result.properties['Link'] != ''" target="_blank" v-bind:href="result.properties['Link']"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a></td>
-                        <td><textarea>{{result.properties }}</textarea></td>
                     </tr>
                     </tbody>
                 </table>
