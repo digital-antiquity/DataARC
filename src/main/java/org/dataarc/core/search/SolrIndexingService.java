@@ -172,12 +172,19 @@ public class SolrIndexingService {
      * @param searchIndexObject
      */
     private void applyFacets(SearchIndexObject searchIndexObject) {
+        if (searchIndexObject  == null) {
+            return;
+        }
         logger.trace("start: {}, end: {}", searchIndexObject.getStart(), searchIndexObject.getEnd());
         if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
             applyDateFacets(searchIndexObject);
             if (logger.isTraceEnabled()) {
             logger.trace("mil: {}, cent: {}, dec: {}", searchIndexObject.getMillenium(), searchIndexObject.getCentury(), searchIndexObject.getDecade());
             }
+        }
+        
+        if (searchIndexObject.getGeometry() == null) {
+            return;
         }
         List<JsonFile> files = jsonFileDao.findAll();
         for (JsonFile file : files) {
@@ -187,8 +194,11 @@ public class SolrIndexingService {
                 for (Feature feature : featureCollection.getFeatures()) {
                     GeoJSONReader reader = new GeoJSONReader();
                     Geometry geometry = reader.read(feature.getGeometry());
+                    if (geometry == null) {
+                        continue;
+                    }
                     if (geometry.contains(searchIndexObject.getGeometry())) {
-                        searchIndexObject.getRegion().add(file.getId() + "-" + feature.getId());
+                        searchIndexObject.getRegion().add(file.getId() + "_____" + feature.getProperties().get("id"));
                     }
 
                 }

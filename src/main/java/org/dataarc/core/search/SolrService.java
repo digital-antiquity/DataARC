@@ -45,7 +45,7 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @Service
 public class SolrService {
-    private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM);
+    private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE, IndexFields.REGION, IndexFields.COUNTRY);
     private static final String VAL = "val";
     private static final String MISSING = "missing";
     private static final String BUCKETS = "buckets";
@@ -95,7 +95,7 @@ public class SolrService {
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
         SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get("facets");
 
-        logger.trace("{}", facetMap);
+        logger.debug("{}", facetMap);
         for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
             logger.trace("{}", field);
             logger.debug("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
@@ -152,8 +152,10 @@ public class SolrService {
             map.put(f.get(VAL).toString(), ((Number) f.get(COUNT)).longValue());
             HashMap<String, SimpleOrderedMap<?>> subgroups = getSubgroups(f);
             if (!subgroups.isEmpty()) {
-                Map<String,Object> subMap = new HashMap<>();
+                Map<String, Object> subMap = new HashMap<>();
                 map.put(f.get(VAL).toString(), subMap);
+                subMap.put("count", ((Number) f.get(COUNT)).longValue());
+
                 for (String key : subgroups.keySet()) {
                     subMap.put(key, appendChildren((SimpleOrderedMap<?>) subgroups.get(key)));
                 }
@@ -165,17 +167,17 @@ public class SolrService {
             }
         }
         if (includeMissing) {
-        Object miss = object.get(MISSING);
-        if (miss != null) {
-            SimpleOrderedMap<?> missing = (SimpleOrderedMap<?>)miss;
-            map.put("",((Number)missing.get(COUNT)).longValue());
-        }
+            Object miss = object.get(MISSING);
+            if (miss != null) {
+                SimpleOrderedMap<?> missing = (SimpleOrderedMap<?>) miss;
+                map.put("", ((Number) missing.get(COUNT)).longValue());
+            }
         }
         return map;
     }
 
-    private HashMap<String,SimpleOrderedMap<?>> getSubgroups(SimpleOrderedMap<?> f) {
-        HashMap<String,SimpleOrderedMap<?>> ret = new HashMap<>();
+    private HashMap<String, SimpleOrderedMap<?>> getSubgroups(SimpleOrderedMap<?> f) {
+        HashMap<String, SimpleOrderedMap<?>> ret = new HashMap<>();
         for (String subgroup : SUBGROUPS) {
             Object sub = f.get(subgroup);
             if (sub != null) {
@@ -249,23 +251,40 @@ public class SolrService {
         return bq;
     }
 
+    static final String LIMIT = "limit:5";
+
+    private String makeFacet(String key) {
+        return String.format("%s: {type:terms, missing:true, %s, field:'%s'}", key, LIMIT, key);
+    }
+
+    private String makeFacetGroup(String name, String key, String internal) {
+        return String.format(" %s: { type:terms, field:%s, %s , missing:true, facet: { %s } } ", name, key, LIMIT, internal);
+    }
+
     private SolrQuery setupQueryWithFacetsAndFilters(int limit, String q) {
         SolrQuery params = new SolrQuery(q);
-        String LIMIT = "limit:5";
         String normal = "";
-        List<String> lst = Arrays.asList(IndexFields.CATEGORY, IndexFields.COUNTRY, IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
-                IndexFields.TOPIC_ID_3RD, IndexFields.REGION, IndexFields.SOURCE, IndexFields.DECADE);
+        List<String> lst = Arrays.asList(IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
+                IndexFields.TOPIC_ID_3RD, IndexFields.SOURCE, IndexFields.DECADE);
         for (int i = 0; i < lst.size(); i++) {
             String fld = lst.get(i);
-            normal += ", " + fld + ": {type:terms, missing:true, " + LIMIT + ", field: '" + fld + "'} ";
+            normal += ", " + makeFacet(fld);
         }
 
-        params.setParam("json.facet", "{temporal: { type:terms, field:" + IndexFields.CATEGORY + ", " + LIMIT + ", missing:true, facet: { "
-                + IndexFields.CENTURY + ": {type:'terms', missing:true, " + LIMIT + ", field:'" + IndexFields.CENTURY + "'}, "
-                + IndexFields.MILLENIUM + ": {type:'terms', missing:true, " + LIMIT + ", field:'" + IndexFields.MILLENIUM + "'},"
-                + IndexFields.DECADE + ": {type:terms, missing:true, " + LIMIT + ", field:'" + IndexFields.DECADE + "'} "
-                + "}} " + normal +
-                "}");
+        String facet = "{" + makeFacetGroup("temporal", IndexFields.CATEGORY,
+                makeFacet(IndexFields.CENTURY) + ", "
+                        + makeFacet(IndexFields.MILLENIUM) + ","
+                        + makeFacet(IndexFields.DECADE));
+        facet += "," + makeFacetGroup("category", IndexFields.CATEGORY,
+                makeFacet(IndexFields.SOURCE));
+        facet += "," + makeFacetGroup("spatial", IndexFields.CATEGORY,
+                makeFacet(IndexFields.REGION) + "," +
+                makeFacet(IndexFields.COUNTRY)
+                );
+        facet += normal + "}";
+
+        logger.debug(facet);
+        params.setParam("json.facet", facet);
         params.setParam("rows", Integer.toString(limit));
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
         params.setFields("*", "[child parentFilter=\"internalType:object\"]");

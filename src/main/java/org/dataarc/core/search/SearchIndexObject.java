@@ -55,10 +55,10 @@ public class SearchIndexObject {
     private List<Integer> millenium = new ArrayList<>();
 
     @Field(value=IndexFields.COUNTRY)
-    private List<String> country;
+    private List<String> country = new ArrayList<>();
 
     @Field(value=IndexFields.REGION)
-    private List<String> region;
+    private List<String> region = new ArrayList<>();
 
     @Field(value=IndexFields.TYPE)
     private ObjectType type;
