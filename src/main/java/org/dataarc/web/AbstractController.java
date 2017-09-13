@@ -64,6 +64,9 @@ public abstract class AbstractController {
         if (user == null) {
             return false;
         }
+        if (user.isAdmin()) {
+            return true;
+        }
         return user.isEditor();
     } 
     

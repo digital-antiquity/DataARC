@@ -211,7 +211,7 @@
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
 				 
-  			    <input class="typeahead" type="text" placeholder="Search" v-typeahead="getFieldValues(part.fieldName)"
+  			    <input class="typeahead" type="text" placeholder="Search" v-typeahead="getFieldValues(part.fieldName)" v:bind:value="field.value"
   			    @input="runQuery()">
                 
                 <span v-show="rowindex > 0">
