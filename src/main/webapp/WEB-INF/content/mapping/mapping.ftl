@@ -71,7 +71,13 @@
                         @select="onValidChange"
                         ></spart>
                     </ul>
-                    <div v-if="indicators[currentIndicator].query.conditions.length > 1">{{ indicators[currentIndicator].query.operator }}</div>
+                    <div v-if="indicators[currentIndicator].query.conditions.length > 1">
+                    <select name="operator" v-model="indicators[currentIndicator].query.operator" v-on:change="runQuery()" >
+                    	<option value="AND" selected="{{'AND' == indicators[currentIndicator].query.operator}}" >And</option>
+                    	<option value="OR" selected="{{'OR' == indicators[currentIndicator].query.operator}}">Or</option>
+                    	<option value="EXCEPT" selected="{{'EXCEPT' == indicators[currentIndicator].query.operator}}">Except</option>
+                	</select>
+                    </div>
                 </div>
             </div>
 
@@ -167,7 +173,7 @@
                 <table class="table">
                 <thead>
                     <tr>
-                        <td colspan=10">Search Results: {{ results.length }} out of XXX total records</td>
+                        <td colspan=10">Search Results: {{ results.length }} out of {{schema[currentSchema].rows}} total records</td>
                     </tr>
                     <tr>
                         <th>id</th>

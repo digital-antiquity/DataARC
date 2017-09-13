@@ -95,9 +95,9 @@ public class SolrService {
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
         SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get("facets");
 
-        logger.debug("{}", facetMap);
+        logger.trace("{}", facetMap);
         for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
-            logger.debug("{}", field);
+            logger.trace("{}", field);
             logger.debug("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
             if (facetMap.get(field) instanceof SimpleOrderedMap) {
                 SimpleOrderedMap<?> object = (SimpleOrderedMap<?>) facetMap.get(field);
@@ -148,7 +148,7 @@ public class SolrService {
 
         for (Object obj : list) {
             SimpleOrderedMap<?> f = (SimpleOrderedMap<?>) obj;
-            logger.debug(" --> {} ", f);
+            logger.trace(" --> {} ", f);
             map.put(f.get(VAL).toString(), ((Number) f.get(COUNT)).longValue());
             HashMap<String, SimpleOrderedMap<?>> subgroups = getSubgroups(f);
             if (!subgroups.isEmpty()) {

@@ -82,13 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     OAuth2ClientContext oauth2ClientContext;
-    //
-    // @Autowired
-    // private OAuth2RestTemplate restTemplate;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
+        auth.inMemoryAuthentication().withUser("user").password("password").roles(UserService.ADMIN_ROLE.replace("ROLE_", ""));
     }
 
     @Resource
@@ -97,12 +94,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthoritiesExtractor authoritiesExtractor;
 
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/api/search", "/login**");
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/api/search",
+                    "/login**");
         } else {
             web.ignoring().antMatchers("/**");
         }
@@ -112,14 +109,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity web) throws Exception {
         super.configure(web);
         web.csrf().ignoringAntMatchers("/api/**", "/json/**").disable();
-
+        web.cors().disable();
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.addFilterAfter(new OAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                    .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
-
+            if (env.getProperty("security.ussOauth", Boolean.class, true)) {
+                web.addFilterAfter(new OAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+                        .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
+            }
             web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", "")).antMatchers("/a/admin/**")
-                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().
-                    formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME).loginPage("/login").permitAll();
+                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME)
+                    .loginPage("/login").permitAll();
 
             web.logout().permitAll();
 
@@ -129,10 +127,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    
     private void setupDetails(AuthorizationCodeResourceDetails details) {
         details.setUseCurrentUri(true);
-//        details.setPreEstablishedRedirectUri("http://"+env.getProperty("hostname","localhost:8280")+"/a/home");
+        // details.setPreEstablishedRedirectUri("http://"+env.getProperty("hostname","localhost:8280")+"/a/home");
         details.setTokenName("oauth_token");
         details.setAuthenticationScheme(AuthenticationScheme.query);
         details.setClientAuthenticationScheme(AuthenticationScheme.form);
@@ -189,11 +186,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public LocalCrowdAuthenticationProvider crowdAuthenticationProvider() {
         return new LocalCrowdAuthenticationProvider(crowdClient());
     }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(crowdAuthenticationProvider());
-//    }
+    
+     @Override
+     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+         if (env.getProperty("security.ussOauth", Boolean.class, false)) {
+             auth.authenticationProvider(crowdAuthenticationProvider());
+         }
+     }
 
     @Bean
     public ResourceServerProperties googleResource() {
@@ -220,7 +219,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         details.setClientId(env.getProperty("google.clientId"));
         details.setClientSecret(env.getProperty("google.clientSecret"));
         setupDetails(details);
-        
+
         details.setScope(Arrays.asList("openid", "email", "profile"));
         return details;
     }
@@ -231,7 +230,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return template;
     }
 
-//    @Bean
+    // @Bean
     // @ConfigurationProperties("security.oauth2.resource")
     public ResourceServerProperties facebookResource() {
         ResourceServerProperties properties = new ResourceServerProperties();
@@ -254,7 +253,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return details;
     }
 
-
     @Bean
     public OAuth2RestTemplate facebookOpenIdTemplate(final OAuth2ClientContext clientContext) {
         final OAuth2RestTemplate template = new OAuth2RestTemplate(facebookOpenId(), clientContext);
@@ -267,13 +265,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Autowired
             private UserService userService;
+
             @Override
             public List<GrantedAuthority> extractAuthorities(Map<String, Object> map) {
-                //for google:
-                
+                // for google:
+
                 logger.debug("{}", map);
                 DataArcUser user = userService.findSaveUpdateUser(map);
-//                DataArcUser user = userService.findByExternalId(map.get("id").toString());
+                // DataArcUser user = userService.findByExternalId(map.get("id").toString());
                 ArrayList<GrantedAuthority> auths = new ArrayList<>();
                 userService.enhanceGroupMembership(user, auths);
                 return auths;

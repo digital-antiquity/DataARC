@@ -41,7 +41,7 @@ public class MongoDao implements ImportDao, QueryDao {
 
     @Autowired
     SchemaDao schemaDao;
-    
+
     @Autowired
     SourceRepository repository;
 
@@ -74,11 +74,12 @@ public class MongoDao implements ImportDao, QueryDao {
         Set<String> findAll = schemaDao.findAllSchemaNames();
         Schema schema = null;
         String lookup = fq.getSchema().trim();
-        
+
+        Criteria schemaCriteria = null;
         for (String name : findAll) {
             if (name.toLowerCase().equals(lookup)) {
                 schema = schemaDao.findByName(name);
-                q.addCriteria(Criteria.where(IndexFields.SOURCE).is(schema.getDisplayName()));
+                schemaCriteria = Criteria.where(IndexFields.SOURCE).is(schema.getDisplayName());
             }
         }
 
@@ -92,11 +93,11 @@ public class MongoDao implements ImportDao, QueryDao {
                 throw new QueryException("invalid query (no field specified)");
             }
             String name = "properties.";
-            for (Field f: schema.getFields()){
+            for (Field f : schema.getFields()) {
                 if (f.getId() == part.getFieldId()) {
                     name += f.getMongoName();
                 }
-                if (Objects.equals(f.getName() , part.getFieldName())) {
+                if (Objects.equals(f.getName(), part.getFieldName())) {
                     name += f.getMongoName();
                 }
             }
@@ -127,12 +128,12 @@ public class MongoDao implements ImportDao, QueryDao {
                 group = group.andOperator(criteria.toArray(new Criteria[0]));
                 break;
             case EXCEPT:
-                    group = group.norOperator(criteria.toArray(new Criteria[0]));
+                group = group.norOperator(criteria.toArray(new Criteria[0]));
                 break;
-                default:
-                    group = group.orOperator(criteria.toArray(new Criteria[0]));
+            default:
+                group = group.orOperator(criteria.toArray(new Criteria[0]));
         }
-        q.addCriteria(group);
+        q.addCriteria(new Criteria().andOperator(schemaCriteria, group));
         logger.debug(" :: query :: {}", q);
         List<DataEntry> find = template.find(q, DataEntry.class);
         return find;
@@ -157,8 +158,8 @@ public class MongoDao implements ImportDao, QueryDao {
         DataEntry entry = new DataEntry(source, json);
         entry.setEnd(parseIntProperty(props.getOrDefault("End", props.get(IndexFields.END))));
         Object title = props.getOrDefault("Title", props.get(IndexFields.TITLE));
-        if (title != null && StringUtils.isNotBlank((String)title)) {
-            entry.setTitle((String)title);
+        if (title != null && StringUtils.isNotBlank((String) title)) {
+            entry.setTitle((String) title);
         }
         entry.setStart(parseIntProperty(props.getOrDefault("Start", props.get(IndexFields.START))));
 

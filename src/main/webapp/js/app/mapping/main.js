@@ -1,27 +1,3 @@
-//require.config({
-//  baseUrl: "",
-//  paths: {
-//    'vue': '/components/vue/dist/vue',
-//    'jquery' : '/components/jquery/dist/jquery',
-//    'vue-resource': '/components/vue-resource/dist/vue-resource',
-//    'bootstrap': '/components/bootstrap/dist/js/bootstrap.min',
-//    "typeahead" : '/components/typeahead.js/dist/typeahead.bundle',
-//    "handlebar" : 'http://twitter.github.io/typeahead.js/js/handlebars',
-//  },
-//  shim: {
-//    vue: {
-//      exports: 'Vue'
-//    },
-//    bootstrap : { "deps" :['jquery'] },
-//    typeaead: { "deps" :['jquery'] }
-//  }
-//
-//});
-//require([
-//    'vue','jquery','vue-resource','bootstrap','typeahead',"handlebar"
-//    ], function(Vue,JQuery,VueResource,Bootstrap,Typeahead,Handlebars){
-  
-//    var Resource = require('vue-resource');
     Vue.use(VueResource);
 
     Vue.config.errorHandler = function (err, vm) {
@@ -65,7 +41,7 @@
         $(el_).typeahead({
             hint: true,
             highlight: true,
-            minLength: 1
+            minLength: 0
           },
           {
             name: 'states',
