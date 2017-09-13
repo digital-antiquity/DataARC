@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <span class='debug hidden'>{{ indicators[currentIndicator] }}</span>
+            <span class='debug  hidden'>{{ indicators[currentIndicator] }}</span>
 
 
 
@@ -182,7 +182,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="result in results" class="table">
-                        <td><p v-jsonpretty="result.properties">{{result.id}}</p></td>
+                        <td><div v-jsonpretty="result.properties">{{result.id}}</div></td>
                         <td><a v-show="result.properties['Link'] != undefined && result.properties['Link'] != ''" target="_blank" v-bind:href="result.properties['Link']"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a></td>
                     </tr>
                     </tbody>
@@ -203,16 +203,15 @@
             </div>
 
         <template id="spart-template">
-            <div> 
+            <div >  
                 <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()" class="form-control">
                     <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
                 </select>
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-				 
-  			    <input class="typeahead" type="text" placeholder="Search" v-typeahead="getFieldValues(part.fieldName)" v:bind:value="field.value"
-  			    @input="runQuery()">
+  			    <input class="typeahead" type="text" placeholder="Search" name='typeahead'  v-typeahead.part="part" v-typeahead="getFieldValues(part.fieldName)"  v-model="part.value" v-bind:value="part.value"
+  			      v-on:change="updateTest()" @input="onValidChange()" >
                 
                 <span v-show="rowindex > 0">
                 <button type="button" class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>

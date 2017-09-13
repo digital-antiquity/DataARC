@@ -1,7 +1,8 @@
 package org.dataarc.web.api.schema;
 
-import java.util.Set;
+import java.util.List;
 
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
@@ -16,8 +17,8 @@ public class ListSchema extends AbstractRestController {
     private SchemaService schemaService;
 
     @RequestMapping(path=UrlConstants.SCHEMA_LIST, produces={"application/json;charset=UTF-8"})
-    public Set<String> listSchema() throws Exception {
-        return schemaService.getSchema();
+    public List<Schema> listSchema() throws Exception {
+        return schemaService.findAll();
     }
 
 }

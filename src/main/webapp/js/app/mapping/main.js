@@ -18,7 +18,7 @@
           // iterate through the pool of strings and for any string that
           // contains the substring `q`, add it to the `matches` array
           $.each(strs, function(i, str) {
-              console.log(str.value);
+//              console.log(str.value);
             if (substrRegex.test(str.value)) {
               matches.push(str);
             }
@@ -46,10 +46,10 @@
               })
           })
 
-    var setupTypeahead = function(el_, binding) {
+    var setupTypeahead = function(el_, binding,parent) {
         $(el_).typeahead('destroy');
         $(el_).typeahead({
-            hint: true,
+            hint: false,
             highlight: true,
             minLength: 0
           },
@@ -60,14 +60,18 @@
             templates: {
                 suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
               }
-          });    }
+          });   
+        $(el_).bind('typeahead:select', function(ev, suggestion) {
+            parent.setValue(suggestion.value);
+        });
+      }
     Vue.directive('typeahead', {
-        update : function(el_,binding){
-            setupTypeahead(el_,binding);
+        update : function(el_,binding,v){
+            setupTypeahead(el_,binding,v.context._self);
 
         },
-        inserted:  function(el_, binding) {
-            setupTypeahead(el_,binding);
+        inserted:  function(el_, binding,v) {
+            setupTypeahead(el_,binding,v.context._self);
         }
     })
 /**
@@ -100,10 +104,6 @@
               }
               return r;
           },
-          onOptionSelect(option) {
-//              console.log('Selected option:', option);
-//              this.$emit('select', option);
-            },
           getHtmlFieldType(name){
               if (name == undefined || name == '') {
                   return "text";
@@ -139,19 +139,26 @@
               var fld = this.fields[index];
               return fld.values;
           },
-          updateValue: function(value,index) {
-              this.parts[index].value = value;
+          setValue: function(val) {
+//              console.log('setValue:' + val);
+              this.parts[this.rowindex].value = val;
+              Vue.set(this,'part.value',val);
               this.$parent.runQuery();
           },
           addPart: function() {
-              this.parts.push({type:'EQUALS'});
+              this.parts.push({type:'EQUALS',value:'',fieldName:''});
           },
           removePart: function(idx) {
             this.parts.splice(idx ,1);  
           },
-          updateTest() {
+          typechange: function() {
+              console.log('catch typechange');
+          },
+          updateTest: function() {
               // FIXME: hack, replace with component and proper binding?
-            this.$forceUpdate();  
+//              console.log('change!!');
+              this.$forceUpdate();
+              this.$parent.runQuery();
           },
       }
   });
@@ -165,6 +172,7 @@ var Hack = new Vue({
     fields: [],
     uniqueValues: [],
     indicators: [] ,
+    query: "",
     topics: [],
     selectedTopics: [],
     results: undefined,
@@ -212,7 +220,7 @@ var Hack = new Vue({
       'currentIndicator' : function(val, oldVal) {
           if (val === "new") {
               console.log("setup new indicator");
-              var indicator = {name:'New Indicator',citation:'',description:'',query: {conditions:[{type:'EQUALS'}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
+              var indicator = {name:'New Indicator',citation:'',description:'',query: {conditions:[{type:'EQUALS',value:''}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
               this.indicators.push(indicator);
               console.log(indicator);
               Vue.set(this,"currentIndicator", this.indicators.length -1);
@@ -236,7 +244,7 @@ var Hack = new Vue({
             .then(function (schema) {
                 var list = new Array();
                 schema.body.forEach(function(s) {
-                    list.push({name: s});
+                    list.push(s);
                 });
                 console.log(list);
               Vue.set(this, 'schema', list);
@@ -324,9 +332,14 @@ var Hack = new Vue({
           },
           runQuery() {
               var query = this.indicators[this.currentIndicator].query;
-              window.console.log("RunQuery-->", JSON.stringify(query));
+              var qs = JSON.stringify(query);
+              if (this.query == qs) {
+                  return;
+              }
+              this.query = qs;
+              window.console.log("RunQuery-->", qs);
 //              window.console.log();
-              this.$http.post(getContextPath() + '/api/query/datastore' , JSON.stringify(query), {emulateJSON:true,
+              this.$http.post(getContextPath() + '/api/query/datastore' , qs, {emulateJSON:true,
                   headers: {
                       'Content-Type': 'application/json'
                   }})
