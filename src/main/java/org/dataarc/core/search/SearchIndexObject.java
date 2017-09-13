@@ -103,6 +103,9 @@ public class SearchIndexObject {
 
     @SuppressWarnings("unchecked")
     public SearchIndexObject(DataEntry entry, Schema schema) {
+        if (schema == null) {
+            return;
+        }
         if (entry.getX() != null && entry.getY() != null) {
             Coordinate coord = new Coordinate(entry.getX(), entry.getY());
             geometry = geometryFactory.createPoint(coord);
@@ -129,9 +132,6 @@ public class SearchIndexObject {
             properties = new HashMap<>();
         }
 
-        if (schema == null) {
-            return;
-        }
 
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
