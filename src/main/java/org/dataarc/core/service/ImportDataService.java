@@ -9,11 +9,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.dataarc.bean.file.DataFile;
+import org.dataarc.bean.file.JsonFile;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.file.DataFileDao;
+import org.dataarc.core.dao.file.JsonFileDao;
 import org.dataarc.core.search.IndexFields;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.ObjectTraversalUtil;
@@ -31,10 +33,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ImportDataService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    Filestore filestore = Filestore.getInstance();
 
     @Autowired
     ImportDao importDao;
-
+    @Autowired
+    JsonFileDao jsonFileDao;
+    
     @Autowired
     SchemaDao schemaDao;
     @Autowired
@@ -85,7 +90,6 @@ public class ImportDataService {
     }
 
     private File storeDataFile(InputStream inputStream, String originalFilename, String schemaName, Schema schema) throws FileNotFoundException, IOException {
-        Filestore filestore = Filestore.getInstance();
         File imported = filestore.store(schemaName, inputStream, originalFilename);
         DataFile dataFile = new DataFile();
         dataFile.setName(imported.getName());
@@ -93,6 +97,16 @@ public class ImportDataService {
         dataFile.setSchema(schema);
         dataFileDao.save(dataFile);
         return imported;
+    }
+
+    @Transactional(readOnly = false)
+    public void importGeoJsonFile(InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
+        File imported = filestore.storeFile(inputStream, originalFilename);
+        JsonFile file = new JsonFile();
+        file.setName(imported.getName());
+        file.setPath(imported.getAbsolutePath());
+        file.setDisplayName(originalFilename);
+        jsonFileDao.save(file);
     }
 
 }

@@ -1,7 +1,6 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +11,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.similarities.IBSimilarity;
 import org.apache.lucene.spatial.prefix.RecursivePrefixTreeStrategy;
 import org.apache.lucene.spatial.prefix.tree.GeohashPrefixTree;
 import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
@@ -28,7 +26,6 @@ import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
-import org.hibernate.hql.ast.origin.hql.parse.HQLParser.index_key_return;
 import org.locationtech.spatial4j.context.SpatialContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +42,8 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @Service
 public class SolrService {
-    private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE, IndexFields.REGION, IndexFields.COUNTRY);
+    private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE,
+            IndexFields.REGION, IndexFields.COUNTRY);
     private static final String VAL = "val";
     private static final String MISSING = "missing";
     private static final String BUCKETS = "buckets";
@@ -279,8 +277,7 @@ public class SolrService {
                 makeFacet(IndexFields.SOURCE));
         facet += "," + makeFacetGroup("spatial", IndexFields.CATEGORY,
                 makeFacet(IndexFields.REGION) + "," +
-                makeFacet(IndexFields.COUNTRY)
-                );
+                        makeFacet(IndexFields.COUNTRY));
         facet += normal + "}";
 
         logger.debug(facet);

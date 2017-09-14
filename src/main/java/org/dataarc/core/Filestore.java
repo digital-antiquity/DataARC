@@ -61,9 +61,16 @@ public class Filestore {
         return lastModifiedFile;
     }
 
+    public File storeFile(InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
+        File schemaDir = mkdir(new File(getBaseDir(), "files"));
+        File outfile = new File(schemaDir, String.format("%s-%s.%s",originalFilename, System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
+        IOUtils.copy(inputStream, new FileOutputStream(outfile));
+        return outfile;
+    }
+
     public File store(String schema, InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
         File schemaDir = mkdir(new File(getBaseDir(), schema));
-        File outfile = new File(schemaDir, String.format("schmea-%s.%s",System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
+        File outfile = new File(schemaDir, String.format("schema-%s.%s",System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
         IOUtils.copy(inputStream, new FileOutputStream(outfile));
         return outfile;
     }

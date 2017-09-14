@@ -13,6 +13,7 @@ import org.geojson.Feature;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
@@ -80,6 +81,12 @@ public class PostgresDao implements ImportDao {
     }
 
     public Map<String, Long> getDistinctValues(String source, String fieldName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<DataEntry> findFromGeometry(Geometry geometry) {
         // TODO Auto-generated method stub
         return null;
     }

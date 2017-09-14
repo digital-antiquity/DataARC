@@ -345,4 +345,9 @@
             <column name="category" type="varchar(100)"/>
         </addColumn>
      </changeSet>
+    <changeSet id="alpha-33" author="abrin">
+        <addColumn tableName="json_file">
+            <column name="display_name" type="varchar(255)" />
+        </addColumn>
+     </changeSet>
 </databaseChangeLog>

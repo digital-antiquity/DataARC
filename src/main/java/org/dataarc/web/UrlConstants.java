@@ -14,7 +14,9 @@ public interface UrlConstants {
     String REINDEX = "/api/admin/reindex";
     String ADMIN = "/a/admin";
     String ADMIN_SOURCE_DATA = "/a/admin/source";
+    String ADMIN_GEOJSON_DATA = "/a/admin/geojson";
     String ADMIN_SOURCE_UPLOAD_FILE = "/a/admin/uploadSourceFile";
+    String ADMIN_GEOJSON_UPLOAD_FILE = "/a/admin/uploadGeoJsonFile";
     String ADMIN_TOPIC_IMPORT = "/a/admin/uploadTopic";
     String ADMIN_TOPIC_DATA = "/a/admin/topic";
     String ADMIN_TOPIC_UPLOAD_FILE = "/a/admin/topicUploadFile";
@@ -26,5 +28,9 @@ public interface UrlConstants {
     String LIST_SCHEMA = "/a/schema";
     String VIEW_SCHEMA = "/a/schema/{name}";
     String DELETE_SCHEMA = "/a/schema/delete/{name}";
+    String REGEOCODE = "/apiadmin/regoeocode";
+    String LIST_JSON = "/a/geojson";
+    String GEOJSON_VIEW = "/geojson/{id}";
+    String DELETE_GEOJSON = "/geojson/{id}";
 
 }

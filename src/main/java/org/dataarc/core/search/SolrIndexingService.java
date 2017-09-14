@@ -62,9 +62,7 @@ public class SolrIndexingService {
 
     @Autowired
     ImportDao sourceDao;
-    @Autowired
-    JsonFileDao jsonFileDao;
-
+    
     @Autowired
     SchemaDao schemaDao;
     @Autowired
@@ -180,30 +178,6 @@ public class SolrIndexingService {
             applyDateFacets(searchIndexObject);
             if (logger.isTraceEnabled()) {
             logger.trace("mil: {}, cent: {}, dec: {}", searchIndexObject.getMillenium(), searchIndexObject.getCentury(), searchIndexObject.getDecade());
-            }
-        }
-        
-        if (searchIndexObject.getGeometry() == null) {
-            return;
-        }
-        List<JsonFile> files = jsonFileDao.findAll();
-        for (JsonFile file : files) {
-            try {
-                File file_ = new File(file.getPath(), file.getName());
-                FeatureCollection featureCollection = (FeatureCollection) GeoJSONFactory.create(IOUtils.toString(new FileReader(file_)));
-                for (Feature feature : featureCollection.getFeatures()) {
-                    GeoJSONReader reader = new GeoJSONReader();
-                    Geometry geometry = reader.read(feature.getGeometry());
-                    if (geometry == null) {
-                        continue;
-                    }
-                    if (geometry.contains(searchIndexObject.getGeometry())) {
-                        searchIndexObject.getRegion().add(file.getId() + "_____" + feature.getProperties().get("id"));
-                    }
-
-                }
-            } catch (IOException e) {
-                logger.error("erorr indexing spatial facet - {}",e,e);
             }
         }
 

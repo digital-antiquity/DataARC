@@ -97,6 +97,7 @@ public class DataEntry  implements Serializable {
     private Map<String, Object> properties = new HashMap<>();
     private Set<String> indicators = new HashSet<>();
     private Set<String> topics = new HashSet<>();
+    private Set<String> regions = new HashSet<>();
     private Set<String> topicIdentifiers = new HashSet<>();
 
     public String getId() {
@@ -159,5 +160,13 @@ public class DataEntry  implements Serializable {
             return position.getY();
         }
         return null;
+    }
+
+    public Set<String> getRegions() {
+        return regions;
+    }
+
+    public void setRegions(Set<String> regions) {
+        this.regions = regions;
     }
 }

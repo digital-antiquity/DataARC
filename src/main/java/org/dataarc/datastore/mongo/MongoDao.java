@@ -19,18 +19,23 @@ import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.QueryPart;
 import org.dataarc.core.search.IndexFields;
+import org.dataarc.core.service.GeometryWriteConverter;
 import org.geojson.Feature;
 import org.geojson.GeoJsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Shape;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.geo.GeoJson;
+import org.springframework.data.mongodb.core.geo.GeoJsonMultiPolygon;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vividsolutions.jts.geom.Geometry;
 
 @Component
 public class MongoDao implements ImportDao, QueryDao {
@@ -209,6 +214,40 @@ public class MongoDao implements ImportDao, QueryDao {
     @Override
     public Iterable<DataEntry> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<DataEntry> findFromGeometry(Geometry geometry) {
+        Query q = new Query();
+        logger.trace("{}", geometry.toText());
+        GeoJson convert = GeometryWriteConverter.INSTANCE.convert(geometry);
+        logger.trace("{}", convert);
+        try {
+            List<Criteria> list = new ArrayList<>();
+            if (convert instanceof GeoJsonMultiPolygon) {
+                GeoJsonMultiPolygon multiPolygon = (GeoJsonMultiPolygon) convert;
+                multiPolygon.getCoordinates().forEach(poly -> {
+                    Criteria criteria = Criteria.where("position").within((Shape) poly);
+                    list.add(criteria);
+                });
+
+            } else {
+                Criteria criteria = Criteria.where("position").within((Shape) convert);
+                list.add(criteria);
+            }
+            Criteria group = new Criteria();
+            group = group.orOperator(list.toArray(new Criteria[0]));
+            q.addCriteria(group);
+            List<DataEntry> find = template.find(q, DataEntry.class);
+            return find;
+        } catch (Exception e) {
+            logger.error("{}",e,e);
+            logger.debug("{}", geometry.toText());
+            logger.debug("{}", convert);
+
+            return new ArrayList<>();
+        }
+        // TODO Auto-generated method stub
     }
 
 }

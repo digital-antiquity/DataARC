@@ -21,8 +21,7 @@
         <li><a href="/a/mapping/">Combinators</a></li>
         <#if admin>
         <li><a href="/a/admin">Admin</a><ul>
-            <li><a href="/a/admin">Reindex</a></li>
-<!--            <li><a href="/a/admin/source">Add Datafile</a></li> -->
+            <li><a href="/a/geojson">GeoJson Files</a></li> 
         </ul></li>
         </#if>
         </#if>

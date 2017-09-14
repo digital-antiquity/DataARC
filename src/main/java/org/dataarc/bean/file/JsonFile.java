@@ -14,6 +14,8 @@ public class JsonFile extends AbstractPersistable {
 
     @Column(length = 100)
     private String name;
+    @Column(length = 100, name="display_name")
+    private String displayName;
     
     @Column(length = 1024)
     private String path;
@@ -32,5 +34,13 @@ public class JsonFile extends AbstractPersistable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

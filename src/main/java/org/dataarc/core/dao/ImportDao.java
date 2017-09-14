@@ -1,9 +1,12 @@
 package org.dataarc.core.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.dataarc.bean.DataEntry;
 import org.geojson.Feature;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 public interface ImportDao {
 
@@ -29,5 +32,7 @@ public interface ImportDao {
     void save(DataEntry entry);
 
     void deleteBySource(String name);
+
+    List<DataEntry> findFromGeometry(Geometry geometry);
 
 }
