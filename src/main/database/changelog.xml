@@ -371,4 +371,11 @@
         </addColumn>
 
     </changeSet>
+        <changeSet id="alpha-33" author="abrin">
+        <addColumn tableName="schema">
+            <column name="title_template" type="text" />
+            <column name="result_template" type="text" />
+        </addColumn>
+    </changeSet>
+    
 </databaseChangeLog>

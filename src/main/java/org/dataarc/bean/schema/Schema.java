@@ -28,7 +28,7 @@ public class Schema extends AbstractPersistable {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Column(length = 100, name="display_name")
+    @Column(length = 100, name = "display_name")
     private String displayName;
 
     @Column(length = 1024)
@@ -39,9 +39,19 @@ public class Schema extends AbstractPersistable {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
+    @Column(name = "title_template")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String titleTemplate;
+
+    @Column(name = "result_template")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String resultTemplate;
+
     @Column()
     private Integer rows;
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "schema_id", nullable = false)
     private Set<Field> fields = new HashSet<>();
@@ -62,13 +72,13 @@ public class Schema extends AbstractPersistable {
         this.fields = fields;
     }
 
-    
     public Field getFieldByName(String name) {
         for (Field fld : fields) {
             if (fld.getDisplayName().equals(name) || fld.getName().equals(name)) {
                 return fld;
             }
-        };
+        }
+        ;
         return null;
     }
 
@@ -110,6 +120,22 @@ public class Schema extends AbstractPersistable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getResultTemplate() {
+        return resultTemplate;
+    }
+
+    public void setResultTemplate(String resultTemplate) {
+        this.resultTemplate = resultTemplate;
+    }
+
+    public String getTitleTemplate() {
+        return titleTemplate;
+    }
+
+    public void setTitleTemplate(String titleTemplate) {
+        this.titleTemplate = titleTemplate;
     }
 
 }
