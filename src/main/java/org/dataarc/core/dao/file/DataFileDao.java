@@ -24,5 +24,11 @@ public class DataFileDao {
         return query.getResultList();
     }
 
+    public List<DataFile> findBySchemaId(Long id) {
+        TypedQuery<DataFile> query = manager.createQuery("from DataFile d where d.schema.id=:id", DataFile.class);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
 
 }

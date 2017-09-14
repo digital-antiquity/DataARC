@@ -3,17 +3,17 @@ package org.dataarc.core.search.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-
 public class SearchQueryObject {
 
     private Spatial spatial = new Spatial();
     private Temporal temporal = new Temporal();
     private boolean idOnly = false;
+    private boolean idAndMap = false;
 
     private List<String> keywords = new ArrayList<>();
     private List<String> topicIds = new ArrayList<>();
     private List<String> sources = new ArrayList<>();
+    private List<String> ids = new ArrayList<>();
 
     public List<String> getKeywords() {
         return keywords;
@@ -88,6 +88,22 @@ public class SearchQueryObject {
             return true;
         }
         return false;
+    }
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
+
+    public boolean isIdAndMap() {
+        return idAndMap;
+    }
+
+    public void setIdAndMap(boolean idAndMap) {
+        this.idAndMap = idAndMap;
     }
 
 }

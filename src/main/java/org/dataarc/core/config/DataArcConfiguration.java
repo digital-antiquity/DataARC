@@ -49,14 +49,20 @@ public class DataArcConfiguration {
 
     @Resource
     protected Environment env;
+    private Rollbar rollbar;
 
     public DataArcConfiguration() {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
     }
-    
+
     @Bean
     public Rollbar rollbar() {
-        return new Rollbar(env.getProperty("rollbar.key"), "production");
+        String accessToken = env.getProperty("rollbar.key");
+        if (accessToken != null) {
+            rollbar = new Rollbar(accessToken, "production");
+            rollbar.handleUncaughtErrors();
+        }
+        return rollbar;
     }
 
     @Bean

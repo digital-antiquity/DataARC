@@ -34,7 +34,7 @@ public class SchemaService {
 
     @Transactional(readOnly = true)
     public Schema getSchema(String name) throws Exception {
-        for (Schema schema: findAll()){
+        for (Schema schema : findAll()) {
             if (schema.getName().equals(name)) {
                 return schema;
             }
@@ -74,7 +74,7 @@ public class SchemaService {
 
     @Transactional(readOnly = false)
     public void saveSchema(FieldDataCollector collector, int rows) {
-        schemaDao.saveSchema(collector,rows);
+        schemaDao.saveSchema(collector, rows);
     }
 
     @Transactional(readOnly = false)
@@ -89,7 +89,7 @@ public class SchemaService {
         return null;
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public List<Schema> findAll() {
         return schemaDao.findAll();
     }
@@ -98,7 +98,7 @@ public class SchemaService {
     public void deleteSchema(Schema schema) {
         indicatorService.deleteAllForSchema(schema);
         schemaDao.deleteSchema(schema);
-        
+
     }
 
     @Transactional(readOnly = false)
@@ -108,6 +108,6 @@ public class SchemaService {
         schema.setCategory(category);
         schema.setUrl(url);
         schemaDao.save(schema);
-        
+
     }
 }

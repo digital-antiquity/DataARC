@@ -22,6 +22,15 @@
 	        <input type="text" id="schemaUrl" name="url" value="${schema.url!''}" class="form-control"/>
 		</div>
 		<div class="form-group">
+	        <label for="schemaCategory" class="control-label">Category:</label>
+	        
+	        <select id="schemaCategory" name="category" class="form-control">
+	           <#list categories as category>
+	               <option value="${category}" <#if category == schema.category!''>selected</#if>>${category}</option>
+	           </#list>
+	        </select>
+		</div>
+		<div class="form-group">
 	        <label for="schemaDescription" class="control-label">Description:</label>
 	        <textarea id="schemaDescription" name="description" class="form-control">
 	        ${schema.description!''}

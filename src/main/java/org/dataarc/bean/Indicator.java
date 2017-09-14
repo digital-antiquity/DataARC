@@ -1,6 +1,7 @@
 package org.dataarc.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,8 +11,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.util.hibernate.type.QueryJsonType;
@@ -27,6 +31,14 @@ public class Indicator extends AbstractPersistable {
 
     @Column(length = 100)
     private String name;
+
+    @Column(name = "date_created", nullable=false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+
+    @ManyToOne
+    @JoinColumn(name="schema_id")
+    private Schema schema;
 
     @Column()
     @Lob
@@ -108,6 +120,22 @@ public class Indicator extends AbstractPersistable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public void setSchema(Schema schema) {
+        this.schema = schema;
     }
     
 }

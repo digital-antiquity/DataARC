@@ -39,8 +39,8 @@ public interface IndexFields {
     static final String POINT = "point";
     static final String KEYWORD = "keywords";
     static final String DATE = "date";
-    static final String TOPIC_ID_2ND = "topic_id_2";
-    static final String TOPIC_ID_3RD = "topic_id_3";
+    static final String TOPIC_ID_2ND = "topic_id_1";
+    static final String TOPIC_ID_3RD = "topic_id_2";
     static final String CATEGORY = "category";
     static final String REGION = "region";
     static final String MILLENIUM = "millenium";

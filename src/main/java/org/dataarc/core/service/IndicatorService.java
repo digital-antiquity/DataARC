@@ -50,6 +50,11 @@ public class IndicatorService {
     public void save(Indicator indicator, DataArcUser user) {
         logger.debug("{}", indicator.getTopicIdentifiers());
         indicator.setUser(user);
+        if (indicator.getSchema() == null) {
+            String schemaName = indicator.getQuery().getSchema();
+            Schema schema = schemoDao.findByName(schemaName);
+            indicator.setSchema(schema);
+        }
         List<Topic> topics = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         indicator.getTopics().forEach(t -> {

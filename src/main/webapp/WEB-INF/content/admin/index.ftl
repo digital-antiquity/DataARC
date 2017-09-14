@@ -29,5 +29,10 @@
         <input type="submit" value="Upload"> Press here to upload the file!
     </form> 
 
+<h2>Delete Everything</h2>
+   <form method="POST" action="${contextPath}/a/admin/resetData" enctype="multipart/form-data">
+        <input type="submit" value="DELETE!"> 
+    </form> 
+
 </@body.body>
 </html>

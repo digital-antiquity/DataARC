@@ -32,9 +32,11 @@ public class ImportService {
 
     Map<String, FieldDataCollector> collectors = new HashMap<>();
 
+    
+    
     @Transactional(readOnly = false)
     public void loadData(String filename) {
-        importDataService.deleteAll();
+        deleteAll();
         schemaService.deleteAll();
         int rows = 0;
         try {
@@ -58,6 +60,13 @@ public class ImportService {
         for (FieldDataCollector collector : collectors.values()) {
             schemaService.saveSchema(collector, rows);
         }
+    }
+
+
+
+    @Transactional(readOnly = false)
+    public void deleteAll() {
+        importDataService.deleteAll();
     }
 
 }

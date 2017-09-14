@@ -33,16 +33,16 @@ public class SearchIndexObject {
     @Field()
     public String id;
 
-    @Field(value=IndexFields.START)
+    @Field(value = IndexFields.START)
     private Integer start;
 
-    @Field(value=IndexFields.END)
+    @Field(value = IndexFields.END)
     private Integer end;
 
-    @Field(value=IndexFields.TITLE)
+    @Field(value = IndexFields.TITLE)
     private String title;
 
-    @Field(value=IndexFields.SOURCE)
+    @Field(value = IndexFields.SOURCE)
     private String source;
 
     @Field(value = IndexFields.DECADE)
@@ -54,16 +54,16 @@ public class SearchIndexObject {
     @Field(value = IndexFields.MILLENIUM)
     private List<Integer> millenium = new ArrayList<>();
 
-    @Field(value=IndexFields.COUNTRY)
+    @Field(value = IndexFields.COUNTRY)
     private List<String> country = new ArrayList<>();
 
-    @Field(value=IndexFields.REGION)
+    @Field(value = IndexFields.REGION)
     private List<String> region = new ArrayList<>();
 
-    @Field(value=IndexFields.TYPE)
+    @Field(value = IndexFields.TYPE)
     private ObjectType type;
 
-    @Field(value=IndexFields.CONCEPT)
+    @Field(value = IndexFields.CONCEPT)
     private Concept concept;
 
     @Field(value = "properties*")
@@ -95,7 +95,7 @@ public class SearchIndexObject {
     private Geometry geometry;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-    @Field(value=IndexFields.CATEGORY)
+    @Field(value = IndexFields.CATEGORY)
     private Category category;
 
     public SearchIndexObject() {
@@ -130,7 +130,6 @@ public class SearchIndexObject {
         if (MapUtils.isNotEmpty(entry.getProperties())) {
             properties = new HashMap<>();
         }
-
 
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
@@ -240,8 +239,10 @@ public class SearchIndexObject {
 
         Feature feature = new Feature();
         try {
-            Point read = (Point) reader.read(getPosition());
-            feature.setGeometry(new org.geojson.Point(read.getX(), read.getY()));
+            if (getPosition() != null) {
+                Point read = (Point) reader.read(getPosition());
+                feature.setGeometry(new org.geojson.Point(read.getX(), read.getY()));
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

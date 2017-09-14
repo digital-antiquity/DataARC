@@ -33,8 +33,10 @@ public class SchemaDao {
     }
 
     public void deleteAll() {
+        manager.createQuery("delete from Indicator").executeUpdate();
         manager.createQuery("delete from Value").executeUpdate();
         manager.createQuery("delete from Field").executeUpdate();
+        manager.createQuery("delete from DataFile").executeUpdate();
         manager.createQuery("delete from Schema").executeUpdate();
     }
 
@@ -122,7 +124,9 @@ public class SchemaDao {
             });
             manager.remove(field);
         });
-        
+        Query query = manager.createQuery("delete from Indicator i where i.schema.id=:id", Schema.class);
+        query.setParameter("id", schema.getId());
+        query.executeUpdate();
         manager.remove(schema);
     }
 

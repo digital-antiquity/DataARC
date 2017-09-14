@@ -40,9 +40,10 @@ public class ImportDataService {
     ImportDao importDao;
     @Autowired
     JsonFileDao jsonFileDao;
-    
+
     @Autowired
     SchemaDao schemaDao;
+
     @Autowired
     DataFileDao dataFileDao;
 
@@ -94,6 +95,7 @@ public class ImportDataService {
         File imported = filestore.store(schemaName, inputStream, originalFilename);
         DataFile dataFile = new DataFile();
         dataFile.setName(imported.getName());
+        dataFile.setDisplayName(originalFilename);
         dataFile.setPath(imported.getPath());
         dataFile.setSchema(schema);
         dataFileDao.save(dataFile);

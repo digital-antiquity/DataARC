@@ -32,5 +32,6 @@ public interface UrlConstants {
     String LIST_JSON = "/a/geojson";
     String GEOJSON_VIEW = "/geojson/{id}";
     String DELETE_GEOJSON = "/geojson/{id}";
+    String RESET_EVERYTHING = "/a/admin/resetData";
 
 }

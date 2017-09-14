@@ -4,8 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>Admin</title>
-    <#include "/includes/header.ftl"/>
-    <#import "/macros/body.ftl" as body />
+        <#global contextPath="">
+        <#global authenticated=false >
+    <#include "includes/header.ftl"/>
+    <#import "macros/body.ftl" as body />
     </head>
     
     <@body.body>

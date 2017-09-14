@@ -41,6 +41,9 @@ public class JsonFileService {
         for (JsonFile file : files) {
             try {
                 File file_ = new File(file.getPath());
+                if (!file_.exists()) {
+                    continue;
+                }
                 FeatureCollection featureCollection = (FeatureCollection) GeoJSONFactory.create(IOUtils.toString(new FileReader(file_)));
                 for (Feature feature : featureCollection.getFeatures()) {
                     GeoJSONReader reader = new GeoJSONReader();
