@@ -23,6 +23,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.rollbar.Rollbar;
+
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO, DataArcConfiguration.ORG_DATAARC_SOLR })
@@ -50,6 +52,11 @@ public class DataArcConfiguration {
 
     public DataArcConfiguration() {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
+    }
+    
+    @Bean
+    public Rollbar rollbar() {
+        return new Rollbar(env.getProperty("rollbar.key"), "production");
     }
 
     @Bean
