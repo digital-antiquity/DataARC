@@ -78,7 +78,7 @@ public class SolrIndexingService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
-            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY,IndexFields.KEYWORD, IndexFields.TOPIC_ID_3RD, IndexFields.CONCEPT);
+            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY,IndexFields.KEYWORD, IndexFields.TOPIC_ID_3RD, IndexFields.CONCEPT, IndexFields.REGION);
 
     @Autowired
     private SolrClient client;

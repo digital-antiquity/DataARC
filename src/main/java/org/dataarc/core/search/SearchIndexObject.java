@@ -120,9 +120,8 @@ public class SearchIndexObject {
             indicators = entry.getIndicators();
             values.addAll(indicators);
         }
-        if (CollectionUtils.isNotEmpty(entry.getTopics())) {
-            topics = entry.getTopics();
-            values.addAll(topics);
+        if (CollectionUtils.isNotEmpty(entry.getRegions())) {
+            region.addAll(entry.getRegions());
         }
         if (CollectionUtils.isNotEmpty(entry.getTopicIdentifiers())) {
             topicIdentifiers = entry.getTopicIdentifiers();
