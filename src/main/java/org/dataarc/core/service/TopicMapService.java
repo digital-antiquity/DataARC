@@ -48,6 +48,8 @@ public class TopicMapService {
 
     @Autowired
     TopicDao topicDao;
+    @Autowired
+    Filestore filestore;
 
     @Autowired
     TopicMapDao topicMapDao;
@@ -290,8 +292,7 @@ public class TopicMapService {
 
     @Transactional(readOnly=false)
     public void importAndLoad(InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException, JAXBException, SAXException {
-        Filestore filestore = Filestore.getInstance();
-        File imported = filestore.store("topicMap", inputStream, originalFilename);
+        File imported = filestore.storeFile(inputStream, originalFilename);
         load(imported.getAbsolutePath());
         
     }

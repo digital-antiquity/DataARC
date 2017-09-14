@@ -9,20 +9,22 @@ import java.io.InputStream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Filestore {
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    public static Filestore instance;
-    
-    public static Filestore getInstance() {
-        if (instance == null) {
-            instance = new Filestore();
-        }
-        return instance;
-    }
+    private static final String S_S_S = "%s-%s.%s";
+    private static final String SCHEMA_S_S = "schema-%s.%s";
+    @Value("${filestore.path}") 
+    public String filestorePath = System.getProperty("java.io.tmpdir");
     
     public File getBaseDir() {
-        File root = new File(System.getProperty("java.io.tmpdir"));
+        File root = new File(filestorePath);
         File store = mkdir(new File(root, "data-arc"));
         return store;
     }
@@ -36,9 +38,14 @@ public class Filestore {
     
     public File store(String schema, File file) throws FileNotFoundException, IOException {
         File schemaDir = mkdir(new File(getBaseDir(), schema));
-        File outfile = new File(schemaDir, String.format("schmea-%s.%s",System.currentTimeMillis(), FilenameUtils.getExtension(file.getName())));
-        IOUtils.copy(new FileInputStream(file), new FileOutputStream(outfile));
+        File outfile = new File(schemaDir, String.format(SCHEMA_S_S,System.currentTimeMillis(), FilenameUtils.getExtension(file.getName())));
+        torefile(file, outfile);
         return outfile;
+    }
+
+    private void torefile(File file, File outfile) throws IOException, FileNotFoundException {
+        logger.debug("storing: {} --> {}", file, file.getAbsolutePath());
+        IOUtils.copy(new FileInputStream(file), new FileOutputStream(outfile));
     }
 
     public File retrieve(String schema) throws FileNotFoundException, IOException {
@@ -63,14 +70,14 @@ public class Filestore {
 
     public File storeFile(InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
         File schemaDir = mkdir(new File(getBaseDir(), "files"));
-        File outfile = new File(schemaDir, String.format("%s-%s.%s",originalFilename, System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
+        File outfile = new File(schemaDir, String.format(S_S_S,originalFilename, System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
         IOUtils.copy(inputStream, new FileOutputStream(outfile));
         return outfile;
     }
 
     public File store(String schema, InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
         File schemaDir = mkdir(new File(getBaseDir(), schema));
-        File outfile = new File(schemaDir, String.format("schema-%s.%s",System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
+        File outfile = new File(schemaDir, String.format(SCHEMA_S_S,System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
         IOUtils.copy(inputStream, new FileOutputStream(outfile));
         return outfile;
     }

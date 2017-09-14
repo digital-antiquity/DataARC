@@ -33,7 +33,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ImportDataService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    Filestore filestore = Filestore.getInstance();
+    @Autowired
+    Filestore filestore;
 
     @Autowired
     ImportDao importDao;
