@@ -1,9 +1,10 @@
 package org.dataarc.core.dao;
 
-import java.util.List;
 import java.util.Map;
 
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.Indicator;
+import org.dataarc.datastore.mongo.QueryException;
 import org.geojson.Feature;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -33,6 +34,12 @@ public interface ImportDao {
 
     void deleteBySource(String name);
 
-    List<DataEntry> findFromGeometry(Geometry geometry);
+    void updateRegionFromGeometry(Geometry geometry, String string);
+
+    void resetRegions();
+
+    void resetTopics(String schemaName);
+
+    void applyIndicator(Indicator indicator) throws QueryException;
 
 }

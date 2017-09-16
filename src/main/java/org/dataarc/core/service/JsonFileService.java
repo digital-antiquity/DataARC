@@ -38,6 +38,7 @@ public class JsonFileService {
     @Transactional(readOnly = false)
     public void applyGeoJsonFiles() {
         List<JsonFile> files = jsonFileDao.findAll();
+        sourceDao.resetRegions();
         for (JsonFile file : files) {
             try {
                 File file_ = new File(file.getPath());
@@ -48,11 +49,7 @@ public class JsonFileService {
                 for (Feature feature : featureCollection.getFeatures()) {
                     GeoJSONReader reader = new GeoJSONReader();
                     Geometry geometry = reader.read(feature.getGeometry());
-                    List<DataEntry> find = sourceDao.findFromGeometry(geometry);
-                    find.forEach(entry -> {
-                        entry.getRegions().add(file.getId() + "_____" + feature.getProperties().get("id"));
-                        sourceDao.save(entry);
-                    });
+                    sourceDao.updateRegionFromGeometry(geometry, file.getId() + "_____" + feature.getProperties().get("id"));
                 }
             } catch (IOException e) {
                 logger.error("erorr indexing spatial facet - {}", e, e);

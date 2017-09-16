@@ -8,7 +8,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.Indicator;
 import org.dataarc.core.dao.ImportDao;
+import org.dataarc.datastore.mongo.QueryException;
 import org.geojson.Feature;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,9 +88,27 @@ public class PostgresDao implements ImportDao {
     }
 
     @Override
-    public List<DataEntry> findFromGeometry(Geometry geometry) {
+    public void updateRegionFromGeometry(Geometry geometry, String string) {
         // TODO Auto-generated method stub
-        return null;
+        
+    }
+
+    @Override
+    public void resetRegions() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void resetTopics(String schemaName) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void applyIndicator(Indicator indicator) throws QueryException {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -9,8 +9,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.Indicator;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.dao.ImportDao;
@@ -32,13 +34,21 @@ import org.springframework.data.mongodb.core.geo.GeoJsonMultiPolygon;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.WriteResult;
 import com.vividsolutions.jts.geom.Geometry;
 
 @Component
 public class MongoDao implements ImportDao, QueryDao {
+    private static final String REGION = "region";
+    private static final String INDICATORS = "indicators";
+    private static final String TOPICS = "topics";
+    private static final String TOPIC_IDENTIFIERS = "topicIdentifiers";
+
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -57,10 +67,12 @@ public class MongoDao implements ImportDao, QueryDao {
     private static final String DATA_ENTRY = "dataEntry";
 
     @Override
+    @Transactional(readOnly = false)
     public void save(DataEntry entry) {
         repository.save(entry);
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Long> getDistinctValues(String source, String fieldName) throws Exception {
         @SuppressWarnings("unchecked")
         List<String> result = template.getDb().getCollection(DATA_ENTRY).distinct(fieldName);
@@ -74,7 +86,14 @@ public class MongoDao implements ImportDao, QueryDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
+        Query q = getMongoFilterQuery(fq);
+        List<DataEntry> find = template.find(q, DataEntry.class);
+        return find;
+    }
+
+    private Query getMongoFilterQuery(FilterQuery fq) throws QueryException {
         Query q = new Query();
         Set<String> findAll = schemaDao.findAllSchemaNames();
         Schema schema = null;
@@ -140,21 +159,23 @@ public class MongoDao implements ImportDao, QueryDao {
         }
         q.addCriteria(new Criteria().andOperator(schemaCriteria, group));
         logger.debug(" :: query :: {}", q);
-        List<DataEntry> find = template.find(q, DataEntry.class);
-        return find;
+        return q;
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void deleteAll() {
         repository.deleteAll();
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void deleteBySource(String source) {
         repository.deleteBySource(source);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void load(Feature feature, Map<String, Object> properties) throws Exception {
         Map<String, Object> props = feature.getProperties();
         String source = (String) props.get(IndexFields.SOURCE);
@@ -212,12 +233,52 @@ public class MongoDao implements ImportDao, QueryDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<DataEntry> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public List<DataEntry> findFromGeometry(Geometry geometry) {
+    @Transactional(readOnly = false)
+    public void resetRegions() {
+        Query q = new Query();
+        WriteResult updateMulti = template.updateMulti(q, new Update().unset(REGION), DataEntry.class);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void resetTopics(String schemaName) {
+        Query q = new Query();
+        Schema schema = schemaDao.findByName(schemaName);
+        Criteria schemaCriteria = Criteria.where(IndexFields.SOURCE).is(schema.getName());
+        q.addCriteria(schemaCriteria);
+        Update unset = new Update().unset(INDICATORS).unset(TOPICS).unset(TOPIC_IDENTIFIERS);
+        WriteResult updateMulti = template.updateMulti(q, unset, DataEntry.class);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void applyIndicator(Indicator indicator) throws QueryException {
+        if (CollectionUtils.isEmpty(indicator.getTopics())) {
+            return;
+        }
+        Query filterQuery = getMongoFilterQuery(indicator.getQuery());
+        List<String> topics = new ArrayList<>();
+        List<String> idents = new ArrayList<>();
+        indicator.getTopics().forEach(topc -> {
+            topics.add(topc.getName());
+            idents.add(topc.getIdentifier());
+        });
+        Update push = new Update().push(TOPICS, topics).push(TOPIC_IDENTIFIERS, idents).push(INDICATORS, indicator.getId());
+        WriteResult updateMulti = template.updateMulti(filterQuery, push, DataEntry.class);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void updateRegionFromGeometry(Geometry geometry, String val) {
         Query q = new Query();
         logger.trace("{}", geometry.toText());
         GeoJson convert = GeometryWriteConverter.INSTANCE.convert(geometry);
@@ -238,16 +299,13 @@ public class MongoDao implements ImportDao, QueryDao {
             Criteria group = new Criteria();
             group = group.orOperator(list.toArray(new Criteria[0]));
             q.addCriteria(group);
-            List<DataEntry> find = template.find(q, DataEntry.class);
-            return find;
+            WriteResult updateMulti = template.updateMulti(q, new Update().addToSet("regions", val), DataEntry.class);
         } catch (Exception e) {
-            logger.error("{}",e,e);
+            logger.error("{}", e, e);
             logger.debug("{}", geometry.toText());
             logger.debug("{}", convert);
 
-            return new ArrayList<>();
         }
-        // TODO Auto-generated method stub
     }
 
 }

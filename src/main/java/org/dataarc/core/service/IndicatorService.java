@@ -97,21 +97,9 @@ public class IndicatorService {
 
     @Transactional(readOnly = false)
     public void applyIndicators(String schemaName) throws Exception {
+        importDao.resetTopics(schemaName);
         for (Indicator indicator : findAllForSchema(schemaName)) {
-            for (DataEntry entry : queryDao.getMatchingRows(indicator.getQuery())) {
-                entry.getIndicators().add(indicator.getName());
-                if (CollectionUtils.isNotEmpty(indicator.getTopics())) {
-                    List<String> topics = new ArrayList<>();
-                    List<String> idents = new ArrayList<>();
-                    indicator.getTopics().forEach(topc -> {
-                        topics.add(topc.getName());
-                        idents.add(topc.getIdentifier());
-                    });
-                    entry.getTopicIdentifiers().addAll(idents);
-                    entry.getTopics().addAll(topics);
-                }
-                importDao.save(entry);
-            }
+            importDao.applyIndicator(indicator);
         }
     }
 
