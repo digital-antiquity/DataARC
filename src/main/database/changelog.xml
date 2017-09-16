@@ -371,7 +371,7 @@
         </addColumn>
 
     </changeSet>
-        <changeSet id="alpha-34" author="abrin">
+        <changeSet id="alpha-35" author="abrin">
         <addColumn tableName="schema">
             <column name="title_template" type="text" />
             <column name="result_template" type="text" />
