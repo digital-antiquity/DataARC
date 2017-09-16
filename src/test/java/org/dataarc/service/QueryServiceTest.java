@@ -45,8 +45,8 @@ public class QueryServiceTest extends AbstractServiceTest {
     @Test
     public void testComplex() throws Exception {
         FilterQuery fq = new FilterQuery();
-        fq.setSchema("SEAD");
-        fq.getConditions().add(new QueryPart("source", "SEAD", MatchType.EQUALS));
+        fq.setSchema("sead");
+        fq.getConditions().add(new QueryPart("source", "sead", MatchType.EQUALS));
         fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
         Iterable<DataEntry> results = queryService.getMatchingRows(fq);
         results.forEach(r -> {

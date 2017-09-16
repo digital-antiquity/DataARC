@@ -98,7 +98,7 @@ public class MongoDao implements ImportDao, QueryDao {
         Set<String> findAll = schemaDao.findAllSchemaNames();
         Schema schema = null;
         String lookup = fq.getSchema().trim();
-
+        logger.debug("{}",findAll);
         Criteria schemaCriteria = null;
         for (String name : findAll) {
             if (name.toLowerCase().equals(lookup)) {
