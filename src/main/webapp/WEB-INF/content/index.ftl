@@ -225,6 +225,7 @@
     <!-- Vendor scripts -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/popper/popper.min.js"></script>
+    <script src="components/handlebars/handlebars.js"></script>
     <script src="vendor/lodash/lodash.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/d3/d3.v4.min.js"></script>
@@ -259,7 +260,7 @@
     <script type="text/javascript">
       $(document).ready(function() {
         Search.init({
-          source: "src/features_17.08.21.json", // http://beta.data-arc.org/api/search
+          source: "/api/search",
           delay: 100, // in ms
           callback: function() {
             // Handler function
@@ -273,6 +274,27 @@
         });
       });
     </script>
+   <script type="application/json">
+   	[
+   <#list files as file>
+     {id:"${file.id?c}", name:"${file.name}", url:"/geojson/${file.id?c}"}}<#sep>, </#sep> 
+   </#list>
+   	]
+   </script>
+   <!--  handlebar templates http://handlebarsjs.com
+     -->
+  <#list schema as schemum>    
+    <script id="title-template-${schemum.id?c}" type="text/x-handlebars-template">
+	  <div class="title">
+	  	${schemum.titleTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  </div>
+	</script>
+    <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
+	  <div class="description">
+	  	${schemum.resultTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  </div>
+	</script>
+  </#list>
 
   </body>
 </html>

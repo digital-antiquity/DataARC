@@ -29,11 +29,9 @@ var Geography = {
     });
   },
   bindPopup: function(feature, layer) {
-    var popup = "<p>Some content.</p>";
-    if (feature.properties && feature.properties.popup) {
-      popup += feature.properties.popup;
-    }
-    layer.bindPopup(popup);
+      var template = Handlebars.compile($("#title-template-"+ feature.properties.schema_id).html());
+      var popup = template(feature.properties);
+      layer.bindPopup(popup);
   },
   addFeatures: function(geojson, style) {
     this.clear();
@@ -41,7 +39,7 @@ var Geography = {
       style: function(feature) {
         return feature.properties && feature.properties.style;
       },
-      // onEachFeature: Geography.bindPopup,
+      onEachFeature: Geography.bindPopup,
       pointToLayer: function(feature, latlng) {
         return L.circleMarker(latlng, style);
       }
