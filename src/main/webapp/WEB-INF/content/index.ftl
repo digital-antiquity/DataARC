@@ -223,43 +223,43 @@
     </div>
 
     <!-- Vendor scripts -->
-    <script src="https://dataarc.cast.uark.edu/vendor/jquery/jquery.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/popper/popper.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/lodash/lodash.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/d3/d3.v4.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/leaflet/leaflet.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/moment/moment.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/scrollreveal/scrollreveal.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/lodash/lodash.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/d3/d3.v4.min.js"></script>
+    <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="vendor/moment/moment.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- FOR CYTOSCAPE -->
-    <script src="https://dataarc.cast.uark.edu/js/components/cytoscape/dist/cytoscape.min-edit.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/components/cytoscape-cola/cola.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/components/cytoscape-cola/cytoscape-cola.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/components/cytoscape-spread/cytoscape-spread.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/components/qtip2/jquery.qtip.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/components/cytoscape-qtip/cytoscape-qtip.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/components/bluebird/js/browser/bluebird.min.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/components/typeahead.js/dist/typeahead.bundle.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/topicmap.js"></script>
+    <script src="js/components/cytoscape/dist/cytoscape.min-edit.js"></script>
+    <script src="js/components/cytoscape-cola/cola.js"></script>
+    <script src="js/components/cytoscape-cola/cytoscape-cola.js"></script>
+    <script src="js/components/cytoscape-spread/cytoscape-spread.js"></script>
+    <script src="js/components/qtip2/jquery.qtip.min.js"></script>
+    <script src="js/components/cytoscape-qtip/cytoscape-qtip.js"></script>
+    <script src="js/components/bluebird/js/browser/bluebird.min.js"></script>
+    <script src="js/components/typeahead.js/dist/typeahead.bundle.js"></script>
+    <script src="js/topicmap.js"></script>
 
     <!-- END CYTOSCAPE -->
 
     <!-- Custom scripts -->
-    <script src="https://dataarc.cast.uark.edu/js/custom.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/search.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/timeline.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/geography.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/concepts.js"></script>
-    <script src="https://dataarc.cast.uark.edu/js/results.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/geography.js"></script>
+    <script src="js/concepts.js"></script>
+    <script src="js/results.js"></script>
 
     <!-- Page Level Javascript Actions -->
     <script type="text/javascript">
       $(document).ready(function() {
         Search.init({
-          source: "https://dataarc.cast.uark.edu/src/features_17.08.21.json", // http://beta.data-arc.org/api/search
+          source: "src/features_17.08.21.json", // http://beta.data-arc.org/api/search
           delay: 100, // in ms
           callback: function() {
             // Handler function

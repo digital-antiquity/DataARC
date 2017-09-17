@@ -44,6 +44,8 @@ public class SearchIndexObject {
 
     @Field(value = IndexFields.SOURCE)
     private String source;
+    @Field(value = IndexFields.SCHEMA_ID)
+    private Long schemaId;
 
     @Field(value = IndexFields.DECADE)
     private List<Integer> decade = new ArrayList<>();
@@ -116,6 +118,7 @@ public class SearchIndexObject {
         end = entry.getEnd();
         source = entry.getSource();
         setCategory(schema.getCategory());
+        setSchemaId(schema.getId());
         if (CollectionUtils.isNotEmpty(entry.getIndicators())) {
             indicators = entry.getIndicators();
             values.addAll(indicators);
@@ -404,6 +407,14 @@ public class SearchIndexObject {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Long getSchemaId() {
+        return schemaId;
+    }
+
+    public void setSchemaId(Long schemaId) {
+        this.schemaId = schemaId;
     }
 
 }

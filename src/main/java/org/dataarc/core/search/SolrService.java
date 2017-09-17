@@ -23,6 +23,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.dataarc.core.search.query.SearchQueryObject;
+import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
@@ -53,6 +54,8 @@ public class SolrService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private SchemaService schemaService;
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
@@ -199,6 +202,7 @@ public class SolrService {
         feature.setProperty(IndexFields.COUNTRY, document.get(IndexFields.COUNTRY));
         feature.setProperty(IndexFields.START, document.get(IndexFields.START));
         feature.setProperty(IndexFields.END, document.get(IndexFields.END));
+        feature.setProperty(IndexFields.SCHEMA_ID, document.get(IndexFields.SCHEMA_ID));
         // logger.debug("{}", document);
         // logger.debug("{}", document.getChildDocumentCount());
         if (CollectionUtils.isNotEmpty(document.getChildDocuments())) {

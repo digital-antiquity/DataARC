@@ -224,6 +224,7 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.COUNTRY, TEXT_GENERAL);
         schemaFields.put(IndexFields.START, INT);
         schemaFields.put(IndexFields.END, INT);
+        schemaFields.put(IndexFields.SCHEMA_ID, INT);
         schemaFields.put(IndexFields.TITLE, TEXT_GENERAL);
         schemaFields.put(IndexFields.TOPIC, TEXT_GENERAL);
         schemaFields.put(IndexFields.TOPIC_ID, STRINGS);

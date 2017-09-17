@@ -1,0 +1,21 @@
+#infotable{
+  min-height:32px;
+  width:100%;
+  /*border:1px solid #ccc;*/
+/*  border-left:0px;
+  border-right:0px;*/
+  /*bottom:-1px;*/
+  background-color: white;
+}
+
+#infotable td{
+  padding:5px;
+  font-weight: bold;
+}
+
+.topicmap-tools{
+  position: absolute;
+  left:15px;
+  top:0px;
+  z-index:100;
+}
