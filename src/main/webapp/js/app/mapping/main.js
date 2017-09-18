@@ -36,16 +36,24 @@
                })
       })
 
-          Vue.directive('jsonpretty', function(el, binding){
+          Vue.directive('jsonpretty', function(el, binding,v){
+              var name = "#results-template-"+ v.context._self.schema[v.context._self.currentSchema].id;
+              var data = JSON.parse(JSON.stringify(binding.value));
               $(el).popover({
-                  content: $(JsonHuman.format(binding.value)).html(),
                   html:true,
                   placement: 'left',
                   delay: { "show": 1, "hide": 500 },
-                  trigger: 'hover'          
-              })
-          })
-
+                  trigger: 'hover',
+                  content: getContent(name, data)});
+          });
+          
+      var getContent = function(name,data) {
+          var tmpl = $(name).html();
+          var template = Handlebars.compile(tmpl);
+          var val = template(data);
+          return val;
+      }
+      
     var setupTypeahead = function(el_, binding,parent) {
         $(el_).typeahead('destroy');
         $(el_).typeahead({

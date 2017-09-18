@@ -11,7 +11,7 @@
     <@body.body>
 
         <h1>Add Datafile</h1>
-        <B>Upload Failed for ${topicName}: <#if errorMessage?has_content>${errorMessage}</#if></b>
+        <B>Upload Failed for ${topicName!''}: <#if errorMessage?has_content>${errorMessage}</#if></b>
     
     </@body.body>
 </html>
