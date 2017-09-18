@@ -87,7 +87,7 @@ public class MongoDao implements ImportDao, QueryDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
+    public List<DataEntry> getMatchingRows(FilterQuery fq, int num) throws Exception {
         Query q = getMongoFilterQuery(fq);
         List<DataEntry> find = template.find(q, DataEntry.class);
         return find;

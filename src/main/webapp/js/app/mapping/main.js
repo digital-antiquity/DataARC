@@ -37,15 +37,17 @@
       })
 
           Vue.directive('jsonpretty', function(el, binding,v){
-              var name = "#results-template-"+ v.context._self.schema[v.context._self.currentSchema].id;
-              var data = JSON.parse(JSON.stringify(binding.value));
               $(el).popover({
                   html:true,
                   placement: 'left',
                   delay: { "show": 1, "hide": 500 },
                   trigger: 'hover',
-                  content: getContent(name, data)});
-          });
+                  content: 'test'}).on("show.bs.popover",function(e) {
+                      var name = "#results-template-"+ v.context._self.schema[v.context._self.currentSchema].id;
+                      var data = JSON.parse(JSON.stringify(binding.value));
+                      $(e.target).data('bs.popover').options.content = getContent(name, data);
+              });
+      });
           
       var getContent = function(name,data) {
           var tmpl = $(name).html();

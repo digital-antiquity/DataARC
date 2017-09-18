@@ -12,8 +12,8 @@ public class QueryService {
     @Autowired
     private QueryDao queryDao;
 
-    public Iterable<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
-        return queryDao.getMatchingRows(fq);
+    public Iterable<DataEntry> getMatchingRows(FilterQuery fq, int numRows) throws Exception {
+        return queryDao.getMatchingRows(fq, numRows);
     }
 
 }

@@ -181,7 +181,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="result in results" class="table">
+                    <tr v-for="(result, index) in results" class="table" v-if="index < 25">
                         <td><div v-jsonpretty="result.properties">{{result.id}}</div></td>
                         <td><a v-show="result.properties['Link'] != undefined && result.properties['Link'] != ''" target="_blank" v-bind:href="result.properties['Link']"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a></td>
                     </tr>
