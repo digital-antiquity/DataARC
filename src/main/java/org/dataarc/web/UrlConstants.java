@@ -24,7 +24,7 @@ public interface UrlConstants {
     String ADMIN_MAKE_EDITOR = "/api/admin/makeEditor";
     String ADMIN_MAKE_ADMIN = "/api/admin/makeAdmin";
     String ADMIN_LIST_USERS = "/api/admin/listUsers";
-    String UPDATE_FIELD_DISPLAY_NAME = "/api/fields/updateDisplayName";
+    String UPDATE_FIELD_DISPLAY_NAME = "/a/fields/updateDisplayName";
     String LIST_SCHEMA = "/a/schema";
     String VIEW_SCHEMA = "/a/schema/{name}";
     String DELETE_SCHEMA = "/a/schema/delete/{name}";
@@ -33,5 +33,6 @@ public interface UrlConstants {
     String GEOJSON_VIEW = "/geojson/{id}";
     String DELETE_GEOJSON = "/geojson/{id}";
     String RESET_EVERYTHING = "/a/admin/resetData";
+    String SCHEMA_TEMPLATES = "/a/admin/schema/template/{name}";
 
 }

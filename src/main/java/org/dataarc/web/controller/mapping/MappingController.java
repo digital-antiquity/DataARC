@@ -15,9 +15,6 @@ public class MappingController extends AbstractController {
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired
-    private SchemaService schemaService;
-
     
     @RequestMapping("/a/mapping/")
     public ModelAndView mapping() {

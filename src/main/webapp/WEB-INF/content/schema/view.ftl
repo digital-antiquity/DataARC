@@ -30,18 +30,19 @@
 	           </#list>
 	        </select>
 		</div>
+		
 		<div class="form-group">
 	        <label for="schemaDescription" class="control-label">Description:</label>
-	        <textarea id="schemaDescription" name="description" class="form-control">
-	        ${schema.description!''}
-	        </textarea>
+	        <textarea id="schemaDescription" name="description" class="form-control">${schema.description!''}</textarea>
 		</div>
         <input type="submit" value="Save" class="button btn btn-primary"> 
 
     </form>
     </div>
      <div class="col-sm-12">
-
+<#if admin>
+<a href="${contextPath}/a/admin/schema/template/${schema.name}">Edit Templates</a>
+</#if>
     <form method="POST" action="${contextPath}/a/admin/uploadSourceFile" enctype="multipart/form-data">
         <h3>Update Data (GeoJSON)</h3>
          <input type="file" name="file">
@@ -60,11 +61,15 @@
 	<td>${field.name}</td>
 	<td>
 	   <div class="input-group">
-         <input type="text" value="${field.displayName}" class="form-control"/>
+	   <form action="/api/fields/updateDisplayName" method="POST">
+         <input type="text" name="displayName" value="${field.displayName}" class="form-control"/>
+         <input type=hidden" name="schemaId" value="${schema.id?c}" />
+         <input type=hidden" name="fieldId" value="${field.id?c}"/>
          <span class="input-group-btn">
            <button class="btn btn-default" type="button">Save</button>
           </span>
      </div>
+     </form>
 	</td>
 	<td>${field.type}</td>
 	</tr>

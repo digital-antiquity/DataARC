@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Objects;
+
 @Service
 @Transactional
 public class SchemaService {
@@ -78,9 +80,10 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public Field updateFieldDisplayName(String source, String fieldName, String displayName) {
-        for (Field field : schemaDao.getFields(source)) {
-            if (field.getName().equals(fieldName)) {
+    public Field updateFieldDisplayName(Long schemaId, Long fieldId, String displayName) {
+        Schema schema = schemaDao.findById(schemaId);
+        for (Field field : schema.getFields()) {
+            if (Objects.equal(field.getId(), fieldId)) {
                 field.setDisplayName(displayName);
                 saveField(field);
                 return field;
@@ -109,5 +112,18 @@ public class SchemaService {
         schema.setUrl(url);
         schemaDao.save(schema);
 
+    }
+
+    @Transactional(readOnly = false)
+    public Schema findById(Long schemaId) {
+        return schemaDao.findById(schemaId);
+    }
+
+    @Transactional(readOnly=false)
+    public void updateSchemaTemplates(Schema schema, String title, String result) {
+        schema.setTitleTemplate(title);
+        schema.setResultTemplate(result);
+        schemaDao.save(schema);
+        
     }
 }

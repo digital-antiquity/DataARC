@@ -19,6 +19,7 @@ import org.dataarc.util.FieldDataCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class SchemaDao {
@@ -128,6 +129,12 @@ public class SchemaDao {
         query.setParameter("id", schema.getId());
         query.executeUpdate();
         manager.remove(schema);
+    }
+
+    public Schema findById(Long schemaId) {
+        Query query = manager.createQuery("from Schema s where s.id=:id", Schema.class);
+        query.setParameter("id", schemaId);
+        return (Schema) query.getSingleResult();
     }
 
 }
