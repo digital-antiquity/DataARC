@@ -87,7 +87,7 @@ public class MongoDao implements ImportDao, QueryDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<DataEntry> getMatchingRows(FilterQuery fq) throws Exception {
+    public List<DataEntry> getMatchingRows(FilterQuery fq, int num) throws Exception {
         Query q = getMongoFilterQuery(fq);
         List<DataEntry> find = template.find(q, DataEntry.class);
         return find;
@@ -125,16 +125,14 @@ public class MongoDao implements ImportDao, QueryDao {
                     name += f.getMongoName();
                 }
             }
-            Criteria where = Criteria.where(name);
-            String value_ = part.getValue();
-            //FIXME: need a better way to handle explicit null values
-            if (value_ == "") {
+            if (part.getValue() == "") {
                 continue;
             }
-            Object value = parse(value_);
+            Criteria where = Criteria.where(name);
+            Object value = parse(part.getValue());
             switch (part.getType()) {
                 case CONTAINS:
-                    where.regex(Pattern.compile(value_, Pattern.MULTILINE));
+                    where.regex(Pattern.compile(part.getValue(), Pattern.MULTILINE));
                     break;
                 case DOES_NOT_EQUAL:
                     where.ne(value);

@@ -32,25 +32,30 @@
                    content: $(binding.value).html(),
                    html:true,
                    placement: binding.arg,
-                   trigger: 'hover'
+                   trigger: 'hover'             
                })
       })
 
           Vue.directive('jsonpretty', function(el, binding,v){
-              //fixme binding
-              var schema = v.context._self.currentSchema;
-              var template = Handlebars.compile($("#results-template-"+ schema).html());
-              console.log(JSON.parse(JSON.stringify(binding.value)));
-              var popup = template(JSON.parse(JSON.stringify(binding.value)));
               $(el).popover({
-                  content: popup,
                   html:true,
                   placement: 'left',
                   delay: { "show": 1, "hide": 500 },
-                  trigger: 'hover'          
-              })
-          })
-
+                  trigger: 'hover',
+                  content: 'test'}).on("show.bs.popover",function(e) {
+                      var name = "#results-template-"+ v.context._self.schema[v.context._self.currentSchema].id;
+                      var data = JSON.parse(JSON.stringify(binding.value));
+                      $(e.target).data('bs.popover').options.content = getContent(name, data);
+              });
+      });
+          
+      var getContent = function(name,data) {
+          var tmpl = $(name).html();
+          var template = Handlebars.compile(tmpl);
+          var val = template(data);
+          return val;
+      }
+      
     var setupTypeahead = function(el_, binding,parent) {
         $(el_).typeahead('destroy');
         $(el_).typeahead({
