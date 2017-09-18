@@ -126,21 +126,27 @@ public class MongoDao implements ImportDao, QueryDao {
                 }
             }
             Criteria where = Criteria.where(name);
+            String value_ = part.getValue();
+            //FIXME: need a better way to handle explicit null values
+            if (value_ == "") {
+                continue;
+            }
+            Object value = parse(value_);
             switch (part.getType()) {
                 case CONTAINS:
-                    where.regex(Pattern.compile(part.getValue(), Pattern.MULTILINE));
+                    where.regex(Pattern.compile(value_, Pattern.MULTILINE));
                     break;
                 case DOES_NOT_EQUAL:
-                    where.ne(part.getValue());
+                    where.ne(value);
                     break;
                 case EQUALS:
-                    where.is(part.getValue());
+                    where.is(value);
                     break;
                 case GREATER_THAN:
-                    where.gt(parse(part.getValue()));
+                    where.gt(value);
                     break;
                 case LESS_THAN:
-                    where.lt(parse(part.getValue()));
+                    where.lt(value);
                     break;
                 default:
                     break;
@@ -157,7 +163,9 @@ public class MongoDao implements ImportDao, QueryDao {
             default:
                 group = group.orOperator(criteria.toArray(new Criteria[0]));
         }
-        q.addCriteria(new Criteria().andOperator(schemaCriteria, group));
+        if (criteria.size() > 0) {
+            q.addCriteria(new Criteria().andOperator(schemaCriteria, group));
+        }
         logger.debug(" :: query :: {}", q);
         return q;
     }

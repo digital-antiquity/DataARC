@@ -267,5 +267,18 @@
     </div>
 </div>
 
+  <#list schema as schemum>    
+    <script id="title-template-${schemum.id?c}" type="text/x-handlebars-template">
+	  <div class="title">
+	  	${schemum.titleTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  </div>
+	</script>
+    <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
+	  <div class="description">
+	  	${schemum.resultTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  </div>
+	</script>
+  </#list>
+
         </@body.body>
 </html>

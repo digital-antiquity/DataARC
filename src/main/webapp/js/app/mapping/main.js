@@ -32,13 +32,18 @@
                    content: $(binding.value).html(),
                    html:true,
                    placement: binding.arg,
-                   trigger: 'hover'             
+                   trigger: 'hover'
                })
       })
 
-          Vue.directive('jsonpretty', function(el, binding){
+          Vue.directive('jsonpretty', function(el, binding,v){
+              //fixme binding
+              var schema = v.context._self.currentSchema;
+              var template = Handlebars.compile($("#results-template-"+ schema).html());
+              console.log(JSON.parse(JSON.stringify(binding.value)));
+              var popup = template(JSON.parse(JSON.stringify(binding.value)));
               $(el).popover({
-                  content: $(JsonHuman.format(binding.value)).html(),
+                  content: popup,
                   html:true,
                   placement: 'left',
                   delay: { "show": 1, "hide": 500 },

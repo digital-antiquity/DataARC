@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+	<script>
+	var testing = false;
+	
+	    function getContextPath() {
+        return "${contextPath}";
+    }
 
+	</script>
     <title>DataARC - Linking Data from Archaeology, the Sagas, and Climate</title>
 
     <!-- Bootstrap core CSS -->
@@ -259,7 +266,7 @@
     <!-- Page Level Javascript Actions -->
     <script type="text/javascript">
       $(document).ready(function() {
-        Search.init({
+      var req = {
           source: "/api/search",
           delay: 100, // in ms
           callback: function() {
@@ -271,7 +278,11 @@
             // Concepts.refresh();
             ResultsHandler = new Results('#results');
           }
-        });
+        };
+        if (testing) {
+        	req.source = "src/features_17.08.21.json";
+    	}; 
+        Search.init(req);
       });
     </script>
    <script type="application/json">

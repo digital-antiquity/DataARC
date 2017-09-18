@@ -1,4 +1,4 @@
-$(function(){
+$(function(contextPath, testing){
 
   var layout,canvas,$canvas,canvasContainer,sourceCanvas,ctx,bindCircles;
   var circleSpecs = false;
@@ -8,14 +8,19 @@ $(function(){
   var roots = false;
 
   var cy;
-
+console.log(testing);
+console.log(contextPath);
+  var req = {
+      url: '/api/topicmap/view',
+      type: 'GET',
+      dataType: 'json'
+    };
+  
+  if (testing) {
+      req.url= 'json/topicmap2.json';
+  }
   // get network data via ajax
-  var graphP = $.ajax({
-    //url: getContextPath() + '/api/topicmap/view',
-    url: 'json/topicmap2.json',
-    type: 'GET',
-    dataType: 'json'
-  });
+  var graphP = $.ajax(req);
 
   // also get style via ajax
   var styleP = $.ajax({
@@ -645,4 +650,4 @@ $(function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
   }
-});
+}(getContextPath(),testing));

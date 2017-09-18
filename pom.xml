@@ -930,7 +930,13 @@
                         </systemProperty>
                     </systemProperties>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <webAppSourceDirectory>${basedir}/src/main/webapp/</webAppSourceDirectory>
+<!--                     <scanTargetPatterns>
+                        <directory>src/main/webapp</directory>
+                        <excludes>
+                            <exclude>**/*</exclude>
+                        </excludes>
+                    </scanTargetPatterns>
+ -->                    <webAppSourceDirectory>${basedir}/src/main/webapp/</webAppSourceDirectory>
                     <webAppConfig>
                         <contextPath>/</contextPath>
                         <descriptor>${basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
