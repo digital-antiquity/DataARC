@@ -14,11 +14,11 @@
     <form method="POST" action="${contextPath}/a/schema/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
 		<input type="hidden" name="id" value="${schema.id?c}" />
 		<div class="form-group">
-	        <label for="schemaName" class="control-label">Name:</label>
+	        <label for="schemaName" class="control-label">Display Name:</label>
 	        <input type="text" id="schemaName" name="displayName" value="${schema.displayName}" class="form-control"/>
 		</div>
 		<div class="form-group">
-	        <label for="schemaUrl" class="control-label">Url:</label>
+	        <label for="schemaUrl" class="control-label">Link to the Data Source:</label>
 	        <input type="text" id="schemaUrl" name="url" value="${schema.url!''}" class="form-control"/>
 		</div>
 		<div class="form-group">
@@ -45,6 +45,7 @@
 </#if>
     <form method="POST" action="${contextPath}/a/admin/uploadSourceFile" enctype="multipart/form-data">
         <h3>Update Data (GeoJSON)</h3>
+        <p>Replace the data file for your DataARC source. This will <b>delete</b> all data for your data source, and then load it.  If you delete fields that are mapped to existing indicators, these indicators will be broken/removed.</p>
          <input type="file" name="file">
       <input type="hidden" name="name" value="${schema.name}"/>
       <br/>
@@ -53,18 +54,27 @@
     </form> 
 </div>
  <div class="col-sm-12">
-
+<h3>Fields</h3>
+<p>Below is the full list of fields in the DataARC tool. You can update the name of a field that's used in the combinator tool as well as to end-users.</p>
 <table class="table">
+<thead>
+	<tr>
+	<th>id</th>
+	<th>name</th>
+	<th>Display Name</th>
+	<th>Field Type</th>
+	</tr>
+</thead>
 <#list schema.fields as field>
 	<tr>
 	<td>${field.id?c}</td>
 	<td>${field.name}</td>
 	<td>
-	   <div class="input-group">
 	   <form action="/api/fields/updateDisplayName" method="POST">
+         <input type="hidden" name="schemaId" value="${schema.id?c}" />
+         <input type="hidden" name="fieldId" value="${field.id?c}"/>
+	   <div class="input-group">
          <input type="text" name="displayName" value="${field.displayName}" class="form-control"/>
-         <input type=hidden" name="schemaId" value="${schema.id?c}" />
-         <input type=hidden" name="fieldId" value="${field.id?c}"/>
          <span class="input-group-btn">
            <button class="btn btn-default" type="button">Save</button>
           </span>

@@ -11,6 +11,12 @@
     <@body.body>
 <h1>Editing: ${schema.name} Templates</h1>
  <div class="col-sm-12">
+ <p><b>Field Names</b></p>
+ 	<#list schema.fields as field>
+ 	<span class="label label-default">${field.name}</span>
+	</#list>
+	<br/>
+	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>
     <form method="POST" action="${contextPath}/a/schema/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
 		<input type="hidden" name="id" value="${schema.id?c}" />
 		<div class="form-group">
