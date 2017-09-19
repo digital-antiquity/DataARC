@@ -285,6 +285,8 @@
         Search.init(req);
       });
     </script>
+    
+    <!-- everything below this is automatically generated -->
    <script type="application/json">
    	[
    <#list files as file>

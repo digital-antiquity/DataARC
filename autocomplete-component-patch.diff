@@ -1,0 +1,208 @@
+diff --git a/src/main/webapp/WEB-INF/content/mapping/mapping.ftl b/src/main/webapp/WEB-INF/content/mapping/mapping.ftl
+index 11baa29..42f2b12 100644
+--- a/src/main/webapp/WEB-INF/content/mapping/mapping.ftl
++++ b/src/main/webapp/WEB-INF/content/mapping/mapping.ftl
+@@ -67,8 +67,8 @@
+ 
+             <div class="col-sm-11 col-sm-offset-1">
+                     <ul class="list-group" v-for="(part, rowNum) in indicators[currentIndicator].query.conditions">
+-                        <spart :rowindex="rowNum" :schema="schemaName" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"
+-                        @select="onValidChange"
++                        <spart :rowindex="rowNum" :schema="schemaName" :fields="fields" 
++                        :parts="indicators[currentIndicator].query.conditions"
+                         ></spart>
+                     </ul>
+                     <div v-if="indicators[currentIndicator].query.conditions.length > 1">
+@@ -177,13 +177,12 @@
+                     </tr>
+                     <tr>
+                         <th>id</th>
+-                        <th>link</th>
++                        <!-- <th>link</th> -->
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr v-for="(result, index) in results" class="table" v-if="index < 25">
+                         <td><div v-jsonpretty="result.properties">{{result.id}}</div></td>
+-                        <td><a v-show="result.properties['Link'] != undefined && result.properties['Link'] != ''" target="_blank" v-bind:href="result.properties['Link']"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a></td>
+                     </tr>
+                     </tbody>
+                 </table>
+@@ -204,15 +203,9 @@
+ 
+         <template id="spart-template">
+             <div >  
+-                <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()" class="form-control">
+-                    <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
+-                </select>
+-                <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
+-                    <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
+-                </select>
+-  			    <input class="typeahead" type="text" placeholder="Search" name='typeahead'  v-typeahead.part="part" v-typeahead="getFieldValues(part.fieldName)"  v-model="part.value" v-bind:value="part.value"
+-  			      v-on:change="updateTest()" @input="onValidChange()" >
+-                
++	            <part :rowindex="rowindex" :schema="schema" :fields="fields" :part="parts[rowindex]"
++	            
++                        @select="onValidChange" ></part>
+                 <span v-show="rowindex > 0">
+                 <button type="button" class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
+                 </span>
+@@ -222,6 +215,17 @@
+             </div>
+         </template>
+ 
++        <template id="part-template">
++            <div ref="prt">  
++                <select name='fieldName' v-model="fieldName" class="form-control">
++                    <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
++                </select>
++                <select name='type' v-model="type" class="form-control" >
++                    <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
++                </select>
++  			    <input class="typeahead" ref="typeahead" type="text" placeholder="Search" name='typeahead'  v-model="value" v-bind:value="value">
++            </div>
++        </template>
+     </span>
+ </template>
+ <div id="helpsection" class="hidden">
+diff --git a/src/main/webapp/js/app/mapping/main.js b/src/main/webapp/js/app/mapping/main.js
+index fae23de..1a59618 100644
+--- a/src/main/webapp/js/app/mapping/main.js
++++ b/src/main/webapp/js/app/mapping/main.js
+@@ -57,23 +57,23 @@
+       }
+       
+     var setupTypeahead = function(el_, binding,parent) {
+-        $(el_).typeahead('destroy');
+-        $(el_).typeahead({
+-            hint: false,
+-            highlight: true,
+-            minLength: 0
+-          },
+-          {
+-            name: 'states',
+-            display: 'value',
+-            source: substringMatcher(binding.value),
+-            templates: {
+-                suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
+-              }
+-          });   
+-        $(el_).bind('typeahead:select', function(ev, suggestion) {
+-            parent.setValue(suggestion.value);
+-        });
++//        $(el_).typeahead('destroy');
++//        $(el_).typeahead({
++//            hint: false,
++//            highlight: true,
++//            minLength: 0
++//          },
++//          {
++//            name: 'states',
++//            display: 'value',
++//            source: substringMatcher(binding.value),
++//            templates: {
++//                suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
++//              }
++//          });   
++//        $(el_).bind('typeahead:select', function(ev, suggestion) {
++//            parent.setValue(suggestion.value);
++//        });
+       }
+     Vue.directive('typeahead', {
+         update : function(el_,binding,v){
+@@ -90,23 +90,54 @@
+ /** https://jsfiddle.net/krn9v4vr/59/ **/
+ 
+     
+- Vue.component('spart', {
+-      template: "#spart-template",
+-      props: ['fields', "part","rowindex","parts","schema","operator"],
+-      data() {
+-          return {
+-          }
++ Vue.component('part', {
++      template: "#part-template",
++      props: ["fields","rowindex","schema","part"],
++      data: {
++          fieldName: "",
++          value: "",
++          type: ""
+       },
+-      computed: {
++      watch:{
++          'fieldName' : function(v) {
++              var vals = this.getFieldValues(v);
++              var $el_ = $(this.$refs.typeahead); 
++            $el_.typeahead('destroy');
++            $el_.typeahead({
++                hint: false,
++                highlight: true,
++                minLength: 0
++              },
++              {
++                name: 'states',
++                display: 'value',
++                source: substringMatcher(vals),
++                templates: {
++                    suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
++                  }
++              });   
++            console.log("fieldChange:" +  v);
++            Vue.set(this,'part.fieldName',v);
++            this.$parent.$parent.runQuery();
++          },
++          'type' : function(v) {
++              console.log("typeChange:" +  v);
++              Vue.set(this,'part.type',v);
++              this.$parent.$parent.runQuery();
++          },
++          'value' : function(v) {
++              console.log("valueChange:" +  v);
++              Vue.set(this,'part.value',v);
++              this.$parent.$parent.runQuery();
++          }
+       },
+       methods: {
+           onValidChange : function() {
+-            window.console.log("ON VALID CHANGE");
+-            this.$parent.runQuery();
+-          },
++              this.$parent.$parent.runQuery();
++            },
+           getLimits :  function() {
+               var r = [{'text':'Equals', 'value': 'EQUALS'},{'text':'Does not Equal', 'value': 'DOES_NOT_EQUAL'}];
+-              if (this.getHtmlFieldType(this.part.fieldName) != 'text') {
++              if (this.getHtmlFieldType(this.fieldName) != 'text') {
+                   r.push({'text':'Greater Than','value':'GREATER_THAN'});
+                   r.push({'text':'Less Than','value':'LESS_THAN'});
+               } else {
+@@ -149,6 +180,21 @@
+               var fld = this.fields[index];
+               return fld.values;
+           },
++      }
++ });
++ Vue.component('spart', {
++      template: "#spart-template",
++      props: ['fields', "part","rowindex","parts","schema","operator"],
++      data() {
++          return {
++          }
++      },
++      computed: {
++      },
++      methods: {
++          onValidChange() {
++              this.runQuery();
++          },
+           setValue: function(val) {
+ //              console.log('setValue:' + val);
+               this.parts[this.rowindex].value = val;
+@@ -344,6 +390,7 @@ var Hack = new Vue({
+               var query = this.indicators[this.currentIndicator].query;
+               var qs = JSON.stringify(query);
+               if (this.query == qs) {
++                  console.log('skip:' + qs);
+                   return;
+               }
+               this.query = qs;
