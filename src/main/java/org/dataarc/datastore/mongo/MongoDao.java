@@ -307,9 +307,11 @@ public class MongoDao implements ImportDao, QueryDao {
             q.addCriteria(group);
             WriteResult updateMulti = template.updateMulti(q, new Update().addToSet("regions", val), DataEntry.class);
         } catch (Exception e) {
+            logger.error("-------------- {} -------------", val);
             logger.error("{}", e, e);
             logger.debug("{}", geometry.toText());
             logger.debug("{}", convert);
+            logger.error("-------------- {} -------------", val);
 
         }
     }

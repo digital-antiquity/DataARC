@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @Secured(UserService.EDITOR_ROLE)
 public class SchemaController extends AbstractController {
+    
     @Autowired
     SchemaService schemaService;
 

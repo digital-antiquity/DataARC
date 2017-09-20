@@ -2,6 +2,8 @@ package org.dataarc.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +16,8 @@ import com.rollbar.Rollbar;
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";
+
+    protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired(required=false)
     private Rollbar rollbar;
@@ -28,6 +32,7 @@ public class GlobalDefaultExceptionHandler {
         if (rollbar != null) {
             rollbar.critical(e);
         }
+        logger.error("{}",e,e);
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
             throw e;
 

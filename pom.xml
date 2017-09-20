@@ -929,14 +929,8 @@
                             <value>false</value>
                         </systemProperty>
                     </systemProperties>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-<!--                     <scanTargetPatterns>
-                        <directory>src/main/webapp</directory>
-                        <excludes>
-                            <exclude>**/*</exclude>
-                        </excludes>
-                    </scanTargetPatterns>
- -->                    <webAppSourceDirectory>${basedir}/src/main/webapp/</webAppSourceDirectory>
+                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                    <webAppSourceDirectory>${basedir}/src/main/webapp/</webAppSourceDirectory>
                     <webAppConfig>
                         <contextPath>/</contextPath>
                         <descriptor>${basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>

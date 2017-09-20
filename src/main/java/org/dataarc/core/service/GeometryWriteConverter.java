@@ -3,6 +3,8 @@ package org.dataarc.core.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.mongodb.core.geo.GeoJson;
@@ -13,7 +15,6 @@ import org.springframework.data.mongodb.core.geo.GeoJsonMultiPolygon;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 
-import com.mongodb.BasicDBObject;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
@@ -33,6 +34,7 @@ import com.vividsolutions.jts.geom.Polygon;
 @WritingConverter
 public enum GeometryWriteConverter implements Converter<Geometry, GeoJson> {
     INSTANCE;
+    protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
     public GeoJson convert(Geometry g) {
 
@@ -75,14 +77,21 @@ public enum GeometryWriteConverter implements Converter<Geometry, GeoJson> {
         List<org.springframework.data.geo.Point> points = new ArrayList<>();
         LineString exteriorRing = p.getExteriorRing();
         for (int i = 0; i < exteriorRing.getNumPoints(); i++) {
-            points.add(buildCoordinates(exteriorRing.getPointN(i)));
+            GeoJsonPoint point = buildCoordinates(exteriorRing.getPointN(i));
+            if (!points.contains(point) || i == exteriorRing.getNumPoints() -1 ){
+                points.add(point);
+            }
         }
+        
         GeoJsonPolygon polygon = new GeoJsonPolygon(points);
         for (int i = 0; i < p.getNumInteriorRing(); i++) {
             List<org.springframework.data.geo.Point> icoords = new ArrayList<>();
             LineString interiorRingN = p.getInteriorRingN(i);
             for (int j = 0; j < interiorRingN.getNumPoints(); j++) {
-                icoords.add(buildCoordinates(interiorRingN.getPointN(j)));
+                GeoJsonPoint point = buildCoordinates(interiorRingN.getPointN(j));
+                if (!!icoords.contains(point) ||  j == interiorRingN.getNumPoints() -1) {
+                    icoords.add(point);
+                }
             }
             polygon.withInnerRing(icoords);
         }
