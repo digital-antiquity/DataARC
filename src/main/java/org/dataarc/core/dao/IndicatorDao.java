@@ -9,10 +9,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.dataarc.bean.Indicator;
 import org.dataarc.util.PersistableUtils;
-import org.linkedin.util.text.Indent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
