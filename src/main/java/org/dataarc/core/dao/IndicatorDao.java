@@ -46,9 +46,9 @@ public class IndicatorDao {
 
     public List<Indicator> findAllForSchema(String schemaName) {
         // FIXME: SQL-inject
-        Query query = manager.createNativeQuery("select * from indicator where query @> '{\"schema\":\"" + StringEscapeUtils.escapeSql(schemaName) + "\" }'",
+        Query query = manager.createQuery("select * from indicator i where i.schema.name=:id ",
                 Indicator.class);
-        // query.setParameter(1, schemaName);
+         query.setParameter(1, schemaName);
         return query.getResultList();
     }
 

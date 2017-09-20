@@ -11,7 +11,7 @@
     <@body.body>
 
         <h1>Add Datafile</h1>
-        <B>Upload Succeeed for ${topicName}</b>
+        <B>Upload Succeeed</b>
     </form> 
     
     </@body.body>

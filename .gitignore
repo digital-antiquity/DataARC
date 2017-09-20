@@ -26,3 +26,4 @@ crowd.properties
 docker/mongo
 docker/postgres
 logs
+${filestore.path}

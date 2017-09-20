@@ -44,10 +44,10 @@ import com.vividsolutions.jts.geom.Geometry;
 
 @Component
 public class MongoDao implements ImportDao, QueryDao {
-    private static final String REGION = "region";
-    private static final String INDICATORS = "indicators";
-    private static final String TOPICS = "topics";
-    private static final String TOPIC_IDENTIFIERS = "topicIdentifiers";
+    private static final String REGION = "dataArcRegion";
+    private static final String INDICATORS = "dataArcIndicators";
+    private static final String TOPICS = "dataArcTopics";
+    private static final String TOPIC_IDENTIFIERS = "dataArcTopicIdentifiers";
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 

@@ -43,7 +43,7 @@ public interface IndexFields {
     static final String TOPIC_ID_3RD = "topic_id_2";
     static final String CATEGORY = "category";
     static final String REGION = "region";
-    static final String MILLENIUM = "millenium";
+    static final String MILLENIUM = "millennium";
     static final String CENTURY = "century";
     static final String DECADE = "decade";
     static final String INTERNAL_TYPE = "internalType";

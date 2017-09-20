@@ -13,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.dataarc.bean.schema.FieldType;
 import org.dataarc.bean.schema.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FieldDataCollector {
 
@@ -22,7 +24,9 @@ public class FieldDataCollector {
     private Map<String, FieldType> fieldTypes = new HashMap<>();
     private Map<String, Map<Object, Long>> uniqueValues = new HashMap<>();
     private String displayName;
+    protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
+    
     public FieldDataCollector(String schema) {
         this.setSchemaName(schema);
         this.setDisplayName(schema);
@@ -78,9 +82,13 @@ public class FieldDataCollector {
         }
 
         fieldTypes.put(normalizedName, type);
+        if (value instanceof Collection || value instanceof Map) {
+            return;
+        }
 
         if (value instanceof Date || value instanceof String || value instanceof Number) {
-            Map<Object, Long> set = uniqueValues.getOrDefault(path, new HashMap<>());
+            logger.trace("add:: {} {} ==> {}", path, normalizedName,value);
+            Map<Object, Long> set = uniqueValues.getOrDefault(normalizedName, new HashMap<>());
             if (value instanceof String) {
                 String left = StringUtils.left((String) value, Value.VALUE_LENGTH - 1);
                 Long count = set.getOrDefault(left, 0L);
@@ -90,6 +98,8 @@ public class FieldDataCollector {
                 set.put(value, count + 1);
             }
             uniqueValues.put(normalizedName, set);
+        } else {
+            logger.error("value is unknown type!!! {} --> {}", value.getClass(), value);
         }
     }
 

@@ -1,0 +1,205 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 4214,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.5633335,
+          54.532776
+        ]
+      },
+      "properties": {
+        "id": 4214,
+        "country": "Ireland",
+        "sampleData": {
+          "site_id": 590,
+          "site_name": "Strangford Lough: Greyabbey Bay",
+          "sample_name": "S2",
+          "sample_group_id": 709,
+          "dating_type": "Relative dates",
+          "start": null,
+          "end": null,
+          "age_name": "Early Holocene",
+          "age_abbreviation": "EH"
+        },
+        "indicators": {
+          "Aquatics": 4,
+          "Indicators: Standing water": 5,
+          "Indicators: Running water": 5,
+          "Pasture/Dung": 1,
+          "Meadowland": 2,
+          "Wood and trees": 10,
+          "Indicators: Deciduous": 7,
+          "Indicators: Coniferous": 5,
+          "Wetlands/marshes": 4,
+          "Open wet habitats": 4,
+          "Disturbed/arable": 6,
+          "Sandy/dry disturbed/arable": 1,
+          "Dung/foul habitats": 4,
+          "Carrion": 8,
+          "Indicators: Dung": 1,
+          "Mould beetles": 7,
+          "General synanthropic": 2,
+          "Stored grain pest": 6,
+          "Dry dead wood": 1,
+          "Heathland & moorland": 6,
+          "Halotolerant": 2,
+          "Ectoparasite": 1
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4214,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.5633335,
+          54.532776
+        ]
+      },
+      "properties": {
+        "id": 4214,
+        "country": "Ireland",
+        "sampleData": {
+          "site_id": 590,
+          "site_name": "Strangford Lough: Greyabbey Bay",
+          "sample_name": "S2",
+          "sample_group_id": 709,
+          "dating_type": "Calibrated radiocarbon dates",
+          "start": 9255,
+          "end": 9018,
+          "age_name": null,
+          "age_abbreviation": null
+        },
+        "indicators": {
+          "Aquatics": 4,
+          "Indicators: Standing water": 5,
+          "Indicators: Running water": 5,
+          "Pasture/Dung": 1,
+          "Meadowland": 2,
+          "Wood and trees": 10,
+          "Indicators: Deciduous": 7,
+          "Indicators: Coniferous": 5,
+          "Wetlands/marshes": 4,
+          "Open wet habitats": 4,
+          "Disturbed/arable": 6,
+          "Sandy/dry disturbed/arable": 1,
+          "Dung/foul habitats": 4,
+          "Carrion": 8,
+          "Indicators: Dung": 1,
+          "Mould beetles": 7,
+          "General synanthropic": 2,
+          "Stored grain pest": 6,
+          "Dry dead wood": 1,
+          "Heathland & moorland": 6,
+          "Halotolerant": 2,
+          "Ectoparasite": 1
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4214,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -5.5633335,
+          54.532776
+        ]
+      },
+      "properties": {
+        "id": 4214,
+        "country": "Ireland",
+        "sampleData": {
+          "site_id": 590,
+          "site_name": "Strangford Lough: Greyabbey Bay",
+          "sample_name": "S2",
+          "sample_group_id": 709,
+          "dating_type": "Calibrated radiocarbon dates",
+          "start": 8971.5,
+          "end": 8593.5,
+          "age_name": null,
+          "age_abbreviation": null
+        },
+        "indicators": {
+          "Aquatics": 4,
+          "Indicators: Standing water": 5,
+          "Indicators: Running water": 5,
+          "Pasture/Dung": 1,
+          "Meadowland": 2,
+          "Wood and trees": 10,
+          "Indicators: Deciduous": 7,
+          "Indicators: Coniferous": 5,
+          "Wetlands/marshes": 4,
+          "Open wet habitats": 4,
+          "Disturbed/arable": 6,
+          "Sandy/dry disturbed/arable": 1,
+          "Dung/foul habitats": 4,
+          "Carrion": 8,
+          "Indicators: Dung": 1,
+          "Mould beetles": 7,
+          "General synanthropic": 2,
+          "Stored grain pest": 6,
+          "Dry dead wood": 1,
+          "Heathland & moorland": 6,
+          "Halotolerant": 2,
+          "Ectoparasite": 1
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4609,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.813056,
+          57.024166
+        ]
+      },
+      "properties": {
+        "id": 4609,
+        "country": "Sweden",
+        "sampleData": {
+          "site_id": 672,
+          "site_name": "Stavsåkra",
+          "sample_name": "F7",
+          "sample_group_id": 812,
+          "dating_type": null,
+          "start": null,
+          "end": null,
+          "age_name": null,
+          "age_abbreviation": null
+        },
+        "indicators": {
+          "Aquatics": 1,
+          "Indicators: Standing water": 1,
+          "Indicators: Running water": 1,
+          "Pasture/Dung": 9,
+          "Meadowland": 13,
+          "Wood and trees": 9,
+          "Indicators: Deciduous": 2,
+          "Indicators: Coniferous": 1,
+          "Wetlands/marshes": 2,
+          "Open wet habitats": 7,
+          "Disturbed/arable": 18,
+          "Sandy/dry disturbed/arable": 2,
+          "Dung/foul habitats": 9,
+          "Carrion": 20,
+          "Indicators: Dung": 1,
+          "Mould beetles": 18,
+          "General synanthropic": 4,
+          "Stored grain pest": 7,
+          "Dry dead wood": 2,
+          "Heathland & moorland": 2,
+          "Halotolerant": 11,
+          "Ectoparasite": 2
+        }
+      }
+  }
+]
+}
