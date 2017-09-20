@@ -12,6 +12,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.dataarc.bean.Indicator;
 import org.dataarc.util.PersistableUtils;
+import org.linkedin.util.text.Indent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -46,9 +47,8 @@ public class IndicatorDao {
 
     public List<Indicator> findAllForSchema(String schemaName) {
         // FIXME: SQL-inject
-        Query query = manager.createQuery("select * from indicator i where i.schema.name=:id ",
-                Indicator.class);
-         query.setParameter(1, schemaName);
+        Query query = manager.createQuery("from indicator i where i.schema.name=:name ",Indicator.class);
+         query.setParameter("name", schemaName);
         return query.getResultList();
     }
 
