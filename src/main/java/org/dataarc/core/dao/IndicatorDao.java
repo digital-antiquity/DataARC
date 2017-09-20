@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.dataarc.bean.Indicator;
 import org.dataarc.util.PersistableUtils;
 import org.slf4j.Logger;
@@ -46,9 +45,8 @@ public class IndicatorDao {
 
     public List<Indicator> findAllForSchema(String schemaName) {
         // FIXME: SQL-inject
-        Query query = manager.createNativeQuery("select * from indicator where query @> '{\"schema\":\"" + StringEscapeUtils.escapeSql(schemaName) + "\" }'",
-                Indicator.class);
-        // query.setParameter(1, schemaName);
+        Query query = manager.createQuery("from indicator i where i.schema.name=:name ",Indicator.class);
+         query.setParameter("name", schemaName);
         return query.getResultList();
     }
 

@@ -210,7 +210,7 @@
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-  			    <input class="typeahead" type="text" placeholder="Search" name='typeahead'  v-typeahead.part="part" v-typeahead="getFieldValues(part.fieldName)"  v-model="part.value" v-bind:value="part.value"
+  			    <input class="typeahead" type="text" placeholder="Search" name='typeahead' v-typeahead="{'values':getFieldValues(part.fieldName) , 'fieldName': part.fieldName}"  v-model="part.value" v-bind:value="part.value"
   			      v-on:change="updateTest()" @input="onValidChange()" >
                 
                 <span v-show="rowindex > 0">

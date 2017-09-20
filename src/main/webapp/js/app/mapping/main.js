@@ -57,6 +57,12 @@
       }
       
     var setupTypeahead = function(el_, binding,parent) {
+        var field = $(el_);
+        var name = field.data('name');
+        if (name == binding.value.fieldName) {
+            return;
+        }
+        field.data('name',binding.value.fieldName);
         $(el_).typeahead('destroy');
         $(el_).typeahead({
             hint: false,
@@ -64,9 +70,10 @@
             minLength: 0
           },
           {
+            limit:25,
             name: 'states',
             display: 'value',
-            source: substringMatcher(binding.value),
+            source: substringMatcher(binding.value.values),
             templates: {
                 suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
               }

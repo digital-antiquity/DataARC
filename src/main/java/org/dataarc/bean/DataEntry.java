@@ -95,10 +95,10 @@ public class DataEntry  implements Serializable {
     @Column(name = "date_created", nullable = false)
     private Date dateCreated;
     private Map<String, Object> properties = new HashMap<>();
-    private Set<String> indicators = new HashSet<>();
-    private Set<String> topics = new HashSet<>();
-    private Set<String> regions = new HashSet<>();
-    private Set<String> topicIdentifiers = new HashSet<>();
+    private Set<String> dataArcIndicators = new HashSet<>();
+    private Set<String> dataArcTopics = new HashSet<>();
+    private Set<String> dataArcRegions = new HashSet<>();
+    private Set<String> dataArcTopicIdentifiers = new HashSet<>();
 
     public String getId() {
         return id;
@@ -108,20 +108,20 @@ public class DataEntry  implements Serializable {
         this.id = id;
     }
 
-    public Set<String> getTopics() {
-        return topics;
+    public Set<String> getDataArcTopics() {
+        return dataArcTopics;
     }
 
-    public void setTopics(Set<String> topics) {
-        this.topics = topics;
+    public void setDataArcTopics(Set<String> topics) {
+        this.dataArcTopics = topics;
     }
 
-    public Set<String> getTopicIdentifiers() {
-        return topicIdentifiers;
+    public Set<String> getDataArcTopicIdentifiers() {
+        return dataArcTopicIdentifiers;
     }
 
-    public void setTopicIdentifiers(Set<String> topicIdentifiers) {
-        this.topicIdentifiers = topicIdentifiers;
+    public void setDataArcTopicIdentifiers(Set<String> topicIdentifiers) {
+        this.dataArcTopicIdentifiers = topicIdentifiers;
     }
 
     @Override
@@ -137,12 +137,12 @@ public class DataEntry  implements Serializable {
         this.title = title;
     }
 
-    public Set<String> getIndicators() {
-        return indicators;
+    public Set<String> getDataArcIndicators() {
+        return dataArcIndicators;
     }
 
-    public void setIndicators(Set<String> indicators) {
-        this.indicators = indicators;
+    public void setDataArcIndicators(Set<String> indicators) {
+        this.dataArcIndicators = indicators;
     }
 
 
@@ -162,11 +162,11 @@ public class DataEntry  implements Serializable {
         return null;
     }
 
-    public Set<String> getRegions() {
-        return regions;
+    public Set<String> getDataArcRegions() {
+        return dataArcRegions;
     }
 
-    public void setRegions(Set<String> regions) {
-        this.regions = regions;
+    public void setDataArcRegions(Set<String> regions) {
+        this.dataArcRegions = regions;
     }
 }

@@ -119,15 +119,15 @@ public class SearchIndexObject {
         source = entry.getSource();
         setCategory(schema.getCategory());
         setSchemaId(schema.getId());
-        if (CollectionUtils.isNotEmpty(entry.getIndicators())) {
-            indicators = entry.getIndicators();
+        if (CollectionUtils.isNotEmpty(entry.getDataArcIndicators())) {
+            indicators = entry.getDataArcIndicators();
             values.addAll(indicators);
         }
-        if (CollectionUtils.isNotEmpty(entry.getRegions())) {
-            region.addAll(entry.getRegions());
+        if (CollectionUtils.isNotEmpty(entry.getDataArcRegions())) {
+            region.addAll(entry.getDataArcRegions());
         }
-        if (CollectionUtils.isNotEmpty(entry.getTopicIdentifiers())) {
-            topicIdentifiers = entry.getTopicIdentifiers();
+        if (CollectionUtils.isNotEmpty(entry.getDataArcTopicIdentifiers())) {
+            topicIdentifiers = entry.getDataArcTopicIdentifiers();
         }
         values.add(source);
         if (MapUtils.isNotEmpty(entry.getProperties())) {
