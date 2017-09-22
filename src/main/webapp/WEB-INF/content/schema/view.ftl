@@ -10,6 +10,9 @@
     
     <@body.body>
 <h1>Editing: ${schema.name}</h1>
+<#if admin>
+<a href="${contextPath}/a/admin/schema/template/${schema.name}">Edit Templates</a>
+</#if>
  <div class="col-sm-12">
     <form method="POST" action="${contextPath}/a/schema/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
 		<input type="hidden" name="id" value="${schema.id?c}" />
@@ -25,6 +28,7 @@
 	        <label for="schemaCategory" class="control-label">Category:</label>
 	        
 	        <select id="schemaCategory" name="category" class="form-control">
+	           <option value=""></option>
 	           <#list categories as category>
 	               <option value="${category}" <#if category == schema.category!''>selected</#if>>${category}</option>
 	           </#list>
@@ -38,15 +42,12 @@
         <input type="submit" value="Save" class="button btn btn-primary"> 
 
     </form>
-    </div>
-     <div class="col-sm-12">
-<#if admin>
-<a href="${contextPath}/a/admin/schema/template/${schema.name}">Edit Templates</a>
-</#if>
+</div>
+ <div class="col-sm-12">
     <form method="POST" action="${contextPath}/a/admin/uploadSourceFile" enctype="multipart/form-data">
-        <h3>Update Data (GeoJSON)</h3>
-        <p>Replace the data file for your DataARC source. This will <b>delete</b> all data for your data source, and then load it.  If you delete fields that are mapped to existing indicators, these indicators will be broken/removed.</p>
-         <input type="file" name="file">
+    <h3>Update Data (GeoJSON)</h3>
+    <p>Replace the data file for your DataARC source. This will <b>delete</b> all data for your data source, and then load it.  If you delete fields that are mapped to existing indicators, these indicators will be broken/removed.</p>
+     <input type="file" name="file">
       <input type="hidden" name="name" value="${schema.name}"/>
       <br/>
         <input type="submit" value="Upload" class="button btn btn-primary"> 

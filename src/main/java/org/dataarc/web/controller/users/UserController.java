@@ -26,8 +26,14 @@ public class UserController extends AbstractController {
 
     
 
+    @RequestMapping(path = UrlConstants.UPDATE_USER, method = RequestMethod.POST)
+    public ModelAndView changeUserRole(@PathVariable(value = "id", required = true) String id, String role) throws Exception {
+        ModelAndView mav = new ModelAndView("users/list");
+        userService.updateRole(id,role);
+        return mav;
+    }
     @RequestMapping(path = UrlConstants.DELETE_USER, method = RequestMethod.POST)
-    public ModelAndView deleteSchema(@PathVariable(value = "id", required = true) String id) throws Exception {
+    public ModelAndView deleteUser(@PathVariable(value = "id", required = true) String id) throws Exception {
         ModelAndView mav = new ModelAndView("users/list");
         userService.deleteById(id);
         return mav;

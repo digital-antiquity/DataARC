@@ -16,8 +16,7 @@
 <td>id</td>
 <td>display name</td>
 <td>email</td>
-<td>editor?</td>
-<td>admin?</td>
+<td>role</td>
 </tr>
 </thead>
 <#list users as user>
@@ -25,8 +24,20 @@
 		<td>${user.id?c}</td>
 		<td>${user.firstName} ${user.lastName}</td>
 		<td>${user.email}</td>
-		<td>${user.editor?c}</td>
-		<td>${user.admin?c}</td>
+		<td> 
+	    <form method="POST" action="${contextPath}/a/users/${user.id}" enctype="multipart/form-data" class="form-horizontal">
+	      <div class="input-group">
+	  <select name=role class="form-control">
+		      <option name='USER' <#if (!user.editor && !user.admin)>selected</#if>>User</option>
+		      <option name='EDITOR' <#if user.editor>selected</#if>>Editor</option>
+		      <option name='ADMIN' <#if user.admin>selected</#if>>Admin</option>
+		  </select>
+         <span class="input-group-btn">
+            <input type="submit" value="Save" class="button btn btn-primary"> 
+            </span>
+            </div>
+		  </form>
+		  </td>
 	</tr>
 </#list>
 </@body.body>

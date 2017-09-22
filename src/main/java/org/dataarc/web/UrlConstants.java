@@ -36,6 +36,7 @@ public interface UrlConstants {
     String SCHEMA_TEMPLATES = "/a/admin/schema/template/{name}";
     String LIST_USERS = "/a/users/list";
     String VIEW_USERS = "/a/users/{id}";
-    String DELETE_USER = "/a/users/{id}";
+    String UPDATE_USER = "/a/users/{id}";
+    String DELETE_USER = "/a/users/delete/{id}";
 
 }

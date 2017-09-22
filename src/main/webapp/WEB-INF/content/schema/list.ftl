@@ -13,13 +13,13 @@
 <table class="table">
 <thead>
 <tr>
-<td>id</td>
-<td>name</td>
-<td>display name</td>
-<td>description</td>
-<td>url</td>
-<td>category</td>
-<td># of entries</td>
+<th>id</th>
+<th>name</th>
+<th>display name</th>
+<th>description</th>
+<th>url</th>
+<th>category</th>
+<th># of entries</th>
 </tr>
 </thead>
 <#list schema as schemum>
@@ -31,7 +31,7 @@
 		<td>${schemum.url!''}</td>
 		<td>${schemum.category!''}</td>
 		<td>${(schemum.rows!0)?c}</td>
-		<td><a href="/a/schema/${schemum.name}">edit</a></td>
+		<td><a class="button btn btn-primary" href="/a/schema/${schemum.name}">edit</a></td>
 	</tr>
 </#list>
 </@body.body>

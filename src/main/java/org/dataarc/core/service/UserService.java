@@ -70,15 +70,14 @@ public class UserService {
         }
 
         LinkedHashMap<String, Object> details = (LinkedHashMap<String, Object>) userEntity.getUserAuthentication().getDetails();
-        logger.debug("details:{}", details);
         user.setEmail((String) details.get("email"));
         user.setUsername((String) details.get("name"));
         user.setFirstName((String) details.get("given_name"));
-        //google
+        // google
         user.setLastName((String) details.get("family_name"));
         // facebook
-        if (details.get("last_name") != null && StringUtils.isNotBlank((String)details.get("last_name"))) {
-            user.setLastName((String)details.get("last_name"));
+        if (details.get("last_name") != null && StringUtils.isNotBlank((String) details.get("last_name"))) {
+            user.setLastName((String) details.get("last_name"));
         }
         user.setLastLogin(new Date());
         save(user);
@@ -94,17 +93,16 @@ public class UserService {
         Object details = authentication.getDetails();
         logger.trace("   username: {}", username);
         logger.trace("authorities: {}", authorities);
-        logger.debug("    details: {}", details);
         if (authentication instanceof OAuth2Authentication) {
             OAuth2Authentication userEntity = (OAuth2Authentication) authentication;
             userId = userEntity.getName();
             logger.trace("    details: {} | {}", details, details.getClass());
             logger.trace("    principal: {} | {}", authentication.getPrincipal(), authentication.getPrincipal().getClass());
-            logger.debug("{}", userEntity.getUserAuthentication());
-            logger.debug("{}", userEntity.getCredentials());
+//            logger.debug("{}", userEntity.getUserAuthentication());
+//            logger.debug("{}", userEntity.getCredentials());
             logger.trace("     userId: {}", userId);
             DataArcUser user = findByExternalId(userId);
-//            authentication.set
+            // authentication.set
             saveOrUpdateUser(user, userEntity);
             return user;
         }
@@ -120,7 +118,7 @@ public class UserService {
         return null;
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public void enhanceGroupMembership(DataArcUser user_, Collection<GrantedAuthority> collection) {
         collection.add(new SimpleGrantedAuthority(USER_ROLE));
         if (user_.isAdmin()) {
@@ -130,54 +128,70 @@ public class UserService {
         if (user_.isEditor()) {
             collection.add(new SimpleGrantedAuthority(UserService.EDITOR_ROLE));
         }
-        
+
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public DataArcUser findSaveUpdateUser(Map<String, Object> map) {
-            String id = (String) map.get("id");
-            DataArcUser user = findByExternalId(id);
-            if (user == null) {
-                user = new DataArcUser();
-                user.setDateCreated(new Date());
-                user.setExternalId(id);
-            }
+        String id = (String) map.get("id");
+        DataArcUser user = findByExternalId(id);
+        if (user == null) {
+            user = new DataArcUser();
+            user.setDateCreated(new Date());
+            user.setExternalId(id);
+        }
 
-            user.setEmail((String) map.get("email"));
-            user.setUsername((String) map.get("name"));
-            user.setFirstName((String) map.get("given_name"));
-            user.setLastName((String) map.get("family_name"));
-            user.setLastLogin(new Date());
-            save(user);
-            
-            return user;
+        user.setEmail((String) map.get("email"));
+        user.setUsername((String) map.get("name"));
+        user.setFirstName((String) map.get("given_name"));
+        user.setLastName((String) map.get("family_name"));
+        user.setLastLogin(new Date());
+        save(user);
+
+        return user;
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public List<DataArcUser> findAll() {
         return userDao.findAll();
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void makeAdmin(String userId) {
         DataArcUser findByUserId = userDao.findByUserId(userId);
         findByUserId.setAdmin(true);
         save(findByUserId);
     }
 
-    
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void makeEditor(String userId) {
         DataArcUser findByUserId = userDao.findByUserId(userId);
         findByUserId.setEditor(true);
         save(findByUserId);
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void deleteById(String id) {
         DataArcUser findByUserId = userDao.findByUserId(id);
         userDao.delete(findByUserId);
-        
+
+    }
+
+    @Transactional(readOnly = false)
+    public void updateRole(String id, String role) {
+        DataArcUser user = userDao.findByUserId(id);
+        if (StringUtils.containsIgnoreCase(ADMIN_ROLE, role)) {
+            user.setAdmin(true);
+            user.setEditor(false);
+        } else if (StringUtils.containsIgnoreCase(EDITOR_ROLE, role)) {
+            user.setEditor(true);
+            user.setAdmin(false);
+        } else {
+            user.setAdmin(false);
+            user.setEditor(false);
+        }
+        save(user);
+
     }
 
 }
