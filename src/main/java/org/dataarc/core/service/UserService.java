@@ -173,4 +173,11 @@ public class UserService {
         save(findByUserId);
     }
 
+    @Transactional(readOnly=false)
+    public void deleteById(String id) {
+        DataArcUser findByUserId = userDao.findByUserId(id);
+        userDao.delete(findByUserId);
+        
+    }
+
 }

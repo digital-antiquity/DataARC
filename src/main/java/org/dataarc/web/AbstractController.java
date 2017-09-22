@@ -17,7 +17,6 @@ public abstract class AbstractController {
 
     private static final String CONTENT_LENGTH = "Content-Length";
 
-    private ThreadLocal<DataArcUser> user = new ThreadLocal<>();
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
 
@@ -72,9 +71,6 @@ public abstract class AbstractController {
     
     @ModelAttribute("currentUser")
     public DataArcUser getUser() {
-        if (user.get() != null) {
-            return user.get();
-        }
         
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
@@ -82,7 +78,6 @@ public abstract class AbstractController {
         }
 
         DataArcUser value = userService.reconcileUser(authentication);
-        user.set(value);
         return value;
     }
     

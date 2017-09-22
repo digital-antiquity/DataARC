@@ -34,5 +34,8 @@ public interface UrlConstants {
     String DELETE_GEOJSON = "/geojson/{id}";
     String RESET_EVERYTHING = "/a/admin/resetData";
     String SCHEMA_TEMPLATES = "/a/admin/schema/template/{name}";
+    String LIST_USERS = "/a/users/list";
+    String VIEW_USERS = "/a/users/{id}";
+    String DELETE_USER = "/a/users/{id}";
 
 }

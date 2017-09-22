@@ -49,4 +49,9 @@ public class DataArcUserDao {
         }
     }
 
+    public void delete(DataArcUser findByUserId) {
+        manager.remove(findByUserId);
+        
+    }
+
 }

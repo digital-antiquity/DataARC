@@ -22,6 +22,7 @@
         <#if admin>
         <li><a href="/a/admin">Admin</a><ul>
             <li><a href="/a/geojson">GeoJson Files</a></li> 
+            <li><a href="/a/users/list">Users</a></li> 
         </ul></li>
         </#if>
         </#if>
