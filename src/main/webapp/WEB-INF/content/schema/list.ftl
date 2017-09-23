@@ -31,7 +31,7 @@
 		<td>${schemum.url!''}</td>
 		<td>${schemum.category!''}</td>
 		<td>${(schemum.rows!0)?c}</td>
-		<td><a class="button btn btn-primary" href="/a/schema/${schemum.name}">edit</a></td>
+		<td><a class="button btn btn-primary" href="/a/schema/${schemum.id?c}">edit</a></td>
 	</tr>
 </#list>
 </@body.body>

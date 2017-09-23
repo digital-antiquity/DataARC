@@ -39,20 +39,22 @@ public class SchemaTemplateController extends AbstractController {
     }
 
     @RequestMapping(path = UrlConstants.SCHEMA_TEMPLATES, method = RequestMethod.GET)
-    public ModelAndView viewSchemaTemplates(@PathVariable(value = "name", required = true) String name) throws Exception {
+    public ModelAndView viewSchemaTemplates(@PathVariable(value = "id", required = true) Long id) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view-template");
-        mav.addObject("schema", schemaService.getSchema(name));
+        mav.addObject("schema", schemaService.findById(id));
         return mav;
     }
 
 
     @RequestMapping(path = UrlConstants.SCHEMA_TEMPLATES, method = RequestMethod.POST)
-    public ModelAndView saveSchemaTemplates(@PathVariable(value = "name", required = true) String name,
+    public ModelAndView saveSchemaTemplates(@PathVariable(value = "id", required = true) Long id,
             @RequestParam(value = "titleTemplate") String title,
-            @RequestParam(value = "resultTemplate") String result) throws Exception {
+            @RequestParam(value = "resultTemplate") String result,
+            @RequestParam(value = "linkTemplate") String link) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view-template");
-        schemaService.updateSchemaTemplates(schemaService.getSchema(name), title, result);
-        mav.addObject("schema", schemaService.getSchema(name));
+        Schema schema = schemaService.findById(id);
+        schemaService.updateSchemaTemplates(schema, title, result, link);
+        mav.addObject("schema", schema);
         return mav;
     }
 

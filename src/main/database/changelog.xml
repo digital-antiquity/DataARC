@@ -371,11 +371,22 @@
         </addColumn>
 
     </changeSet>
-        <changeSet id="alpha-35" author="abrin">
+    <changeSet id="alpha-35" author="abrin">
         <addColumn tableName="schema">
             <column name="title_template" type="text" />
             <column name="result_template" type="text" />
         </addColumn>
     </changeSet>
-    
+    <changeSet id="alpha-36" author="abrin">
+        <addColumn tableName="schema">
+            <column name="link_template" type="text" />
+        </addColumn>
+        <addColumn tableName="schema_field">
+            <column name="start_field" type="boolean"
+                defaultValueBoolean="false" />
+            <column name="end_field" type="boolean"
+                defaultValueBoolean="false" />
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

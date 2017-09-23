@@ -47,32 +47,33 @@ public class SchemaController extends AbstractController {
     }
 
     @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.GET)
-    public ModelAndView getSchema(@PathVariable(value = "name", required = true) String name) throws Exception {
+    public ModelAndView getSchema(@PathVariable(value = "id", required = true) Long id) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
-        Schema schema = schemaService.getSchema(name);
+        Schema schema = schemaService.findById(id);
         mav.addObject("schema", schema);
         mav.addObject("files", dataFileService.findBySchemaId(schema.getId()));
         return mav;
     }
 
     @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.POST)
-    public ModelAndView saveSchema(@PathVariable(value = "name", required = true) String name,
+    public ModelAndView saveSchema(@PathVariable(value = "id", required = true) Long id,
             @RequestParam(value = "description") String description,
             @RequestParam(value = "displayName") String displayName,
             @RequestParam(value = "category") Category category,
             @RequestParam(value = "url") String url) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
-        schemaService.updateSchema(schemaService.getSchema(name), displayName, description, url, category);
-        mav.addObject("schema", schemaService.getSchema(name));
+        Schema schema = schemaService.findById(id);
+        schemaService.updateSchema(schema, displayName, description, url, category);
+        mav.addObject("schema", schema);
         return mav;
     }
 
     @RequestMapping(path = UrlConstants.DELETE_SCHEMA, method = RequestMethod.POST)
-    public ModelAndView deleteSchema(@PathVariable(value = "name", required = true) String name) throws Exception {
+    public ModelAndView deleteSchema(@PathVariable(value = "id", required = true) Long id) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
-        Schema schema = schemaService.getSchema(name);
+        Schema schema = schemaService.findById(id);
         mav.addObject("schema", schema);
-        importService.deleteBySource(name);
+        importService.deleteBySource(schema.getName());
         schemaService.deleteSchema(schema);
         return mav;
     }

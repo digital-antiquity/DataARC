@@ -27,6 +27,10 @@
 	        <label for="resultTemplate" class="control-label">Results Template:</label>
 	        <textarea id="resultTemplate" name="resultTemplate" class="form-control">${schema.resultTemplate!''}</textarea>
 		</div>
+		<div class="form-group">
+	        <label for="linkTemplate" class="control-label">Link Template:</label>
+	        <textarea id="linkTemplate" name="resultTemplate" class="form-control">${schema.linkTemplate!''}</textarea>
+		</div>
         <input type="submit" value="Save" class="button btn btn-primary"> 
 
     </form>

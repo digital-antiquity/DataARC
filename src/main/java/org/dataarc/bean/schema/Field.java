@@ -25,15 +25,21 @@ public class Field extends AbstractPersistable {
     @Column(length = 100)
     private String name;
 
-    @Column(length = 100, name ="display_name")
+    @Column(length = 100, name = "display_name")
     private String displayName;
 
-    @Column(length = 100, name ="mongo_name")
+    @Column(length = 100, name = "mongo_name")
     private String mongoName;
 
     @Column(name = "field_type")
     @Enumerated(EnumType.STRING)
     private FieldType type;
+
+    @Column(name = "start_field")
+    private boolean startField;
+
+    @Column(name = "end_field")
+    private boolean endField;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "field_id", nullable = false)
@@ -93,4 +99,21 @@ public class Field extends AbstractPersistable {
     public void setMongoName(String mongoName) {
         this.mongoName = mongoName;
     }
+
+    public boolean isStartField() {
+        return startField;
+    }
+
+    public void setStartField(boolean startField) {
+        this.startField = startField;
+    }
+
+    public boolean isEndField() {
+        return endField;
+    }
+
+    public void setEndField(boolean endField) {
+        this.endField = endField;
+    }
+
 }

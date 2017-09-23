@@ -11,10 +11,10 @@
     <@body.body>
 <h1>Editing: ${schema.name}</h1>
 <#if admin>
-<a href="${contextPath}/a/admin/schema/template/${schema.name}">Edit Templates</a>
+<a href="${contextPath}/a/admin/schema/template/${schema.id?c}">Edit Templates</a>
 </#if>
  <div class="col-sm-12">
-    <form method="POST" action="${contextPath}/a/schema/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
+    <form method="POST" action="${contextPath}/a/schema/${schema.id?c}" enctype="multipart/form-data" class="form-horizontal">
 		<input type="hidden" name="id" value="${schema.id?c}" />
 		<div class="form-group">
 	        <label for="schemaName" class="control-label">Display Name:</label>
@@ -29,7 +29,7 @@
 	        
 	        <select id="schemaCategory" name="category" class="form-control">
 	           <option value=""></option>
-	           <#list categories as category>
+	           <#list categories![] as category>
 	               <option value="${category}" <#if category == schema.category!''>selected</#if>>${category}</option>
 	           </#list>
 	        </select>
@@ -64,26 +64,26 @@
 	<th>name</th>
 	<th>Display Name</th>
 	<th>Field Type</th>
+	<th>Start Date</th>
+	<th>End Date</th>
 	</tr>
 </thead>
 <#list schema.fields as field>
+	   <form action="/a/fields/updateField" method="POST">
 	<tr>
 	<td>${field.id?c}</td>
 	<td>${field.name}</td>
 	<td>
-	   <form action="/api/fields/updateDisplayName" method="POST">
          <input type="hidden" name="schemaId" value="${schema.id?c}" />
          <input type="hidden" name="fieldId" value="${field.id?c}"/>
-	   <div class="input-group">
          <input type="text" name="displayName" value="${field.displayName}" class="form-control"/>
-         <span class="input-group-btn">
-           <button class="btn btn-default" type="button">Save</button>
-          </span>
-     </div>
-     </form>
 	</td>
 	<td>${field.type}</td>
+	<td><input type="checkbox" name="startField" value="true" <#if field.startField>checked</#if> ></td>
+	<td><input type="checkbox" name="endField" value="true" <#if field.endField>checked</#if> ></td>
+    <td><button class="btn btn-default button" type="submit">Save</button></td>
 	</tr>
+     </form>
 </#list>
 </table>
 </div>

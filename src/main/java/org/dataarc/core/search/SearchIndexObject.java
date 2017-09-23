@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.Category;
@@ -103,7 +104,6 @@ public class SearchIndexObject {
     public SearchIndexObject() {
     }
 
-    @SuppressWarnings("unchecked")
     public SearchIndexObject(DataEntry entry, Schema schema) {
         if (schema == null) {
             return;
@@ -119,17 +119,52 @@ public class SearchIndexObject {
         source = entry.getSource();
         setCategory(schema.getCategory());
         setSchemaId(schema.getId());
-        if (CollectionUtils.isNotEmpty(entry.getDataArcIndicators())) {
-            indicators = entry.getDataArcIndicators();
-            values.addAll(indicators);
-        }
-        if (CollectionUtils.isNotEmpty(entry.getDataArcRegions())) {
-            region.addAll(entry.getDataArcRegions());
-        }
-        if (CollectionUtils.isNotEmpty(entry.getDataArcTopicIdentifiers())) {
-            topicIdentifiers = entry.getDataArcTopicIdentifiers();
-        }
+
+        applyIndicators(entry);
+        applyGeographicRegions(entry);
+        applyTopicIdentifiers(entry);
         values.add(source);
+        applyProperties(entry, schema);
+        applyStartEnd(entry, schema);
+    }
+
+    private void applyStartEnd(DataEntry entry, Schema schema) {
+        org.dataarc.bean.schema.Field  startField = null;
+        org.dataarc.bean.schema.Field  endField = null;
+        for (org.dataarc.bean.schema.Field field : schema.getFields()) {
+            if (field.isStartField()) {
+                startField = field;
+            }
+            if (field.isEndField()) {
+                endField = field;
+            }
+        }
+        if (startField != null) {
+            setStart(toInt(properties.getOrDefault(SchemaUtils.formatForSolr(schema, startField), null)));
+        }
+        if (endField != null) {
+            setEnd(toInt(properties.getOrDefault(SchemaUtils.formatForSolr(schema, endField), null)));
+        }
+//        logger.debug("{} ({}) - {} ({})", startField,start,  endField, end);
+//        logger.debug("\t {} ", properties);
+    }
+
+    private Integer toInt(Object o) {
+        if (o == null) {
+            return null;
+        }
+        if (o instanceof Number) {
+            return ((Number) o).intValue();
+        }
+        if (o instanceof String && NumberUtils.isNumber((String) o)) {
+            float f = NumberUtils.toFloat((String) o);
+            return new Float(f).intValue();
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void applyProperties(DataEntry entry, Schema schema) {
         if (MapUtils.isNotEmpty(entry.getProperties())) {
             properties = new HashMap<>();
         }
@@ -163,6 +198,25 @@ public class SearchIndexObject {
                 }
             }
         });
+    }
+
+    private void applyTopicIdentifiers(DataEntry entry) {
+        if (CollectionUtils.isNotEmpty(entry.getDataArcTopicIdentifiers())) {
+            topicIdentifiers = entry.getDataArcTopicIdentifiers();
+        }
+    }
+
+    private void applyGeographicRegions(DataEntry entry) {
+        if (CollectionUtils.isNotEmpty(entry.getDataArcRegions())) {
+            region.addAll(entry.getDataArcRegions());
+        }
+    }
+
+    private void applyIndicators(DataEntry entry) {
+        if (CollectionUtils.isNotEmpty(entry.getDataArcIndicators())) {
+            indicators = entry.getDataArcIndicators();
+            values.addAll(indicators);
+        }
     }
 
     public String getId() {

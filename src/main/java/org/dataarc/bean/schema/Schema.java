@@ -49,6 +49,11 @@ public class Schema extends AbstractPersistable {
     @Type(type = "org.hibernate.type.TextType")
     private String resultTemplate;
 
+    @Column(name = "link_template")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String linkTemplate;
+
     @Column()
     private Integer rows;
 
@@ -136,6 +141,14 @@ public class Schema extends AbstractPersistable {
 
     public void setTitleTemplate(String titleTemplate) {
         this.titleTemplate = titleTemplate;
+    }
+
+    public String getLinkTemplate() {
+        return linkTemplate;
+    }
+
+    public void setLinkTemplate(String linkTemplate) {
+        this.linkTemplate = linkTemplate;
     }
 
 }

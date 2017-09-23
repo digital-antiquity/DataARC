@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
+import org.dataarc.bean.schema.Schema;
 import org.dataarc.datastore.mongo.QueryException;
 import org.geojson.Feature;
 

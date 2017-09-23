@@ -34,18 +34,19 @@ public class FieldController extends AbstractController {
     ImportDataService importService;
     
     @RequestMapping(path = UrlConstants.UPDATE_FIELD_DISPLAY_NAME, method = RequestMethod.POST)
-    public ModelAndView listFields(@RequestParam(value = "schema", required = true) Long schemaId,
-            @RequestParam(value = "field") Long fieldId,
-            @RequestParam(value = "displayName") String displayName) throws Exception {
-        ModelAndView mav = new ModelAndView("schema/view");
-        Schema schema = schemaService.findById(schemaId);
-        mav.addObject("schema", schema);
+    public String listFields(@RequestParam(value = "schemaId", required = true) Long schemaId,
+            @RequestParam(value = "fieldId") Long fieldId,
+            @RequestParam(value = "displayName") String displayName, 
+            @RequestParam(value = "startField" , required = false, defaultValue="FALSE") Boolean startField, 
+            @RequestParam(value = "endField", required = false, defaultValue="FALSE") Boolean endField
+            
+            ) throws Exception {
         try {
-            schemaService.updateFieldDisplayName(schemaId, fieldId, displayName);
+            schemaService.updateFieldDisplayName(schemaId, fieldId, displayName, startField,endField);
         } catch (Exception e) {
             logger.error("{}", e, e);
         }
-        return mav;
+        return "redirect:/a/schema/" + schemaId;
     }
 
 

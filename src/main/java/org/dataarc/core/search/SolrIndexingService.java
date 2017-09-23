@@ -1,7 +1,5 @@
 package org.dataarc.core.search;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -20,7 +17,6 @@ import org.apache.solr.client.solrj.request.schema.SchemaRequest;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.dataarc.bean.DataEntry;
-import org.dataarc.bean.file.JsonFile;
 import org.dataarc.bean.schema.FieldType;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
@@ -30,19 +26,12 @@ import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
-import org.dataarc.core.dao.file.JsonFileDao;
 import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wololo.geojson.Feature;
-import org.wololo.geojson.FeatureCollection;
-import org.wololo.geojson.GeoJSONFactory;
-import org.wololo.jts2geojson.GeoJSONReader;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 @Service
 public class SolrIndexingService {

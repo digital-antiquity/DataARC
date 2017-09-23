@@ -80,11 +80,13 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public Field updateFieldDisplayName(Long schemaId, Long fieldId, String displayName) {
+    public Field updateFieldDisplayName(Long schemaId, Long fieldId, String displayName, Boolean startField, Boolean endField) {
         Schema schema = schemaDao.findById(schemaId);
         for (Field field : schema.getFields()) {
             if (Objects.equal(field.getId(), fieldId)) {
                 field.setDisplayName(displayName);
+                field.setStartField(startField);
+                field.setEndField(endField);
                 saveField(field);
                 return field;
             }
@@ -120,8 +122,9 @@ public class SchemaService {
     }
 
     @Transactional(readOnly=false)
-    public void updateSchemaTemplates(Schema schema, String title, String result) {
+    public void updateSchemaTemplates(Schema schema, String title, String result, String link) {
         schema.setTitleTemplate(title);
+        schema.setLinkTemplate(link);
         schema.setResultTemplate(result);
         schemaDao.save(schema);
         
