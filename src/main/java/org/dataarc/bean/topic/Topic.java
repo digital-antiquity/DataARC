@@ -10,6 +10,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -25,7 +26,7 @@ public class Topic extends AbstractPersistable {
     @Column(length = 255)
     private String name;
 
-    @Column(length = 255, unique=true)
+    @Column(length = 255, unique = true)
     @NotNull
     private String identifier;
 
@@ -34,12 +35,17 @@ public class Topic extends AbstractPersistable {
     @Column(name = "varient")
     private List<String> varients = new ArrayList<>();
 
-
-    @ManyToMany(cascade={CascadeType.ALL})
-    @JoinTable(name = "topic_parents", joinColumns = { @JoinColumn(nullable = false, name = "topic_id") }, inverseJoinColumns = { @JoinColumn(
-            nullable = false,
-            name = "parent_id") })
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
+    @JoinTable(name = "topic_parents",
+            joinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName="id") },
+            inverseJoinColumns = { @JoinColumn(nullable = false, name = "parent_id") })
     private Set<Topic> parents = new HashSet<>();
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
+    @JoinTable(name = "topic_parents",
+            inverseJoinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName="id") },
+            joinColumns = { @JoinColumn(nullable = false, name = "parent_id") })
+    private Set<Topic> children = new HashSet<>();
 
     public String getName() {
         return name;
@@ -67,7 +73,7 @@ public class Topic extends AbstractPersistable {
 
     @Override
     public String toString() {
-        return String.format("%s (%s)" , name, getId());
+        return String.format("%s (%s)", name, getId());
     }
 
     public Set<Topic> getParents() {
@@ -76,5 +82,13 @@ public class Topic extends AbstractPersistable {
 
     public void setParents(Set<Topic> parents) {
         this.parents = parents;
+    }
+
+    public Set<Topic> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<Topic> children) {
+        this.children = children;
     }
 }

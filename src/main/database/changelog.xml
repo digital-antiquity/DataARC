@@ -399,4 +399,8 @@
         <addForeignKeyConstraint constraintName="topic_file" 
             referencedTableName="topic_map" baseColumnNames="topic_map_id" baseTableName="topic" referencedColumnNames="id"/>
     </changeSet>
+    <changeSet id="alpha-39" author="abrin">
+        <addForeignKeyConstraint constraintName="topic_association" 
+            referencedTableName="topic_map" baseColumnNames="topic_map_id" baseTableName="association" referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

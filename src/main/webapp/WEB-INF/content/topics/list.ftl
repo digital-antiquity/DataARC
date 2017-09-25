@@ -10,22 +10,68 @@
     
     <@body.body>
 <h1> Topics</h1>
-${topicMap}
-<table class="table">
-<thead>
-<tr>
-<td>id</td>
-<td>display name</td>
-<td>email</td>
-<td>role</td>
-</tr>
-</thead>
-<#list flattened as topic>
-<tr>
-	<td>${topic.id?c}</td>
-	<td>${topic.name!''} </td>
-	<td><#if topic.parents?has_content >${topic.parents} </#if></td>
-</tr>
-</#list>
+<p><b>Currently using Map:</b> ${topicMap.name}</p>
+
+<h2>Update Topic Map</h2>
+    <p>Upload a XML Topic Map file (.xtm) file</p>
+   <form method="POST" action="${contextPath}/a/admin/topicUploadFile" enctype="multipart/form-data">
+        <label for="topicfile" class="control-label">Topic Map File to upload:</label> <input id="topicfile" type="file" name="file">
+        <br/>
+        <input type="submit" value="Upload" class="button btn btn-primary">
+    </form> 
+
+<br/>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#topics">Topics</a></li>
+        <li><a data-toggle="tab" href="#associations">Associations between Topics</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="topics" class="tab-pane fade in active">
+        <br><p> <b>Note: somehow not all of the parent relationships are showing</b></p>
+            <table class="table">
+            <thead>
+            <tr>
+            <th>id</th>
+            <th>display name</th>
+            <th>parent</th>
+            <th>children</th>
+            <th>identifier</th>
+            </tr>
+            </thead>
+            <#list topicMap.topics as topic>
+            <tr>
+                <td>${topic.id?c}</td>
+                <td>${topic.name!'NO NAME'}<#if topic.varients?has_content ><i> (${topic.varients?join(", ")})</i></#if> </td>
+                <td> <#if topic.parents?has_content ><#list topic.parents as parent>${parent.name!'NO NAME'} (${parent.id?c})<#sep>; </#sep></#list> <#else><i>[none]</i></#if></td>
+                <td> <#if topic.children?has_content ><#list topic.children as parent>${parent.name!'NO NAME'} (${parent.id?c})<#sep>; </#sep></#list> <#else><i>[none]</i></#if></td>
+                <td>${topic.identifier}</td>
+            </tr>
+            </#list>
+            </table>
+
+        </div>
+        <div id="associations" class="tab-pane fade in active">
+            <table class="table">
+            <thead>
+            <tr>
+            <th>id</th>
+            <th>from</th>
+            <th>type</th>
+            <th>to</th>
+            </tr>
+            </thead>
+            <#list topicMap.associations as assoc>
+            <tr>
+                <td>${assoc.id?c}</td>
+                <td>${assoc.from.name}</td>
+                <td>${assoc.type.name}</td>
+                <td>${assoc.to.name}</td>
+            </tr>
+            </#list>
+            </table>
+        </div>
+    </div>
+
 </@body.body>
 </html>

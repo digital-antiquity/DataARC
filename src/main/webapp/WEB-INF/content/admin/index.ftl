@@ -32,14 +32,6 @@
         <input type="submit" value="Upload" class="button btn btn-primary">
     </form> 
 
-<h2>Update Topic Map</h2>
-    <p>Upload a XML Topic Map file (.xtm) file</p>
-   <form method="POST" action="${contextPath}/a/admin/topicUploadFile" enctype="multipart/form-data">
-        <label for="topicfile" class="control-label">Topic Map File to upload:</label> <input id="topicfile" type="file" name="file">
-        <br/>
-        <input type="submit" value="Upload" class="button btn btn-primary">
-    </form> 
-
 </br>
 </br>
 <h2>Delete Everything</h2>

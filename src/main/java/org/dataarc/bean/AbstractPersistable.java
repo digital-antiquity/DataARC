@@ -80,6 +80,7 @@ public abstract class AbstractPersistable implements Serializable {
      * Returns a sensible hashCode() for persisted objects. For transient/unsaved objects, uses
      * the default Object.hashCode().
      */
+    @Override
     public int hashCode() {
         Logger logger = LoggerFactory.getLogger(getClass());
         int hashCode = PersistableUtils.toHashCode(this);
