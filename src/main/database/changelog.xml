@@ -403,4 +403,24 @@
         <addForeignKeyConstraint constraintName="topic_association" 
             referencedTableName="topic_map" baseColumnNames="topic_map_id" baseTableName="association" referencedColumnNames="id"/>
     </changeSet>
+    <changeSet id="alpha-40" author="abrin">
+        <addColumn tableName="topic">
+            <column name="category" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
+    <changeSet id="alpha-41" author="abrin">
+        <createTable tableName="topic_category_association">
+            <column name="id" autoIncrement="true" type="bigserial" />
+            <column name="date_created" type="timestamp" defaultValue="now()" />
+            <column name="date_updated" type="timestamp" defaultValue="now()" />
+            <column name="category" type="varchar(255)" />
+            <column name="topic_id" type="bigint">
+                <constraints referencedTableName="topic" foreignKeyName="category_topic_id" />
+            </column>
+            <column name="topic_map_id" type="bigint">
+                <constraints referencedTableName="topic_map" foreignKeyName="category_topic_map_id" />
+            </column>
+        </createTable>
+    </changeSet>
+    
 </databaseChangeLog>

@@ -35,17 +35,32 @@ public class TopicDao {
         query.setParameter("identifier", topic);
         query.setMaxResults(1);
         return query.getSingleResult();
+    }
+
+    public Topic findById(Long id) {
+        TypedQuery<Topic> query = manager.createQuery("from Topic t where t.id =:id", Topic.class);
+        query.setParameter("id", id);
+        query.setMaxResults(1);
+        return query.getSingleResult();
 
     }
 
+    
     public List<String> delete() {
         List<String> list = manager.createNativeQuery("select distinct topic_id from topic_indicator").getResultList();
         manager.createQuery("delete from Association").executeUpdate();
         manager.createNativeQuery("delete from topic_name_varients").executeUpdate();        
         manager.createQuery("delete from Topic").executeUpdate();
+        manager.createQuery("delete from CategoryAssociations").executeUpdate();
         manager.createQuery("delete from TopicMap").executeUpdate();
         return list;
 
+    }
+
+    public List<Topic> findAllFromMap(Long id) {
+        TypedQuery<Topic> query = manager.createQuery("select tt from TopicMap t join t.topics tt where t.id =:id", Topic.class);
+        query.setParameter("id", id);
+        return query.getResultList();
     }
 
 }

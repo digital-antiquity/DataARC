@@ -3,6 +3,8 @@ package org.dataarc.service;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Iterator;
+
 import javax.xml.bind.JAXBException;
 
 import org.dataarc.AbstractServiceTest;
@@ -24,7 +26,7 @@ public class TopicMapServiceTest extends AbstractServiceTest {
     @Rollback(true)
     public void testDeserializeUnidirectionalTopicMap() throws JAXBException, SAXException {
         TopicMap map = topicMapService.load("src/test/data/unidirectional.xtm");
-        Association association1 = map.getAssociations().get(0);
+        Association association1 = map.getAssociations().iterator().next();
         assertNotEquals(association1.getFrom(), association1.getTo());
     }
 
@@ -32,8 +34,9 @@ public class TopicMapServiceTest extends AbstractServiceTest {
     @Rollback(true)
     public void testDeserializeBiidirectionalTopicMap() throws JAXBException, SAXException {
         TopicMap map = topicMapService.load("src/test/data/bidirectional.xtm");
-        Association association1 = map.getAssociations().get(0);
-        Association association2 = map.getAssociations().get(1);
+        Iterator<Association> iterator = map.getAssociations().iterator();
+        Association association1 = iterator.next();
+        Association association2 = iterator.next();
         logger.debug("{}", association1);
         logger.debug("{}", association2);
         assertNotEquals(association1.getFrom(), association1.getTo());

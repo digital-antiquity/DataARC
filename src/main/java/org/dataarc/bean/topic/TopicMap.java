@@ -1,11 +1,12 @@
 package org.dataarc.bean.topic;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,14 +23,18 @@ public class TopicMap extends AbstractPersistable {
     private String name;
 
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "topic_map_id")
-    private List<Topic> topics = new ArrayList<>();
+    private Set<Topic> topics = new LinkedHashSet<>();
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "topic_map_id")
-    private List<Association> associations = new ArrayList<>();
+    private Set<Association> associations = new LinkedHashSet<>();
 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "topic_map_id")
+    private Set<CategoryAssociations> categoryAssociations = new LinkedHashSet<>();
+    
     @Column(length = 255)
     public String getName() {
         return name;
@@ -39,20 +44,28 @@ public class TopicMap extends AbstractPersistable {
         this.name = name;
     }
 
-    public List<Association> getAssociations() {
+    public Set<Association> getAssociations() {
         return associations;
     }
 
-    public void setAssociations(List<Association> associations) {
+    public void setAssociations(Set<Association> associations) {
         this.associations = associations;
     }
 
-    public List<Topic> getTopics() {
+    public Set<Topic> getTopics() {
         return topics;
     }
 
-    public void setTopics(List<Topic> topics) {
+    public void setTopics(Set<Topic> topics) {
         this.topics = topics;
+    }
+
+    public Set<CategoryAssociations> getCategoryAssociations() {
+        return categoryAssociations;
+    }
+
+    public void setCategoryAssociations(Set<CategoryAssociations> categoryAssociations) {
+        this.categoryAssociations = categoryAssociations;
     }
 
 }

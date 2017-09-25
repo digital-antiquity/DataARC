@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dataarc.bean.AbstractPersistable;
+import org.dataarc.bean.topic.TopicCategory;
 
 public class InternalTopic extends AbstractPersistable {
+
+    private static final long serialVersionUID = 6162221611058985539L;
 
     private String name;
 
     private String identifier;
 
+    private TopicCategory category;
+    
     private List<String> varients = new ArrayList<>();
 
     public String getName() {
@@ -37,5 +42,12 @@ public class InternalTopic extends AbstractPersistable {
         this.varients = varients;
     }
 
+    public TopicCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(TopicCategory category) {
+        this.category = category;
+    }
 
 }

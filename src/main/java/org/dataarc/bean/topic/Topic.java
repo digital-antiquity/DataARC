@@ -2,6 +2,7 @@ package org.dataarc.bean.topic;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +11,8 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -39,14 +42,18 @@ public class Topic extends AbstractPersistable {
     @JoinTable(name = "topic_parents",
             joinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName="id") },
             inverseJoinColumns = { @JoinColumn(nullable = false, name = "parent_id") })
-    private Set<Topic> parents = new HashSet<>();
+    private Set<Topic> parents = new LinkedHashSet<>();
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
     @JoinTable(name = "topic_parents",
             inverseJoinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName="id") },
             joinColumns = { @JoinColumn(nullable = false, name = "parent_id") })
-    private Set<Topic> children = new HashSet<>();
+    private Set<Topic> children = new LinkedHashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(length=255)
+    private TopicCategory category;
+    
     public String getName() {
         return name;
     }
@@ -90,5 +97,13 @@ public class Topic extends AbstractPersistable {
 
     public void setChildren(Set<Topic> children) {
         this.children = children;
+    }
+
+    public TopicCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(TopicCategory category) {
+        this.category = category;
     }
 }

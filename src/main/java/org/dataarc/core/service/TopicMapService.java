@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
@@ -77,7 +78,7 @@ public class TopicMapService {
         TopicMap topicMap = new TopicMap();
         topicMap.setName(file);
         Map<String, Topic> internalMap = new HashMap<>();
-        List<Topic> topics = topicMap.getTopics();
+        Set<Topic> topics = topicMap.getTopics();
         for (Topic topic : topics){
             if (CollectionUtils.isEmpty(mapped)) {
                 continue;
@@ -92,7 +93,7 @@ public class TopicMapService {
             logger.debug("deleting mappings to indicators for topics that don't exist anymore: {}", mapped);
            indicatorDao.deleteByIdentifier(mapped);
         }
-        List<Association> associations = topicMap.getAssociations();
+        Set<Association> associations = topicMap.getAssociations();
         loadTopic(topicMap_, internalMap, topics);
         loadAssociations(topicMap_, internalMap, associations);
         topicMapDao.save(topicMap);
@@ -100,7 +101,7 @@ public class TopicMapService {
         return topicMap;
     }
 
-    private void loadAssociations(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, List<Association> associations) {
+    private void loadAssociations(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, Set<Association> associations) {
         topicMap_.getTopicOrAssociation().forEach(item -> {
          if (item instanceof topicmap.v2_0.Association) {
 
@@ -184,7 +185,7 @@ public class TopicMapService {
             });
     }
 
-    private void loadTopic(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, List<Topic> topics) {
+    private void loadTopic(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, Set<Topic> topics) {
         topicMap_.getTopicOrAssociation().forEach(item -> {
             if (item instanceof topicmap.v2_0.Topic) {
                 Topic topic = new Topic();
@@ -278,6 +279,7 @@ public class TopicMapService {
             orDefault.setName(topic.getName());
             orDefault.setId(topic.getId());
             orDefault.setIdentifier(topic.getIdentifier());
+            orDefault.setCategory(topic.getCategory());
             orDefault.setVarients(topic.getVarients());
             intmap.put(topic, orDefault);
         }
@@ -295,5 +297,15 @@ public class TopicMapService {
         File imported = filestore.storeFile(inputStream, originalFilename);
         load(imported.getAbsolutePath());
         
+    }
+
+    @Transactional(readOnly=true)
+    public Topic findTopicById(Long id) {
+        return topicDao.findById(id);
+    }
+
+    @Transactional(readOnly=true)
+    public List<Topic> findAllTopic(Long id) {
+        return topicDao.findAllFromMap(id);
     }
 }

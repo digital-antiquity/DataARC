@@ -34,15 +34,17 @@
             <tr>
             <th>id</th>
             <th>display name</th>
+            <th>category</th>
             <th>parent</th>
             <th>children</th>
             <th>identifier</th>
             </tr>
             </thead>
-            <#list topicMap.topics as topic>
+            <#list flattened as topic>
             <tr>
                 <td>${topic.id?c}</td>
                 <td>${topic.name!'NO NAME'}<#if topic.varients?has_content ><i> (${topic.varients?join(", ")})</i></#if> </td>
+                <td>${topic.category!''}</td>
                 <td> <#if topic.parents?has_content ><#list topic.parents as parent>${parent.name!'NO NAME'} (${parent.id?c})<#sep>; </#sep></#list> <#else><i>[none]</i></#if></td>
                 <td> <#if topic.children?has_content ><#list topic.children as parent>${parent.name!'NO NAME'} (${parent.id?c})<#sep>; </#sep></#list> <#else><i>[none]</i></#if></td>
                 <td>${topic.identifier}</td>
@@ -51,7 +53,7 @@
             </table>
 
         </div>
-        <div id="associations" class="tab-pane fade in active">
+        <div id="associations" class="tab-pane fade in ">
             <table class="table">
             <thead>
             <tr>
