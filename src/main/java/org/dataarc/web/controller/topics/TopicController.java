@@ -1,6 +1,5 @@
 package org.dataarc.web.controller.topics;
 
-import org.dataarc.bean.topic.Topic;
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.service.TopicMapService;
 import org.dataarc.core.service.UserService;
@@ -21,8 +20,6 @@ public class TopicController extends AbstractController {
     @RequestMapping(path=UrlConstants.LIST_TOPICS)
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("topics/list");
-        Topic topic = topicMapService.findTopicById(6622L);
-        logger.debug("{} --> {}", topic, topic.getParents() );
         TopicMap topicMap = topicMapService.find();
         mav.addObject("topicMap", topicMap);
         mav.addObject("flattened", topicMapService.findAllTopic(topicMap.getId()));
