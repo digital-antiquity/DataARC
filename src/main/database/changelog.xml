@@ -388,5 +388,15 @@
                 defaultValueBoolean="false" />
         </addColumn>
     </changeSet>
-
+    <changeSet id="alpha-37" author="abrin">
+        <addForeignKeyConstraint constraintName="topic_parent_id" 
+            referencedTableName="topic" baseColumnNames="parent_id" baseTableName="topic_parents" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="topic_parent_child_id" 
+            referencedTableName="topic" baseColumnNames="topic_id" baseTableName="topic_parents" referencedColumnNames="id"/>
+        
+    </changeSet>
+    <changeSet id="alpha-38" author="abrin">
+        <addForeignKeyConstraint constraintName="topic_file" 
+            referencedTableName="topic_map" baseColumnNames="topic_map_id" baseTableName="topic" referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

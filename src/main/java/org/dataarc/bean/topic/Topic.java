@@ -34,8 +34,6 @@ public class Topic extends AbstractPersistable {
     @Column(name = "varient")
     private List<String> varients = new ArrayList<>();
 
-//    @OneToMany()
-//    private Set<Association> associations = new HashSet<>();
 
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name = "topic_parents", joinColumns = { @JoinColumn(nullable = false, name = "topic_id") }, inverseJoinColumns = { @JoinColumn(

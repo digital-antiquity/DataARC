@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@Secured(UserService.ADMIN_ROLE)
 public class UserController extends AbstractController {
     @Autowired
     UserService userService;
     
-    @Secured(UserService.ADMIN_ROLE)
     @RequestMapping(path=UrlConstants.LIST_USERS)
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("users/list");
