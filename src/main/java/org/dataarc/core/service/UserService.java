@@ -157,8 +157,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public void makeAdmin(String userId) {
-        DataArcUser findByUserId = userDao.findByUserId(userId);
+    public void makeAdmin(Long userId) {
+        DataArcUser findByUserId = userDao.findById(userId);
         findByUserId.setAdmin(true);
         save(findByUserId);
     }

@@ -21,7 +21,7 @@ public class AdminUserAPIController extends AbstractRestController {
     private UserService userService;
 
     @RequestMapping(path = UrlConstants.ADMIN_MAKE_EDITOR, method = RequestMethod.POST)
-    public boolean makeEditor(@RequestParam(value = "id", required = true) String userId) throws Exception {
+    public boolean makeEditor(@RequestParam(value = "id", required = true) Long userId) throws Exception {
         try {
             userService.makeEditor(userId);
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class AdminUserAPIController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.ADMIN_MAKE_ADMIN, method = RequestMethod.POST)
-    public boolean makeAdmin(@RequestParam(value = "id", required = true) String userId) throws Exception {
+    public boolean makeAdmin(@RequestParam(value = "id", required = true) Long userId) throws Exception {
         try {
             userService.makeAdmin(userId);
         } catch (Exception e) {
