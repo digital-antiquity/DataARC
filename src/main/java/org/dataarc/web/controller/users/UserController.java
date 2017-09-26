@@ -26,18 +26,16 @@ public class UserController extends AbstractController {
     }
 
     @RequestMapping(path = UrlConstants.UPDATE_USER, method = RequestMethod.POST)
-    public ModelAndView changeUserRole(@PathVariable(value = "id", required = true) Long id, 
-            @RequestParam(value="role")String role) throws Exception {
-        ModelAndView mav = new ModelAndView("users/list");
+    public String changeUserRole(@PathVariable(value = "id", required = true) Long id,
+            @RequestParam(value = "role") String role) throws Exception {
         userService.updateRole(id, role);
-        return mav;
+        return "redirect:" + UrlConstants.LIST_USERS;
     }
 
     @RequestMapping(path = UrlConstants.DELETE_USER, method = RequestMethod.POST)
-    public ModelAndView deleteUser(@PathVariable(value = "id", required = true) Long id) throws Exception {
-        ModelAndView mav = new ModelAndView("users/list");
+    public String deleteUser(@PathVariable(value = "id", required = true) Long id) throws Exception {
         userService.deleteById(id);
-        return mav;
+        return "redirect:" + UrlConstants.LIST_USERS;
     }
 
 }
