@@ -8,47 +8,49 @@
     <#import "/macros/body.ftl" as body />
     </head>
     
+<#macro makeSection cnt=0 topicId=-1 category="">
+<div class="row">
+<div class="col-sm-6">
+	<label for="topic${cnt}">Topic:</label>
+	<select name="topicIds[]" id="topic${cnt}" class="form-control">
+		<option value=""></option>
+		<#list flattened as topic>
+			<option value="${topic.id?c}" <#if topicId == topic.id>selected</#if>>${topic.name}</option>
+		</#list>
+	</select>
+	</div>
+<div class="col-sm-6">
+	<label for="category${cnt}">Category:</label>
+	<select name="category[]" id="category${cnt}" class="form-control">
+		<option value=""></option>
+		<#list categories as cat>
+			<option value="${cat}" <#if category == cat>selected</#if>>${cat}</option>
+		</#list>
+	</select>
+	</div>
+	</div>
+</#macro>
     <@body.body>
 <h1> Topics</h1>
 <p><b>Currently using Map:</b> ${topicMap.name}</p>
 <form method="POST" action="/a/topics">
 <h3>Apply categories</h3>
 <p>for each category selected, for all children apply the selected category... if multiple parents, the closest parent's category will win</p> 
-	<select name="topicIds[0]">
-		<option value=""></option>
-		<#list flattened as topic>
-			<option value="${topic.id?c}">${topic.name}</option>
-		</#list>
-	</select>
-	<select name="categories[0]">
-		<option value=""></option>
-		<#list categories as category>
-			<option value="${category}">${category}</option>
-		</#list>
-	</select>
-	<#assign cnt = 1>
+	<#assign cnt = 0>
 	<#list categoryAssociations as assoc>
-	<select name="topicIds[${cnt}]">
-		<option value=""></option>
-		<#list flattened as topic>
-			<option value="${topic.id?c}" <#if assoc.topic.id == topic.id>selected</#if>>${topic.name}</option>
-		</#list>
-	</select>
-	<select name="categories[${cnt}]">
-		<option value=""></option>
-		<#list categories as category>
-			<option value="${category}" <#if assoc.category == category>selected</#if>>${category}</option>
-		</#list>
-	</select>
-	
-	<#assign cnt = cnt + 1>
+		<@makeSection cnt=cnt topicId=(assoc.topic.id)!-1 category=(assoc.category)!'' />
+		<#assign cnt = cnt + 1>
 	</#list>
+	<@makeSection cnt=cnt />
+	<@makeSection cnt=cnt+1 />
+	<@makeSection cnt=cnt+2 />
+	<@makeSection cnt=cnt+3 />
 	<br/>
 	<br/>
     <input type="submit" value="Save" class="button btn btn-primary">
 
 </form>
-<h2>Update Topic Map</h2>
+<h3>Update Topic Map</h3>
     <p>Upload a XML Topic Map file (.xtm) file</p>
    <form method="POST" action="${contextPath}/a/admin/topicUploadFile" enctype="multipart/form-data">
         <label for="topicfile" class="control-label">Topic Map File to upload:</label> <input id="topicfile" type="file" name="file">

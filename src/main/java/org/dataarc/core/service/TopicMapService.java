@@ -325,7 +325,12 @@ public class TopicMapService {
     public void saveCategoryAssociations(List<Long> topicIds, List<TopicCategory> categories) {
         topicDao.deleteCategoryAssociations();
         for (int i = 0; i < topicIds.size(); i++) {
-            CategoryAssociation assoc = new CategoryAssociation(topicDao.findById(topicIds.get(i)), categories.get(i));
+            Long id = topicIds.get(i);
+            TopicCategory topicCategory = categories.get(i);
+            if (id == null || id < 1 || topicCategory == null) {
+                continue;
+            }
+            CategoryAssociation assoc = new CategoryAssociation(topicDao.findById(id), topicCategory);
             topicDao.save(assoc);
         }
 
