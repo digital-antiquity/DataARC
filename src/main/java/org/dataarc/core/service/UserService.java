@@ -164,22 +164,22 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public void makeEditor(String userId) {
-        DataArcUser findByUserId = userDao.findByUserId(userId);
+    public void makeEditor(Long userId) {
+        DataArcUser findByUserId = userDao.findById(userId);
         findByUserId.setEditor(true);
         save(findByUserId);
     }
 
     @Transactional(readOnly = false)
-    public void deleteById(String id) {
-        DataArcUser findByUserId = userDao.findByUserId(id);
+    public void deleteById(Long id) {
+        DataArcUser findByUserId = userDao.findById(id);
         userDao.delete(findByUserId);
 
     }
 
     @Transactional(readOnly = false)
-    public void updateRole(String id, String role) {
-        DataArcUser user = userDao.findByUserId(id);
+    public void updateRole(Long id, String role) {
+        DataArcUser user = userDao.findById(id);
         if (StringUtils.containsIgnoreCase(ADMIN_ROLE, role)) {
             user.setAdmin(true);
             user.setEditor(false);

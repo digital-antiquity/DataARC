@@ -22,7 +22,7 @@
 <#list users as user>
 	<tr>
 		<td>${user.id?c}</td>
-		<td>${user.firstName} ${user.lastName}</td>
+		<td>${user.firstName!''} ${user.lastName!''}</td>
 		<td>${user.email}</td>
 		<td> 
 	    <form method="POST" action="${contextPath}/a/users/${user.id}" enctype="multipart/form-data" class="form-horizontal">
