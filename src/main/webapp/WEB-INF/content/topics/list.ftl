@@ -35,7 +35,7 @@
 <p><b>Currently using Map:</b> ${topicMap.name}</p>
 <form method="POST" action="/a/topics">
 <h3>Apply categories</h3>
-<p>for each category selected, for all children apply the selected category... if multiple parents, the closest parent's category will win</p> 
+<p>for each category selected, for all children apply the selected category... if multiple parents, the closest parent's category will win. <b>Note:</b> this saves, but doesn't currently apply.</p> 
 	<#assign cnt = 0>
 	<#list categoryAssociations as assoc>
 		<@makeSection cnt=cnt topicId=(assoc.topic.id)!-1 category=(assoc.category)!'' />
