@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.dataarc.bean.topic.CategoryAssociation;
 import org.dataarc.bean.topic.Topic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,13 +46,12 @@ public class TopicDao {
 
     }
 
-    
     public List<String> delete() {
         List<String> list = manager.createNativeQuery("select distinct topic_id from topic_indicator").getResultList();
         manager.createQuery("delete from Association").executeUpdate();
-        manager.createNativeQuery("delete from topic_name_varients").executeUpdate();        
+        manager.createNativeQuery("delete from topic_name_varients").executeUpdate();
         manager.createQuery("delete from Topic").executeUpdate();
-        manager.createQuery("delete from CategoryAssociations").executeUpdate();
+        manager.createQuery("delete from CategoryAssociation").executeUpdate();
         manager.createQuery("delete from TopicMap").executeUpdate();
         return list;
 
@@ -61,6 +61,19 @@ public class TopicDao {
         TypedQuery<Topic> query = manager.createQuery("select tt from TopicMap t join t.topics tt where t.id =:id", Topic.class);
         query.setParameter("id", id);
         return query.getResultList();
+    }
+
+    public void save(CategoryAssociation assoc) {
+        manager.persist(assoc);
+
+    }
+
+    public void deleteCategoryAssociations() {
+        manager.createQuery("delete from CategoryAssociation").executeUpdate();
+    }
+
+    public List<CategoryAssociation> findAllCategoryAssociations() {
+        return manager.createQuery("from CategoryAssociation", CategoryAssociation.class).getResultList();
     }
 
 }

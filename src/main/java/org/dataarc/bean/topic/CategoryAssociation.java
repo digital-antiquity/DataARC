@@ -12,7 +12,7 @@ import org.dataarc.bean.AbstractPersistable;
 
 @Entity
 @Table(name="topic_category_association")
-public class CategoryAssociations extends AbstractPersistable {
+public class CategoryAssociation extends AbstractPersistable {
 
     private static final long serialVersionUID = -780915672049150822L;
 
@@ -23,6 +23,13 @@ public class CategoryAssociations extends AbstractPersistable {
     @Enumerated(EnumType.STRING)
     @Column(length = 255)
     private TopicCategory category;
+
+    public CategoryAssociation() {}
+    
+    public CategoryAssociation(Topic findById, TopicCategory topicCategory) {
+        this.topic = findById;
+        this.category = topicCategory;
+    }
 
     public Topic getTopic() {
         return topic;

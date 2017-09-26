@@ -1,7 +1,6 @@
 package org.dataarc.bean.topic;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +25,7 @@ public class Topic extends AbstractPersistable {
 
     private static final long serialVersionUID = 4436249058757559474L;
 
+    private transient int indicatorCount;
     @Column(length = 255)
     private String name;
 
@@ -105,5 +105,18 @@ public class Topic extends AbstractPersistable {
 
     public void setCategory(TopicCategory category) {
         this.category = category;
+    }
+
+    @javax.persistence.Transient
+    public int getIndicatorCount() {
+        return indicatorCount;
+    }
+    
+    public void incrementIndicatorCount() {
+        indicatorCount++;
+    }
+
+    public void setIndicatorCount(int indicatorCount) {
+        this.indicatorCount = indicatorCount;
     }
 }

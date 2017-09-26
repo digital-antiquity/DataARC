@@ -114,7 +114,7 @@
 					<ul class="list-unstyled">
                         <li v-for="(ident, _idx) in selectedTopics"  >
                                 <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control col-sm-6">
-                                    <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} </option>
+                                    <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} ({{topic.indicatorCount}}) </option>
                                 </select>
                         <span v-show="_idx > 0">
                             <button type="button" class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>

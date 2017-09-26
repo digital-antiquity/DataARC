@@ -33,7 +33,7 @@ public class TopicMap extends AbstractPersistable {
 
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "topic_map_id")
-    private Set<CategoryAssociations> categoryAssociations = new LinkedHashSet<>();
+    private Set<CategoryAssociation> categoryAssociations = new LinkedHashSet<>();
     
     @Column(length = 255)
     public String getName() {
@@ -60,11 +60,11 @@ public class TopicMap extends AbstractPersistable {
         this.topics = topics;
     }
 
-    public Set<CategoryAssociations> getCategoryAssociations() {
+    public Set<CategoryAssociation> getCategoryAssociations() {
         return categoryAssociations;
     }
 
-    public void setCategoryAssociations(Set<CategoryAssociations> categoryAssociations) {
+    public void setCategoryAssociations(Set<CategoryAssociation> categoryAssociations) {
         this.categoryAssociations = categoryAssociations;
     }
 

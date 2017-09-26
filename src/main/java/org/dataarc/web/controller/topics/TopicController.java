@@ -1,5 +1,8 @@
 package org.dataarc.web.controller.topics;
 
+import java.util.List;
+
+import org.dataarc.bean.topic.TopicCategory;
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.service.TopicMapService;
 import org.dataarc.core.service.UserService;
@@ -9,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -16,15 +21,30 @@ import org.springframework.web.servlet.ModelAndView;
 public class TopicController extends AbstractController {
     @Autowired
     TopicMapService topicMapService;
-    
-    @RequestMapping(path=UrlConstants.LIST_TOPICS)
+
+    @RequestMapping(path = UrlConstants.LIST_TOPICS)
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("topics/list");
         TopicMap topicMap = topicMapService.find();
-        mav.addObject("topicMap", topicMap);
-        mav.addObject("flattened", topicMapService.findAllTopic(topicMap.getId()));
+        setup(mav, topicMap);
         return mav;
     }
 
+    private void setup(ModelAndView mav, TopicMap topicMap) {
+        mav.addObject("topicMap", topicMap);
+        mav.addObject("flattened", topicMapService.findAllTopic(topicMap.getId()));
+        mav.addObject("categories", TopicCategory.values());
+        mav.addObject("categoryAssociations", topicMapService.findAllCategoryAssociations());
+    }
+
+    @RequestMapping(path = UrlConstants.SAVE_TOPIC_ASSOCIATIONS, method = RequestMethod.POST)
+    public ModelAndView save(@RequestParam(name = "topicIds") List<Long> topicIds,
+            @RequestParam(name = "categories") List<TopicCategory> categories) {
+        topicMapService.saveCategoryAssociations(topicIds, categories);
+        ModelAndView mav = new ModelAndView("topics/list");
+        TopicMap topicMap = topicMapService.find();
+        setup(mav, topicMap);
+        return mav;
+    }
 
 }

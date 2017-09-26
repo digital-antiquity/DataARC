@@ -39,5 +39,6 @@ public interface UrlConstants {
     String UPDATE_USER = "/a/users/{id}";
     String DELETE_USER = "/a/users/delete/{id}";
     String LIST_TOPICS = "/a/topics/list";
+    String SAVE_TOPIC_ASSOCIATIONS = "/a/topics";
 
 }

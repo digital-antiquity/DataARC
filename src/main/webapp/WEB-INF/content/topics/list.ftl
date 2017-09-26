@@ -11,7 +11,43 @@
     <@body.body>
 <h1> Topics</h1>
 <p><b>Currently using Map:</b> ${topicMap.name}</p>
+<form method="POST" action="/a/topics">
+<h3>Apply categories</h3>
+<p>for each category selected, for all children apply the selected category... if multiple parents, the closest parent's category will win</p> 
+	<select name="topicIds[0]">
+		<option value=""></option>
+		<#list flattened as topic>
+			<option value="${topic.id?c}">${topic.name}</option>
+		</#list>
+	</select>
+	<select name="categories[0]">
+		<option value=""></option>
+		<#list categories as category>
+			<option value="${category}">${category}</option>
+		</#list>
+	</select>
+	<#assign cnt = 1>
+	<#list categoryAssociations as assoc>
+	<select name="topicIds[${cnt}]">
+		<option value=""></option>
+		<#list flattened as topic>
+			<option value="${topic.id?c}" <#if assoc.topic.id == topic.id>selected</#if>>${topic.name}</option>
+		</#list>
+	</select>
+	<select name="categories[${cnt}]">
+		<option value=""></option>
+		<#list categories as category>
+			<option value="${category}" <#if assoc.category == category>selected</#if>>${category}</option>
+		</#list>
+	</select>
+	
+	<#assign cnt = cnt + 1>
+	</#list>
+	<br/>
+	<br/>
+    <input type="submit" value="Save" class="button btn btn-primary">
 
+</form>
 <h2>Update Topic Map</h2>
     <p>Upload a XML Topic Map file (.xtm) file</p>
    <form method="POST" action="${contextPath}/a/admin/topicUploadFile" enctype="multipart/form-data">
@@ -59,7 +95,9 @@
             <tr>
             <th>id</th>
             <th>from</th>
+            <th></th>
             <th>type</th>
+            <th></th>
             <th>to</th>
             </tr>
             </thead>
@@ -67,7 +105,9 @@
             <tr>
                 <td>${assoc.id?c}</td>
                 <td>${assoc.from.name}</td>
+                <td>&#8680;</td>
                 <td>${assoc.type.name}</td>
+                <td>&#8680;</td>
                 <td>${assoc.to.name}</td>
             </tr>
             </#list>

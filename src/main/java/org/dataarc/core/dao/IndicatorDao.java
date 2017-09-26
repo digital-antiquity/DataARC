@@ -71,4 +71,11 @@ public class IndicatorDao {
         }
     }
 
+    public List<Indicator> findAllForSchema(Long schemaId) {
+        Query query = manager.createQuery("from Indicator i where i.schema.id=:id ",Indicator.class);
+        query.setParameter("id", schemaId);
+       return query.getResultList();
+        
+    }
+
 }

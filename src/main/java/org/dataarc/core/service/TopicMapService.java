@@ -13,8 +13,12 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.dataarc.bean.Indicator;
 import org.dataarc.bean.topic.Association;
+import org.dataarc.bean.topic.CategoryAssociation;
+import org.dataarc.bean.topic.CategoryAssociation;
 import org.dataarc.bean.topic.Topic;
+import org.dataarc.bean.topic.TopicCategory;
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.AssociationDao;
@@ -57,17 +61,24 @@ public class TopicMapService {
 
     @Autowired
     AssociationDao assoicationDao;
-    
+
     @Autowired
     IndicatorDao indicatorDao;
 
     @Transactional(readOnly = true)
-    public List<Topic> findFlattenedTopicsForIndicators() {
+    public List<Topic> findFlattenedTopicsForIndicators(Long schemaId) {
         List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();
-        //flatten for this use
+        // flatten for this use
         findTopicsForIndicators.forEach(topic -> {
             topic.getParents().clear();
+            topic.getChildren().clear();
         });
+        List<Indicator> list = indicatorDao.findAllForSchema(schemaId);
+        for (Indicator i : list) {
+            i.getTopics().forEach(t -> {
+                t.incrementIndicatorCount();
+            });
+        }
         return findTopicsForIndicators;
     }
 
@@ -79,7 +90,7 @@ public class TopicMapService {
         topicMap.setName(file);
         Map<String, Topic> internalMap = new HashMap<>();
         Set<Topic> topics = topicMap.getTopics();
-        for (Topic topic : topics){
+        for (Topic topic : topics) {
             if (CollectionUtils.isEmpty(mapped)) {
                 continue;
             }
@@ -88,10 +99,10 @@ public class TopicMapService {
                 mapped.remove(identifier);
             }
         }
-        
+
         if (CollectionUtils.isNotEmpty(mapped)) {
             logger.debug("deleting mappings to indicators for topics that don't exist anymore: {}", mapped);
-           indicatorDao.deleteByIdentifier(mapped);
+            indicatorDao.deleteByIdentifier(mapped);
         }
         Set<Association> associations = topicMap.getAssociations();
         loadTopic(topicMap_, internalMap, topics);
@@ -103,86 +114,86 @@ public class TopicMapService {
 
     private void loadAssociations(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, Set<Association> associations) {
         topicMap_.getTopicOrAssociation().forEach(item -> {
-         if (item instanceof topicmap.v2_0.Association) {
+            if (item instanceof topicmap.v2_0.Association) {
 
-                    topicmap.v2_0.Association association_ = (topicmap.v2_0.Association) item;
-                    Association associationFrom = new Association();
-                    Association associationTo = null;
+                topicmap.v2_0.Association association_ = (topicmap.v2_0.Association) item;
+                Association associationFrom = new Association();
+                Association associationTo = null;
 
-                    // association.setIdentifier(association_.getItemIdentity().);
-                    /*
-                     * <association>
-                     * <type>
-                     * <topicRef href="interactions"/>
-                     * </type>
-                     * <role>
-                     * <type>
-                     * <topicRef href="#implies"/>
-                     * </type>
-                     * <topicRef href="#grain storage pest"/>
-                     * </role>
-                     * <role>
-                     * <type>
-                     * <topicRef href="#contains"/>
-                     * </type>
-                     * <topicRef href="#grain store"/>
-                     * </role>
-                     * </association>
-                     */
-                    String associationType = association_.getType().getTopicRef().getHref();
-                    logger.trace(" A:{} {} {} {} {}", association_.getReifier(), associationType, association_.getItemIdentity(),
-                            association_.getScope());
-                    String fromHref = null;
-                    String fromTypeHref = null;
-                    String toHref = null;
-                    String associTypeHref = association_.getType().getTopicRef().getHref();
-                    String toTypeHref = null;
-                    if (association_.getRole().size() > 0) {
-                        Role from = association_.getRole().get(0);
-                        fromHref = from.getTopicRef().getHref();
-                        fromTypeHref = from.getType().getTopicRef().getHref();
-                    }
-                    if (association_.getRole().size() > 1) {
-                        associationTo = new Association();
-                        Role to = association_.getRole().get(1);
-                        toHref = to.getTopicRef().getHref();
-                        toTypeHref = to.getType().getTopicRef().getHref();
-
-                        logger.trace("fromTopicHref: {}", get(internalMap,fromHref));
-                        logger.trace("fromTypeTopicHref: {}", get(internalMap,fromTypeHref));
-                        logger.trace("toTopicHref: {}", get(internalMap,toHref));
-                        logger.trace("toTypeTopicHref: {}", get(internalMap,toTypeHref));
-                        logger.trace("aTypeTopicHref: {}", get(internalMap,associTypeHref));
-
-                        associationTo.setFrom(get(internalMap,toHref));
-                        associationTo.setTo(get(internalMap,fromHref));
-                        if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {
-                            logger.warn("\t\tfrom == to");
-                            associationTo.setTo(get(internalMap,associTypeHref));
-                        }
-                        associationTo.setType(get(internalMap,toTypeHref));
-                        associationFrom.setTo(get(internalMap,toHref));
-                    } else {
-                        associationFrom.setTo(get(internalMap,associationType));
-                    }
-
-                    associationFrom.setFrom(get(internalMap,fromHref));
-                    associationFrom.setType(get(internalMap,fromTypeHref));
-                    if (Objects.equal(associationFrom.getTo(), associationFrom.getFrom())) {
-                        associationFrom.setFrom(get(internalMap,associTypeHref));
-                    }
-
-                    assoicationDao.save(associationFrom);
-                    logger.debug("{}", associationFrom);
-                    associations.add(associationFrom);
-                    if (associationTo != null) {
-                        assoicationDao.save(associationTo);
-                        logger.debug("{}", associationTo);
-                        associations.add(associationTo);
-                    }
-                    logger.trace("\t ({}) {} -> ({}) {}", fromHref, toHref);
+                // association.setIdentifier(association_.getItemIdentity().);
+                /*
+                 * <association>
+                 * <type>
+                 * <topicRef href="interactions"/>
+                 * </type>
+                 * <role>
+                 * <type>
+                 * <topicRef href="#implies"/>
+                 * </type>
+                 * <topicRef href="#grain storage pest"/>
+                 * </role>
+                 * <role>
+                 * <type>
+                 * <topicRef href="#contains"/>
+                 * </type>
+                 * <topicRef href="#grain store"/>
+                 * </role>
+                 * </association>
+                 */
+                String associationType = association_.getType().getTopicRef().getHref();
+                logger.trace(" A:{} {} {} {} {}", association_.getReifier(), associationType, association_.getItemIdentity(),
+                        association_.getScope());
+                String fromHref = null;
+                String fromTypeHref = null;
+                String toHref = null;
+                String associTypeHref = association_.getType().getTopicRef().getHref();
+                String toTypeHref = null;
+                if (association_.getRole().size() > 0) {
+                    Role from = association_.getRole().get(0);
+                    fromHref = from.getTopicRef().getHref();
+                    fromTypeHref = from.getType().getTopicRef().getHref();
                 }
-            });
+                if (association_.getRole().size() > 1) {
+                    associationTo = new Association();
+                    Role to = association_.getRole().get(1);
+                    toHref = to.getTopicRef().getHref();
+                    toTypeHref = to.getType().getTopicRef().getHref();
+
+                    logger.trace("fromTopicHref: {}", get(internalMap, fromHref));
+                    logger.trace("fromTypeTopicHref: {}", get(internalMap, fromTypeHref));
+                    logger.trace("toTopicHref: {}", get(internalMap, toHref));
+                    logger.trace("toTypeTopicHref: {}", get(internalMap, toTypeHref));
+                    logger.trace("aTypeTopicHref: {}", get(internalMap, associTypeHref));
+
+                    associationTo.setFrom(get(internalMap, toHref));
+                    associationTo.setTo(get(internalMap, fromHref));
+                    if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {
+                        logger.warn("\t\tfrom == to");
+                        associationTo.setTo(get(internalMap, associTypeHref));
+                    }
+                    associationTo.setType(get(internalMap, toTypeHref));
+                    associationFrom.setTo(get(internalMap, toHref));
+                } else {
+                    associationFrom.setTo(get(internalMap, associationType));
+                }
+
+                associationFrom.setFrom(get(internalMap, fromHref));
+                associationFrom.setType(get(internalMap, fromTypeHref));
+                if (Objects.equal(associationFrom.getTo(), associationFrom.getFrom())) {
+                    associationFrom.setFrom(get(internalMap, associTypeHref));
+                }
+
+                assoicationDao.save(associationFrom);
+                logger.debug("{}", associationFrom);
+                associations.add(associationFrom);
+                if (associationTo != null) {
+                    assoicationDao.save(associationTo);
+                    logger.debug("{}", associationTo);
+                    associations.add(associationTo);
+                }
+                logger.trace("\t ({}) {} -> ({}) {}", fromHref, toHref);
+            }
+        });
     }
 
     private void loadTopic(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, Set<Topic> topics) {
@@ -196,7 +207,7 @@ public class TopicMapService {
                     // topic_.setParent(topic.getInstanceOf().);
                     if (topic_.getInstanceOf() != null) {
                         topic_.getInstanceOf().getTopicRef().forEach(ref -> {
-                            topic.getParents().add(get(internalMap,ref.getHref()));
+                            topic.getParents().add(get(internalMap, ref.getHref()));
                         });
                     }
                     if (noc instanceof Name) {
@@ -227,7 +238,7 @@ public class TopicMapService {
                                 href = StringUtils.substringAfterLast(href, "/");
                                 topic.setName(href);
                             }
-                            
+
                         }
                     });
                 }
@@ -235,7 +246,8 @@ public class TopicMapService {
                 internalMap.put("#" + topic_.getId(), topic);
                 logger.debug("{} - {}", topic, topic.getIdentifier());
                 topics.add(topic);
-            }});
+            }
+        });
     }
 
     private Topic get(Map<String, Topic> internalMap, String href) {
@@ -292,20 +304,35 @@ public class TopicMapService {
 
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void importAndLoad(InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException, JAXBException, SAXException {
         File imported = filestore.storeFile(inputStream, originalFilename);
         load(imported.getAbsolutePath());
-        
+
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public Topic findTopicById(Long id) {
         return topicDao.findById(id);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public List<Topic> findAllTopic(Long id) {
         return topicDao.findAllFromMap(id);
+    }
+
+    @Transactional(readOnly = false)
+    public void saveCategoryAssociations(List<Long> topicIds, List<TopicCategory> categories) {
+        topicDao.deleteCategoryAssociations();
+        for (int i = 0; i < topicIds.size(); i++) {
+            CategoryAssociation assoc = new CategoryAssociation(topicDao.findById(topicIds.get(i)), categories.get(i));
+            topicDao.save(assoc);
+        }
+
+    }
+
+    @Transactional(readOnly = true)
+    public List<CategoryAssociation> findAllCategoryAssociations() {
+        return topicDao.findAllCategoryAssociations();
     }
 }

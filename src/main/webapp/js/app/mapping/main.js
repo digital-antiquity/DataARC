@@ -75,7 +75,7 @@
             display: 'value',
             source: substringMatcher(binding.value.values),
             templates: {
-                suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{occurrence}}</div>')
+                suggestion: Handlebars.compile('<div><strong>{{value}}</strong>  ({{occurrence}})</div>')
               }
           });   
         $(el_).bind('typeahead:select', function(ev, suggestion) {
@@ -247,7 +247,6 @@ var Hack = new Vue({
   },
   mounted: function () {
     this.fetchSchema();
-    this.fetchTopics();
     this.$nextTick(function () {
       })},
   methods: {
@@ -294,10 +293,12 @@ var Hack = new Vue({
               console.err(err);
             });
             Vue.set(this,"selectedTopics",[]);
+            this.fetchTopics();
 
         },
         fetchTopics: function() {
-            this.$http.get(getContextPath() +"/api/topicmap/indicators")
+            var s = this.schema[this.currentSchema];
+            this.$http.get(getContextPath() +"/api/topicmap/indicators", {params: {'schemaId': s.id}})
             .then(function(request){
                 Vue.set(this,"topics",request.body);
             })
