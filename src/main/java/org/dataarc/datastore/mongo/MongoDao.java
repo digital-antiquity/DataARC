@@ -44,10 +44,8 @@ import com.vividsolutions.jts.geom.Geometry;
 
 @Component
 public class MongoDao implements ImportDao, QueryDao {
-    private static final String REGION = "dataArcRegion";
-    private static final String INDICATORS = "dataArcIndicators";
-    private static final String TOPICS = "dataArcTopics";
-    private static final String TOPIC_IDENTIFIERS = "dataArcTopicIdentifiers";
+    private static final String INVALID_QUERY_NO_TYPE = "invalid query (no type)";
+    private static final String INVALID_QUERY_NO_FIELD_SPECIFIED = "invalid query (no field specified)";
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -88,9 +86,16 @@ public class MongoDao implements ImportDao, QueryDao {
     @Override
     @Transactional(readOnly = true)
     public List<DataEntry> getMatchingRows(FilterQuery fq, int num) throws Exception {
+        try {
         Query q = getMongoFilterQuery(fq);
-        List<DataEntry> find = template.find(q, DataEntry.class);
-        return find;
+        return template.find(q, DataEntry.class);
+        } catch (QueryException e) {
+            String msg = e.getMessage();
+            if (INVALID_QUERY_NO_FIELD_SPECIFIED.equals(msg) ||  INVALID_QUERY_NO_TYPE.equals(msg)) {
+                logger.debug("invalid query");
+            }
+        }
+        return null;
     }
 
     private Query getMongoFilterQuery(FilterQuery fq) throws QueryException {
@@ -111,10 +116,10 @@ public class MongoDao implements ImportDao, QueryDao {
         List<Criteria> criteria = new ArrayList<>();
         for (QueryPart part : fq.getConditions()) {
             if (part.getType() == null) {
-                throw new QueryException("invalid query (no type)");
+                throw new QueryException(INVALID_QUERY_NO_TYPE);
             }
             if (StringUtils.isBlank(part.getFieldName())) {
-                throw new QueryException("invalid query (no field specified)");
+                throw new QueryException(INVALID_QUERY_NO_FIELD_SPECIFIED);
             }
             String name = "properties.";
             for (Field f : schema.getFields()) {
@@ -248,7 +253,7 @@ public class MongoDao implements ImportDao, QueryDao {
     @Transactional(readOnly = false)
     public void resetRegions() {
         Query q = new Query();
-        WriteResult updateMulti = template.updateMulti(q, new Update().unset(REGION), DataEntry.class);
+        WriteResult updateMulti = template.updateMulti(q, new Update().unset(DataEntry.DATA_ARC_REGION), DataEntry.class);
 
     }
 
@@ -259,7 +264,7 @@ public class MongoDao implements ImportDao, QueryDao {
         Schema schema = schemaDao.findByName(schemaName);
         Criteria schemaCriteria = Criteria.where(IndexFields.SOURCE).is(schema.getName());
         q.addCriteria(schemaCriteria);
-        Update unset = new Update().unset(INDICATORS).unset(TOPICS).unset(TOPIC_IDENTIFIERS);
+        Update unset = new Update().unset(DataEntry.INDICATORS).unset(DataEntry.TOPICS).unset(DataEntry.TOPIC_IDENTIFIERS);
         WriteResult updateMulti = template.updateMulti(q, unset, DataEntry.class);
 
     }
@@ -277,7 +282,13 @@ public class MongoDao implements ImportDao, QueryDao {
             topics.add(topc.getName());
             idents.add(topc.getIdentifier());
         });
-        Update push = new Update().push(TOPICS, topics).push(TOPIC_IDENTIFIERS, idents).push(INDICATORS, indicator.getId());
+        Update push = new Update().push(DataEntry.INDICATORS, indicator.getId());
+        if (CollectionUtils.isNotEmpty(topics)) {
+            push.pushAll(DataEntry.TOPICS, topics.toArray(new String[0]));
+        }
+        if (CollectionUtils.isNotEmpty(idents)) {
+            push.pushAll(DataEntry.TOPIC_IDENTIFIERS, idents.toArray(new String[0]));
+        }
         WriteResult updateMulti = template.updateMulti(filterQuery, push, DataEntry.class);
 
     }
@@ -294,18 +305,21 @@ public class MongoDao implements ImportDao, QueryDao {
             if (convert instanceof GeoJsonMultiPolygon) {
                 GeoJsonMultiPolygon multiPolygon = (GeoJsonMultiPolygon) convert;
                 multiPolygon.getCoordinates().forEach(poly -> {
-                    Criteria criteria = Criteria.where("position").within((Shape) poly);
+                    Criteria criteria = Criteria.where(DataEntry.POSITION).within((Shape) poly);
                     list.add(criteria);
                 });
 
             } else {
-                Criteria criteria = Criteria.where("position").within((Shape) convert);
+                Criteria criteria = Criteria.where(DataEntry.POSITION).within((Shape) convert);
                 list.add(criteria);
             }
             Criteria group = new Criteria();
             group = group.orOperator(list.toArray(new Criteria[0]));
             q.addCriteria(group);
-            WriteResult updateMulti = template.updateMulti(q, new Update().addToSet("regions", val), DataEntry.class);
+            WriteResult updateMulti = template.updateMulti(q, new Update().addToSet(DataEntry.DATA_ARC_REGION, val), DataEntry.class);
+            if (updateMulti.getN() > 0) {
+                logger.debug("  applying template: {} :: {} updated",val, updateMulti.getN());
+            }
         } catch (Exception e) {
             logger.error("-------------- {} -------------", val);
             logger.error("{}", e, e);

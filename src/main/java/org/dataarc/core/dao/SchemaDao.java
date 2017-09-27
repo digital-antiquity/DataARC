@@ -107,7 +107,9 @@ public class SchemaDao {
             }
             ;
             logger.debug("{} {} ({})", name, fieldName, collector.getType(fieldName));
-            logger.debug("\t{}", collector.getUniqueValues(fieldName));
+            if (logger.isTraceEnabled()) {
+                logger.trace("\t{}", collector.getUniqueValues(fieldName));
+            }
         }
         schema.getFields().removeAll(toRemove);
         save(schema);

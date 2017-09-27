@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
+@EnableAsync
 @ComponentScan(basePackages = { "org.dataarc.web", "org.dataarc.core" })
 public class DataArcWebConfig extends WebMvcConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -73,6 +76,7 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
     }
 
     @PostConstruct
+    @Async
     public void reindex() {
         indexingService.reindex();
     }

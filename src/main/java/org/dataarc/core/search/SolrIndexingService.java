@@ -1,6 +1,7 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mongodb.util.JSON;
 import com.rollbar.Rollbar;
 
 @Service
@@ -56,7 +58,7 @@ public class SolrIndexingService {
 
     @Autowired
     Rollbar rollbar;
-    
+
     @Autowired
     SchemaDao schemaDao;
     @Autowired
@@ -72,7 +74,8 @@ public class SolrIndexingService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     List<String> multipleFields = Arrays.asList(IndexFields.INDICATOR, IndexFields.TAGS, IndexFields.TOPIC, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
-            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY,IndexFields.KEYWORD, IndexFields.TOPIC_ID_3RD, IndexFields.CONCEPT, IndexFields.REGION);
+            IndexFields.DECADE, IndexFields.MILLENIUM, IndexFields.CENTURY, IndexFields.KEYWORD, IndexFields.TOPIC_ID_3RD, IndexFields.CONCEPT,
+            IndexFields.REGION);
 
     @Autowired
     private SolrClient client;
@@ -110,7 +113,7 @@ public class SolrIndexingService {
             client.commit(DATA_ARC);
         } catch (Exception ex) {
             logger.error("exception indexing:", ex);
-            logger.error("{}",searchIndexObject);
+            logger.error("{}", searchIndexObject);
         }
         logger.debug("done reindexing");
     }
@@ -124,7 +127,7 @@ public class SolrIndexingService {
             applyTopics(searchIndexObject);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
             if (logger.isTraceEnabled()) {
-                logger.debug("{}",doc);
+                logger.debug("{}", doc);
             }
             client.add(DATA_ARC, doc);
             return searchIndexObject;
@@ -142,49 +145,67 @@ public class SolrIndexingService {
         if (CollectionUtils.isEmpty(searchIndexObject.getTopicIdentifiers())) {
             return;
         }
+        Set<String> topics = new HashSet<>();
         for (String topicId : searchIndexObject.getTopicIdentifiers()) {
-            if (StringUtils.isNotBlank(topicId)) {
-                Topic topic = null;
-                try {
-                topicDao.findTopicByIdentifier(topicId);
-                } catch (Throwable t) {
-                    logger.error("could not find topic: {}", topicId, t);
-                }
-                Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
-                Set<Topic> grandChildren = new HashSet<>();
-                for (Topic child : children) {
-                    grandChildren.addAll(associationDao.findRelatedTopics(child));
-                }
-                grandChildren.removeAll(children);
-                grandChildren.remove(topic);
-                searchIndexObject.setTopic_2nd(new HashSet<>());
-                searchIndexObject.setTopic_3rd(new HashSet<>());
-                for (Topic t : children) {
-                    searchIndexObject.getTopic_2nd().add(t.getIdentifier());
-                }
-                for (Topic t : grandChildren) {
-                    searchIndexObject.getTopic_3rd().add(t.getIdentifier());
-                }
+            if (topicId.startsWith("[")) {
+                List<String> parse = (List<String>) JSON.parse(topicId);
+                topics.addAll(parse);
+            } else {
+                topics.add(topicId);
+            }
+        }
+        searchIndexObject.setTopicIdentifiers(topics);
+        for (String topic : topics) {
+            processTopic(searchIndexObject, topic);
+        }
+    }
+
+    private void processTopic(SearchIndexObject searchIndexObject, String topicId) {
+        if (StringUtils.isNotBlank(topicId)) {
+            Topic topic = null;
+            try {
+                topic = topicDao.findTopicByIdentifier(topicId);
+            } catch (Throwable t) {
+                logger.error("could not find topic: {}", topicId, t);
+            }
+            if (topic == null) {
+                logger.error("topic is null");
+                return;
+            }
+            Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
+            Set<Topic> grandChildren = new HashSet<>();
+            for (Topic child : children) {
+                grandChildren.addAll(associationDao.findRelatedTopics(child));
+            }
+            grandChildren.removeAll(children);
+            grandChildren.remove(topic);
+            searchIndexObject.setTopic_2nd(new HashSet<>());
+            searchIndexObject.setTopic_3rd(new HashSet<>());
+            for (Topic t : children) {
+                searchIndexObject.getTopic_2nd().add(t.getIdentifier());
+            }
+            for (Topic t : grandChildren) {
+                searchIndexObject.getTopic_3rd().add(t.getIdentifier());
             }
         }
     }
 
     /**
      * this could use a *ton* of optimization
+     * 
      * @param searchIndexObject
      */
     private void applyFacets(SearchIndexObject searchIndexObject) {
-        if (searchIndexObject  == null) {
+        if (searchIndexObject == null) {
             return;
         }
         logger.trace("start: {}, end: {}", searchIndexObject.getStart(), searchIndexObject.getEnd());
         if (searchIndexObject.getStart() != null && searchIndexObject.getEnd() != null) {
             applyDateFacets(searchIndexObject);
             if (logger.isTraceEnabled()) {
-            logger.trace("mil: {}, cent: {}, dec: {}", searchIndexObject.getMillenium(), searchIndexObject.getCentury(), searchIndexObject.getDecade());
+                logger.trace("mil: {}, cent: {}, dec: {}", searchIndexObject.getMillenium(), searchIndexObject.getCentury(), searchIndexObject.getDecade());
             }
         }
-
 
     }
 
@@ -276,7 +297,7 @@ public class SolrIndexingService {
                     if (!schemaFields.get(field).equals(solrField.get(TYPE)) || // missmatch type
                             multipleFields.contains(field) && multi == false || // was multi but in solr as single
                             (multi == true && !multipleFields.contains(field) && schemaFields.containsKey(field)) // was single, but in solr as multi
-                            ) {
+                    ) {
                         logger.debug(" deleting .. {}", field);
                         deleteField(field);
                         deleted = true;

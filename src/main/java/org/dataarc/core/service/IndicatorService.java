@@ -8,13 +8,11 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.DataArcUser;
-import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.IndicatorDao;
-import org.dataarc.core.dao.QueryDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.TopicDao;
 import org.slf4j.Logger;
@@ -39,9 +37,6 @@ public class IndicatorService {
     private TopicDao topicDao;
 
     @Autowired
-    private QueryDao queryDao;
-
-    @Autowired
     private SchemaDao schemoDao;
 
     @Autowired
@@ -53,8 +48,8 @@ public class IndicatorService {
         Set<String> incomingIdentifiers = indicator.getTopicIdentifiers();
         logger.debug("{}", incomingIdentifiers);
         indicator.setUser(user);
+        String schemaName = indicator.getQuery().getSchema();
         if (indicator.getSchema() == null) {
-            String schemaName = indicator.getQuery().getSchema();
             Schema schema = schemoDao.findByName(schemaName);
             indicator.setSchema(schema);
         }
@@ -81,6 +76,11 @@ public class IndicatorService {
             }
         });
         indicatorDao.save(indicator);
+        try { 
+        applyIndicators(schemaName);
+        } catch (Throwable t) {
+            logger.error("{}",t,t);
+        }
     }
 
     @Transactional(readOnly = true)

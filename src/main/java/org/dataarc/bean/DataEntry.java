@@ -7,34 +7,64 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Transient;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-public class DataEntry  implements Serializable {
+@Document
+public class DataEntry implements Serializable {
 
     private static final long serialVersionUID = 4332245430867484835L;
+
+    public static final String POSITION = "position";
+    public static final String DATA_ARC_REGION = "dataArcRegion";
+    public static final String INDICATORS = "dataArcIndicators";
+    public static final String TOPICS = "dataArcTopics";
+    public static final String TOPIC_IDENTIFIERS = "dataArcTopicIdentifiers";
+
+    
+    @Field(POSITION)
     private GeoJsonPoint position;
 
     public DataEntry() {
     }
-
-    @Id
-    public String id;
 
     public DataEntry(String source, String data) {
         this.setSource(source);
         this.setData(data);
     }
 
-    @Column(name = "date_start")
+    @Id
+    public String id;
+
+    @Field
+    private String data;
+
+    @Field
+    private String source;
+
+    @Field("date_created")
+    private Date dateCreated;
+    @Field
+    private Map<String, Object> properties = new HashMap<>();
+    @Field(INDICATORS)
+    private Set<String> dataArcIndicators = new HashSet<>();
+    @Field(TOPICS)
+    private Set<String> dataArcTopics = new HashSet<>();
+    @Field(DATA_ARC_REGION)
+    private Set<String> dataArcRegions = new HashSet<>();
+    @Field(TOPIC_IDENTIFIERS)
+    private Set<String> dataArcTopicIdentifiers = new HashSet<>();
+
+    @Field("date_start")
     private Integer start;
-    @Column(name = "date_end")
+    @Field("date_end")
     private Integer end;
 
-    @Column(name = "title")
+    @Field("title")
     private String title;
 
     public GeoJsonPoint getPosition() {
@@ -85,21 +115,6 @@ public class DataEntry  implements Serializable {
         this.properties = properties;
     }
 
-    @Column
-    // @Type(type="StringJsonObject")
-    private String data;
-
-    @Column
-    private String source;
-
-    @Column(name = "date_created", nullable = false)
-    private Date dateCreated;
-    private Map<String, Object> properties = new HashMap<>();
-    private Set<String> dataArcIndicators = new HashSet<>();
-    private Set<String> dataArcTopics = new HashSet<>();
-    private Set<String> dataArcRegions = new HashSet<>();
-    private Set<String> dataArcTopicIdentifiers = new HashSet<>();
-
     public String getId() {
         return id;
     }
@@ -144,7 +159,6 @@ public class DataEntry  implements Serializable {
     public void setDataArcIndicators(Set<String> indicators) {
         this.dataArcIndicators = indicators;
     }
-
 
     @Transient
     public Double getX() {

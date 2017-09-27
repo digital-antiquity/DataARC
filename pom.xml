@@ -242,6 +242,14 @@
 
     </repositories>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.nextdoor.rollbar/rollbar-log4j -->
+        <dependency>
+            <groupId>com.nextdoor.rollbar</groupId>
+            <artifactId>rollbar-log4j</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
+    
         <!-- Servlet & Jsp -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -309,7 +317,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
-            <version>1.10.4.RELEASE</version>
+            <version>1.10.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
