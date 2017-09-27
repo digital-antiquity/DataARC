@@ -17,17 +17,20 @@ public class SearchController extends AbstractRestController {
     private SolrService luceneService;
 
     @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET)
-    public SearchResultObject search(@RequestParam(required = false, name="query") SearchQueryObject query_) throws Exception {
-        return performSearch(query_);
+    public SearchResultObject search(@RequestParam(required = false, name="query") SearchQueryObject query_,
+            @RequestParam(value="page", required=false) Integer page,
+            @RequestParam(value="size", required=false) Integer size
+            ) throws Exception {
+        return performSearch(query_, page, size);
     }
 
-    private SearchResultObject performSearch(SearchQueryObject query_) {
+    private SearchResultObject performSearch(SearchQueryObject query_, Integer page, Integer size) {
         try {
             SearchQueryObject query = query_;
             if (query ==  null) {
                 query = new SearchQueryObject();
             }
-            return luceneService.search(query);
+            return luceneService.search(query, page, size);
         } catch (Throwable t) {
             logger.error("error searching", t);
         }
@@ -35,8 +38,12 @@ public class SearchController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST)
-    public SearchResultObject searchPpst(@RequestBody(required = true) SearchQueryObject query_) throws Exception {
-        return performSearch(query_);
+    public SearchResultObject searchPost(@RequestBody(required = true) SearchQueryObject query_,
+            @RequestParam(value="page", required=false) Integer page,
+            @RequestParam(value="size", required=false) Integer size
+            
+            ) throws Exception {
+        return performSearch(query_, page, size);
     }
 
 

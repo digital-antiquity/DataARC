@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rollbar.Rollbar;
+
 @Service
 public class SolrIndexingService {
 
@@ -51,6 +53,9 @@ public class SolrIndexingService {
 
     @Autowired
     ImportDao sourceDao;
+
+    @Autowired
+    Rollbar rollbar;
     
     @Autowired
     SchemaDao schemaDao;
@@ -125,6 +130,9 @@ public class SolrIndexingService {
             return searchIndexObject;
         } catch (Throwable e) {
             logger.error("exception indexing: {}", doc, e);
+            if (rollbar != null) {
+                rollbar.error(e);
+            }
 
         }
         return null;
@@ -135,21 +143,28 @@ public class SolrIndexingService {
             return;
         }
         for (String topicId : searchIndexObject.getTopicIdentifiers()) {
-            Topic topic = topicDao.findTopicByIdentifier(topicId);
-            Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
-            Set<Topic> grandChildren = new HashSet<>();
-            for (Topic child : children) {
-                grandChildren.addAll(associationDao.findRelatedTopics(child));
-            }
-            grandChildren.removeAll(children);
-            grandChildren.remove(topic);
-            searchIndexObject.setTopic_2nd(new HashSet<>());
-            searchIndexObject.setTopic_3rd(new HashSet<>());
-            for (Topic t : children) {
-                searchIndexObject.getTopic_2nd().add(t.getIdentifier());
-            }
-            for (Topic t : grandChildren) {
-                searchIndexObject.getTopic_3rd().add(t.getIdentifier());
+            if (StringUtils.isNotBlank(topicId)) {
+                Topic topic = null;
+                try {
+                topicDao.findTopicByIdentifier(topicId);
+                } catch (Throwable t) {
+                    logger.error("could not find topic: {}", topicId, t);
+                }
+                Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
+                Set<Topic> grandChildren = new HashSet<>();
+                for (Topic child : children) {
+                    grandChildren.addAll(associationDao.findRelatedTopics(child));
+                }
+                grandChildren.removeAll(children);
+                grandChildren.remove(topic);
+                searchIndexObject.setTopic_2nd(new HashSet<>());
+                searchIndexObject.setTopic_3rd(new HashSet<>());
+                for (Topic t : children) {
+                    searchIndexObject.getTopic_2nd().add(t.getIdentifier());
+                }
+                for (Topic t : grandChildren) {
+                    searchIndexObject.getTopic_3rd().add(t.getIdentifier());
+                }
             }
         }
     }
