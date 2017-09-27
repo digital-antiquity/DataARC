@@ -87,11 +87,11 @@ public class MongoDao implements ImportDao, QueryDao {
     @Transactional(readOnly = true)
     public List<DataEntry> getMatchingRows(FilterQuery fq, int num) throws Exception {
         try {
-        Query q = getMongoFilterQuery(fq);
-        return template.find(q, DataEntry.class);
+            Query q = getMongoFilterQuery(fq);
+            return template.find(q, DataEntry.class);
         } catch (QueryException e) {
             String msg = e.getMessage();
-            if (INVALID_QUERY_NO_FIELD_SPECIFIED.equals(msg) ||  INVALID_QUERY_NO_TYPE.equals(msg)) {
+            if (INVALID_QUERY_NO_FIELD_SPECIFIED.equals(msg) || INVALID_QUERY_NO_TYPE.equals(msg)) {
                 logger.debug("invalid query");
             }
         }
@@ -103,7 +103,7 @@ public class MongoDao implements ImportDao, QueryDao {
         Set<String> findAll = schemaDao.findAllSchemaNames();
         Schema schema = null;
         String lookup = fq.getSchema().trim();
-        logger.debug("{}",findAll);
+        logger.debug("{}", findAll);
         Criteria schemaCriteria = null;
         for (String name : findAll) {
             if (name.toLowerCase().equals(lookup)) {
@@ -290,7 +290,9 @@ public class MongoDao implements ImportDao, QueryDao {
             push.pushAll(DataEntry.TOPIC_IDENTIFIERS, idents.toArray(new String[0]));
         }
         WriteResult updateMulti = template.updateMulti(filterQuery, push, DataEntry.class);
-
+        if (updateMulti.getN() > 0) {
+            logger.debug("applying indicator {} to {} results", indicator.getId(), updateMulti.getN());
+        }
     }
 
     @Override
@@ -318,7 +320,7 @@ public class MongoDao implements ImportDao, QueryDao {
             q.addCriteria(group);
             WriteResult updateMulti = template.updateMulti(q, new Update().addToSet(DataEntry.DATA_ARC_REGION, val), DataEntry.class);
             if (updateMulti.getN() > 0) {
-                logger.debug("  applying template: {} :: {} updated",val, updateMulti.getN());
+                logger.debug("  applying template: {} :: {} updated", val, updateMulti.getN());
             }
         } catch (Exception e) {
             logger.error("-------------- {} -------------", val);
