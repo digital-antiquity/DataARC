@@ -49,6 +49,7 @@ public class DataArcConfiguration {
 
     @Resource
     protected Environment env;
+
     private Rollbar rollbar;
 
     public DataArcConfiguration() {
@@ -58,8 +59,8 @@ public class DataArcConfiguration {
     @Bean
     public Rollbar rollbar() {
         String accessToken = env.getProperty("rollbar.key");
-        if (accessToken != null) {
-            rollbar = new Rollbar(accessToken, "production");
+        if (accessToken != null && rollbar == null) {
+            rollbar = new Rollbar(accessToken, env.getProperty("rollbar.env", "production"));
             rollbar.handleUncaughtErrors();
         }
         return rollbar;

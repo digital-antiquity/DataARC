@@ -8,6 +8,7 @@ import org.dataarc.core.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,16 +20,23 @@ public abstract class AbstractController {
 
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
-
     @Autowired
     private ServletContext servletContext;
-    
+
+    @Autowired
+    private Environment env;
+
     @Autowired
     UserService userService;
-    
+
     @ModelAttribute("contextPath")
     public String getVersion() {
-       return servletContext.getContextPath();
+        return servletContext.getContextPath();
+    }
+
+    @ModelAttribute("rollbarKey")
+    public String getRollbarKey() {
+        return env.getProperty("rollbar.key");
     }
 
     public String getCurrentUserId() {
@@ -38,7 +46,7 @@ public abstract class AbstractController {
         }
         return entity.getExternalId();
     }
-    
+
     @ModelAttribute("authenticated")
     public boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,7 +63,7 @@ public abstract class AbstractController {
             return false;
         }
         return user.isAdmin();
-    } 
+    }
 
     @ModelAttribute("editor")
     public boolean isEditor() {
@@ -67,11 +75,11 @@ public abstract class AbstractController {
             return true;
         }
         return user.isEditor();
-    } 
-    
+    }
+
     @ModelAttribute("currentUser")
     public DataArcUser getUser() {
-        
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return null;
@@ -80,9 +88,7 @@ public abstract class AbstractController {
         DataArcUser value = userService.reconcileUser(authentication);
         return value;
     }
-    
-    
-    
+
     @ModelAttribute("currentUserDisplayName")
     public String getCurrentUserDisplayName() {
         DataArcUser entity = getUser();

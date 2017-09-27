@@ -19,7 +19,7 @@ public class GlobalDefaultExceptionHandler {
 
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     private Rollbar rollbar;
 
     @ExceptionHandler(value = Exception.class)
@@ -32,7 +32,7 @@ public class GlobalDefaultExceptionHandler {
         if (rollbar != null) {
             rollbar.critical(e);
         }
-        logger.error("{}",e,e);
+        logger.error("{}", e, e);
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
             throw e;
 

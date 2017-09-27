@@ -169,7 +169,7 @@
             this.parts.splice(idx ,1);  
           },
           typechange: function() {
-              console.log('catch typechange');
+//              console.log('catch typechange');
           },
           updateTest: function() {
               // FIXME: hack, replace with component and proper binding?
@@ -281,7 +281,7 @@ var Hack = new Vue({
                 Vue.set(this, 'fields', request.body);
               })
               .catch(function (err) {
-                console.err(err);
+                Rollbar.error("error getting fields", err);
               });
 
             this.$http.get(getContextPath() + '/api/indicator',{params: {'schema': s.name}})
@@ -290,7 +290,7 @@ var Hack = new Vue({
               Vue.set(this, 'indicators', request.body);
             })
             .catch(function (err) {
-              console.err(err);
+                Rollbar.error("error getting indicators", err);
             });
             Vue.set(this,"selectedTopics",[]);
             this.fetchTopics();
@@ -303,7 +303,7 @@ var Hack = new Vue({
                 Vue.set(this,"topics",request.body);
             })
             .catch(function(err) {
-                console.err(err);
+                Rollbar.error("error getting topics", err);
             });
         },
         selectIndicator: function() {
@@ -345,7 +345,7 @@ var Hack = new Vue({
                   Vue.set(this, 'uniqueValues', request.body);
                 })
                 .catch(function (err) {
-                  console.err(err);
+                    Rollbar.error("error getting unique field values", err);
                 });
           },
           runQuery() {
@@ -356,17 +356,15 @@ var Hack = new Vue({
               }
               this.query = qs;
               window.console.log("RunQuery-->", qs);
-//              window.console.log();
               this.$http.post(getContextPath() + '/api/query/datastore' , qs, {emulateJSON:true,
                   headers: {
                       'Content-Type': 'application/json'
                   }})
               .then(function (request) {
-//                  console.log(JSON.stringify(request.body));
                   Vue.set(this,"results",request.body);
               })
               .catch(function (err) {
-                console.err(err);
+                  Rollbar.error("error running mongo search", err);
               });
           },
           resetSave() {
@@ -378,7 +376,8 @@ var Hack = new Vue({
               indicator.topicIdentifiers = this.selectedTopics;
               Vue.set(this,"saveStatus","saving...");
               if (indicator.id == -1 || indicator.id == undefined) {
-                  this.$http.post(getContextPath() + '/api/indicator/save' , JSON.stringify(indicator), {emulateJSON:true,
+                  var json = JSON.stringify(indicator);
+                  this.$http.post(getContextPath() + '/api/indicator/save' , json, {emulateJSON:true,
                       headers: {
                           'Content-Type': 'application/json'
                       }})
@@ -390,13 +389,14 @@ var Hack = new Vue({
 
                   })
                   .catch(function (err) {
-                      console.log(err);
+                      Rollbar.error("error saving indicator: " + json, err);
                       Vue.set(this,"saveStatus",err);
 
                     console.err(err);
                   });
               } else {
-                  this.$http.put(getContextPath() + '/api/indicator/' + indicator.id , JSON.stringify(indicator), {emulateJSON:true,
+                  var json = JSON.stringify(indicator);
+                  this.$http.put(getContextPath() + '/api/indicator/' + indicator.id , json, {emulateJSON:true,
                       headers: {
                           'Content-Type': 'application/json'
                       }})
@@ -405,7 +405,7 @@ var Hack = new Vue({
                       Vue.set(this, "indicatorId", request.body);
                   })
                   .catch(function (err) {
-                    console.err(err);
+                      Rollbar.error("error saving indicator: " + json, err);
                   });
                   
               }
@@ -423,7 +423,7 @@ var Hack = new Vue({
                       console.log(JSON.stringify(request.body));
                   })
                   .catch(function (err) {
-                    console.err(err);
+                      Rollbar.error("error deleting indicator: " + indicator.id, err);
                   });
               }
               Vue.set(this, "indicatorId", -1);
