@@ -30,7 +30,13 @@ public class SearchController extends AbstractRestController {
             if (query ==  null) {
                 query = new SearchQueryObject();
             }
-            return luceneService.search(query, page, size);
+            if (page !=null) {
+                query.setPage(page);
+            }
+            if (size != null) {
+                query.setSize(size);
+            }
+            return luceneService.search(query);
         } catch (Throwable t) {
             logger.error("error searching", t);
         }

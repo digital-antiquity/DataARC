@@ -9,6 +9,8 @@ public class SearchQueryObject {
     private Temporal temporal = new Temporal();
     private boolean idOnly = false;
     private boolean idAndMap = false;
+    private Integer size;
+    private Integer page;
 
     private List<String> keywords = new ArrayList<>();
     private List<String> topicIds = new ArrayList<>();
@@ -104,6 +106,22 @@ public class SearchQueryObject {
 
     public void setIdAndMap(boolean idAndMap) {
         this.idAndMap = idAndMap;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
 }

@@ -52,7 +52,7 @@ public class LegacyJsonController extends AbstractController {
         if (idOnly) {
             sqo.setIdOnly(true);
         }
-        return luceneService.search(sqo,null,null);
+        return luceneService.search(sqo);
     }
 
 }

@@ -65,8 +65,6 @@ public class SolrService {
 
     /**
      * Perform a search passing in the bounding box and search terms
-     * @param size 
-     * 
      * @param x1
      * @param y1
      * @param x2
@@ -80,16 +78,16 @@ public class SolrService {
      * @throws ParseException
      * @throws SolrServerException
      */
-    public SearchResultObject search(SearchQueryObject sqo, Integer page, Integer size)
+    public SearchResultObject search(SearchQueryObject sqo)
             throws IOException, ParseException, SolrServerException {
         SearchResultObject result = new SearchResultObject();
         int limit = 1_000_000;
-        if (size != null) {
-            limit = size;
+        if (sqo.getSize() != null) {
+            limit = sqo.getSize();
         }
         Integer startRecord = 0;
-        if (page != null) {
-            startRecord = page;
+        if (sqo.getPage() != null) {
+            startRecord = sqo.getPage();
         }
         FeatureCollection fc = new FeatureCollection();
         Set<String> idList = new HashSet<>();
