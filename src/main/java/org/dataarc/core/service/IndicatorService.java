@@ -1,8 +1,10 @@
 package org.dataarc.core.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.DataArcUser;
@@ -48,7 +50,8 @@ public class IndicatorService {
     @Transactional(readOnly = false)
     @PreAuthorize("hasPermission('Indicator', 'CREATE_EDIT')")
     public void save(Indicator indicator, DataArcUser user) {
-        logger.debug("{}", indicator.getTopicIdentifiers());
+        Set<String> incomingIdentifiers = indicator.getTopicIdentifiers();
+        logger.debug("{}", incomingIdentifiers);
         indicator.setUser(user);
         if (indicator.getSchema() == null) {
             String schemaName = indicator.getQuery().getSchema();
@@ -56,22 +59,23 @@ public class IndicatorService {
             indicator.setSchema(schema);
         }
         List<Topic> topics = new ArrayList<>();
-        List<String> ids = new ArrayList<>();
+        Set<String> existingIdentifiers = new HashSet<>();
         indicator.getTopics().forEach(t -> {
-            ids.add(t.getIdentifier());
+            existingIdentifiers.add(t.getIdentifier());
         });
-        indicator.getTopicIdentifiers().forEach(ident -> {
+        incomingIdentifiers.forEach(ident -> {
             Topic topic = topicDao.findTopicByIdentifier(ident);
             topics.add(topic);
             logger.debug("  topic: {}", topic);
             indicator.getTopics().add(topic);
-            ids.remove(topic.getIdentifier());
+            existingIdentifiers.remove(ident);
         });
-        ids.forEach(id -> {
+        existingIdentifiers.forEach(id -> {
             Iterator<Topic> iterator = indicator.getTopics().iterator();
             while (iterator.hasNext()) {
                 Topic topic = iterator.next();
                 if (Objects.equal(topic.getIdentifier(), id)) {
+                    logger.debug("Removing: {} from indicator", id);
                     iterator.remove();
                 }
             }

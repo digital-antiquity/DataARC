@@ -1,6 +1,7 @@
 package org.dataarc.web.api.indicator;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.Indicator;
@@ -38,7 +39,7 @@ public class IndicatorController extends AbstractRestController {
 
     @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
     public Long update(@PathVariable("id") Long id, @RequestBody(required = true) Indicator _indicator) throws Exception {
-        List<String> topicIdentifier = _indicator.getTopicIdentifiers();
+        Set<String> topicIdentifier = _indicator.getTopicIdentifiers();
         logger.debug("Saving indicator: {} :: {}", _indicator, topicIdentifier);
         Indicator indicator = indicatorService.merge(_indicator);
         indicator.setTopicIdentifiers(topicIdentifier);

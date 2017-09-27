@@ -2,7 +2,9 @@ package org.dataarc.bean;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,7 +53,7 @@ public class Indicator extends AbstractPersistable {
     private String description;
 
     @Transient
-    private List<String> topicIdentifiers = new ArrayList<>();
+    private Set<String> topicIdentifiers = new HashSet<>();
 
     @Column
     @Type(type = "QueryJsonObject")
@@ -81,11 +83,11 @@ public class Indicator extends AbstractPersistable {
         this.query = query;
     }
 
-    public List<String> getTopicIdentifiers() {
+    public Set<String> getTopicIdentifiers() {
         return topicIdentifiers;
     }
 
-    public void setTopicIdentifiers(List<String> topicIdentifiers) {
+    public void setTopicIdentifiers(Set<String> topicIdentifiers) {
         this.topicIdentifiers = topicIdentifiers;
     }
 
