@@ -321,7 +321,10 @@ var Hack = new Vue({
             this.selectedTopics.push({});
         },
         removeTopic(idx) {
-            this.selectedTopics.splice(idx,1);                
+            this.selectedTopics.splice(idx,1);
+            if (this.selectedTopics.length == 0) {
+                this.selectedTopics.push({});
+            }
         },
           selectField: function () {
               var s = this.schema[this.currentSchema];
