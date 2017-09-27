@@ -176,6 +176,7 @@ public class SolrIndexingService {
     private void applyDateFacets(SearchIndexObject searchIndexObject) {
         int s = searchIndexObject.getStart().intValue();
         int e = searchIndexObject.getEnd().intValue();
+
         int startM = s - (s % 1_000);
         int endM = e - (e % 1_000);
         if (e % 1_000 != 0) {
@@ -185,15 +186,18 @@ public class SolrIndexingService {
             searchIndexObject.getMillenium().add(i);
         }
 
-        int startC = s - (s % 100);
-        int endC = e - (e % 100);
-        if (e % 100 != 0) {
-            endC += 100;
+        if (e - s > 2000) {
+            return;
         }
-        for (int i = startC; i <= endC; i = i + 100) {
-            searchIndexObject.getCentury().add(i);
-        }
+        indexCenturies(searchIndexObject, s, e);
 
+        if (e - s > 200) {
+            return;
+        }
+        indexDecades(searchIndexObject, s, e);
+    }
+
+    private void indexDecades(SearchIndexObject searchIndexObject, int s, int e) {
         int startD = s - (s % 10);
         int endD = e - (e % 10);
         if (e % 10 != 0) {
@@ -201,6 +205,17 @@ public class SolrIndexingService {
         }
         for (int i = startD; i <= endD; i = i + 10) {
             searchIndexObject.getDecade().add(i);
+        }
+    }
+
+    private void indexCenturies(SearchIndexObject searchIndexObject, int s, int e) {
+        int startC = s - (s % 100);
+        int endC = e - (e % 100);
+        if (e % 100 != 0) {
+            endC += 100;
+        }
+        for (int i = startC; i <= endC; i = i + 100) {
+            searchIndexObject.getCentury().add(i);
         }
     }
 
