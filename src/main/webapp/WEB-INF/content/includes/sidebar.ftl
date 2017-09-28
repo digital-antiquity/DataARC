@@ -18,7 +18,15 @@
     <ul class="nav nav-sidebar">
     <#if editor>
         <li><a href="/a/schema/">Data Sources</a></li>
-        <li><a href="/a/mapping/">Combinators</a></li>
+        </ul>
+        <p>Combinators</p>
+        <ul class="nav nav-sidebar">
+            <ul>
+                <li><a href="/a/mapping/">Create / Edit</a></li>
+                <li><a href="/a/combinators">Preview</a></li>
+            </ul>
+        </ul>
+        <ul class="nav nav-sidebar">
         <#if admin>
         <li><a href="/a/admin">Admin</a><ul>
             <li><a href="/a/geojson">GeoJson Files</a></li> 

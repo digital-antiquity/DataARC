@@ -275,6 +275,7 @@ var Hack = new Vue({
             Vue.set(this,"schemaName",s.name);
             Vue.set(this,"indicators",[]);
             Vue.set(this,"fields",[]);
+            Vue.set(this,"results",undefined);
             console.log("fetch fields for "+ s.name);
             this.$http.get(getContextPath() + '/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
@@ -309,13 +310,15 @@ var Hack = new Vue({
         selectIndicator: function() {
             var s = this.schema[this.currentSchema];
             var i = this.indicators[this.currentIndicator];
-            var idents = i.topicIdentifiers;
-            if (idents == undefined || idents.length == 0) {
-                idents = [];
-                i.topicIdentifiers = idents;
-                idents.push("");
-            } 
-            Vue.set(this,"selectedTopics",idents);
+            if (i != undefined) {
+                var idents = i.topicIdentifiers;
+                if (idents == undefined || idents.length == 0) {
+                    idents = [];
+                    i.topicIdentifiers = idents;
+                    idents.push("");
+                } 
+                Vue.set(this,"selectedTopics",idents);
+            }
         },
         addTopic() {
             this.selectedTopics.push({});
@@ -405,9 +408,11 @@ var Hack = new Vue({
                       }})
                   .then(function (request) {
                       console.log(JSON.stringify(request.body));
+                      Vue.set(this,"saveStatus","successful");
                       Vue.set(this, "indicatorId", request.body);
                   })
                   .catch(function (err) {
+                      Vue.set(this,"saveStatus",err);
                       Rollbar.error("error saving indicator: " + json, err);
                   });
                   

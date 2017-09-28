@@ -140,4 +140,8 @@ public class IndicatorService {
         }
     }
 
+    public List<Indicator> findAll() {
+        return indicatorDao.findAll();
+    }
+
 }

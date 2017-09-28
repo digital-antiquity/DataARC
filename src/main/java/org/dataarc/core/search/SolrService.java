@@ -23,7 +23,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.dataarc.core.search.query.SearchQueryObject;
-import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
@@ -54,8 +53,6 @@ public class SolrService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private SchemaService schemaService;
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
@@ -102,7 +99,7 @@ public class SolrService {
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
         SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get("facets");
-
+        
         logger.debug("{}", facetMap);
         for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
             logger.trace("{}", field);
@@ -252,6 +249,7 @@ public class SolrService {
             bq.append(createDateRangeQueryPart(sqo.getTemporal().getStart(), sqo.getTemporal().getEnd()));
         }
         appendTypes(sqo.getSources(), bq);
+        appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
         if (!sqo.emptySpatial()) {
@@ -397,6 +395,32 @@ public class SolrService {
                     q += " OR ";
                 }
                 q += String.format(" %s:\"%s\" ", field, item);
+            }
+        }
+
+        if (StringUtils.isNotBlank(q)) {
+            if (bq.length() > 0) {
+                bq.append(" AND ");
+            }
+            bq.append("(").append(q).append(")");
+        }
+    }
+
+    /**
+     * Append the keyword phrase by searching all search fields
+     * 
+     * @param list
+     * @param bq
+     * @throws ParseException
+     */
+    private void appendKeywordSearchNumeric(List<Long> list, String field, StringBuilder bq) throws ParseException {
+        String q = "";
+        for (Number item : list) {
+            if (item != null) {
+                if (StringUtils.isNotBlank(q)) {
+                    q += " OR ";
+                }
+                q += String.format(" %s:%s ", field, item);
             }
         }
 

@@ -31,7 +31,11 @@ public class IndicatorDao {
         manager.createQuery("delete from Indicator").executeUpdate();
     }
 
-    public Set<String> findAll() {
+    public List<Indicator> findAll() {
+        return manager.createQuery("from Indicator", Indicator.class).getResultList();
+    }
+
+    public Set<String> findAllNames() {
         return manager.createQuery("from Indicator", Indicator.class).getResultList().stream()
                 .map(schema -> schema.getName())
                 .collect(Collectors.toSet());

@@ -13,6 +13,7 @@ public class SearchQueryObject {
     private Integer page;
 
     private List<String> keywords = new ArrayList<>();
+    private List<Long> indicators = new ArrayList<>();
     private List<String> topicIds = new ArrayList<>();
     private List<String> sources = new ArrayList<>();
     private List<String> ids = new ArrayList<>();
@@ -122,6 +123,14 @@ public class SearchQueryObject {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public List<Long> getIndicators() {
+        return indicators;
+    }
+
+    public void setIndicators(List<Long> indicators) {
+        this.indicators = indicators;
     }
 
 }

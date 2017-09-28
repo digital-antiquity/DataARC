@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @Secured(UserService.EDITOR_ROLE)
-public class IndicatorController extends AbstractRestController {
+public class IndicatorApiController extends AbstractRestController {
 
     @Autowired
     private IndicatorService indicatorService;
