@@ -253,7 +253,7 @@ public class SolrService {
         appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
-        if (!sqo.emptySpatial()) {
+        if (sqo.emptySpatial() == false) {
             appendSpatial(sqo, bq);
         }
         return bq;
@@ -346,46 +346,50 @@ public class SolrService {
     private void appendSpatial(SearchQueryObject sqo, StringBuilder bq) {
         double[] topLeft = sqo.getSpatial().getTopLeft();
         double[] bottomRight = sqo.getSpatial().getBottomRight();
-        if (topLeft == null || bottomRight == null) {
-            return;
-        }
-        // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
-        StringBuilder spatial = new StringBuilder();
-        // *** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** //
-        Double minLong = topLeft[0];
-        Double maxLat = bottomRight[1];
-        Double minLat = topLeft[1];
-        Double maxLong = bottomRight[0];
-        if (crossesDateline(minLong, maxLong) && !crossesPrimeMeridian(minLong, maxLong)) {
-            spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" OR"
-                    + "  %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-                    minLong, -180d, maxLat, minLat,
-                    IndexFields.POINT,
-                    180d, minLong, maxLat, minLat));
+        String region = StringUtils.trim(sqo.getSpatial().getRegion());
 
-        } else if (crossesPrimeMeridian(minLong, maxLong)) {
-            spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-                    minLong, maxLong, maxLat, minLat));
-        } else {
-            if (minLat > maxLat) {
-                Double t = maxLat;
-                maxLat = minLat;
-                minLat = t;
+        StringBuilder spatial = new StringBuilder();
+        if (topLeft != null && bottomRight != null) {
+            // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
+            // *** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** //
+            Double minLong = topLeft[0];
+            Double maxLat = bottomRight[1];
+            Double minLat = topLeft[1];
+            Double maxLong = bottomRight[0];
+            if (crossesDateline(minLong, maxLong) && !crossesPrimeMeridian(minLong, maxLong)) {
+                spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" OR"
+                        + "  %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+                        minLong, -180d, maxLat, minLat,
+                        IndexFields.POINT,
+                        180d, minLong, maxLat, minLat));
+
+            } else if (crossesPrimeMeridian(minLong, maxLong)) {
+                spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+                        minLong, maxLong, maxLat, minLat));
+            } else {
+                if (minLat > maxLat) {
+                    Double t = maxLat;
+                    maxLat = minLat;
+                    minLat = t;
+                }
+                spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
+                        minLong, maxLong, maxLat, minLat));
             }
-            spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-                    minLong, maxLong, maxLat, minLat));
         }
-        
-        if (StringUtils.isNotBlank(sqo.getSpatial().getRegion())) {
+
+        if (StringUtils.isNotBlank(region)) {
             if (spatial.length() > 0) {
                 spatial.append(" OR ");
             }
-            spatial.append(String.format("%s:\"%s\" ", IndexFields.REGION, sqo.getSpatial().getRegion()));
+            spatial.append(String.format("%s:\"%s\" ", IndexFields.REGION, region));
         }
-        if (bq.length() > 0) {
-            bq.append(" AND ");
+
+        if (spatial.length() > 0) {
+            if (bq.length() > 0) {
+                bq.append(" AND ");
+            }
+            bq.append(spatial);
         }
-        bq.append(spatial);
 
     }
 
@@ -399,11 +403,12 @@ public class SolrService {
     private void appendKeywordSearch(List<String> list, String field, StringBuilder bq) throws ParseException {
         String q = "";
         for (String item : list) {
-            if (StringUtils.isNotBlank(item)) {
+            String kwd = StringUtils.trim(item);
+            if (StringUtils.isNotBlank(kwd)) {
                 if (StringUtils.isNotBlank(q)) {
                     q += " OR ";
                 }
-                q += String.format(" %s:\"%s\" ", field, item);
+                q += String.format(" %s:\"%s\" ", field, kwd);
             }
         }
 

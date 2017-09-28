@@ -72,9 +72,11 @@ public class SearchQueryObject {
         if (getSpatial() == null) {
             return true;
         }
-        if (StringUtils.isNotBlank(getSpatial().getRegion() )) {
+
+        if (StringUtils.isNotBlank(getSpatial().getRegion())) {
             return false;
         }
+
         if (getSpatial().getBottomRight() == null ||
                 getSpatial().getBottomRight().length < 2) {
             return true;
