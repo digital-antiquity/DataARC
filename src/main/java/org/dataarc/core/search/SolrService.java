@@ -375,6 +375,7 @@ public class SolrService {
             spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
                     minLong, maxLong, maxLat, minLat));
         }
+        
         if (StringUtils.isNotBlank(sqo.getSpatial().getRegion())) {
             if (spatial.length() > 0) {
                 spatial.append(" OR ");
