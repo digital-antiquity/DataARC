@@ -3,6 +3,8 @@ package org.dataarc.core.search.query;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class SearchQueryObject {
 
     private Spatial spatial = new Spatial();
@@ -68,6 +70,9 @@ public class SearchQueryObject {
 
     public boolean emptySpatial() {
         if (getSpatial() == null) {
+            return true;
+        }
+        if (StringUtils.isNotBlank(getSpatial().getRegion() )) {
             return true;
         }
         if (getSpatial().getBottomRight() == null ||

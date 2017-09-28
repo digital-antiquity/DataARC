@@ -62,6 +62,7 @@ public class SolrService {
 
     /**
      * Perform a search passing in the bounding box and search terms
+     * 
      * @param x1
      * @param y1
      * @param x2
@@ -99,7 +100,7 @@ public class SolrService {
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
         SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get("facets");
-        
+
         logger.debug("{}", facetMap);
         for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
             logger.trace("{}", field);
@@ -374,10 +375,17 @@ public class SolrService {
             spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
                     minLong, maxLong, maxLat, minLat));
         }
+        if (StringUtils.isNotBlank(sqo.getSpatial().getRegion())) {
+            if (spatial.length() > 0) {
+                spatial.append(" OR ");
+            }
+            spatial.append(String.format("%s:\"%s\" ", IndexFields.REGION, sqo.getSpatial().getRegion()));
+        }
         if (bq.length() > 0) {
             bq.append(" AND ");
         }
         bq.append(spatial);
+
     }
 
     /**
