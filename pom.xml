@@ -10,17 +10,17 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.framework.version>4.3.6.RELEASE</spring.framework.version>
+        <spring.framework.version>4.3.11.RELEASE</spring.framework.version>
         <spring.security>4.2.3.RELEASE</spring.security>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.8.4</jackson.version>
+        <jackson.version>2.9.1</jackson.version>
         <geotools.version>12.1</geotools.version>
         <postgresql.jdbc.version>9.4.1212</postgresql.jdbc.version>
-        <solr.version>6.6.0</solr.version>
-        <hibernate.version>5.2.10.Final</hibernate.version>
+        <solr.version>7.0.0</solr.version>
+        <hibernate.version>5.2.11.Final</hibernate.version>
         <sitemesh.version>3.0.1</sitemesh.version>
         <liquibase.version>3.5.3</liquibase.version>
-        <mongo.version>3.4.2</mongo.version>
+        <mongo.version>3.5.0</mongo.version>
         <exec-maven-version>1.5.0</exec-maven-version>
         <servlet.api.version>3.1.0</servlet.api.version>
         <crowd.version>2.12.0</crowd.version>

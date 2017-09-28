@@ -47,10 +47,6 @@
                             </optgroup>
                             <option value="new">Create New Combinator</option>
                         </select>
-                    <span  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator) && currentIndicator > 0">
-                            <label for="indicatorId" class="control-label col-sm-3">Indicator Id:</label> {{indicators[currentIndicator].id}}
-                    </span>
-
                 </div>
                 <div class="col-sm-1">
                     <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
