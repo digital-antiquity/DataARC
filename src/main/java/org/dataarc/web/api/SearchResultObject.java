@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geojson.FeatureCollection;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(Include.NON_NULL)
 public class SearchResultObject implements Serializable {
 
     private static final long serialVersionUID = -5124555479159066349L;

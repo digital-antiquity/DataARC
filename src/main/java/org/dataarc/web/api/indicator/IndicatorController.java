@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.Indicator;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.core.service.UserService;
+import org.dataarc.util.View;
 import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @Secured(UserService.EDITOR_ROLE)
@@ -49,6 +52,7 @@ public class IndicatorController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.GET)
+    @JsonView(View.Indicator.class)
     public Indicator getIndicatorById(@PathVariable(value = "id", required = true) Long id) {
         Indicator findById = indicatorService.view(id);
         setTopics(findById);
@@ -71,6 +75,7 @@ public class IndicatorController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.LIST_INDICATORS, method = RequestMethod.GET)
+    @JsonView(View.Indicator.class)
     public List<Indicator> list(@RequestParam(value = "schema", required = true) String schemaName) {
         List<Indicator> indicators = indicatorService.findAllForSchema(schemaName);
         indicators.forEach(findById-> {

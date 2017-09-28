@@ -9,6 +9,7 @@ import org.dataarc.core.service.DataFileService;
 import org.dataarc.core.service.ImportDataService;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.core.service.UserService;
+import org.dataarc.util.View;
 import org.dataarc.web.AbstractController;
 import org.dataarc.web.UrlConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Controller
 @Secured(UserService.EDITOR_ROLE)
@@ -40,6 +43,7 @@ public class SchemaController extends AbstractController {
     }
 
     @RequestMapping(path = UrlConstants.LIST_SCHEMA)
+    @JsonView(View.Schema.class)
     public ModelAndView schema() {
         ModelAndView mav = new ModelAndView("schema/list");
         mav.addObject("schema", schemaService.findAll());
@@ -47,6 +51,7 @@ public class SchemaController extends AbstractController {
     }
 
     @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.GET)
+    @JsonView(View.Schema.class)
     public ModelAndView getSchema(@PathVariable(value = "id", required = true) Long id) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.findById(id);

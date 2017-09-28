@@ -14,7 +14,10 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import org.dataarc.bean.AbstractPersistable;
+import org.dataarc.util.View;
 import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Schema extends AbstractPersistable {
@@ -22,20 +25,25 @@ public class Schema extends AbstractPersistable {
     private static final long serialVersionUID = -5169843883562531248L;
 
     @Column(length = 100)
+    @JsonView(View.Schema.class)
     private String name;
 
     @Column(length = 100)
+    @JsonView(View.Schema.class)
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @JsonView(View.Schema.class)
     @Column(length = 100, name = "display_name")
     private String displayName;
 
     @Column(length = 1024)
+    @JsonView(View.Schema.class)
     private String url;
 
     @Column()
     @Lob
+    @JsonView(View.Schema.class)
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
@@ -55,10 +63,12 @@ public class Schema extends AbstractPersistable {
     private String linkTemplate;
 
     @Column()
+    @JsonView(View.Schema.class)
     private Integer rows;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "schema_id", nullable = false)
+    @JsonView(View.Schema.class)
     private Set<Field> fields = new HashSet<>();
 
     public String getName() {

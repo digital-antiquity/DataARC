@@ -15,6 +15,9 @@ import javax.persistence.Table;
 
 import org.dataarc.bean.AbstractPersistable;
 import org.dataarc.util.FieldDataCollector;
+import org.dataarc.util.View;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "schema_field")
@@ -23,22 +26,28 @@ public class Field extends AbstractPersistable {
     private static final long serialVersionUID = -274948984918121197L;
 
     @Column(length = 100)
+    @JsonView(View.Schema.class)
     private String name;
 
     @Column(length = 100, name = "display_name")
+    @JsonView(View.Schema.class)
     private String displayName;
 
     @Column(length = 100, name = "mongo_name")
+    @JsonView(View.Schema.class)
     private String mongoName;
 
     @Column(name = "field_type")
     @Enumerated(EnumType.STRING)
+    @JsonView(View.Schema.class)
     private FieldType type;
 
     @Column(name = "start_field")
+    @JsonView(View.Schema.class)
     private boolean startField;
 
     @Column(name = "end_field")
+    @JsonView(View.Schema.class)
     private boolean endField;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

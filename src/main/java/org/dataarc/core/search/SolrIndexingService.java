@@ -34,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mongodb.util.JSON;
 import com.rollbar.Rollbar;
 
 @Service
@@ -148,8 +147,7 @@ public class SolrIndexingService {
         Set<String> topics = new HashSet<>();
         for (String topicId : searchIndexObject.getTopicIdentifiers()) {
             if (topicId.startsWith("[")) {
-                List<String> parse = (List<String>) JSON.parse(topicId);
-                topics.addAll(parse);
+                logger.error("We still have arrays, {}", topicId);
             } else {
                 topics.add(topicId);
             }

@@ -2,12 +2,20 @@ package org.dataarc.core.query;
 
 import java.io.Serializable;
 
+import org.dataarc.util.View;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
 public class QueryPart implements Serializable {
 
     private static final long serialVersionUID = -8597360418323132553L;
+    @JsonView(View.Indicator.class)
     private String fieldName;
+    @JsonView(View.Indicator.class)
     private Long fieldId;
+    @JsonView(View.Indicator.class)
     private String value;
+    @JsonView(View.Indicator.class)
     private MatchType type;
 
     public QueryPart() {
