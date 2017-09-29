@@ -79,6 +79,9 @@ public class UserService {
         if (details.get("last_name") != null && StringUtils.isNotBlank((String) details.get("last_name"))) {
             user.setLastName((String) details.get("last_name"));
         }
+        if (details.get("first_name") != null && StringUtils.isNotBlank((String) details.get("first_name"))) {
+            user.setFirstName((String) details.get("first_name"));
+        }
         user.setLastLogin(new Date());
         save(user);
 
