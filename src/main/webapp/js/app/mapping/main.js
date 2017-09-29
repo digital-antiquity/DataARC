@@ -318,6 +318,7 @@ var Hack = new Vue({
                     idents.push("");
                 } 
                 Vue.set(this,"selectedTopics",idents);
+                this.runQuery();
             }
         },
         addTopic() {
