@@ -27,7 +27,7 @@
     <tr>
         <td>${combinator.id?c}</td>
         <td>${combinator.name}</td>
-        <td>${facets[combinator.id?c]}</td>
+        <td>${facets[combinator.id?c]!0}</td>
         <td>${combinator.user.displayName}</td>
         <td>${combinator.schema.name}</td>
         <td>${combinator.description}</td>

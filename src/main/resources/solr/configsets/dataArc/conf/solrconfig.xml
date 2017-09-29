@@ -101,7 +101,7 @@
        replication is in use, this should match the replication
        configuration.
     -->
-  <dataDir>${solr.data.dir:/tmp/dataArc}</dataDir>
+  <dataDir>${solr.data.dir:docker/indexes}</dataDir>
 
 
   <!-- The DirectoryFactory to use for indexes.
