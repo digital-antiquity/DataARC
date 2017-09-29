@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.dataarc.bean.Indicator;
+import org.dataarc.core.search.IndexFields;
 import org.dataarc.core.search.SolrService;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.core.service.IndicatorService;
@@ -40,15 +41,11 @@ public class IndicatorController extends AbstractController {
         ModelAndView mav = new ModelAndView("combinators/list");
         List<Indicator> findAll = indicatorService.findAll();
         mav.addObject("indicators", findAll);
-        List<Map> facets = new ArrayList<>();
+        SearchQueryObject sqo = new SearchQueryObject();
+        sqo.setIdOnly(true);
+        SearchResultObject search = searchService.search(sqo);
+        Map facets = search.getFacets().get(IndexFields.INDICATOR);
         mav.addObject("facets", facets);
-        for (Indicator i : findAll) {
-            SearchQueryObject sqo = new SearchQueryObject();
-            sqo.getIndicators().add(i.getId());
-            sqo.setIdOnly(true);
-            SearchResultObject search = searchService.search(sqo);
-            facets.add(search.getFacets());
-        }
         return mav;
     }
 

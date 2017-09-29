@@ -44,6 +44,10 @@ import com.vividsolutions.jts.io.WKTReader;
 public class SolrService {
     private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE,
             IndexFields.REGION, IndexFields.COUNTRY);
+
+    List<String> FACET_FIELDS = Arrays.asList(IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
+            IndexFields.TOPIC_ID_3RD, IndexFields.SOURCE, IndexFields.DECADE);
+
     private static final String VAL = "val";
     private static final String MISSING = "missing";
     private static final String BUCKETS = "buckets";
@@ -272,10 +276,8 @@ public class SolrService {
     private SolrQuery setupQueryWithFacetsAndFilters(int limit, String q) {
         SolrQuery params = new SolrQuery(q);
         String normal = "";
-        List<String> lst = Arrays.asList(IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
-                IndexFields.TOPIC_ID_3RD, IndexFields.SOURCE, IndexFields.DECADE);
-        for (int i = 0; i < lst.size(); i++) {
-            String fld = lst.get(i);
+        for (int i = 0; i < FACET_FIELDS.size(); i++) {
+            String fld = FACET_FIELDS.get(i);
             normal += ", " + makeFacet(fld);
         }
 

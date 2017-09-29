@@ -13,8 +13,10 @@
 
     <h2>Add GeoJson File</h2>
         <form method="POST" action="/a/admin/uploadGeoJsonFile" enctype="multipart/form-data">
-        File to upload: <input type="file" name="file">
-        <input type="submit" value="Upload"> 
+        <input type="file" name="file" class="form-control">
+        <br/>
+        <input type="submit" value="Upload" class="button btn btn-primary">
+         
     </form> 
 <br/>
     <h2>All GeoJson Files</h2>

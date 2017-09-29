@@ -257,10 +257,10 @@
             <version>${servlet.api.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.23</version>
-            <!-- LICENSE: BSD -->
+          <groupId>org.freemarker</groupId>
+          <artifactId>freemarker</artifactId>
+          <version>2.3.26-incubating</version>
+          <!-- LICENSE: BSD -->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.solr/solr-solrj -->

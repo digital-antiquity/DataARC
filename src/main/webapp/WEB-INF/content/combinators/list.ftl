@@ -15,6 +15,8 @@
 <tr>
 <th>id</th>
 <th>name</th>
+<th># of records mached</th>
+<th>creator</th>
 <th>schema</th>
 <th>description</th>
 <th>query</th>
@@ -25,11 +27,15 @@
     <tr>
         <td>${combinator.id?c}</td>
         <td>${combinator.name}</td>
+        <td>${facets[combinator.id?c]}</td>
+        <td>${combinator.user.displayName}</td>
         <td>${combinator.schema.name}</td>
         <td>${combinator.description}</td>
         <td>${combinator.query}</td>
         <td><#list combinator.topics as topic><span class="label label-primary">${topic.name}</span> <#sep>, </#sep></#list></td>
     </tr>
 </#list>
+</table>
+
 </@body.body>
 </html>

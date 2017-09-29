@@ -83,8 +83,8 @@
                 <td>${topic.id?c}</td>
                 <td>${topic.name!'NO NAME'}<#if topic.varients?has_content ><i> (${topic.varients?join(", ")})</i></#if> </td>
                 <td>${topic.category!''}</td>
-                <td> <#if topic.parents?has_content ><#list topic.parents as parent><span class="label label-primary">${parent.name!'NO NAME'} (${parent.id?c})</span><#sep> </#sep></#list> <#else><i></i></#if></td>
-                <td> <#if topic.children?has_content ><#list topic.children as parent><span class="label label-primary">${parent.name!'NO NAME'} (${parent.id?c})</span><#sep> </#sep></#list> <#else><i></i></#if></td>
+                <td> <#if topic.parents?has_content ><#list topic.parents as parent><span class="label label-primary">${parent.name!'NO NAME'} (${parent.id?c})</span><#sep>, </#sep></#list> <#else><i></i></#if></td>
+                <td> <#if topic.children?has_content ><#list topic.children as parent><span class="label label-primary">${parent.name!'NO NAME'} (${parent.id?c})</span><#sep>, </#sep></#list> <#else><i></i></#if></td>
                 <td>${topic.identifier}</td>
             </tr>
             </#list>
