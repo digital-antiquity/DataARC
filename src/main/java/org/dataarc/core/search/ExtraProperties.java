@@ -12,6 +12,10 @@ import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_EMPTY)
 public class ExtraProperties {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

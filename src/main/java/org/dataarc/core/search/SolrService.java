@@ -1,6 +1,7 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,6 +43,11 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @Service
 public class SolrService {
+    private static final String TEMPORAL = "temporal";
+    private static final String FACETS = "facets";
+    private static final String DATA = "data";
+    private static final String _VERSION = "_version_";
+
     private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE,
             IndexFields.REGION, IndexFields.COUNTRY);
 
@@ -54,6 +60,9 @@ public class SolrService {
     private static final String COUNT = "count";
     private static final String BCE = " BCE ";
     private static final boolean includeMissing = false;
+    private static final String OBJECT_TYPE = "internalType";
+    private static final List<String> IGNORE_FIELDS = Arrays.asList(OBJECT_TYPE, IndexFields.X, IndexFields.Y, _VERSION, IndexFields.COUNTRY, IndexFields.POINT,
+            IndexFields.SOURCE, IndexFields.START, IndexFields.END);
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -80,6 +89,7 @@ public class SolrService {
      * @throws ParseException
      * @throws SolrServerException
      */
+    @SuppressWarnings("unchecked")
     public SearchResultObject search(SearchQueryObject sqo)
             throws IOException, ParseException, SolrServerException {
         SearchResultObject result = new SearchResultObject();
@@ -103,7 +113,8 @@ public class SolrService {
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
-        SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get("facets");
+        @SuppressWarnings("rawtypes")
+        SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get(FACETS);
 
         logger.debug("{}", facetMap);
         for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
@@ -158,13 +169,12 @@ public class SolrService {
 
         for (Object obj : list) {
             SimpleOrderedMap<?> f = (SimpleOrderedMap<?>) obj;
-            logger.trace(" --> {} ", f);
             map.put(f.get(VAL).toString(), ((Number) f.get(COUNT)).longValue());
             HashMap<String, SimpleOrderedMap<?>> subgroups = getSubgroups(f);
             if (!subgroups.isEmpty()) {
                 Map<String, Object> subMap = new HashMap<>();
                 map.put(f.get(VAL).toString(), subMap);
-                subMap.put("count", ((Number) f.get(COUNT)).longValue());
+                subMap.put(COUNT, ((Number) f.get(COUNT)).longValue());
 
                 for (String key : subgroups.keySet()) {
                     subMap.put(key, appendChildren((SimpleOrderedMap<?>) subgroups.get(key)));
@@ -206,34 +216,50 @@ public class SolrService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        feature.setProperty(IndexFields.SOURCE, document.get(IndexFields.SOURCE));
-        feature.setProperty(IndexFields.COUNTRY, document.get(IndexFields.COUNTRY));
-        feature.setProperty(IndexFields.START, document.get(IndexFields.START));
-        feature.setProperty(IndexFields.END, document.get(IndexFields.END));
-        feature.setProperty(IndexFields.SCHEMA_ID, document.get(IndexFields.SCHEMA_ID));
+        addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
+        addKeyValue(feature.getProperties(), IndexFields.START, document);
+        addKeyValue(feature.getProperties(), IndexFields.END, document);
+        addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
+        addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
         // logger.debug("{}", document);
         // logger.debug("{}", document.getChildDocumentCount());
         if (CollectionUtils.isNotEmpty(document.getChildDocuments())) {
             // logger.debug("child docs: " + document.getChildDocuments());
-            feature.setProperty("data", document.getChildDocuments());
+            ArrayList<Object> arrayList = new  ArrayList<>();
+            feature.setProperty(DATA, arrayList);
+            for (SolrDocument doc : document.getChildDocuments()) {
+                Map<String,Object> row = new HashMap<>();
+                for (String key : doc.getFieldNames()) {
+                    addKeyValue(row, key, doc.get(key));
+                }
+                arrayList.add(row);
+            }
         }
         String date = formateDate(document);
-        feature.setProperty(IndexFields.DATE, date);
+        addKeyValue(feature.getProperties(), IndexFields.DATE, date);
 
         for (String name : document.getFieldNames()) {
             Object v = document.get(name);
             // hide certain fields
-            if (v == null || name.equals(IndexFields.X) || name.equals(IndexFields.Y) ||
-                    name.equals(IndexFields.COUNTRY) || name.equals(IndexFields.POINT) ||
-                    name.equals(IndexFields.SOURCE) || name.equals(IndexFields.START)) {
-            } else {
-                feature.getProperties().put(name, v);
-            }
+            addKeyValue(feature.getProperties(), name, v);
 
         }
         fc.add(feature);
 
+    }
+
+
+    private void addKeyValue(Map<String,Object> prop, String name, Object v) {
+        if (v == null || v instanceof String && StringUtils.isBlank(StringUtils.trim((String)v))) {
+            return;
+        }
+        
+        if (IGNORE_FIELDS.contains(name)) {
+                
+                return;
+        } 
+
+        prop.put(name, v);
     }
 
     private void buildResultsFacets(SearchResultObject result, QueryResponse query) {
@@ -281,7 +307,7 @@ public class SolrService {
             normal += ", " + makeFacet(fld);
         }
 
-        String facet = "{" + makeFacetGroup("temporal", IndexFields.CATEGORY,
+        String facet = "{" + makeFacetGroup(TEMPORAL, IndexFields.CATEGORY,
                 makeFacet(IndexFields.CENTURY) + ", "
                         + makeFacet(IndexFields.MILLENIUM) + ","
                         + makeFacet(IndexFields.DECADE));
