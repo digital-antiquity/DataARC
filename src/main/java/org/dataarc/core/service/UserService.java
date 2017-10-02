@@ -50,11 +50,11 @@ public class UserService {
             user = new DataArcUser();
             user.setDateCreated(new Date());
             user.setExternalId(userEntity.getExternalId());
+            user.setEmail(userEntity.getEmailAddress());
+            user.setUsername(userEntity.getName());
+            user.setFirstName(userEntity.getFirstName());
+            user.setLastName(userEntity.getLastName());
         }
-        user.setEmail(userEntity.getEmailAddress());
-        user.setUsername(userEntity.getName());
-        user.setFirstName(userEntity.getFirstName());
-        user.setLastName(userEntity.getLastName());
         user.setLastLogin(new Date());
         save(user);
 
@@ -67,20 +67,21 @@ public class UserService {
             user = new DataArcUser();
             user.setDateCreated(new Date());
             user.setExternalId(userEntity.getPrincipal().toString());
-        }
 
-        LinkedHashMap<String, Object> details = (LinkedHashMap<String, Object>) userEntity.getUserAuthentication().getDetails();
-        user.setEmail((String) details.get("email"));
-        user.setUsername((String) details.get("name"));
-        user.setFirstName((String) details.get("given_name"));
-        // google
-        user.setLastName((String) details.get("family_name"));
-        // facebook
-        if (details.get("last_name") != null && StringUtils.isNotBlank((String) details.get("last_name"))) {
-            user.setLastName((String) details.get("last_name"));
-        }
-        if (details.get("first_name") != null && StringUtils.isNotBlank((String) details.get("first_name"))) {
-            user.setFirstName((String) details.get("first_name"));
+            LinkedHashMap<String, Object> details = (LinkedHashMap<String, Object>) userEntity.getUserAuthentication().getDetails();
+            user.setEmail((String) details.get("email"));
+            user.setUsername((String) details.get("name"));
+            user.setFirstName((String) details.get("given_name"));
+            // google
+            user.setLastName((String) details.get("family_name"));
+            // facebook
+            if (details.get("last_name") != null && StringUtils.isNotBlank((String) details.get("last_name"))) {
+                user.setLastName((String) details.get("last_name"));
+            }
+            if (details.get("first_name") != null && StringUtils.isNotBlank((String) details.get("first_name"))) {
+                user.setFirstName((String) details.get("first_name"));
+            }
+            
         }
         user.setLastLogin(new Date());
         save(user);
@@ -101,8 +102,8 @@ public class UserService {
             userId = userEntity.getName();
             logger.trace("    details: {} | {}", details, details.getClass());
             logger.trace("    principal: {} | {}", authentication.getPrincipal(), authentication.getPrincipal().getClass());
-//            logger.debug("{}", userEntity.getUserAuthentication());
-//            logger.debug("{}", userEntity.getCredentials());
+            // logger.debug("{}", userEntity.getUserAuthentication());
+            // logger.debug("{}", userEntity.getCredentials());
             logger.trace("     userId: {}", userId);
             DataArcUser user = findByExternalId(userId);
             // authentication.set
