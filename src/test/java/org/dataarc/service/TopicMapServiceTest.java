@@ -1,7 +1,6 @@
 package org.dataarc.service;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Iterator;
 
@@ -56,7 +55,27 @@ public class TopicMapServiceTest extends AbstractServiceTest {
             assertNotNull(assoc);
             assertNotNull(assoc.getFrom());
             assertNotNull(assoc.getTo());
+            assertNotNull(assoc.getType());
+        });
+    }
+
+    
+    @Test
+    @Rollback(true)
+    public void testRachelDirectionalMap() throws JAXBException, SAXException {
+        TopicMap map = topicMapService.load("src/test/data/racheltest.xtm");
+        map.getTopics().forEach(topic -> {
+            assertNotNull(topic);
+            assertNotNull(topic.getName());
+            assertNotNull(topic.getIdentifier());
+        });
+        map.getAssociations().forEach(assoc -> {
+            logger.debug("{}", assoc);
+            assertNotNull(assoc);
+            assertNotNull(assoc.getFrom());
+            assertNotNull(assoc.getTo());
 //            assertNotNull(assoc.getIdentifier());
+            assertTrue(assoc.getType().getName().contains("P11"));
             assertNotNull(assoc.getType());
             
         });

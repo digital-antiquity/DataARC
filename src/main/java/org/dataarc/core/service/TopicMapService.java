@@ -148,6 +148,7 @@ public class TopicMapService {
                 String toHref = null;
                 String associTypeHref = association_.getType().getTopicRef().getHref();
                 String toTypeHref = null;
+                associationFrom.setType(get(internalMap, associTypeHref));
                 if (association_.getRole().size() > 0) {
                     Role from = association_.getRole().get(0);
                     fromHref = from.getTopicRef().getHref();
@@ -167,18 +168,19 @@ public class TopicMapService {
 
                     associationTo.setFrom(get(internalMap, toHref));
                     associationTo.setTo(get(internalMap, fromHref));
+                    associationTo.setType(get(internalMap, associTypeHref));
                     if (Objects.equal(associationTo.getTo(), associationTo.getFrom())) {
                         logger.warn("\t\tfrom == to");
                         associationTo.setTo(get(internalMap, associTypeHref));
+                        associationTo.setType(get(internalMap, toTypeHref));
                     }
-                    associationTo.setType(get(internalMap, toTypeHref));
                     associationFrom.setTo(get(internalMap, toHref));
                 } else {
                     associationFrom.setTo(get(internalMap, associationType));
                 }
 
                 associationFrom.setFrom(get(internalMap, fromHref));
-                associationFrom.setType(get(internalMap, fromTypeHref));
+//                associationFrom.setType(get(internalMap, fromTypeHref));
                 if (Objects.equal(associationFrom.getTo(), associationFrom.getFrom())) {
                     associationFrom.setFrom(get(internalMap, associTypeHref));
                 }

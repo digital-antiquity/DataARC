@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topicMap xmlns="http://www.topicmaps.org/xtm/" version="2.0">
+    <topic id="topic133574.1506084994825">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E39_Actor"/>
+    </topic>
+    <topic id="topic133780.1506084994827">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/P11i_participated_in"/>
+    </topic>
+    <topic id="topic133741.1506084994827">
+        <subjectIdentifier href="http://www.cidoc-crm.org/cidoc-crm/E7_Activity"/>
+    </topic>
+    <topic id="topic133956.1506084994828">
+        <subjectIdentifier href="http://wandora.org/si/temp/1490283259574-29"/>
+        <instanceOf>
+            <topicRef href="#topic133955.1506084994828"/>
+        </instanceOf>
+        <name>
+            <value>milking</value>
+        </name>
+    </topic>
+    <topic id="topic133641.1506084994826">
+        <subjectIdentifier href="http://wandora.org/si/temp/1484677003949-48"/>
+        <subjectIdentifier href="http://purl.obolibrary.org/obo/NCBITaxon_9913"/>
+        <instanceOf>
+            <topicRef href="#topic133580.1506084994825"/>
+            <topicRef href="#topic133581.1506084994825"/>
+        </instanceOf>
+        <name>
+            <value>cow</value>
+        </name>
+    </topic>
+    <association>
+        <type>
+            <topicRef href="#topic133780.1506084994827"/>
+        </type>
+        <role>
+            <type>
+                <topicRef href="#topic133741.1506084994827"/>
+            </type>
+            <topicRef href="#topic133956.1506084994828"/>
+        </role>
+        <role>
+            <type>
+                <topicRef href="#topic133574.1506084994825"/>
+            </type>
+            <topicRef href="#topic133641.1506084994826"/>
+        </role>
+    </association>
+
+</topicMap>
