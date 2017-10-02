@@ -1,7 +1,6 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -282,6 +281,8 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.SOURCE, TEXT_GENERAL);
         schemaFields.put(IndexFields.POINT, LOCATION_RPT);
         schemaFields.put(IndexFields.TYPE, STRING);
+        
+        addCopyField("*", Arrays.asList(IndexFields.KEYWORD));        
         for (String field : schemaFields.keySet()) {
             boolean seen = false;
             boolean deleted = false;
@@ -365,6 +366,10 @@ public class SolrIndexingService {
 
     private void addDynamicField(Map<String, Object> fieldAttributes_) throws SolrServerException, IOException {
         SchemaRequest.AddDynamicField addFieldUpdateSchemaRequest_ = new SchemaRequest.AddDynamicField(fieldAttributes_);
+        addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
+    }
+    private void addCopyField(String source, List<String> dest) throws SolrServerException, IOException {
+        SchemaRequest.AddCopyField addFieldUpdateSchemaRequest_ = new SchemaRequest. AddCopyField(source, dest);
         addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
     }
 
