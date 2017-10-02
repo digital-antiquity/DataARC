@@ -1,4 +1,4 @@
-var map, svg, g, timeline_data;
+var timeline_data;
 
 // Page Level Javascript Actions
 
@@ -32,18 +32,9 @@ $(document).ready(function() {
   });
 
 
-  // Sets up the leaflet map and disables scroll wheel zoom until focused
-  map = new L.Map("map", { center: [65, -18.5], zoom: 6, scrollWheelZoom: false })
-    .addLayer(new L.TileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"))
-    .on('focus', function() { map.scrollWheelZoom.enable() })
-    .on('blur', function() { map.scrollWheelZoom.disable() })
-    .on('click', function() {
-      if (map.scrollWheelZoom.enabled()) { map.scrollWheelZoom.disable() } else { map.scrollWheelZoom.enable(); }
-    });
 
-  // Enables the svg on top of leaflet using d3
-  svg = d3.select(map.getPanes().overlayPane).append("svg");
-  g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {

@@ -5,23 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-	<script>
-	var testing = false;
-	
-	    function getContextPath() {
-        return "${contextPath}";
-    }
 
-	</script>
     <title>DataARC - Linking Data from Archaeology, the Sagas, and Climate</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- FOR CYTOSCAPE -->
-    <link rel="stylesheet" href="js/components/qtip2/jquery.qtip.min.css" />
-    <link href="css/custom-cyto.css" rel="stylesheet">
-    <!-- END CYTOSCAPE -->
 
     <!-- Custom fonts for this template -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -31,12 +19,24 @@
     <!-- Plugin CSS -->
     <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
     <link href="vendor/leaflet/leaflet.css" rel="stylesheet">
+    <link href="vendor/leaflet.draw/leaflet.draw.css" rel="stylesheet">
+    <link href="vendor/leaflet.easybutton/easy-button.css" rel="stylesheet">
+    <link href="vendor/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/custom.css" rel="stylesheet">
     <link href="css/timeline.css" rel="stylesheet">
     <link href="css/results.css" rel="stylesheet">
+    <link href="css/concepts.css" rel="stylesheet">
+    <link href="css/geography.css" rel="stylesheet">
 
+	<script>
+	var testing = false;
+	
+	    function getContextPath() {
+        return "${contextPath}";
+    }
+	</script>
   </head>
   <body id="page-top">
 
@@ -162,7 +162,7 @@
           <div class="col-lg-12 text-center">
             <h2 class="section-heading">Map</h2>
             <hr class="primary">
-            <div id="map"></div>
+            <div id="map"><div id="mapSpinner"><span class="fa fa-spinner fa-spin"></span></div></div>
           </div>
         </div>
       </div>
@@ -177,12 +177,18 @@
           </div>
           <div class="col-lg-12">
 
-            <div id="topicmap" style="width:100%;height:600px;border:1px solid #eee;">
-              <div class="btn-group topicmap-tools">
-                <button title='zoom in' class="btn btn-secondary" id="zoom_in"><span class="fa fa-search-plus"></span></button>
-                <button title='zoom out' class="btn btn-secondary" id="zoom_out"><span class="fa fa-search-minus"></span></button>
-                <button title="change layout" class="btn btn-secondary" id="change_layout"><span class="fa fa-random"></span></button>
-                <button title='reset' class="btn btn-secondary" id="reset"><span class="fa fa-repeat"></span></button>
+            <div id="conceptContainer" style="width:100%;height:700px;">
+              <div id="topicControls" class="btn-toolbar justify-content-between">
+                <div class="btn-group">
+                  <button title="zoom in" id="topicmapZoomIn" class="btn btn-secondary"><span class="fa fa-search-plus"></span></button>
+                  <button title="zoom out" id="topicmapZoomOut" class="btn btn-secondary"><span class="fa fa-search-minus"></span></button>
+                  <button title="reset" id="topicmapReset" class="btn btn-secondary"><span class="fa fa-repeat"></span></button>
+                  <button title="pause" id="topicmapPause" class="btn btn-secondary"><span class="fa fa-pause"></span></button>
+                  <button title="continue" id="topicmapProceed" class="btn btn-secondary"><span class="fa fa-play"></span></button>
+                </div>
+                <div id="topicSearch" class="input-group"></div>
+              </div>
+              <div id="topicmap">
               </div>
             </div>
 
@@ -199,7 +205,12 @@
       <div class="call-to-action bg-dark">
         <div class="container text-center">
           <h2>Results</h2>
-          <div id="results"></div>
+          <hr class="primary">
+          <div id="results">
+            <div class="result-loader col-sm-12 text-center">
+              <h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -216,44 +227,24 @@
       </div>
     </section>
 
-
-    <div id="layouts" style="display:none;">
-      <select id="layout-select">
-        <option value="breadthfirst">Breadth First</option>
-        <option value="circle">Circle</option>
-        <option value="cola" selected>Cola</option>
-        <option value="concentric">Concentric</option>
-        <option value="cose">Cose</option>
-        <option value="grid">Grid</option>
-        <option value="spread">Spread</option>
-      </select>
-    </div>
-
     <!-- Vendor scripts -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/popper/popper.min.js"></script>
-    <script src="components/handlebars/handlebars.js"></script>
     <script src="vendor/lodash/lodash.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/d3/d3.v4.min.js"></script>
     <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="vendor/leaflet.draw/leaflet.draw.js"></script>
+    <script src="vendor/leaflet.easybutton/easy-button.js"></script>
+    <script src="vendor/leaflet.esri/esri-leaflet.js"></script>
+    <script src="vendor/handlebars/handlebars.js"></script>
     <script src="vendor/moment/moment.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-
-    <!-- FOR CYTOSCAPE -->
-    <script src="js/components/cytoscape/dist/cytoscape.min-edit.js"></script>
-    <script src="js/components/cytoscape-cola/cola.js"></script>
-    <script src="js/components/cytoscape-cola/cytoscape-cola.js"></script>
-    <script src="js/components/cytoscape-spread/cytoscape-spread.js"></script>
-    <script src="js/components/qtip2/jquery.qtip.min.js"></script>
-    <script src="js/components/cytoscape-qtip/cytoscape-qtip.js"></script>
-    <script src="js/components/bluebird/js/browser/bluebird.min.js"></script>
-    <script src="js/components/typeahead.js/dist/typeahead.bundle.js"></script>
-    <script src="js/topicmap.js"></script>
-
-    <!-- END CYTOSCAPE -->
+    <script src="vendor/datatables/datatables.min.js"></script>
+    <script src="vendor/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
 
     <!-- Custom scripts -->
     <script src="js/custom.js"></script>
@@ -266,26 +257,22 @@
     <!-- Page Level Javascript Actions -->
     <script type="text/javascript">
       $(document).ready(function() {
-      var req = {
-          source: "/api/search",
-          delay: 100, // in ms
-          callback: function() {
-            // Handler function
-            Timeline.refresh('#timeline', function (val) {
-              console.log(val);
-            });
+        Search.init({
+          source: "search.php", // http://beta.data-arc.org/api/search
+          delay: 100, // delay before search checks in ms
+          before: function() { // actions to run before search query begins
+            Geography.wait();
+          },
+          after: function() { // actions to run after search query is finished
+            Timeline.refresh("#timeline");
             Geography.refresh();
-            // Concepts.refresh();
+            Concepts.refresh();
             ResultsHandler = new Results('#results');
           }
-        };
-        if (testing) {
-        	req.source = "src/features_17.08.21.json";
-    	}; 
-        Search.init(req);
+        });
       });
     </script>
-    
+
     <!-- everything below this is automatically generated -->
    <script type="application/json">
    	[

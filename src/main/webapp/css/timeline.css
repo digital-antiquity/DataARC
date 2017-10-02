@@ -1,63 +1,53 @@
 #timeline {
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
 }
 
-#timeline .item {
-  cursor: pointer;
+#timeline rect.bordered {
+  fill: #fafafa;
+  stroke: #eee;
+  stroke-width: 2px;
 }
 
-#timeline .label {
-  cursor: pointer;
-  fill: rgb(170, 170, 170);
-  font-family: Helvetica, arial, 'Open Sans', sans-serif;
+#timeline rect.highlighted {
+  stroke: #ff0;
+  stroke-opacity: 1;
+  fill-opacity: 0;
+  fill: none;
+  stroke-width: 3px;
 }
 
-#timeline .button {
-  cursor: pointer;
-  fill: transparent;
-  stroke-width: 2;
-  stroke: rgb(170, 170, 170);
+#timeline .periodText.hidden {
+  opacity: 0;
 }
 
-#timeline .button text {
-  stroke-width: 1;
-  text-anchor: middle;
-  fill: rgb(170, 170, 170);
+#timeline .periodText {
+  transition: opacity 0.5s linear;
 }
 
-#timeline .heatmap-tooltip {
-  pointer-events: none;
+#timeline text.axis-category {
+  fill: #888;
+}
+
+#timeline text.axis-period {
+  fill: #888;
+}
+
+#timeline .legend text {
+  font-size: 10px;
+}
+
+#timeline .svg-content {
+  display: inline-block;
   position: absolute;
-  z-index: 9999;
-  width: 250px;
-  max-width: 250px;
-  overflow: hidden;
-  padding: 15px;
-  font-size: 12px;
-  line-height: 14px;
-  color: rgb(51, 51, 51);
-  font-family: Helvetica, arial, 'Open Sans', sans-serif;
-  background: rgba(255, 255, 255, 0.75);
+  top: 0;
+  left: 0;
 }
 
-#timeline .heatmap-tooltip .header strong {
-  display: inline-block;
-  width: 250px;
-}
-
-#timeline .heatmap-tooltip span {
-  display: inline-block;
-  width: 50%;
-  padding-right: 10px;
-  box-sizing: border-box;
-}
-
-#timeline .heatmap-tooltip span,
-#timeline .heatmap-tooltip .header strong {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#timeline .periodLabels {
+  height: 50px;
 }
