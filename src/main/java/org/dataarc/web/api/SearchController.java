@@ -17,8 +17,7 @@ public class SearchController extends AbstractRestController {
     @Autowired
     private SolrService luceneService;
 
-    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET,
-            consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
+    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET
             ,produces={UrlConstants.JSON_UTF8})
     public SearchResultObject search(@RequestParam(required = false, name="query") SearchQueryObject query_,
             @RequestParam(value="page", required=false) Integer page,

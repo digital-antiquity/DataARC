@@ -21,6 +21,7 @@ public class IndexController extends AbstractController {
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("files", jsonFileService.findAll());
         mv.addObject("schema", schemaService.findAll());
+        mv.addObject("fields", schemaService.findAllFields());
         
         return mv;
     }

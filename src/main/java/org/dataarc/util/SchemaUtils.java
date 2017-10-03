@@ -60,4 +60,10 @@ public class SchemaUtils {
         return String.format("%s_%s", schema.getName(), field.getName());
     }
 
+    
+
+    public static String toString(Long id2) {
+        return String.format("%s", id2.intValue());
+    }
+
 }

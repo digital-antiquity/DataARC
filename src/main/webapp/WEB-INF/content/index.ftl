@@ -37,6 +37,12 @@
         return "${contextPath}";
     }
     
+    var FIELDS = {
+    <#list fields as field>"${field.id?c}": "${field.displayName}"<#sep>,
+</#sep></#list>
+    };
+    var SCHEMA = {<#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>,</#sep></#list>};
+    
    var geoJsonInputs =	[
    <#list files as file>
      {id:"${file.id?c}", name:"${file.name}", url:"/geojson/${file.id?c}"}<#sep>, </#sep> 

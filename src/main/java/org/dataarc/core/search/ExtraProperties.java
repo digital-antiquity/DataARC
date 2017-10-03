@@ -49,7 +49,7 @@ public class ExtraProperties {
             if (fieldByName == null) {
                 logger.warn("field still null: {} | {}", key, schema.getFields());
             } else {
-                data.put(SchemaUtils.formatForSolr(schema, fieldByName), e.getValue());
+                data.put(SchemaUtils.toString(fieldByName.getId()), e.getValue());
             }
         }
     }

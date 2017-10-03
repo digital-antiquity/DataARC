@@ -3,7 +3,6 @@ package org.dataarc.core.service;
 import java.util.List;
 import java.util.Set;
 
-import org.dataarc.bean.Indicator;
 import org.dataarc.bean.schema.Category;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
@@ -128,5 +127,9 @@ public class SchemaService {
         schema.setResultTemplate(result);
         schemaDao.save(schema);
         
+    }
+
+    public List<Field> findAllFields() {
+        return schemaDao.findAllFields();
     }
 }
