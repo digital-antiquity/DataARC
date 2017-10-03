@@ -36,6 +36,13 @@
 	    function getContextPath() {
         return "${contextPath}";
     }
+    
+   var geoJsonInputs =	[
+   <#list files as file>
+     {id:"${file.id?c}", name:"${file.name}", url:"/geojson/${file.id?c}"}<#sep>, </#sep> 
+   </#list>
+   	];
+
 	</script>
   </head>
   <body id="page-top">
@@ -256,9 +263,9 @@
 
     <!-- Page Level Javascript Actions -->
     <script type="text/javascript">
-      $(document).ready(function() {
-        Search.init({
-          source: "search.php", // http://beta.data-arc.org/api/search
+    
+    var config = {
+          source: "/api/search",
           delay: 100, // delay before search checks in ms
           before: function() { // actions to run before search query begins
             Geography.wait();
@@ -269,18 +276,18 @@
             Concepts.refresh();
             ResultsHandler = new Results('#results');
           }
-        });
+        };
+        
+        if (testing) {
+        config.source = "search.php";
+        }
+      $(document).ready(function() {
+        Search.init(config);
       });
     </script>
 
     <!-- everything below this is automatically generated -->
-   <script type="application/json">
-   	[
-   <#list files as file>
-     {id:"${file.id?c}", name:"${file.name}", url:"/geojson/${file.id?c}"}}<#sep>, </#sep> 
-   </#list>
-   	]
-   </script>
+
    <!--  handlebar templates http://handlebarsjs.com
      -->
   <#list schema as schemum>    

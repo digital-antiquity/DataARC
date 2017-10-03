@@ -1,9 +1,7 @@
 
 var topicSettings = {
   container: 'topicmap',
-  // dataUrl: "src/topicmap20170919.json",
-  // dataUrl: "src/topicmap20170929.json",
-  dataUrl: 'topics.php', // dataUrl: "http://beta.data-arc.org/api/topicmap/view",
+  dataUrl: "/api/topicmap/view",
   gravity: -200,
   minRadius: 5,
   maxRadius: 15,

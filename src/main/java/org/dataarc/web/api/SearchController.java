@@ -4,6 +4,7 @@ import org.dataarc.core.search.SolrService;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.web.UrlConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +17,9 @@ public class SearchController extends AbstractRestController {
     @Autowired
     private SolrService luceneService;
 
-    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET, produces={UrlConstants.JSON_UTF8})
+    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET,
+            consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE}
+            ,produces={UrlConstants.JSON_UTF8})
     public SearchResultObject search(@RequestParam(required = false, name="query") SearchQueryObject query_,
             @RequestParam(value="page", required=false) Integer page,
             @RequestParam(value="size", required=false) Integer size
@@ -43,7 +46,8 @@ public class SearchController extends AbstractRestController {
         return null;
     }
 
-    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST, produces={UrlConstants.JSON_UTF8})
+    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST, produces={UrlConstants.JSON_UTF8},
+            consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public SearchResultObject searchPost(@RequestBody(required = true) SearchQueryObject query_,
             @RequestParam(value="page", required=false) Integer page,
             @RequestParam(value="size", required=false) Integer size

@@ -108,7 +108,8 @@ var Search = {
     Search.options.after();
   },
   query: function(source, filters, callback) {
-    d3.json(source).post(JSON.stringify(filters), callback);
+      //FIXME: should be sending application/JSON not text/plain
+    d3.json(source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
   },
 
 

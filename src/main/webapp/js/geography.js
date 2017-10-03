@@ -1,6 +1,5 @@
 var map, svg, g;
 
-var geoJsonInputs = [{id:"1", title:"Regions", name:"iceland.json-1505394469296.json", url:"src/geojson/1"}];
 
 // Sets up the leaflet map and disables scroll wheel zoom until focused
 var basemap = new L.TileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.{ext}', {
@@ -140,13 +139,17 @@ pLayer.prototype = {
     this.layer.setStyle(this.normalStyle);
   },
   bindClick: function(feature,layer){
-    var region = this.id+"_____"+feature.properties.id;
-    var template = Handlebars.compile($("#title-template-polygon").html());
-    var properties = $.extend({"region":region},feature.properties);
-    var popup = template(properties);
-    layer.bindPopup(popup);
+      layer.bindPopup("Loading...");
+      layer.on('click', function(e) {
+          var popup = e.target.getPopup();
+          var region = this.id+"_____"+feature.properties.id;
+          var template = Handlebars.compile($("#title-template-"+ feature.properties.schema_id).html());
+          var properties = $.extend({"region":region},feature.properties);
+          var popup_ = template(properties);
+//          $.get(url).done(function(data) {
+          popup.update();
+          });
   }
-
 };
 
 // requires search.js
