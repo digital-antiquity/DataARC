@@ -94,7 +94,11 @@ public class SolrIndexingService {
             setupSchema();
             Iterable<DataEntry> entries = sourceDao.findAll();
             int count = 0;
+            Set<String> findAll = schemaDao.findAllSchemaNames();
             for (DataEntry entry : entries) {
+                if (!findAll.contains(entry.getSource())) {
+                    continue;
+                }
                 searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     if (searchIndexObject != null) {
