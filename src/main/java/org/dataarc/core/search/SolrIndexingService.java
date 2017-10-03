@@ -27,7 +27,6 @@ import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
 import org.dataarc.util.SchemaUtils;
-import org.hibernate.hql.ast.origin.hql.parse.HQLParser.dataType_return;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +87,7 @@ public class SolrIndexingService {
     public void reindex() {
         logger.debug("begin reindexing");
         SearchIndexObject searchIndexObject = null;
+        Map<String,Integer> totals = new HashMap<>();
         try {
             client.deleteByQuery(DATA_ARC, "*:*");
             client.commit(DATA_ARC);
@@ -97,10 +97,13 @@ public class SolrIndexingService {
             int count = 0;
             Set<String> findAll = schemaDao.findAllSchemaNames();
             for (DataEntry entry : entries) {
-                if (!findAll.contains(SchemaUtils.normalize(entry.getSource()))) {
+                String key = SchemaUtils.normalize(entry.getSource());
+                if (!findAll.contains(key)) {
                     logger.debug("skipping: {} {}", entry.getSource(), findAll);
                     continue;
                 }
+                Integer c = totals.getOrDefault(key, 0);
+                totals.put(key, c +1);
                 searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     if (searchIndexObject != null) {
@@ -119,7 +122,7 @@ public class SolrIndexingService {
             logger.error("exception indexing:", ex);
             logger.error("{}", searchIndexObject);
         }
-        logger.debug("done reindexing");
+        logger.debug("done reindexing: {}", totals);
     }
 
     private SearchIndexObject indexRow(DataEntry entry) {
