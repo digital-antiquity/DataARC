@@ -75,9 +75,8 @@ public class SchemaUtils {
     public static String unFormat(String name, Set<Field> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         for (Field f : fields) {
-            logger.debug("  {} {} -> {} ",f, formatId(f) , formatName(name,f));
-            titleTemplate = StringUtils.replace(titleTemplate,formatId(f), formatName(name, f));
-            titleTemplate = StringUtils.replace(titleTemplate,formatId(f), formatName(HANDLEBAR_FIELD_NAME + name, f));
+            titleTemplate = StringUtils.replace(titleTemplate,formatId("",f), formatName(name, f));
+            titleTemplate = StringUtils.replace(titleTemplate,formatId("fieldName ",f), formatName(HANDLEBAR_FIELD_NAME + name, f));
         }
         logger.debug("{} --> {}", titleTemplate_, titleTemplate);
         return titleTemplate;
@@ -86,16 +85,15 @@ public class SchemaUtils {
     public static String format(String name, Set<Field> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         for (Field f : fields) {
-            logger.debug("  {} {} -> {} ",f, formatName(name,f), formatId(f) );
-            titleTemplate = StringUtils.replace(titleTemplate,  formatName(name,f), formatId(f));
-            titleTemplate = StringUtils.replace(titleTemplate,  formatName(HANDLEBAR_FIELD_NAME + name,f), formatId(f));
+            titleTemplate = StringUtils.replace(titleTemplate,  formatName(name,f), formatId("",f));
+            titleTemplate = StringUtils.replace(titleTemplate,  formatName(HANDLEBAR_FIELD_NAME + name,f), formatId("fieldName ",f));
         }
         logger.debug("{} --> {}", titleTemplate_, titleTemplate);
         return titleTemplate;
     }
 
-    private static String formatId(Field f) {
-        return String.format("{{%s}}", f.getId().intValue());
+    private static String formatId(String prefix, Field f) {
+        return String.format("{{%s%s}}", prefix, f.getId().intValue());
     }
 
     private static String formatName(String name, Field f) {
