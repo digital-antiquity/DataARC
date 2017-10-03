@@ -27,6 +27,7 @@ import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
 import org.dataarc.util.SchemaUtils;
+import org.hibernate.hql.ast.origin.hql.parse.HQLParser.dataType_return;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,7 @@ public class SolrIndexingService {
             Set<String> findAll = schemaDao.findAllSchemaNames();
             for (DataEntry entry : entries) {
                 if (!findAll.contains(entry.getSource())) {
+                    logger.debug("skipping: {} {}", entry.getSource(), findAll);
                     continue;
                 }
                 searchIndexObject = indexRow(entry);
