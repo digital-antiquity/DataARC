@@ -16,8 +16,18 @@
  #t {width:1px;height:1px;border:none;}
  #t:focus{outline:none;}</style>
  <textarea id=t></textarea>
- 	<#list schema.fields as field>
- 	<span class="label label-default" onClick="$('#t').html('{{${schema.name}_${field.name}}}');$('#t').select();document.execCommand('copy');">${schema.name}_${field.name}</span>
+ 
+ <script>
+ var focusArea = undefined;
+ $(document).ready(function() {
+ $("textarea.form-control").focus(function(e) {
+    focusArea = $(e.target);
+ });
+ });
+ </script>
+
+ 	 	<#list schema.fields as field>
+ 	<span class="label label-default" onClick="$('#t').html('{{${schema.name}_${field.name}}}');$('#t').select();document.execCommand('copy');focusArea.focus();">${schema.name}_${field.name}</span>
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>
@@ -25,15 +35,15 @@
 		<input type="hidden" name="id" value="${schema.id?c}" />
 		<div class="form-group">
 	        <label for="titleTemplate" class="control-label">Title Template:</label>
-	        <textarea id="titleTemplate" name="titleTemplate" class="form-control">${schema.titleTemplate!''}</textarea>
+	        <textarea id="titleTemplate" name="titleTemplate" class="form-control">${titleTemplate!''}</textarea>
 		</div>
 		<div class="form-group">
 	        <label for="resultTemplate" class="control-label">Results Template:</label>
-	        <textarea id="resultTemplate" name="resultTemplate" class="form-control">${schema.resultTemplate!''}</textarea>
+	        <textarea id="resultTemplate" name="resultTemplate" class="form-control">${resultTemplate!''}</textarea>
 		</div>
 		<div class="form-group">
 	        <label for="linkTemplate" class="control-label">Link Template:</label>
-	        <textarea id="linkTemplate" name="linkTemplate" class="form-control">${schema.linkTemplate!''}</textarea>
+	        <textarea id="linkTemplate" name="linkTemplate" class="form-control">${linkTemplate!''}</textarea>
 		</div>
         <input type="submit" value="Save" class="button btn btn-primary"> 
 

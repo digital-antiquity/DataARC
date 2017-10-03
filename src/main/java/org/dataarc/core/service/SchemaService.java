@@ -10,6 +10,7 @@ import org.dataarc.bean.schema.Value;
 import org.dataarc.core.dao.FieldDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.util.FieldDataCollector;
+import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,9 +123,9 @@ public class SchemaService {
 
     @Transactional(readOnly=false)
     public void updateSchemaTemplates(Schema schema, String title, String result, String link) {
-        schema.setTitleTemplate(title);
-        schema.setLinkTemplate(link);
-        schema.setResultTemplate(result);
+        schema.setTitleTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), title));
+        schema.setLinkTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), link));
+        schema.setResultTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), result));
         schemaDao.save(schema);
         
     }

@@ -309,7 +309,11 @@
   <#list schema as schemum>    
     <script id="title-template-${schemum.id?c}" type="text/x-handlebars-template">
 	  <div class="title">
-	  	${schemum.titleTemplate!'{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}'}
+        <#if schemum.titleTemplate?has_content && schemum.titleTemplate != ''>
+	  	${schemum.titleTemplate}
+	  	<#else>
+	  	{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}
+	  	</#if>
 	  </div>
 	</script>
     <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
@@ -317,7 +321,7 @@
 	  	<#if schemum.resultTemplate?has_content && schemum.resultTemplate != ''>
 	  	${schemum.resultTemplate}
 	  	<#else>
-	  	{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}'}
+	  	{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}
 	  	</#if>
 	  </div>
 	</script>
