@@ -298,7 +298,11 @@
 	</script>
     <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
 	  <div class="description">
-	  	${schemum.resultTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  	<#if schemum.resultTemplate?has_content && schemum.resultTemplate != ''>
+	  	${schemum.resultTemplate}
+	  	<#else>
+	  	{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  	</#if>
 	  </div>
 	</script>
   </#list>

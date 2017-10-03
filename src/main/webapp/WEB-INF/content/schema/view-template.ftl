@@ -13,11 +13,11 @@
  <div class="col-sm-12">
  <p><b>Field Names</b></p>
  	<#list schema.fields as field>
- 	<span class="label label-default">${field.name}</span>
+ 	<span class="label label-default">${schema.name}_${field.name}</span>
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>
-    <form method="POST" action="${contextPath}/a/schema/${schema.name}" enctype="multipart/form-data" class="form-horizontal">
+    <form method="POST" action="${contextPath}/a/admin/schema/template/${schema.id?c}" enctype="multipart/form-data" class="form-horizontal">
 		<input type="hidden" name="id" value="${schema.id?c}" />
 		<div class="form-group">
 	        <label for="titleTemplate" class="control-label">Title Template:</label>
@@ -29,7 +29,7 @@
 		</div>
 		<div class="form-group">
 	        <label for="linkTemplate" class="control-label">Link Template:</label>
-	        <textarea id="linkTemplate" name="resultTemplate" class="form-control">${schema.linkTemplate!''}</textarea>
+	        <textarea id="linkTemplate" name="linkTemplate" class="form-control">${schema.linkTemplate!''}</textarea>
 		</div>
         <input type="submit" value="Save" class="button btn btn-primary"> 
 

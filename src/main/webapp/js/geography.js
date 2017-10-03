@@ -188,6 +188,7 @@ var Geography = {
     $('#mapSpinner').hide();
   },
   eachFeature: function(feature, layer) {
+      // FIXME: this could be optimized to render on click instead of prerendering
     inTemplate = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
     var template = Handlebars.compile(inTemplate.html());
     var popup = template(feature.properties);
