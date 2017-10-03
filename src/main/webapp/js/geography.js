@@ -139,17 +139,15 @@ pLayer.prototype = {
     this.layer.setStyle(this.normalStyle);
   },
   bindClick: function(feature,layer){
-      layer.bindPopup("Loading...");
-      layer.on('click', function(e) {
-          var popup = e.target.getPopup();
-          var region = this.id+"_____"+feature.properties.id;
-          var template = Handlebars.compile($("#title-template-"+ feature.properties.schema_id).html());
-          var properties = $.extend({"region":region},feature.properties);
-          var popup_ = template(properties);
-//          $.get(url).done(function(data) {
-          popup.update();
-          });
+      /**
+    var region = this.id+"_____"+feature.properties.id;
+    var template = Handlebars.compile($("#title-template-polygon").html());
+    var properties = $.extend({"region":region},feature.properties);
+    var popup = template(properties);
+    layer.bindPopup(popup);
+    **/
   }
+
 };
 
 // requires search.js

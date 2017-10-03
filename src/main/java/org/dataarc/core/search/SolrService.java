@@ -62,7 +62,7 @@ public class SolrService {
     private static final boolean includeMissing = false;
     private static final String OBJECT_TYPE = "internalType";
     private static final List<String> IGNORE_FIELDS = Arrays.asList(OBJECT_TYPE, IndexFields.X, IndexFields.Y, _VERSION, IndexFields.COUNTRY, IndexFields.POINT,
-            IndexFields.SOURCE, IndexFields.START, IndexFields.END);
+            IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.KEYWORD); //, IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM?
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
