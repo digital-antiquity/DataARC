@@ -329,7 +329,7 @@ public class SolrIndexingService {
             schema.getFields().forEach(field -> {
                 if (field.getType() != null) {
                     try {
-                        String solrName = SchemaUtils.toString(field.getId());
+                        String solrName = SchemaUtils.formatForSolr(schema, field);
                         if (!schemaFields.containsKey(solrName)) {
                             deleteField(solrName);
                             // hard coding special case for nabone to force to float

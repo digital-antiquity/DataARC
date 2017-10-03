@@ -196,7 +196,7 @@ public class SearchIndexObject {
                         getData().add(new ExtraProperties(s, schema));
                     });
                 } else if (v != null && field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
-                    getProperties().put(SchemaUtils.toString(field.getId()), v);
+                    getProperties().put(SchemaUtils.formatForSolr(schema, field), v);
                 }
             }
         });

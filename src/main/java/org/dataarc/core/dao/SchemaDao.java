@@ -132,9 +132,9 @@ public class SchemaDao {
         manager.remove(schema);
     }
 
-    public Schema findById(Long schemaId) {
+    public Schema findById(Number schemaId) {
         Query query = manager.createQuery("from Schema s where s.id=:id", Schema.class);
-        query.setParameter("id", schemaId);
+        query.setParameter("id", schemaId.longValue());
         return (Schema) query.getSingleResult();
     }
 

@@ -75,6 +75,8 @@ public class SchemaUtils {
     public static String unFormat(String name, Set<Field> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         for (Field f : fields) {
+            
+            //FIXME: need a regex that replaces " field}}" " field "
             titleTemplate = StringUtils.replace(titleTemplate,formatId("",f), formatName(name, f));
             titleTemplate = StringUtils.replace(titleTemplate,formatId("fieldName ",f), formatName(HANDLEBAR_FIELD_NAME + name, f));
         }

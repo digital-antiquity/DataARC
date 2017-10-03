@@ -93,7 +93,6 @@ public class Schema extends AbstractPersistable {
                 return fld;
             }
         }
-        ;
         return null;
     }
 

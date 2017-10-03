@@ -117,7 +117,7 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public Schema findById(Long schemaId) {
+    public Schema findById(Number schemaId) {
         return schemaDao.findById(schemaId);
     }
 
