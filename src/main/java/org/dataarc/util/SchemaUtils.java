@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class SchemaUtils {
+    private static final String HANDLEBAR_FIELD_NAME = "fieldName ";
     private static final Pattern PATTERN_NON_ASCII = Pattern.compile("[^\\p{ASCII}]");
     private static final Pattern PATTERN_NONWORD = Pattern.compile("[^\\w\\.\\s-]");
     private static final Pattern PATTERN_WHITESPACE = Pattern.compile("[-\\s]+");
@@ -76,6 +77,7 @@ public class SchemaUtils {
         for (Field f : fields) {
             logger.debug("  {} {} -> {} ",f, formatId(f) , formatName(name,f));
             titleTemplate = StringUtils.replace(titleTemplate,formatId(f), formatName(name, f));
+            titleTemplate = StringUtils.replace(titleTemplate,formatId(f), formatName(HANDLEBAR_FIELD_NAME + name, f));
         }
         logger.debug("{} --> {}", titleTemplate_, titleTemplate);
         return titleTemplate;
@@ -86,6 +88,7 @@ public class SchemaUtils {
         for (Field f : fields) {
             logger.debug("  {} {} -> {} ",f, formatName(name,f), formatId(f) );
             titleTemplate = StringUtils.replace(titleTemplate,  formatName(name,f), formatId(f));
+            titleTemplate = StringUtils.replace(titleTemplate,  formatName(HANDLEBAR_FIELD_NAME + name,f), formatId(f));
         }
         logger.debug("{} --> {}", titleTemplate_, titleTemplate);
         return titleTemplate;
