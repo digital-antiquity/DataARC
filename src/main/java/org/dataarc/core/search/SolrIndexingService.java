@@ -97,7 +97,7 @@ public class SolrIndexingService {
             int count = 0;
             Set<String> findAll = schemaDao.findAllSchemaNames();
             for (DataEntry entry : entries) {
-                if (!findAll.contains(entry.getSource())) {
+                if (!findAll.contains(SchemaUtils.normalize(entry.getSource()))) {
                     logger.debug("skipping: {} {}", entry.getSource(), findAll);
                     continue;
                 }
