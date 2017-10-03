@@ -267,6 +267,16 @@
     <script src="js/concepts.js"></script>
     <script src="js/results.js"></script>
 
+
+    <script type="text/javascript">
+    Handlebars.registerHelper("fieldName", function(name) {
+    if (parseInt(name)) {
+      return FIELDS[name];
+      } 
+      return name;
+    });
+    </script>
+
     <!-- Page Level Javascript Actions -->
     <script type="text/javascript">
     
@@ -299,7 +309,7 @@
   <#list schema as schemum>    
     <script id="title-template-${schemum.id?c}" type="text/x-handlebars-template">
 	  <div class="title">
-	  	${schemum.titleTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  	${schemum.titleTemplate!'{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}'}
 	  </div>
 	</script>
     <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
@@ -307,7 +317,7 @@
 	  	<#if schemum.resultTemplate?has_content && schemum.resultTemplate != ''>
 	  	${schemum.resultTemplate}
 	  	<#else>
-	  	{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+	  	{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}'}
 	  	</#if>
 	  </div>
 	</script>
