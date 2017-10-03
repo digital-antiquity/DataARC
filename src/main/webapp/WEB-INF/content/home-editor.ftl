@@ -9,7 +9,7 @@
     </head>
     
     <@body.body>
-<h1> Welcome Edtor!</h1>
+<h1> Welcome Editor!</h1>
 
 </@body.body>
 </html>
