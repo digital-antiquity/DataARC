@@ -12,8 +12,12 @@
 <h1>Editing: ${schema.name} Templates</h1>
  <div class="col-sm-12">
  <p><b>Field Names</b></p>
+ <style>
+ #t {width:1px;height:1px;border:none;}
+ #t:focus{outline:none;}</style>
+ <textarea id=t></textarea>
  	<#list schema.fields as field>
- 	<span class="label label-default">${schema.name}_${field.name}</span>
+ 	<span class="label label-default" onClick="$('#t').html('{{${schema.name}_${field.name}}}');$('#t').select();document.execCommand('copy');">${schema.name}_${field.name}</span>
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>

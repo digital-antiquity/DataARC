@@ -287,7 +287,7 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.CONCEPT, STRINGS);
         schemaFields.put(IndexFields.INDICATOR, TEXT_GENERAL);
         schemaFields.put(IndexFields.KEYWORD, TEXT_GENERAL);
-        schemaFields.put(IndexFields.SOURCE, TEXT_GENERAL);
+        schemaFields.put(IndexFields.SOURCE, STRING);
         schemaFields.put(IndexFields.POINT, LOCATION_RPT);
         schemaFields.put(IndexFields.TYPE, STRING);
         
