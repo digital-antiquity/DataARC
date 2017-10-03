@@ -530,8 +530,8 @@ ResultSource.prototype = {
 
 		//var feature = this.getFeatureDataBySource(id);
 		var feature = this.data.features.filter(feature => feature.properties.id.includes(id))[0];
-
 		var handlebarHandler = $("#results-template-"+ feature.properties.schema_id).length ? $("#results-template-"+ feature.properties.schema_id) : $("#results-template-generic");
+		console.log(handlebarHandler.html());
 	    var template = Handlebars.compile(handlebarHandler.html());
 	    var content = template(feature.properties);
 

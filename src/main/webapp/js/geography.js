@@ -188,11 +188,11 @@ var Geography = {
     $('#mapSpinner').hide();
   },
   eachFeature: function(feature, layer) {
-      // FIXME: this could be optimized to render on click instead of prerendering
-    inTemplate = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
-    var template = Handlebars.compile(inTemplate.html());
-    var popup = template(feature.properties);
-    layer.bindPopup(popup);
+//      // FIXME: this could be optimized to render on click instead of prerendering
+//    inTemplate = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
+//    var template = Handlebars.compile(inTemplate.html());
+//    var popup = template(feature.properties);
+//    layer.bindPopup(popup);
   },
   addFeatures: function(geojson, style) {
     this.clear();
@@ -200,10 +200,26 @@ var Geography = {
       style: styleFunction,
       onEachFeature: Geography.eachFeature,
       pointToLayer: function(feature, latlng) {
-        return L.circleMarker(latlng, style);
+        var shp = L.circleMarker(latlng, style);
+        
+        shp.bindPopup("Loading...");
+        $(shp).data('properties', feature.properties);
+        shp.on('click', _handleCircleClick);
+
+        return shp;
       }
     }).addTo(map);
 
+    
+    function _handleCircleClick(e) {
+        var popup = e.target.getPopup();
+        var feature = e.target.feature;
+      var inTemplate = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
+      var template = Handlebars.compile(inTemplate.html());
+      var content = template(e.target.feature.properties);
+            popup.setContent(content);
+            popup.update();
+    }
     function styleFunction(feature){
       var fill = "#fff";
       var color = "#333";
