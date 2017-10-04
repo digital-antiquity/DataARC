@@ -2,52 +2,34 @@
   display: inline-block;
   position: relative;
   width: 100%;
-  /* aspect ratio */
   vertical-align: top;
   overflow: hidden;
 }
 
+#timeline .label {
+  height: 50px;
+  transition: opacity 0.5s linear;
+}
+
+#timeline .label.hidden {
+  opacity: 0;
+}
+
 #timeline rect.bordered {
   fill: #fafafa;
-  stroke: #eee;
+  stroke: #ffffff;
   stroke-width: 2px;
 }
 
 #timeline rect.highlighted {
-  stroke: #ff0;
+  stroke: #00ffff;
   stroke-opacity: 1;
   fill-opacity: 0;
   fill: none;
   stroke-width: 3px;
 }
 
-#timeline .periodText.hidden {
-  opacity: 0;
-}
-
-#timeline .periodText {
-  transition: opacity 0.5s linear;
-}
-
-#timeline text.axis-category {
-  fill: #888;
-}
-
-#timeline text.axis-period {
-  fill: #888;
-}
-
 #timeline .legend text {
   font-size: 10px;
 }
 
-#timeline .svg-content {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-#timeline .periodLabels {
-  height: 50px;
-}

@@ -498,10 +498,18 @@ fieldset[disabled] .btn-primary:hover {
   padding: 15px 30px;
 }
 
-#map {
+
+#map, #topicmap {
   height: 600px;
+  /*border: 1px solid #ddd;*/
 }
 
 #results {
   height: 600px;
+}
+
+
+
+.legend {
+  margin-bottom: 20px;
 }

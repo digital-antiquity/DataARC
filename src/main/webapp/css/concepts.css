@@ -169,7 +169,6 @@ body {
   position:relative;
   width:100%;
   height:75%;
-  border:solid 1px #000;
 }
 #topic-svg {
   display: inline-block;

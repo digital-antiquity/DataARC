@@ -1,40 +1,9 @@
-var timeline_data;
+// Global variables
+var category_colors = ["#08519c", "#a50f15", "#006d2c", "#54278f", "#a63603"];
+
 
 // Page Level Javascript Actions
-
 $(document).ready(function() {
-
-  // Initialize random data for the demo
-  var now = moment().endOf('day').toDate();
-  var time_ago = moment().startOf('day').subtract(10, 'year').toDate();
-  timeline_data = d3.timeDays(time_ago, now).map(function (dateElement, index) {
-    return {
-      date: dateElement,
-      details: Array.apply(null, new Array(Math.floor(Math.random() * 15))).map(function(e, i, arr) {
-        return {
-          'name': 'Project ' + Math.round(Math.random() * 10),
-          'date': function () {
-            var projectDate = new Date(dateElement.getTime());
-            projectDate.setHours(Math.floor(Math.random() * 24))
-            projectDate.setMinutes(Math.floor(Math.random() * 60));
-            return projectDate;
-          }(),
-          'value': 3600 * ((arr.length - i) / 5) + Math.floor(Math.random() * 3600) * Math.round(Math.random() * (index / 365))
-        }
-      }),
-      init: function () {
-        this.total = this.details.reduce(function (prev, e) {
-          return prev + e.value;
-        }, 0);
-        return this;
-      }
-    }.init();
-  });
-
-
-
-
-
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
@@ -107,4 +76,16 @@ $(document).ready(function() {
   $('#keywords-btn').click(function() {
     Search.set("keywords", [$('#keywords-field').val()]);
   });
+
+  // Update keywords on enter key
+  $('#keywords-field').keypress(function (e) {
+    var key = e.which;
+    if(key == 13) { // the enter key code
+      $('#keywords-btn').click();
+      return false;
+    }
+  });
+
+  // Filter the timeline
+  $('#filter-timeline').click(Timeline.filter);
 });

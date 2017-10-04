@@ -76,7 +76,7 @@
 }
 .result-category-detail-btn, .result-category-detail-btn:focus {
 	transition: 0.2s ease;
-	border-radius:0px;
+	/*border-radius:0px;*/
 	text-transform: none;
 	font-weight:500;
 	background-color: #0089d0;

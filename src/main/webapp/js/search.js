@@ -1,32 +1,9 @@
-/* EXAMPLE JSON QUERY OBJECT FORMAT
-{
-"spatial": {
-  "topLeft": [70.0,5.9],
-  "bottomRight": [58.8,-42.9]
-},
-"temporal": {
-  "start": null,
-  "end": null
-},
-"idOnly": false,
-"keywords": [],
-"topicIds": [],
-"sources": []
-}
-*/
-
 var Search = {
-  options: {
-    source: "http://beta.data-arc.org/api/search",
-    delay: 100,
-    before: function(){},
-    after: function(){}
-  },
   init: function(options) {
     this.defaults = {
       "spatial": {
-        "topLeft": [],
-        "bottomRight": []
+        "topLeft": [-75, 85],
+        "bottomRight": [-0.1, 58]
       },
       "temporal": {
         "start": null,
@@ -70,7 +47,7 @@ var Search = {
   refresh: function() {
     // Exit if the search parameters have not been revised
     if (this.previous == this.revision) return;
-console.log("refresh");
+
     // Perform any before search actions
     Search.options.before();
 

@@ -63,7 +63,7 @@ Results.prototype = {
 var ResultGroup = function(type, container) {
 
 	// modify title string to upperCase
-	this.type = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();	
+	this.type = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
 
 	this.container = container;
 
@@ -95,13 +95,13 @@ ResultGroup.prototype = {
 
 		// get the data
 		this.getSummaryStatsByCategories();
-		
+
 		// build the row
 		var _this = this;
 		setTimeout(function() {
 			_this.constructRow();
 		}, 2000);
-		
+
 
 	},
 
@@ -187,16 +187,16 @@ ResultGroup.prototype = {
 			// Actions area
 			var actionsEl = $('<div>', {'class': 'result-category-actions'});
 
-		
+
 
 
 			// Calls the Detail() class constructor
-			var viewDetail = $('<button>', {'class':'btn btn-block btn-default result-category-detail-btn'}).text('View Details');
+			var viewDetail = $('<button>', {'class':'btn btn-block btn-default result-category-detail-btn'}).text('View');
 			// set click event
 			viewDetail.click(function() {
-				
+
 				_this.detail = new ResultDetail(category, _this);
-			
+
 			});
 
 			actionsEl.append(viewDetail);
@@ -288,7 +288,7 @@ var ResultDetail = function(category, parent) {
 }
 
 ResultDetail.prototype =  {
-	
+
 	init: function() {
 
 		this.fetchData();
@@ -309,7 +309,7 @@ ResultDetail.prototype =  {
 
 			// compile expected sources
 			if ( typeof this.data[this.features[i].properties.source] == 'undefined' ) {
-				
+
 				this.data[this.features[i].properties.source] = {};
 				this.data[this.features[i].properties.source].tabledata = [];
 				this.data[this.features[i].properties.source].features = [];
@@ -327,15 +327,16 @@ ResultDetail.prototype =  {
 			this.data[this.features[i].properties.source].features.push(this.features[i]);
 
 		}
-
+		console.log("Still need source inside each feature.properties");
+		console.log(this.data);
 	},
 
 	prepareElements: function() {
 
 		this.overlay = $('<div>', {'class': 'result-detail-overlay'});
-		
+
 		$('.result-detail-overlay').remove();
-		
+
 		$('body').append(this.overlay);
 
 		this.container = $('<div>', {'class': 'result-detail-container'});
@@ -359,7 +360,7 @@ ResultDetail.prototype =  {
 			closeBtn.click(function() {
 
 				_this.destroy();
-			
+
 			});
 			header.append(closeBtn);
 
@@ -397,7 +398,7 @@ ResultDetail.prototype =  {
 					var target = $(this).attr('href');
 					$(target).addClass('active');
 				}
-				
+
 			});
 
 			this.sources.push( {source: new ResultSource(source, this.data[source], contentContainer) });
@@ -490,7 +491,7 @@ ResultSource.prototype = {
 					{"data": "title"}
 				],
 				"columnDefs": [
-					{ 
+					{
 						"targets": 0,
 						"searchable": false,
 						"render": function ( id, type, row, meta ) {

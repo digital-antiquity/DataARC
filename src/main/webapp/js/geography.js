@@ -1,5 +1,6 @@
 var map, svg, g;
 
+var geoJsonInputs = [{id:"1", title:"Regions", name:"iceland.json-1505394469296.json", url:"src/geojson/1"}];
 
 // Sets up the leaflet map and disables scroll wheel zoom until focused
 var basemap = new L.TileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.{ext}', {
@@ -106,7 +107,7 @@ pLayer.prototype = {
     this.layer = new L.geoJSON(data, {
       style: _this.normalStyle,
       onEachFeature: function(feature,layer){
-          _this.bindClick(feature,layer);
+					layer.bindPopup("Loading...");
         }
     }).on('click',function(e){
       if (_this.selected) {
@@ -116,6 +117,8 @@ pLayer.prototype = {
       _this.selected.bringToFront();
       Geography.layer.bringToFront();
       _this.selected.setStyle(_this.highlightStyle);
+			_this.handlePolyClick(e);
+			    
     });
     map.addLayer(this.layer);
     layerControl.addOverlay(this.layer, this.title);
@@ -138,15 +141,16 @@ pLayer.prototype = {
     this.selected = false;
     this.layer.setStyle(this.normalStyle);
   },
-  bindClick: function(feature,layer){
-      /**
-    var region = this.id+"_____"+feature.properties.id;
-    var template = Handlebars.compile($("#title-template-polygon").html());
-    var properties = $.extend({"region":region},feature.properties);
-    var popup = template(properties);
-    layer.bindPopup(popup);
-    **/
-  }
+	handlePolyClick(e){
+		var popup = e.layer.getPopup();
+		var feature = e.layer.feature;
+		var region = this.id+"_____"+feature.properties.id;
+		var template = Handlebars.compile($("#title-template-polygon").html());
+		var properties = $.extend({"region":region},feature.properties);
+		var content = template(properties);
+		popup.setContent(content);
+    popup.update();
+	}
 
 };
 
@@ -188,11 +192,6 @@ var Geography = {
     $('#mapSpinner').hide();
   },
   eachFeature: function(feature, layer) {
-//      // FIXME: this could be optimized to render on click instead of prerendering
-//    inTemplate = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
-//    var template = Handlebars.compile(inTemplate.html());
-//    var popup = template(feature.properties);
-//    layer.bindPopup(popup);
   },
   addFeatures: function(geojson, style) {
     this.clear();
@@ -201,16 +200,13 @@ var Geography = {
       onEachFeature: Geography.eachFeature,
       pointToLayer: function(feature, latlng) {
         var shp = L.circleMarker(latlng, style);
-        
-        shp.bindPopup("Loading...");
+				shp.bindPopup("Loading...");
         $(shp).data('properties', feature.properties);
         shp.on('click', _handleCircleClick);
-
         return shp;
       }
     }).addTo(map);
 
-    
     function _handleCircleClick(e) {
         var popup = e.target.getPopup();
         var feature = e.target.feature;
@@ -220,7 +216,7 @@ var Geography = {
             popup.setContent(content);
             popup.update();
     }
-    function styleFunction(feature){
+		function styleFunction(feature){
       var fill = "#fff";
       var color = "#333";
       var opacity = 1;
@@ -246,9 +242,9 @@ var Geography = {
     }
   },
   categoryColors: {
-    "ARCHAEOLOGICAL":"#08519c",
-    "HISTORIC":"#a50f15",
-    "MODEL":"#006d2c"
+    "ARCHAEOLOGICAL": category_colors[0],
+    "HISTORIC":category_colors[1],
+    "MODEL":category_colors[2]
   },
   checkActive: function(feature){
     // return true;

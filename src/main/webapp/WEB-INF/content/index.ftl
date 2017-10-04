@@ -30,6 +30,7 @@
     <link href="css/concepts.css" rel="stylesheet">
     <link href="css/geography.css" rel="stylesheet">
 
+
 	<script>
 	var testing = false;
 	
@@ -163,7 +164,25 @@
           <div class="col-lg-12 text-center">
             <h2 class="section-heading">Timeline</h2>
             <hr class="primary">
-            <div id="timeline"></div>
+            <div class="container legend">
+              <div class="row justify-content-md-center">
+                <div class="col col-lg-2">
+                  1 of 3
+                </div>
+                <div class="col-md-auto">
+                  2 of 3
+                </div>
+                <div class="col col-lg-2">
+                  3 of 3
+                </div>
+              </div>
+            </div>
+            <div id="timeline">
+              <div class="loader col-sm-12 text-center">
+                <h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>
+              </div>
+            </div>
+            <button id="filter-timeline" class="btn btn-dark"><i class="fa fa-clock-o text-white sr-icons"></i> Apply Temporal Filter</button>
           </div>
         </div>
       </div>
@@ -201,8 +220,7 @@
                 </div>
                 <div id="topicSearch" class="input-group"></div>
               </div>
-              <div id="topicmap">
-              </div>
+              <div id="topicmap"></div>
             </div>
 
           </div>
@@ -303,6 +321,14 @@
     </script>
 
     <!-- everything below this is automatically generated -->
+
+    <!-- Either leave this template here or incorporate into the ones that are autmoatically generated -->
+    <script id="title-template-polygon" type="text/x-handlebars-template">
+      <div class="title">
+        {{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}
+      </div>
+      <button class="btn btn-sm" onclick="Geography.regionFilter('{{this.region}}')">Filter by this polygon</button>
+    </script>
 
    <!--  handlebar templates http://handlebarsjs.com
      -->

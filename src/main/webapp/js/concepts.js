@@ -1,11 +1,15 @@
 
 var topicSettings = {
   container: 'topicmap',
-  dataUrl: "/api/topicmap/view",
+  dataUrl: '/api/topicmap/view',
   gravity: -200,
   minRadius: 5,
   maxRadius: 15,
   searchContainer: 'topicSearch'
+}
+
+if(testing){
+  topicSettings.dataUrl = 'topics.php';
 }
 
 var TopicMap = function(settings) {
