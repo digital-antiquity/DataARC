@@ -138,9 +138,9 @@ public class SolrService {
                     continue;
                 }
 
+                idList.add((String) document.get(IndexFields.ID));
                 if (sqo.isIdOnly()) {
-                    idList.add((String) document.get(IndexFields.ID));
-                    result.setResults(idList);
+                    result.setIdList(idList);
                 } else {
                     appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
                     result.setResults(fc);
