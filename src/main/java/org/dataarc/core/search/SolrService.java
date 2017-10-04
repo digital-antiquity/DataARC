@@ -128,6 +128,10 @@ public class SolrService {
 
         
         // aggregate results in a map by point
+        result.setIdList(idList);
+        if (!sqo.isIdOnly()) {
+        result.setResults(fc);
+        }
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
             // logger.debug("{}", document);
@@ -139,11 +143,8 @@ public class SolrService {
                 }
 
                 idList.add((String) document.get(IndexFields.ID));
-                if (sqo.isIdOnly()) {
-                    result.setIdList(idList);
-                } else {
+                if (!sqo.isIdOnly()) {
                     appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
-                    result.setResults(fc);
                 }
             } catch (Throwable t) {
                 logger.error("{}", t, t);
