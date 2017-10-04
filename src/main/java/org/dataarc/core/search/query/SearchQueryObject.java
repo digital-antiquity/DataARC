@@ -10,7 +10,7 @@ public class SearchQueryObject {
     private Spatial spatial = new Spatial();
     private Temporal temporal = new Temporal();
     private boolean idOnly = false;
-    private boolean idAndMap = false;
+    private boolean idAndMap = true;
     private Integer size;
     private Integer page;
 

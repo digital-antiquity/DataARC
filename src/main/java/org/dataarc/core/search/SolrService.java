@@ -138,7 +138,7 @@ public class SolrService {
                     idList.add((String) document.get(IndexFields.ID));
                     result.setResults(idList);
                 } else {
-                    appendFeatureResult(document, reader, fc, point);
+                    appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
                     result.setResults(fc);
                 }
             } catch (Throwable t) {
@@ -192,7 +192,7 @@ public class SolrService {
         return ret;
     }
 
-    private void appendFeatureResult(SolrDocument document, WKTReader reader, FeatureCollection fc, String point) {
+    private void appendFeatureResult(SolrDocument document, WKTReader reader, FeatureCollection fc, String point, boolean idMapOnly) {
         Feature feature = new Feature();
         try {
 
@@ -203,14 +203,16 @@ public class SolrService {
         }
         
         
-        addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
-        addKeyValue(feature.getProperties(), IndexFields.START, document);
-        addKeyValue(feature.getProperties(), IndexFields.END, document);
-        addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
-        addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
+//        addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
+//        addKeyValue(feature.getProperties(), IndexFields.START, document);
+//        addKeyValue(feature.getProperties(), IndexFields.END, document);
+//        addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
+//        addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
+
+        
         // logger.debug("{}", document);
         // logger.debug("{}", document.getChildDocumentCount());
-        if (CollectionUtils.isNotEmpty(document.getChildDocuments())) {
+        if (!idMapOnly && CollectionUtils.isNotEmpty(document.getChildDocuments())) {
             // logger.debug("child docs: " + document.getChildDocuments());
             for (SolrDocument doc : document.getChildDocuments()) {
                 Map<String,Object> row = new HashMap<>();
@@ -241,11 +243,20 @@ public class SolrService {
         String date = formateDate(document);
         addKeyValue(feature.getProperties(), IndexFields.DATE, date);
 
+        if (!idMapOnly) {
         for (String name : document.getFieldNames()) {
             Object v = document.get(name);
             // hide certain fields
             addKeyValue(feature.getProperties(), name, v);
 
+        }
+        } else {
+            addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
+            addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
+            addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
+            addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document.get(IndexFields.SCHEMA_ID));
+            addKeyValue(feature.getProperties(), IndexFields.SOURCE, document.get(IndexFields.SOURCE));
+            
         }
         fc.add(feature);
 

@@ -28,6 +28,7 @@ public class SearchController extends AbstractRestController {
         SearchQueryObject query_ = new SearchQueryObject();
         if (StringUtils.isNotBlank(id)) {
             query_.setIds(Arrays.asList(id));
+            query_.setIdAndMap(false);
         }
         return performSearch(query_, page, size);
     }
