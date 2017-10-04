@@ -278,6 +278,7 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.TOPIC_ID_3RD, STRINGS);
         schemaFields.put(IndexFields.DECADE, STRINGS);
         schemaFields.put(IndexFields.CENTURY, STRINGS);
+        schemaFields.put(IndexFields.PREFIX, STRINGS);
         schemaFields.put(IndexFields.MILLENIUM, STRINGS);
         schemaFields.put(IndexFields.REGION, STRINGS);
         schemaFields.put(IndexFields.COUNTRY, STRINGS);
@@ -291,8 +292,10 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.POINT, LOCATION_RPT);
         schemaFields.put(IndexFields.TYPE, STRING);
         
+        deleteCopyField("*", Arrays.asList(IndexFields.KEYWORD));        
         addCopyField("*", Arrays.asList(IndexFields.KEYWORD));        
-        for (String field : schemaFields.keySet()) {
+        for (String field_ : schemaFields.keySet()) {
+            String field = field_;
             boolean seen = false;
             boolean deleted = false;
             for (Map<String, Object> solrField : solrFields) {
@@ -378,7 +381,12 @@ public class SolrIndexingService {
         addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
     }
     private void addCopyField(String source, List<String> dest) throws SolrServerException, IOException {
-        SchemaRequest.AddCopyField addFieldUpdateSchemaRequest_ = new SchemaRequest. AddCopyField(source, dest);
+        SchemaRequest.AddCopyField addFieldUpdateSchemaRequest_ = new SchemaRequest.AddCopyField(source, dest);
+        addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
+    }
+
+    private void deleteCopyField(String source, List<String> dest) throws SolrServerException, IOException {
+        SchemaRequest.DeleteCopyField addFieldUpdateSchemaRequest_ = new SchemaRequest.DeleteCopyField(source, dest);
         addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
     }
 

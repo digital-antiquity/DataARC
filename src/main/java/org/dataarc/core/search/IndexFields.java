@@ -50,4 +50,5 @@ public interface IndexFields {
     static final String CONCEPT = "concept";
     static final String ID = "id";
     static final String SCHEMA_ID = "schema_id";
+    static final String PREFIX = "_prefix";
 }

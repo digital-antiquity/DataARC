@@ -23,11 +23,8 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.search.query.SearchQueryObject;
-import org.dataarc.core.service.SchemaService;
-import org.dataarc.util.SchemaUtils;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
@@ -77,10 +74,6 @@ public class SolrService {
     @Autowired
     private SolrClient solrClient;
 
-    @Autowired
-    private SchemaService schemaService;
-    
-
     /**
      * Perform a search passing in the bounding box and search terms
      * 
@@ -121,23 +114,6 @@ public class SolrService {
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
-        @SuppressWarnings("rawtypes")
-        SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get(FACETS);
-
-        logger.debug("{}", facetMap);
-        for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
-            logger.trace("{}", field);
-            logger.debug("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
-            if (facetMap.get(field) instanceof SimpleOrderedMap) {
-                SimpleOrderedMap<?> object = (SimpleOrderedMap<?>) facetMap.get(field);
-                if (object == null || object.get(BUCKETS) == null) {
-                    continue;
-                }
-                Map<String, Object> map = appendChildren(object);
-                result.getFacets().put(field, map);
-                logger.debug("{}", map);
-            }
-        }
 
         if (topDocs.isEmpty()) {
             return result;
@@ -146,6 +122,7 @@ public class SolrService {
 
         buildResultsFacets(result, query);
 
+        
         // aggregate results in a map by point
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
@@ -165,7 +142,6 @@ public class SolrService {
                     result.setResults(fc);
                 }
             } catch (Throwable t) {
-                t.printStackTrace();
                 logger.error("{}", t, t);
             }
         }
@@ -226,67 +202,49 @@ public class SolrService {
             e.printStackTrace();
         }
         
-        Schema schema = schemaService.findById((Integer)document.get(IndexFields.SCHEMA_ID));
         
-        addKeyValue(schema, feature.getProperties(), IndexFields.SOURCE, document);
-        addKeyValue(schema, feature.getProperties(), IndexFields.START, document);
-        addKeyValue(schema, feature.getProperties(), IndexFields.END, document);
-        addKeyValue(schema, feature.getProperties(), IndexFields.SCHEMA_ID, document);
-        addKeyValue(schema, feature.getProperties(), IndexFields.COUNTRY, document);
+        addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
+        addKeyValue(feature.getProperties(), IndexFields.START, document);
+        addKeyValue(feature.getProperties(), IndexFields.END, document);
+        addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
+        addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
         // logger.debug("{}", document);
         // logger.debug("{}", document.getChildDocumentCount());
         if (CollectionUtils.isNotEmpty(document.getChildDocuments())) {
             // logger.debug("child docs: " + document.getChildDocuments());
-            
-            // FIXME: model after original data structure
-            ArrayList<Object> arrayList = new  ArrayList<>();
             for (SolrDocument doc : document.getChildDocuments()) {
                 Map<String,Object> row = new HashMap<>();
-                String prefix = null;
-                boolean shared = true;
+                
+                List arrayList = new ArrayList<>();
+                feature.setProperty(IndexFields.DATA, arrayList);
+                
+                String prefix = (String) doc.get(IndexFields.PREFIX);
+                Object entry = feature.getProperty(prefix);
+                if (entry == null) {
+                    feature.setProperty(prefix, row);
+                }
+                if (entry instanceof List) {
+                    ((List) entry).add(row);
+                }
+                if (entry instanceof Map) {
+                    ArrayList<Object> list = new ArrayList<>();
+                    feature.setProperty(prefix, list);
+                    list.add(entry);
+                    list.add(row);
+                }
                 for (String key : doc.getFieldNames()) {
-                    if (prefix == null) {
-                        prefix = StringUtils.substringBefore(key, ".");
-                    }
-                    if (!StringUtils.equals(prefix, StringUtils.substringBefore(key, "."))) {
-                        shared = false;
-                    }
-                    addKeyValue(schema, row, key, doc.get(key));
+                    addKeyValue(row, key, doc.get(key));
                 }
-                // if we share the same prefix... then...
-                if (shared) {
-                    Object property = feature.getProperty(prefix);
-                    
-                    // if the prefix doesn't exist, add it
-                    if (property == null) {
-                        feature.setProperty(prefix, row);
-                    }
-                    
-                    // if the prefix is already a list, append
-                    if (property instanceof List) {
-                        ((List) property).add(row);
-                    }
-                    
-                    // if the prefix is a map, turn it into a list of maps
-                    if (property instanceof Map) {
-                        ArrayList<Map> data = new ArrayList<>();
-                        data.add((Map) property);
-                        data.add(row);
-                        feature.setProperty(prefix, data);
-                    }
-                } else {
-                    feature.setProperty(DATA, arrayList);
-                    arrayList.add(row);
-                }
+                arrayList.add(row);
             }
         }
         String date = formateDate(document);
-        addKeyValue(schema, feature.getProperties(), IndexFields.DATE, date);
+        addKeyValue(feature.getProperties(), IndexFields.DATE, date);
 
         for (String name : document.getFieldNames()) {
             Object v = document.get(name);
             // hide certain fields
-            addKeyValue(schema, feature.getProperties(), name, v);
+            addKeyValue(feature.getProperties(), name, v);
 
         }
         fc.add(feature);
@@ -294,7 +252,8 @@ public class SolrService {
     }
 
 
-    private void addKeyValue(Schema schema, Map<String,Object> prop, String name, Object v) {
+    private void addKeyValue(Map<String,Object> prop, String name_, Object v) {
+        String name = name_;
         if (v == null || v instanceof String && StringUtils.isBlank(StringUtils.trim((String)v))) {
             return;
         }
@@ -303,15 +262,35 @@ public class SolrService {
                 return;
         } 
 
-        Field f = schema.getFieldByName(name);
-        String name_ = name;
-        if (f != null) {
-            name_ =SchemaUtils.toString(f.getId());
+        int idx = name.indexOf("_");
+        idx = name.indexOf(".", idx);
+        if (idx > 0) {
+            name = name.substring(idx + 1);
         }
-        prop.put(name_, v);
+        prop.put(name, v);
     }
 
     private void buildResultsFacets(SearchResultObject result, QueryResponse query) {
+        @SuppressWarnings("rawtypes")
+        SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get(FACETS);
+
+            logger.debug("{}", facetMap);
+        for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
+            if (logger.isTraceEnabled()) {
+            logger.trace("{}", field);
+            logger.trace("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
+            }
+            if (facetMap.get(field) instanceof SimpleOrderedMap) {
+                SimpleOrderedMap<?> object = (SimpleOrderedMap<?>) facetMap.get(field);
+                if (object == null || object.get(BUCKETS) == null) {
+                    continue;
+                }
+                Map<String, Object> map = appendChildren(object);
+                result.getFacets().put(field, map);
+            }
+        }
+
+        
         if (CollectionUtils.isNotEmpty(query.getFacetFields())) {
             for (FacetField facet : query.getFacetFields()) {
                 Map<String, Object> map = new HashMap<>();

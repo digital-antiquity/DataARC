@@ -26,6 +26,7 @@ public class ExtraProperties {
     private Map<String, Object> data = new HashMap<>();
 
     public ExtraProperties(Map<String, Object> data2, Schema schema) {
+        String prefix = null;
         for (Entry<String, Object> e : data2.entrySet()) {
             if (e.getValue() == null || e.getValue() instanceof String &&StringUtils.isBlank((CharSequence) e.getValue())){
                 continue;
@@ -37,6 +38,7 @@ public class ExtraProperties {
                     if (fieldByName != null) {
                         break;
                     }
+                    prefix = StringUtils.substringBefore(fld.getName(), ".");
                     String dn = StringUtils.substringAfter(fld.getDisplayName(),".");
                     String n = StringUtils.substringAfter(fld.getName(),".");
                     logger.trace("{} -> {}/{}", key, dn, n);
@@ -52,6 +54,7 @@ public class ExtraProperties {
                 data.put(SchemaUtils.formatForSolr(schema, fieldByName), e.getValue());
             }
         }
+        data.put(IndexFields.PREFIX, prefix);
     }
 
     public Map<String, Object> getData() {

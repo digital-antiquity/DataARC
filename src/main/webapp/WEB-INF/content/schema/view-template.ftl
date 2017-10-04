@@ -27,7 +27,7 @@
  </script>
 
  	 	<#list schema.fields as field>
- 	<span class="label label-default" onClick="$('#t').html('{{${schema.name}_${field.name}}}');$('#t').select();document.execCommand('copy');focusArea.focus();">${schema.name}_${field.name}</span>
+ 	<span class="label label-default" onClick="$('#t').html('{{${field.name}}}');$('#t').select();document.execCommand('copy');focusArea.focus();">${schema.name}_${field.name}</span>
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>
