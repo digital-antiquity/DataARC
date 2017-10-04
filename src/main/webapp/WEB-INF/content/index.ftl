@@ -289,7 +289,7 @@
 
     <script type="text/javascript">
     Handlebars.registerHelper("fieldName", function(name) {
-    if (parseInt(name)) {
+    if (FIELDS[name] != undefined) {
       return FIELDS[name];
       } 
       return name;
