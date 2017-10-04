@@ -28,7 +28,7 @@ var TopicMap = function(settings) {
   this.messageContainer = $('<div>', {'class':'topic-message-container'});
   this.messageBox = $('<div>', {'class':'topic-messages'});
   this.messageClose = $('<div>', {'class':'topic-message-close'});
-  this.messageClose.append('<span class="fa fa-times" style="line-height:30px;vertical-align: middle;"></span>');
+  this.messageClose.append('<span class="fa fa-arrow-up" style="line-height:34px;vertical-align: middle;"></span>');
   this.messageClose.click(function(){
     $(this).parent().slideUp();
   });
@@ -195,11 +195,14 @@ TopicMap.prototype =  {
           .distanceMax(600)
           .distanceMin(100))
         .force('collide', d3
-          .forceCollide(25)
+          .forceCollide(15)
           .strength(2)
-          .iterations(100))
+          .iterations(50))
         .force("center", d3
-          .forceCenter(_this.w / 2, _this.h / 2));
+          .forceCenter(_this.w / 2, _this.h / 2))
+        // .alphaTarget(0.5)
+        .alphaDecay(0.1) // controls how long the animations run, default is 0.0228, closer to 1 means animation decays faster
+        ;
 
   },
 
@@ -779,13 +782,13 @@ TopicMap.prototype =  {
           .style('opacity', 1);
       this.link
         .transition(t)
-          .style('opacity', 1);
+          .style('opacity', 0.2);
       this.label
         .transition(t)
           .style('opacity', 1);
       this.markerPath
         .transition(t)
-          .style('opacity', 1);
+          .style('opacity', 0.2);
     }
 
   },
@@ -795,6 +798,10 @@ TopicMap.prototype =  {
     var topicIds = Search.values.topicIds.concat([node.identifier]);
     Search.set('topicIds',topicIds);
 
+  },
+
+  clearFilter(){
+    Search.set('topicIds', null);
   },
 
   goConcentric: function(node){
@@ -916,9 +923,9 @@ TopicMap.prototype =  {
   refresh: function(){
     var _this = this;
     this.topics = [];
-    if (typeof Search.facets.topic_id != 'undefined') {
-      if (Search.facets.topic_id.length > 0){
-        Search.facets.topic_id.forEach(function(topic){
+    if (typeof Search.facets.T_id != 'undefined') {
+      if (Object.keys(Search.facets.T_id).length > 0){
+        _.each(Search.facets.T_id, function(value,topic){
           _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
         });
       }

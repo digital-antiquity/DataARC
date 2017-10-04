@@ -1,7 +1,5 @@
 var map, svg, g;
 
-var geoJsonInputs = [{id:"1", title:"Regions", name:"iceland.json-1505394469296.json", url:"src/geojson/1"}];
-
 // Sets up the leaflet map and disables scroll wheel zoom until focused
 var basemap = new L.TileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.{ext}', {
     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -118,7 +116,7 @@ pLayer.prototype = {
       Geography.layer.bringToFront();
       _this.selected.setStyle(_this.highlightStyle);
 			_this.handlePolyClick(e);
-			    
+
     });
     map.addLayer(this.layer);
     layerControl.addOverlay(this.layer, this.title);
@@ -211,18 +209,15 @@ var Geography = {
         var popup = e.target.getPopup();
         var feature = e.target.feature;
         console.log(e.target.feature.properties);
-        var url = "/api/search?id="+feature.properties.id;
-
-        $.getJSON( url, function( data ) {
-            var feature = data.results.features[0];
-            var handlebarHandler = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
-            console.log(feature.properties);
-            console.log(handlebarHandler.html());
-            var template = Handlebars.compile(handlebarHandler.html());
-            var content = template(feature.properties);
-            popup.setContent(content);
-            popup.update();
-
+        Search.getResultsById(feature.properties.id, function( data ) {
+          var feature = data.results.features[0];
+          var handlebarHandler = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
+          console.log(feature.properties);
+          console.log(handlebarHandler.html());
+          var template = Handlebars.compile(handlebarHandler.html());
+          var content = template(feature.properties);
+          popup.setContent(content);
+          popup.update();
         });
     }
 		function styleFunction(feature){

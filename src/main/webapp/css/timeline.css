@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+#timeline svg {
+  padding-bottom: 2em;
+}
+
 #timeline .label {
   height: 50px;
   transition: opacity 0.5s linear;
@@ -17,19 +21,14 @@
 
 #timeline rect.bordered {
   fill: #fafafa;
-  stroke: #ffffff;
+  stroke: #fff;
   stroke-width: 2px;
 }
 
 #timeline rect.highlighted {
-  stroke: #00ffff;
+  stroke: #0ff;
   stroke-opacity: 1;
   fill-opacity: 0;
   fill: none;
-  stroke-width: 3px;
+  stroke-width: 2px;
 }
-
-#timeline .legend text {
-  font-size: 10px;
-}
-

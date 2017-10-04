@@ -38,9 +38,6 @@ TimelineObject.prototype = {
     this.opacities = [0.25, 0.5, 0.75, 1.0];
     this.buckets = 5;
 
-    // Set handler function
-    // Timeline.handler = handler;
-
     // Parse data
     this.parseData();
 
@@ -77,10 +74,8 @@ TimelineObject.prototype = {
 
   createChart: function() {
     var _this = this;
-    console.log(this.data);
     var period = this.svg.append("g").selectAll(".period")
       .data(this.data, function(d) { return d.category + ':' + d.period; });
-    // period.append("title");
     var rect = period.enter().append("rect");
     rect
       .attr("class", function(d, i) { return "bordered"; })
@@ -112,7 +107,6 @@ TimelineObject.prototype = {
       this.shrink(timelineHistory[this.settings.type]);
   },
 
-
   hover: function(d) {
     var _this = this;
     var _d = d;
@@ -125,12 +119,10 @@ TimelineObject.prototype = {
       .classed("highlighted", true);
   },
 
-
   shrink: function(d) {
     var _this = this;
     var _d = d;
     timelineHistory[this.settings.type] = d;
-    console.log("period " + d.period + " clicked");
     if (this.clickedRect)
       this.clickedRect.remove();
     this.clickedRect = this.svg.append('rect');
@@ -190,7 +182,7 @@ TimelineObject.prototype = {
       });
   },
 
-  filter: function() {
+  applyFilter: function() {
     var filter = {
       "start": null,
       "end": null
@@ -210,84 +202,16 @@ TimelineObject.prototype = {
     Search.set('temporal', filter);
   },
 
-  parseData: function() {
-    // if (!this.data) { return; }
+  clearFilter: function() {
+    var filter = {
+      "start": null,
+      "end": null
+    };
+    Search.set('temporal', filter);
+  },
 
+  parseData: function() {
     var raw_data = this.data ? this.data : {};
-    // var raw_data = {
-    //   "ARCHAEOLOGICAL": {
-    //     "millennium": {
-    //       "0": 33,
-    //       "1000": 102,
-    //       "-3000": 25,
-    //       "2000": 90,
-    //       "-1000": 22
-    //     },
-    //     "decade": {
-    //       "1800": 134,
-    //       "1810": 20,
-    //       "1820": 1,
-    //       "1830": 58,
-    //       "1840": 12
-    //     },
-    //     "century": {
-    //       "1800": 92,
-    //       "1000": 27,
-    //       "-3000": 25,
-    //       "2000": 56,
-    //       "1900": 15
-    //     },
-    //     "count": 232
-    //   },
-    //   "MODEL": {
-    //     "millennium": {
-    //       "0": 47,
-    //       "1000": 57,
-    //       "2000": 3,
-    //       "-2000": 24,
-    //       "-1000": 24
-    //     },
-    //     "decade": {
-    //       "1550": 51,
-    //       "1000": 18,
-    //       "1010": 45,
-    //       "1020": 2,
-    //       "1030": 9
-    //     },
-    //     "century": {
-    //       "1600": 1,
-    //       "1500": 13,
-    //       "1100": 92,
-    //       "1000": 30,
-    //       "800": 45
-    //     },
-    //     "count": 8921
-    //   },
-    //   "HISTORIC": {
-    //     "millennium": {
-    //       "0": 1,
-    //       "1000": 3,
-    //       "2000": 5,
-    //       "-2000": 2,
-    //       "-1000": 4
-    //     },
-    //     "decade": {
-    //       "1550": 13,
-    //       "1000": 23,
-    //       "1010": 1,
-    //       "1020": 4,
-    //       "1030": 8
-    //     },
-    //     "century": {
-    //       "1600": 1,
-    //       "1500": 13,
-    //       "1100": 92,
-    //       "1000": 30,
-    //       "800": 45
-    //     },
-    //     "count": 521
-    //   }
-    // };
     this.data = [];
     this.label_data = [];
 
@@ -315,10 +239,6 @@ TimelineObject.prototype = {
         this.data.push({ category: category.id, period: id, value: value, label: period, opacity: (value ? opacityQuantile(value) : 0.05) });
       }
     });
-
-    // console.log(this.label_data);
-    // console.log(this.data);
-    // console.log(raw_data);
   },
 
 };

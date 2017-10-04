@@ -1,4 +1,24 @@
+/*
+{
+  "spatial": {
+    "topLeft": null,
+    "bottomRight": null
+  },
+  "temporal": {
+    "start": null,
+    "end": null
+  },
+  "idOnly": false,
+  "idAndMap": false,
+  "keywords": [],
+  "topicIds": [],
+  "sources": [],
+  "ids": []
+}
+ */
+
 var Search = {
+
   init: function(options) {
     this.defaults = {
       "spatial": {
@@ -26,6 +46,7 @@ var Search = {
     // Set an interval to check on query changes
     setInterval(function() { Search.refresh(); }, Search.options.delay);
   },
+
   get: function(key) {
     var value;
     if (this.values.hasOwnProperty(key)) {
@@ -33,6 +54,7 @@ var Search = {
     }
     return value;
   },
+
   set: function(key, value) {
     var previous_value = (this.values[key] ? this.values[key] : null);
     this.values[key] = (value == null ? this.defaults[key] : value);
@@ -41,9 +63,11 @@ var Search = {
       this.revision = Date.now();
     }
   },
+
   unset: function(key) {
     delete this.values[key];
   },
+
   refresh: function() {
     // Exit if the search parameters have not been revised
     if (this.previous == this.revision) return;
@@ -56,10 +80,11 @@ var Search = {
 
     // If first run then get all data before loading results
     if (Object.keys(Search.all).length === 0 && Search.all.constructor === Object)
-      Search.query(Search.options.source, {"spatial":Search.defaults.spatial}, Search.analyzeFirst);
+      Search.query("POST", {"spatial":Search.defaults.spatial}, Search.analyzeFirst);
     else
-      Search.query(Search.options.source, Search.values, Search.analyze);
+      Search.query("POST", Search.values, Search.analyze);
   },
+
   analyzeFirst: function(error, data) {
     if (error) throw error;
 
@@ -67,49 +92,60 @@ var Search = {
     Search.all.features = data.results.features;
     Search.all.facets = data.facets;
     console.log('Loaded all ' + Search.all.features.length + ' features.');
-    // console.log(Search.all.features);
 
     // Once all data is loaded, fire of the results query
     Search.analyze(false, data);
-//    Search.query(Search.options.source, Search.values, Search.analyze);
-
   },
-  analyze: function(error, data) {
-    if (error) throw error;
-    // Save the results
-    console.log(data);
-    Search.results = (data.idList ? data.idList: {});
-    Search.facets = (data.facets ? data.facets : {});
-    console.log('Loaded results containing ' + Search.results.length + ' features.');
-    console.log(Search.values);
 
+  analyze: function(error, data) {
+    Search.error = (error);
+    if (Search.error) {
+      // Set results empty
+      Search.results = [];
+      Search.facets = {};
+      console.log(error);
+    }
+    else {
+      // Save the results
+      Search.results = (data.idList ? data.idList : []);
+      Search.facets = (data.facets ? data.facets : {});
+      console.log('Loaded results containing ' + Search.results.length + ' features.');
+    }
     // Proceed to format data as needed here
     Search.options.after();
   },
-  query: function(source, filters, callback) {
-      //FIXME: should be sending application/JSON not text/plain
-    d3.json(source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
-  },
 
+  query: function(type, filters, callback) {
+    if (type === "GET")
+      d3.json(Search.options.source+'?'+$.param(filters)).header("Content-Type", "application/json;charset=UTF-8").get(callback);
+    if (type === "POST")
+      d3.json(Search.options.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
+  },
 
   // ****************************************************
   // Specific runctions to return a subset of results
   // ****************************************************
 
+  // get detail information for a specific id
+  getDetailsById: function(id, callback) {
+    Search.query("GET", {id:id, fullData:true}, callback);
+  },
+
   // get results by id or array of ids
-  getResultsById: function(id) {
-    if (typeof id === 'string')
-      return Search.all.features.filter(feature => feature.properties.id === id);
-    if (Object.prototype.toString.call(id) === '[object Array]')
+  getResultsById: function(ids, callback, local) {
+    if (typeof ids === 'string')
+      ids = [ids];
+    if (local)
       return Search.all.features.filter(feature => id.includes(feature.properties.id));
+    else
+      Search.query("POST", {ids:ids}, callback);
   },
 
   // get results by a source or sources
-  getResultsBySource: function(source) {
+  getResultsBySource: function(sources) {
     if (typeof source === 'string')
-      return Search.all.features.filter(feature => feature.properties.source === source);
-    if (Object.prototype.toString.call(source) === '[object Array]')
-      return Search.all.features.filter(feature => source.includes(feature.properties.source));
+      sources = [sources];
+    return Search.all.features.filter(feature => sources.includes(feature.properties.source));
   },
 
   // get results by keyword

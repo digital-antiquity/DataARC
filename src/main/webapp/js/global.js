@@ -87,5 +87,8 @@ $(document).ready(function() {
   });
 
   // Filter the timeline
-  $('#filter-timeline').click(Timeline.filter);
+  $('#filter-timeline-apply').click(Timeline.applyFilter);
+  $('#filter-timeline-clear').click(Timeline.clearFilter);
+  // Filter concepts
+  $('#filter-topicmap-clear').click(Concepts.clearFilter);
 });
