@@ -215,11 +215,12 @@ public class SolrService {
             for (SolrDocument doc : document.getChildDocuments()) {
                 Map<String,Object> row = new HashMap<>();
                 
-                List arrayList = new ArrayList<>();
-                feature.setProperty(IndexFields.DATA, arrayList);
-                
                 String prefix = (String) doc.get(IndexFields.PREFIX);
                 Object entry = feature.getProperty(prefix);
+                if (prefix == null) {
+                    prefix = IndexFields.DATA;
+                    logger.debug("{} - {}", doc);
+                }
                 if (entry == null) {
                     feature.setProperty(prefix, row);
                 }
@@ -235,7 +236,6 @@ public class SolrService {
                 for (String key : doc.getFieldNames()) {
                     addKeyValue(row, key, doc.get(key));
                 }
-                arrayList.add(row);
             }
         }
         String date = formateDate(document);
