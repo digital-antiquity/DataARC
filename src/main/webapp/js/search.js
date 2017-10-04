@@ -77,14 +77,7 @@ var Search = {
   analyze: function(error, data) {
     if (error) throw error;
     // Save the results
-    Search.results = (data.results ? data.results : {});
-    if (data.results.features != undefined) {
-        var res = new Array();
-        for (var i=0;i< data.results.features.length; i++) {
-            res.push(data.results.features[i].properties.id);
-        }
-        Search.results = res;
-    }
+    Search.results = (data.idList ? data.idList: {});
     Search.facets = (data.facets ? data.facets : {});
     console.log('Loaded results containing ' + Search.results.length + ' features.');
     console.log(Search.values);
