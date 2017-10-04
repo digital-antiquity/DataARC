@@ -19,11 +19,59 @@
  
  <script>
  var focusArea = undefined;
+ var feature = {};
+ 
+ 
+    var FIELDS = {
+    <#list schema.fields as field>"${field.name}": "${field.displayName}"<#sep>,
+</#sep></#list>
+    };
+
+    Handlebars.registerHelper("fieldName", function(name) {
+    if (name != undefined) {
+        if (FIELDS[name.trim()] != undefined) {
+            return FIELDS[name.trim()];
+        } 
+        return name;
+      }
+      return "";
+    });
+
+
+ 
  $(document).ready(function() {
- $("textarea.form-control").focus(function(e) {
-    focusArea = $(e.target);
+    $("textarea.form-control").focus(function(e) {
+        focusArea = $(e.target);
+    });
+ 
+     var url = "/api/search?schemaId=${schema.id?c}&size=1";
+     $.getJSON( url, function( data ) {
+         feature = data.results.features[0];
+         console.log(feature);
+     });
+
+ 
+ 
+     $("#renderTitle").click(function(e) {
+        render("#titleTemplate","#titleTarget");
+     });
+     $("#renderResult").click(function(e) {
+        render("#resultTemplate","#resultTarget");
+     });
+     $("#renderLink").click(function(e) {
+        render("#linkTemplate","#linkTarget");
+     });
+     
  });
- });
+ 
+ function render(templateName, targetName) {
+     var handlebarHandler = $(templateName);
+     console.log(feature.properties);
+     console.log(handlebarHandler.text());
+     var template = Handlebars.compile(handlebarHandler.text());
+     var content = template(feature.properties);
+     $(targetName).empty().append(content);
+}
  </script>
 
  	 	<#list schema.fields as field>
@@ -31,19 +79,34 @@
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>
-    <form method="POST" action="${contextPath}/a/admin/schema/template/${schema.id?c}" enctype="multipart/form-data" class="form-horizontal">
+    <form method="POST" action="${contextPath}/a/admin/schema/template/${schema.id?c}" enctype="multipart/form-data" class="">
 		<input type="hidden" name="id" value="${schema.id?c}" />
-		<div class="form-group">
+		<div class="form-group col-6-sm">
 	        <label for="titleTemplate" class="control-label">Title Template:</label>
 	        <textarea id="titleTemplate" name="titleTemplate" class="form-control">${titleTemplate!''}</textarea>
 		</div>
-		<div class="form-group">
+		<button name="render" type="button" id="renderTitle">Render</button>
+		<div class="col-12-sm well" id="titleTarget">
+		
+		</div>
+        <div class="form-group col-12-sm">
 	        <label for="resultTemplate" class="control-label">Results Template:</label>
 	        <textarea id="resultTemplate" name="resultTemplate" class="form-control">${resultTemplate!''}</textarea>
+
+        </div>
+        <button name="render" type="button" id="renderResult">Render</button>
+        <div class="col-12-sm well" id="resultTarget">
+        
+		
 		</div>
-		<div class="form-group">
+        <div class="form-group col-12-sm">
 	        <label for="linkTemplate" class="control-label">Link Template:</label>
 	        <textarea id="linkTemplate" name="linkTemplate" class="form-control">${linkTemplate!''}</textarea>
+        </div>
+        <button name="render" type="button" id="renderLink">Render</button>
+        <div class="col-12-sm well" id="linkTarget">
+        
+
 		</div>
         <input type="submit" value="Save" class="button btn btn-primary"> 
 

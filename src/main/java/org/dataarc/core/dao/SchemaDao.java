@@ -126,7 +126,7 @@ public class SchemaDao {
             });
             manager.remove(field);
         });
-        Query query = manager.createQuery("delete from Indicator i where i.schema.id=:id", Schema.class);
+        Query query = manager.createQuery("delete from Indicator i where i.schema.id=:id");
         query.setParameter("id", schema.getId());
         query.executeUpdate();
         manager.remove(schema);

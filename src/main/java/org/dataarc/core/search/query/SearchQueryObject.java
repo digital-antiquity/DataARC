@@ -13,7 +13,7 @@ public class SearchQueryObject {
     private boolean idAndMap = true;
     private Integer size;
     private Integer page;
-
+    private Long schemaId;
     private List<String> keywords = new ArrayList<>();
     private List<Long> indicators = new ArrayList<>();
     private List<String> topicIds = new ArrayList<>();
@@ -138,6 +138,14 @@ public class SearchQueryObject {
 
     public void setIndicators(List<Long> indicators) {
         this.indicators = indicators;
+    }
+
+    public Long getSchemaId() {
+        return schemaId;
+    }
+
+    public void setSchemaId(Long schemaId) {
+        this.schemaId = schemaId;
     }
 
 }

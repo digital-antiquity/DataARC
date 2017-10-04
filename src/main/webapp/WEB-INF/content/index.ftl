@@ -286,11 +286,13 @@
     <script src="js/concepts.js"></script>
     <script src="js/results.js"></script>
 
+    <script src="http://highcharttable.org/js/highcharts.js"></script> 
+    <script src="http://code.highcharttable.org/master/jquery.highchartTable-min.js"></script>
+
 
     <script type="text/javascript">
     Handlebars.registerHelper("fieldName", function(name) {
     if (name != undefined) {
-        console.log("|" +name+"|");
         if (FIELDS[name.trim()] != undefined) {
             return FIELDS[name.trim()];
         } 

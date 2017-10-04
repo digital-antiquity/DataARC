@@ -74,6 +74,8 @@ public class SchemaUtils {
 
     public static String unFormat(String name, Set<Field> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
+        return titleTemplate;
+/*
         for (Field f : fields) {
             
             //FIXME: need a regex that replaces " field}}" " field "
@@ -82,16 +84,21 @@ public class SchemaUtils {
         }
         logger.debug("{} --> {}", titleTemplate_, titleTemplate);
         return titleTemplate;
+
+ */
     }
 
     public static String format(String name, Set<Field> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
+        return titleTemplate;
+        /*
         for (Field f : fields) {
             titleTemplate = StringUtils.replace(titleTemplate,  formatName(name,f), formatId("",f));
             titleTemplate = StringUtils.replace(titleTemplate,  formatName(HANDLEBAR_FIELD_NAME + name,f), formatId("fieldName ",f));
         }
         logger.debug("{} --> {}", titleTemplate_, titleTemplate);
         return titleTemplate;
+         */
     }
 
     private static String formatId(String prefix, Field f) {
