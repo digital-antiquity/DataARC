@@ -44,7 +44,7 @@
         focusArea = $(e.target);
     });
  
-     var url = "/api/search?schemaId=${schema.id?c}&size=1";
+     var url = "/api/search?schemaId=${schema.id?c}&size=1&fullData=true";
      $.getJSON( url, function( data ) {
          feature = data.results.features[0];
          console.log(feature);

@@ -25,14 +25,15 @@ public class SearchController extends AbstractRestController {
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size,
             @RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "fullData", required = false) boolean fullData,
             @RequestParam(value = "schemaId", required = false) Long schemaId
             ) throws Exception {
         SearchQueryObject query_ = new SearchQueryObject();
+        query_.setIdAndMap(!fullData);
         if (StringUtils.isNotBlank(id)) {
             query_.setIds(Arrays.asList(id));
-            query_.setIdAndMap(false);
         }
-        
+
         if (schemaId != null) {
             query_.setSchemaId(schemaId);
         }
