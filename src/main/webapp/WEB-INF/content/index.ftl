@@ -289,8 +289,9 @@
 
     <script type="text/javascript">
     Handlebars.registerHelper("fieldName", function(name) {
-    if (FIELDS[name] != undefined) {
-      return FIELDS[name];
+    console.log("|" +name+"|");
+    if (FIELDS[name.trim()] != undefined) {
+        return FIELDS[name.trim()];
       } 
       return name;
     });
