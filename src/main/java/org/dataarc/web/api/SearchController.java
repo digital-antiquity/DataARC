@@ -24,20 +24,31 @@ public class SearchController extends AbstractRestController {
     public SearchResultObject search(
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size,
-            @RequestParam(value = "id", required = false) String id,
-            @RequestParam(value = "fullData", required = false) boolean fullData,
-            @RequestParam(value = "schemaId", required = false) Long schemaId
+            @RequestParam(value = "id", required = false) String id
             ) throws Exception {
         SearchQueryObject query_ = new SearchQueryObject();
-        query_.setIdAndMap(!fullData);
         if (StringUtils.isNotBlank(id)) {
             query_.setIds(Arrays.asList(id));
         }
 
+        return performSearch(query_, page, size);
+    }
+
+    
+
+    @RequestMapping(path = UrlConstants.SEARCH, method = {RequestMethod.GET, RequestMethod.POST}, produces = { UrlConstants.JSON_UTF8 })
+    public SearchResultObject getId(@RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "schemaId", required = false) Long schemaId
+            ) throws Exception {
+        SearchQueryObject query_ = new SearchQueryObject();
+        query_.setIdAndMap(true);
+        if (StringUtils.isNotBlank(id)) {
+            query_.setIds(Arrays.asList(id));
+        }
         if (schemaId != null) {
             query_.setSchemaId(schemaId);
         }
-        return performSearch(query_, page, size);
+        return performSearch(query_,null, 1);
     }
 
     private SearchResultObject performSearch(SearchQueryObject query_, Integer page, Integer size) {

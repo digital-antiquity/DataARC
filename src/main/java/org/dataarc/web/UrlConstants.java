@@ -20,7 +20,7 @@ public interface UrlConstants {
     String ADMIN_TOPIC_IMPORT = "/a/admin/uploadTopic";
     String ADMIN_TOPIC_DATA = "/a/admin/topic";
     String ADMIN_TOPIC_UPLOAD_FILE = "/a/admin/topicUploadFile";
-    String SEARCH = "/api/search";
+    String SEARCH = "/api/getId";
     String ADMIN_MAKE_EDITOR = "/api/admin/makeEditor";
     String ADMIN_MAKE_ADMIN = "/api/admin/makeAdmin";
     String ADMIN_LIST_USERS = "/api/admin/listUsers";
