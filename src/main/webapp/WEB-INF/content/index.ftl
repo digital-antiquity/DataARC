@@ -289,11 +289,14 @@
 
     <script type="text/javascript">
     Handlebars.registerHelper("fieldName", function(name) {
-    console.log("|" +name+"|");
-    if (FIELDS[name.trim()] != undefined) {
-        return FIELDS[name.trim()];
-      } 
-      return name;
+    if (name != undefined) {
+        console.log("|" +name+"|");
+        if (FIELDS[name.trim()] != undefined) {
+            return FIELDS[name.trim()];
+        } 
+        return name;
+      }
+      return "";
     });
     </script>
 
