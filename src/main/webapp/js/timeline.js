@@ -188,15 +188,15 @@ TimelineObject.prototype = {
       "end": null
     };
     if (timelineHistory['millennium']) {
-      filter['start'] = timelineHistory['millennium'].label;
+      filter['start'] = parseInt(timelineHistory['millennium'].label);
       filter['end'] = parseInt(timelineHistory['millennium'].label) + 1000;
     }
     if (timelineHistory['century']) {
-      filter['start'] = timelineHistory['century'].label;
+      filter['start'] = parseInt(timelineHistory['century'].label);
       filter['end'] = parseInt(timelineHistory['century'].label) + 100;
     }
     if (timelineHistory['decade']) {
-      filter['start'] = timelineHistory['decade'].label;
+      filter['start'] = parseInt(timelineHistory['decade'].label);
       filter['end'] = parseInt(timelineHistory['decade'].label) + 10;
     }
     Search.set('temporal', filter);
