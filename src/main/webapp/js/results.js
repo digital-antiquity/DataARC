@@ -462,7 +462,7 @@ ResultSource.prototype = {
 		this.tableContainer = $('<div>', {'class':'col-sm-5 result-detail-table'});
 			this.container.append(this.tableContainer);
 
-		this.featureContainer = $('<div>', {'class':'col-sm-7'});
+		this.featureContainer = $('<div id="featureContainer">', {'class':'col-sm-7'});
 			this.container.append(this.featureContainer);
 
 		this.table = $('<table>', {'id':this.source.replace(/ /g,"_")+"_table_detail",'class':'table table-striped table-bordered table-sm','style':'width:100%;','cellspacing':'0'});
@@ -528,17 +528,19 @@ ResultSource.prototype = {
 	},
 
 	drawFeature: function(id) {
-
+	    var url = "/api/search?id="+id;
 		//var feature = this.getFeatureDataBySource(id);
-		var feature = this.data.features.filter(feature => feature.properties.id.includes(id))[0];
-		var handlebarHandler = $("#results-template-"+ feature.properties.schema_id).length ? $("#results-template-"+ feature.properties.schema_id) : $("#results-template-generic");
-		console.log(feature.properties);
-		console.log(handlebarHandler.html());
-	    var template = Handlebars.compile(handlebarHandler.html());
-	    var content = template(feature.properties);
+	    console.log(url);
+	    $.getJSON( url, function( data ) {
+    		var feature = data.results.features[0];
+    		var handlebarHandler = $("#results-template-"+ feature.properties.schema_id).length ? $("#results-template-"+ feature.properties.schema_id) : $("#results-template-generic");
+    		console.log(feature.properties);
+    		console.log(handlebarHandler.html());
+    	    var template = Handlebars.compile(handlebarHandler.html());
+    	    var content = template(feature.properties);
+    	    $("#featureContainer").empty().append(content);
 
-		this.featureContainer.empty().append(content);
-
+	    });
 	},
 
 	mortuary: function() {

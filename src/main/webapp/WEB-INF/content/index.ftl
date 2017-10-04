@@ -33,7 +33,8 @@
 
 	<script>
 	var testing = false;
-	
+	// Global variables
+
 	    function getContextPath() {
         return "${contextPath}";
     }

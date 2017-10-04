@@ -210,11 +210,20 @@ var Geography = {
     function _handleCircleClick(e) {
         var popup = e.target.getPopup();
         var feature = e.target.feature;
-      var inTemplate = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
-      var template = Handlebars.compile(inTemplate.html());
-      var content = template(e.target.feature.properties);
+        console.log(e.target.feature.properties);
+        var url = "/api/search?id="+feature.properties.id;
+
+        $.getJSON( url, function( data ) {
+            var feature = data.results.features[0];
+            var handlebarHandler = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
+            console.log(feature.properties);
+            console.log(handlebarHandler.html());
+            var template = Handlebars.compile(handlebarHandler.html());
+            var content = template(feature.properties);
             popup.setContent(content);
             popup.update();
+
+        });
     }
 		function styleFunction(feature){
       var fill = "#fff";

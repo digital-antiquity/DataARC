@@ -25,6 +25,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.search.query.SearchQueryObject;
+import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
@@ -67,6 +68,9 @@ public class SolrService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private SchemaService schemaService;
+    
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
@@ -244,18 +248,20 @@ public class SolrService {
         addKeyValue(feature.getProperties(), IndexFields.DATE, date);
 
         if (!idMapOnly) {
-        for (String name : document.getFieldNames()) {
-            Object v = document.get(name);
-            // hide certain fields
-            addKeyValue(feature.getProperties(), name, v);
-
-        }
+            for (String name : document.getFieldNames()) {
+                Object v = document.get(name);
+                // hide certain fields
+                addKeyValue(feature.getProperties(), name, v);
+    
+            }
         } else {
             addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
             addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
             addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
-            addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document.get(IndexFields.SCHEMA_ID));
-            addKeyValue(feature.getProperties(), IndexFields.SOURCE, document.get(IndexFields.SOURCE));
+            Object id = document.get(IndexFields.SCHEMA_ID);
+            addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, id);
+            Schema schema = schemaService.findById((Number)id);
+            feature.setProperty(IndexFields.SOURCE, schema.getName());
             
         }
         fc.add(feature);
