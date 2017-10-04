@@ -209,7 +209,7 @@ var Geography = {
         var popup = e.target.getPopup();
         var feature = e.target.feature;
         console.log(e.target.feature.properties);
-        Search.getResultsById(feature.properties.id, function( data ) {
+        Search.getDetailsById(feature.properties.id, function( data ) {
           var feature = data.results.features[0];
           var handlebarHandler = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
           console.log(feature.properties);

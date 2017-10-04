@@ -36,12 +36,12 @@ public class SearchController extends AbstractRestController {
 
     
 
-    @RequestMapping(path = UrlConstants.SEARCH, method = {RequestMethod.GET, RequestMethod.POST}, produces = { UrlConstants.JSON_UTF8 })
+    @RequestMapping(path = UrlConstants.GET_ID, method = {RequestMethod.GET, RequestMethod.POST}, produces = { UrlConstants.JSON_UTF8 })
     public SearchResultObject getId(@RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "schemaId", required = false) Long schemaId
             ) throws Exception {
         SearchQueryObject query_ = new SearchQueryObject();
-        query_.setIdAndMap(true);
+        query_.setIdAndMap(false);
         if (StringUtils.isNotBlank(id)) {
             query_.setIds(Arrays.asList(id));
         }

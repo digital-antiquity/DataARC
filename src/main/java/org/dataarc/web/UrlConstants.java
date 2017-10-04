@@ -20,7 +20,7 @@ public interface UrlConstants {
     String ADMIN_TOPIC_IMPORT = "/a/admin/uploadTopic";
     String ADMIN_TOPIC_DATA = "/a/admin/topic";
     String ADMIN_TOPIC_UPLOAD_FILE = "/a/admin/topicUploadFile";
-    String SEARCH = "/api/getId";
+    String SEARCH = "/api/search";
     String ADMIN_MAKE_EDITOR = "/api/admin/makeEditor";
     String ADMIN_MAKE_ADMIN = "/api/admin/makeAdmin";
     String ADMIN_LIST_USERS = "/api/admin/listUsers";
@@ -42,5 +42,6 @@ public interface UrlConstants {
     String SAVE_TOPIC_ASSOCIATIONS = "/a/topics";
     String LIST_COMBINATORS = "/a/combinators";
     String JSON_UTF8 = "application/json;charset=UTF-8";
+    String GET_ID = "/api/getId";
 
 }

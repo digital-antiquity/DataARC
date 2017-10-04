@@ -13,8 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.solr.update.processor.URLClassifyProcessor;
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.service.UserService;
+import org.dataarc.web.UrlConstants;
 import org.dataarc.web.security.crowd.LocalCrowdAuthenticationProvider;
 import org.dataarc.web.security.openid.ClientResources;
 import org.slf4j.Logger;
@@ -98,7 +100,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", "/api/topicmap/view", "/api/search",
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", UrlConstants.TOPIC_MAP_VIEW, UrlConstants.SEARCH,
+                    UrlConstants.GET_ID,
                     "/login**","/geojson/**","/vendor/**","/img/**");
         } else {
             web.ignoring().antMatchers("/**");

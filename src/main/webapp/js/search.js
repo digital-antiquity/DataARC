@@ -116,6 +116,7 @@ var Search = {
   },
 
   query: function(type, filters, callback) {
+      console.log(Search.options.source, filters);
     if (type === "GET")
       d3.json(Search.options.source+'?'+$.param(filters)).header("Content-Type", "application/json;charset=UTF-8").get(callback);
     if (type === "POST")
@@ -128,7 +129,7 @@ var Search = {
 
   // get detail information for a specific id
   getDetailsById: function(id, callback) {
-    Search.query("GET", {id:id, fullData:true}, callback);
+      d3.json(Search.options.recordSource+'?id='+ id).header("Content-Type", "application/json;charset=UTF-8").get(callback);
   },
 
   // get results by id or array of ids
