@@ -310,6 +310,7 @@ public class SolrService {
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
+        appendKeywordSearch(sqo.getIds(), IndexFields.ID, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
         if (sqo.emptySpatial() == false) {
             appendSpatial(sqo, bq);

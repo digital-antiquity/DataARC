@@ -1,5 +1,8 @@
 package org.dataarc.web.api;
 
+import java.util.Arrays;
+
+import org.apache.commons.lang3.StringUtils;
 import org.dataarc.core.search.SolrService;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.web.UrlConstants;
@@ -17,22 +20,25 @@ public class SearchController extends AbstractRestController {
     @Autowired
     private SolrService luceneService;
 
-    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET
-            ,produces={UrlConstants.JSON_UTF8})
-    public SearchResultObject search(@RequestParam(required = false, name="query") SearchQueryObject query_,
-            @RequestParam(value="page", required=false) Integer page,
-            @RequestParam(value="size", required=false) Integer size
-            ) throws Exception {
+    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET, produces = { UrlConstants.JSON_UTF8 })
+    public SearchResultObject search(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size,
+            @RequestParam(value = "id", required = false) String id) throws Exception {
+        SearchQueryObject query_ = new SearchQueryObject();
+        if (StringUtils.isNotBlank(id)) {
+            query_.setIds(Arrays.asList(id));
+        }
         return performSearch(query_, page, size);
     }
 
     private SearchResultObject performSearch(SearchQueryObject query_, Integer page, Integer size) {
         try {
             SearchQueryObject query = query_;
-            if (query ==  null) {
+            if (query == null) {
                 query = new SearchQueryObject();
             }
-            if (page !=null) {
+            if (page != null) {
                 query.setPage(page);
             }
             if (size != null) {
@@ -45,15 +51,14 @@ public class SearchController extends AbstractRestController {
         return null;
     }
 
-    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST, produces={UrlConstants.JSON_UTF8},
-            consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST, produces = { UrlConstants.JSON_UTF8 },
+            consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     public SearchResultObject searchPost(@RequestBody(required = true) SearchQueryObject query_,
-            @RequestParam(value="page", required=false) Integer page,
-            @RequestParam(value="size", required=false) Integer size
-            
-            ) throws Exception {
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size
+
+    ) throws Exception {
         return performSearch(query_, page, size);
     }
-
 
 }
