@@ -40,7 +40,7 @@
     }
     
     var FIELDS = {
-    <#list fields as field>"${field.id?c}": "${field.displayName}"<#sep>,
+    <#list fields as field>"${field.name}": "${field.displayName}"<#sep>,
 </#sep></#list>
     };
     var SCHEMA = {<#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>,</#sep></#list>};
