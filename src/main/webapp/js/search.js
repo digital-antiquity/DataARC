@@ -70,7 +70,7 @@ var Search = {
   refresh: function() {
     // Exit if the search parameters have not been revised
     if (this.previous == this.revision) return;
-
+console.log("refresh");
     // Perform any before search actions
     Search.options.before();
 
@@ -93,7 +93,7 @@ var Search = {
     // console.log(Search.all.features);
 
     // Once all data is loaded, fire of the results query
-    Search.query(Search.options.source, Search.values, Search.analyze);
+    Search.analyze(false, data);
   },
   analyze: function(error, data) {
     if (error) throw error;
