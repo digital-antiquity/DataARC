@@ -209,8 +209,6 @@ public class SolrService {
         
         
 //        addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
-//        addKeyValue(feature.getProperties(), IndexFields.START, document);
-//        addKeyValue(feature.getProperties(), IndexFields.END, document);
 //        addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
 //        addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
 
@@ -253,8 +251,14 @@ public class SolrService {
                 Object v = document.get(name);
                 // hide certain fields
                 addKeyValue(feature.getProperties(), name, v);
-    
             }
+            addKeyValue(feature.getProperties(), IndexFields.START, document);
+            addKeyValue(feature.getProperties(), IndexFields.END, document);
+            addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
+            addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
+            addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
+            addKeyValue(feature.getProperties(), IndexFields.TOPIC_NAMES, document.get(IndexFields.TOPIC_NAMES));
+
         } else {
             addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
             addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
