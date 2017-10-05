@@ -25,6 +25,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.search.query.SearchQueryObject;
+import org.dataarc.core.search.query.Temporal;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
@@ -47,7 +48,6 @@ import com.vividsolutions.jts.io.WKTReader;
 public class SolrService {
     private static final String TEMPORAL = "temporal";
     private static final String FACETS = "facets";
-    private static final String DATA = "data";
     private static final String _VERSION = "_version_";
 
     private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE,
@@ -323,7 +323,7 @@ public class SolrService {
     private StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
         StringBuilder bq = new StringBuilder();
         if (!sqo.emptyTemporal()) {
-            bq.append(createDateRangeQueryPart(sqo.getTemporal().getStart(), sqo.getTemporal().getEnd()));
+            bq.append(createDateRangeQueryPart(sqo.getTemporal()));
         }
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
@@ -577,8 +577,8 @@ public class SolrService {
      * @param end
      * @return
      */
-    private String createDateRangeQueryPart(Integer start, Integer end) {
+    private String createDateRangeQueryPart(Temporal temporal) {
 
-        return String.format(" (%s:[%s TO %s] AND %s:[%s TO %s]) ", IndexFields.END, -9999, end, IndexFields.START, start, 9999);
+        return String.format(" (%s:[%s TO %s] AND %s:[%s TO %s]) ", IndexFields.END, -9999, temporal.getEnd(), IndexFields.START, temporal.getStart(), 9999);
     }
 }

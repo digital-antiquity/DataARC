@@ -171,6 +171,7 @@ public class SolrIndexingService {
             Topic topic = null;
             try {
                 topic = topicDao.findTopicByIdentifier(topicId);
+                searchIndexObject.getTopicNames().add(topic.getName());
             } catch (Throwable t) {
                 logger.error("could not find topic: {}", topicId, t);
             }
@@ -274,6 +275,7 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.TITLE, TEXT_GENERAL);
         schemaFields.put(IndexFields.TOPIC, TEXT_GENERAL);
         schemaFields.put(IndexFields.TOPIC_ID, STRINGS);
+        schemaFields.put(IndexFields.TOPIC_NAMES, STRINGS);
         schemaFields.put(IndexFields.TOPIC_ID_2ND, STRINGS);
         schemaFields.put(IndexFields.TOPIC_ID_3RD, STRINGS);
         schemaFields.put(IndexFields.DECADE, STRINGS);

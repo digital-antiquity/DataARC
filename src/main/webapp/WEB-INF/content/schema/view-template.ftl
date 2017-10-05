@@ -67,15 +67,15 @@
  function render(templateName, targetName) {
      var handlebarHandler = $(templateName);
      console.log(feature.properties);
-     console.log(handlebarHandler.text());
-     var template = Handlebars.compile(handlebarHandler.text());
+     console.log(handlebarHandler.val());
+     var template = Handlebars.compile(handlebarHandler.val());
      var content = template(feature.properties);
      $(targetName).empty().append(content);
 }
  </script>
 
  	 	<#list schema.fields as field>
- 	<span class="label label-default" title="${field.id?c}" onClick="$('#t').html('{{${field.name}}}');$('#t').select();document.execCommand('copy');focusArea.focus();">${field.name}</span>
+ 	<span class="label label-default" title="${field.id?c}" onClick="$('#t').html('{{${schema.name}${field.name}}}');$('#t').select();document.execCommand('copy');focusArea.focus();">${field.name}</span>
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>

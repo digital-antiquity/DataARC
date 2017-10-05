@@ -40,6 +40,9 @@ public class SearchIndexObject {
     @Field(value = IndexFields.START)
     private Integer start;
 
+    @Field(value = IndexFields.TOPIC_NAMES)
+    private List<String> topicNames = new ArrayList<>();
+    
     @Field(value = IndexFields.END)
     private Integer end;
 
@@ -471,6 +474,14 @@ public class SearchIndexObject {
 
     public void setSchemaId(Long schemaId) {
         this.schemaId = schemaId;
+    }
+
+    public List<String> getTopicNames() {
+        return topicNames;
+    }
+
+    public void setTopicNames(List<String> topicNames) {
+        this.topicNames = topicNames;
     }
 
 }
