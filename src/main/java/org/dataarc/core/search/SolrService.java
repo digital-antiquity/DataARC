@@ -246,6 +246,14 @@ public class SolrService {
         String date = formateDate(document);
         addKeyValue(feature.getProperties(), IndexFields.DATE, date);
 
+        
+        addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
+        addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
+        addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
+        Object id = document.get(IndexFields.SCHEMA_ID);
+        addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, id);
+        Schema schema = schemaService.findById((Number)id);
+        feature.setProperty(IndexFields.SOURCE, schema.getName());
         if (!idMapOnly) {
             for (String name : document.getFieldNames()) {
                 Object v = document.get(name);
@@ -254,21 +262,8 @@ public class SolrService {
             }
             addKeyValue(feature.getProperties(), IndexFields.START, document);
             addKeyValue(feature.getProperties(), IndexFields.END, document);
-            addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
-            addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
-            addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
-            addKeyValue(feature.getProperties(), IndexFields.TOPIC_NAMES, document.get(IndexFields.TOPIC_NAMES));
 
-        } else {
-            addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
-            addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
-            addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
-            Object id = document.get(IndexFields.SCHEMA_ID);
-            addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, id);
-            Schema schema = schemaService.findById((Number)id);
-            feature.setProperty(IndexFields.SOURCE, schema.getName());
-            
-        }
+        } 
         fc.add(feature);
 
     }
