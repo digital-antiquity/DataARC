@@ -583,6 +583,6 @@ public class SolrService {
      */
     private String createDateRangeQueryPart(Temporal temporal) {
 
-        return String.format(" (%s:[%s TO %s] AND %s:[%s TO %s]) ", IndexFields.END, -9999, temporal.getEnd(), IndexFields.START, temporal.getStart(), 9999);
+        return String.format(" (%s:[%s TO %s] AND %s:[%s TO %s]) ", IndexFields.START, "*", temporal.getEnd(), IndexFields.END, temporal.getStart(), "*");
     }
 }

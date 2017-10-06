@@ -219,12 +219,12 @@ public class SolrIndexingService {
     private void applyDateFacets(SearchIndexObject searchIndexObject) {
         int s = searchIndexObject.getStart().intValue();
         int e = searchIndexObject.getEnd().intValue();
-
+        logger.debug("{} - {}", s,e);
         int startM = s - (s % 1_000);
         int endM = e - (e % 1_000);
-        if (e % 1_000 != 0) {
-            endM += 1_000;
-        }
+//        if (e % 1_000 != 0) {
+//            endM += 1_000;
+//        }
         for (int i = startM; i <= endM; i = i + 1_000) {
             searchIndexObject.getMillenium().add(i);
         }
@@ -243,9 +243,9 @@ public class SolrIndexingService {
     private void indexDecades(SearchIndexObject searchIndexObject, int s, int e) {
         int startD = s - (s % 10);
         int endD = e - (e % 10);
-        if (e % 10 != 0) {
-            endD += 10;
-        }
+//        if (e % 10 != 0) {
+//            endD += 10;
+//        }
         for (int i = startD; i <= endD; i = i + 10) {
             searchIndexObject.getDecade().add(i);
         }
@@ -254,9 +254,9 @@ public class SolrIndexingService {
     private void indexCenturies(SearchIndexObject searchIndexObject, int s, int e) {
         int startC = s - (s % 100);
         int endC = e - (e % 100);
-        if (e % 100 != 0) {
-            endC += 100;
-        }
+//        if (e % 100 != 0) {
+//            endC += 100;
+//        }
         for (int i = startC; i <= endC; i = i + 100) {
             searchIndexObject.getCentury().add(i);
         }

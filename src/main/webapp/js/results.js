@@ -176,7 +176,7 @@ ResultGroup.prototype = {
 
         sourcesUl.append('<li class="result-category-sources-item" style="width:' +
           sourcesWidth + '%"><div class="sources-item-title"><strong>' +
-          this.data[category].sources[i] + '</strong></div><div class="sources-item-count">' +
+          SCHEMA[this.data[category].sources[i]] + '</strong></div><div class="sources-item-count">' +
           this.data[category].sources_count[i] + '<div></li>');
 
       }
@@ -374,7 +374,7 @@ ResultDetail.prototype = {
     for (var source in this.data) {
 
       var tab = $('<li>', { 'class': 'nav-item' });
-      tab.append('<a href="#result-detail-source-' + source.replace(/ /g, "_") + '" class="nav-link' + (i == 0 ? ' active' : '') + '">' + source + '</a>');
+      tab.append('<a href="#result-detail-source-' + source.replace(/ /g, "_")  + '" class="nav-link' + (i == 0 ? ' active' : '') + '">' + SCHEMA[source] + '</a>');
       tabContainer.append(tab);
 
       var contentContainer = $('<div>', { 'class': 'tab-pane' + (i == 0 ? ' active' : ''), 'id': 'result-detail-source-' + source.replace(/ /g, "_"), 'aria-expanded': (i == 0 ? 'true' : 'false') });
