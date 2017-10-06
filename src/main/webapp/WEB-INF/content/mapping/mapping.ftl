@@ -264,7 +264,7 @@
   <#list schema as schemum>    
     <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
       <div class="description">
-        ${schemum.resultTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
+        ${schemum.titleTemplate!'{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}'}
       </div>
     </script>
   </#list>
