@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@Secured(UserService.ADMIN_ROLE)
+@Secured(UserService.EDITOR_ROLE)
 public class UploadSourceDataController extends AbstractController {
 
     private static final String ERROR_MESSAGE = "errorMessage";
