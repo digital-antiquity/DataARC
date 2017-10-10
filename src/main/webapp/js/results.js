@@ -175,7 +175,8 @@ ResultGroup.prototype = {
       for (var i = 0; i < this.data[category].sources.length; i++) {
 
         sourcesUl.append('<li class="result-category-sources-item" style="width:' +
-          sourcesWidth + '%"><div class="sources-item-title"><strong>' +
+          sourcesWidth + '%"><div class="sources-item-title" title="'+ this.data[category].sources[i]
+          +'"><strong>' +
           SCHEMA[this.data[category].sources[i]] + '</strong></div><div class="sources-item-count">' +
           this.data[category].sources_count[i] + '<div></li>');
 

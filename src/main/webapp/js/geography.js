@@ -216,7 +216,7 @@ var Geography = {
           console.log(handlebarHandler.html());
           var template = Handlebars.compile(handlebarHandler.html());
           var content = template(feature.properties);
-          popup.setContent(content + "<span class='badge badge-secondary'>"+feature.properties.source+"</span>");
+          popup.setContent(content + "<span class='badge badge-secondary'>"+SCHEMA[feature.properties.source]+"</span>");
           popup.update();
         });
     }

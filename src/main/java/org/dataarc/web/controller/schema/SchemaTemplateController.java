@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dataarc.bean.schema.Category;
+import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.service.DataFileService;
@@ -43,8 +43,8 @@ public class SchemaTemplateController extends AbstractController {
     ImportDataService importService;
 
     @ModelAttribute("categories")
-    public List<Category> getCategories() {
-        return Arrays.asList(Category.values());
+    public List<CategoryType> getCategories() {
+        return Arrays.asList(CategoryType.values());
     }
 
     @RequestMapping(path = UrlConstants.SCHEMA_TEMPLATES, method = RequestMethod.GET)

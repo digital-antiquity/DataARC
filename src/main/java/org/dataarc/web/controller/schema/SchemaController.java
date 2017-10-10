@@ -3,7 +3,7 @@ package org.dataarc.web.controller.schema;
 import java.util.Arrays;
 import java.util.List;
 
-import org.dataarc.bean.schema.Category;
+import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.service.DataFileService;
 import org.dataarc.core.service.ImportDataService;
@@ -38,8 +38,8 @@ public class SchemaController extends AbstractController {
     ImportDataService importService;
 
     @ModelAttribute("categories")
-    public List<Category> getCategories() {
-        return Arrays.asList(Category.values());
+    public List<CategoryType> getCategories() {
+        return Arrays.asList(CategoryType.values());
     }
 
     @RequestMapping(path = UrlConstants.LIST_SCHEMA)
@@ -64,7 +64,7 @@ public class SchemaController extends AbstractController {
     public ModelAndView saveSchema(@PathVariable(value = "id", required = true) Long id,
             @RequestParam(value = "description") String description,
             @RequestParam(value = "displayName") String displayName,
-            @RequestParam(value = "category") Category category,
+            @RequestParam(value = "category") CategoryType category,
             @RequestParam(value = "url") String url) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.findById(id);

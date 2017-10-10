@@ -3,7 +3,7 @@ package org.dataarc.core.service;
 import java.util.List;
 import java.util.Set;
 
-import org.dataarc.bean.schema.Category;
+import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Field;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
@@ -107,7 +107,7 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public void updateSchema(Schema schema, String displayName, String description, String url, Category category) {
+    public void updateSchema(Schema schema, String displayName, String description, String url, CategoryType category) {
         schema.setDescription(description);
         schema.setDisplayName(displayName);
         schema.setCategory(category);

@@ -62,6 +62,15 @@
         render("#linkTemplate","#linkTarget");
      });
      
+     $(".schemalabel").click(function(e) {
+     var $copy = $("#t");
+     $copy.html($(e.target).attr("title"));
+     $copy.select();
+     document.execCommand('copy');
+     if (focusArea) {
+	     focusArea.focus();
+     }
+     });
  });
  
  function render(templateName, targetName) {
@@ -72,10 +81,11 @@
      var content = template(feature.properties);
      $(targetName).empty().append(content);
 }
+
  </script>
 
  	 	<#list schema.fields as field>
- 	<span class="label label-default" title="${field.id?c}" onClick="$('#t').html('{{${schema.name}${field.name}}}');$('#t').select();document.execCommand('copy');focusArea.focus();">${field.name}</span>
+ 	<span class="label label-default schemalabel" title="${schema.name}_${field.name}">${schema.name}_${field.name}</span>
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>

@@ -24,6 +24,7 @@
   <link href="css/results.css" rel="stylesheet">
   <link href="css/concepts.css" rel="stylesheet">
   <link href="css/geography.css" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107693214-1"></script>
 
 	<script>
 	var testing = false;
@@ -45,7 +46,17 @@
    </#list>
    	];
    	
+
    
+      
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-107693214-1');
+
+            
 	</script>
   </head>
 <body id="page-top">

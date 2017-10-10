@@ -1,5 +1,6 @@
 package org.dataarc.bean.schema;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.dataarc.bean.AbstractPersistable;
 import org.dataarc.util.View;
@@ -31,7 +34,7 @@ public class Schema extends AbstractPersistable {
     @Column(length = 100)
     @JsonView(View.Schema.class)
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private CategoryType category;
 
     @JsonView(View.Schema.class)
     @Column(length = 100, name = "display_name")
@@ -61,6 +64,10 @@ public class Schema extends AbstractPersistable {
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String linkTemplate;
+
+    @Column(name = "date_created", nullable=false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
 
     @Column()
     @JsonView(View.Schema.class)
@@ -128,11 +135,11 @@ public class Schema extends AbstractPersistable {
         this.rows = rows;
     }
 
-    public Category getCategory() {
+    public CategoryType getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryType category) {
         this.category = category;
     }
 
@@ -158,6 +165,14 @@ public class Schema extends AbstractPersistable {
 
     public void setLinkTemplate(String linkTemplate) {
         this.linkTemplate = linkTemplate;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
 }

@@ -3,7 +3,7 @@ package org.dataarc.web.controller.field;
 import java.util.Arrays;
 import java.util.List;
 
-import org.dataarc.bean.schema.Category;
+import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.service.DataFileService;
 import org.dataarc.core.service.ImportDataService;

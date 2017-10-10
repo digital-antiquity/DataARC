@@ -106,7 +106,7 @@
                 <div class="col-sm-11">
                     <label for="chooseTopic" class="control-label col-sm-4"><span class="badge badge-info">5</span> Assign Topic:</label>
                     <div class="col-sm-7">
-                    <!-- fixme: was indicators[currentIndicator].topicIdentifers[_idx]  -->
+                    <!-- fixme: was indicators[currentIndicator].topicIdentifiers[_idx]  -->
 					<ul class="list-unstyled">
                         <li v-for="(ident, _idx) in selectedTopics"  >
                                 <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control col-sm-6">

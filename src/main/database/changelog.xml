@@ -422,5 +422,20 @@
             </column>
         </createTable>
     </changeSet>
-    
+    <changeSet id="alpha-42" author="abrin">
+        <sql>update schema set category='TEXTUAL' where category='HISTORIC'</sql>
+        <sql>update schema set category='ENVIRONMENTAL' where category='MODEL'</sql>
+        <createTable tableName="change_log">
+            <column name="id" autoIncrement="true" type="bigserial" />
+            <column name="date_created" type="timestamp" defaultValue="now()" />
+            <column name="date_updated" type="timestamp" defaultValue="now()" />
+            <column name="object_type" type="varchar(255)" />
+            <column name="action_type" type="varchar(255)" />
+            <column name="description" type="text" />
+            <column name="user_id" type="bigint">
+                <constraints referencedTableName="user" foreignKeyName="user_change_id" />
+            </column>
+        </createTable>
+        
+    </changeSet>
 </databaseChangeLog>

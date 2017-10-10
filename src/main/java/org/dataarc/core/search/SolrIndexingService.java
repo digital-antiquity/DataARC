@@ -134,7 +134,7 @@ public class SolrIndexingService {
             applyTopics(searchIndexObject);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
             if (logger.isTraceEnabled()) {
-                logger.debug("{}", doc);
+                logger.trace("{}", doc);
             }
             client.add(DATA_ARC, doc);
             return searchIndexObject;
@@ -219,7 +219,7 @@ public class SolrIndexingService {
     private void applyDateFacets(SearchIndexObject searchIndexObject) {
         int s = searchIndexObject.getStart().intValue();
         int e = searchIndexObject.getEnd().intValue();
-        logger.debug("{} - {}", s,e);
+        logger.trace("{} - {}", s,e);
         int startM = s - (s % 1_000);
         int endM = e - (e % 1_000);
 //        if (e % 1_000 != 0) {

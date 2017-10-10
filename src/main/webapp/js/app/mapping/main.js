@@ -1,4 +1,5 @@
-    Vue.use(VueResource);
+
+Vue.use(VueResource);
 
     Vue.config.errorHandler = function (err, vm) {
       console.log(err);
@@ -11,6 +12,11 @@
 
           // an array that will be populated with substring matches
           matches = [];
+          if (q == undefined) {
+            q = "";  
+          } 
+          
+          q = q.replace(/[^a-z0-9\s]+/gi, '');
 
           // regex used to determine if a string contains the substring `q`
           substrRegex = new RegExp(q, 'i');
@@ -237,7 +243,7 @@ var Hack = new Vue({
       'currentIndicator' : function(val, oldVal) {
           if (val === "new") {
               console.log("setup new indicator");
-              var indicator = {name:'New Indicator',citation:'',description:'',query: {conditions:[{type:'EQUALS',value:''}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifers:[{}]};
+              var indicator = {name:'New Indicator',citation:'',description:'',query: {conditions:[{type:'EQUALS',value:''}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifiers:[{}]};
               this.indicators.push(indicator);
               console.log(indicator);
               Vue.set(this,"currentIndicator", this.indicators.length -1);
@@ -267,7 +273,7 @@ var Hack = new Vue({
             })
             .catch(function (err) {
                 console.log(err);
-              console.err(err);
+                Rollbar.error(err);
             });
         },
         selectSchema: function () {
@@ -399,7 +405,7 @@ var Hack = new Vue({
                       Rollbar.error("error saving indicator: " + json, err);
                       Vue.set(this,"saveStatus",err);
 
-                    console.err(err);
+                      Rollbar.errors(err);
                   });
               } else {
                   var json = JSON.stringify(indicator);
