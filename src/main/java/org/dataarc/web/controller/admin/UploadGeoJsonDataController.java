@@ -2,6 +2,9 @@ package org.dataarc.web.controller.admin;
 
 import java.util.Set;
 
+import org.dataarc.bean.ActionType;
+import org.dataarc.bean.ObjectType;
+import org.dataarc.core.service.ChangeLogService;
 import org.dataarc.core.service.ImportDataService;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.core.service.UserService;
@@ -36,6 +39,9 @@ public class UploadGeoJsonDataController extends AbstractController {
     @Autowired
     private ImportDataService importService;
 
+    @Autowired
+    private ChangeLogService changelogservice;
+
     @ModelAttribute("schema")
     public Set<String> getSchema() {
         return schemaService.getSchema();
@@ -50,6 +56,8 @@ public class UploadGeoJsonDataController extends AbstractController {
         if (!file.isEmpty()) {
             try {
                 importService.importGeoJsonFile(file.getInputStream(), file.getOriginalFilename());
+                changelogservice.save(ActionType.SAVE, ObjectType.GEOJSON, getUser(), file.getOriginalFilename() );
+
                 mav.setViewName(ADMIN_GEOJSON_SUCCESS);
             } catch (Exception e) {
                 logger.error("{}",e,e);

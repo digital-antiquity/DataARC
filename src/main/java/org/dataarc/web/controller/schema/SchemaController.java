@@ -3,8 +3,11 @@ package org.dataarc.web.controller.schema;
 import java.util.Arrays;
 import java.util.List;
 
+import org.dataarc.bean.ActionType;
+import org.dataarc.bean.ObjectType;
 import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.core.service.ChangeLogService;
 import org.dataarc.core.service.DataFileService;
 import org.dataarc.core.service.ImportDataService;
 import org.dataarc.core.service.SchemaService;
@@ -33,6 +36,9 @@ public class SchemaController extends AbstractController {
 
     @Autowired
     DataFileService dataFileService;
+
+    @Autowired
+    private ChangeLogService changelogservice;
 
     @Autowired
     ImportDataService importService;
@@ -80,6 +86,7 @@ public class SchemaController extends AbstractController {
         mav.addObject("schema", schema);
         importService.deleteBySource(schema.getName());
         schemaService.deleteSchema(schema);
+        changelogservice.save(ActionType.DELETE, ObjectType.DATA_SOURCE, getUser(), schema.getName());
         return mav;
     }
 

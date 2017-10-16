@@ -21,6 +21,16 @@ public class ChangeLogEntry extends AbstractPersistable {
 
     private static final long serialVersionUID = -8918383037524004105L;
 
+    public ChangeLogEntry() {
+    }
+
+    public ChangeLogEntry(ActionType type, ObjectType obj, DataArcUser user, String description) {
+        this.description = description;
+        this.type = type;
+        this.objectType = obj;
+        this.user = user;
+    }
+    
     @Column(name = "date_created", nullable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;

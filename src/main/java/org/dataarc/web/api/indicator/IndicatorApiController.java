@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.dataarc.bean.ActionType;
 import org.dataarc.bean.Indicator;
+import org.dataarc.bean.ObjectType;
+import org.dataarc.core.service.ChangeLogService;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.core.service.UserService;
 import org.dataarc.util.View;
@@ -27,12 +30,17 @@ public class IndicatorApiController extends AbstractRestController {
 
     @Autowired
     private IndicatorService indicatorService;
+    
+    @Autowired
+    private ChangeLogService changelogservice;
 
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) Indicator indicator) throws Exception {
         try {
         logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
         indicatorService.save(indicator, getUser());
+        changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator.toString() );
+
         } catch (Throwable t) {
             logger.error("error saving indicator", t);
         }
@@ -47,6 +55,7 @@ public class IndicatorApiController extends AbstractRestController {
         Indicator indicator = indicatorService.merge(_indicator);
         indicator.setTopicIdentifiers(topicIdentifier);
         indicatorService.save(indicator, getUser());
+        changelogservice.save(ActionType.UPDATE, ObjectType.COMBINATOR, getUser(), indicator.toString() );
         return indicator.getId();
 
     }

@@ -1,5 +1,9 @@
 package org.dataarc.web.controller.admin;
 
+import org.dataarc.bean.ActionType;
+import org.dataarc.bean.ChangeLogEntry;
+import org.dataarc.bean.ObjectType;
+import org.dataarc.core.service.ChangeLogService;
 import org.dataarc.core.service.TopicMapService;
 import org.dataarc.core.service.UserService;
 import org.dataarc.web.AbstractController;
@@ -29,7 +33,9 @@ public class UploadTopicMapController extends AbstractController {
     @Autowired
     private TopicMapService topicMapService;
 
-
+    @Autowired
+    private ChangeLogService changelogservice;
+    
     /**
      * Upload single file using Spring Controller
      */
@@ -40,6 +46,7 @@ public class UploadTopicMapController extends AbstractController {
             try {
                 mav.addObject(TOPIC_NAME , file.getOriginalFilename());
                 topicMapService.importAndLoad(file.getInputStream(), file.getOriginalFilename());
+                changelogservice.save(ActionType.SAVE, ObjectType.TOPIC, getUser(), "uploaded " + file.getOriginalFilename() );
                 return ADMIN_TOPIC_SUCCESS;
             } catch (Exception e) {
                 logger.error("{}",e,e);
