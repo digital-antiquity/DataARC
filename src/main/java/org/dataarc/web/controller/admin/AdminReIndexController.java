@@ -9,16 +9,20 @@ import org.dataarc.core.service.UserService;
 import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 @Secured(UserService.ADMIN_ROLE)
 @Controller
 public class AdminReIndexController extends AbstractRestController {
 
+    @Autowired
+    private ThreadPoolTaskExecutor myExecutor;
+    
+    // https://github.com/frenos/spring-mvc-async-progress/blob/e670296e467b1301ad1d0d294330ea5c9bd5e1c1/src/main/java/de/codepotion/examples/asyncExample/WebController.java
     @Autowired
     private IndicatorService indicatorService;
     @Autowired
