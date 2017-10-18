@@ -170,8 +170,8 @@
           <div class="legend justify-content-md-center">
             <ul class="list-inline">
               <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Historical</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Model</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Textual</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Environmental</li>
             </ul>
           </div>
           <div id="timeline">
@@ -194,8 +194,8 @@
           <div class="legend justify-content-md-center">
             <ul class="list-inline">
               <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Historical</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Model</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Textual</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Environmental</li>
             </ul>
           </div>
           <div id="map">

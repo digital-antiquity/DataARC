@@ -24,8 +24,8 @@ TimelineObject.prototype = {
     // Set the catagories
     this.categories = [
       { id: 1, key: "ARCHAEOLOGICAL", label: "Archaeological", color: category_colors[0], },
-      { id: 2, key: "HISTORIC", label: "Historic", color: category_colors[1] },
-      { id: 3, key: "MODEL", label: "Model", color: category_colors[2] }
+      { id: 2, key: "TEXTUAL", label: "Textual", color: category_colors[1] },
+      { id: 3, key: "ENVIRONMENTAL", label: "Environmental", color: category_colors[2] }
     ];
 
     // Set the time periods

@@ -247,8 +247,8 @@ var Geography = {
   },
   categoryColors: {
     "ARCHAEOLOGICAL": category_colors[0],
-    "HISTORIC":category_colors[1],
-    "MODEL":category_colors[2]
+    "TEXTUAL":category_colors[1],
+    "ENVIRONMENTAL":category_colors[2]
   },
   checkActive: function(feature){
     // return true;
