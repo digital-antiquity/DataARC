@@ -173,11 +173,13 @@ ResultGroup.prototype = {
       var sourcesUl = $('<ul class="result-category-sources-list">');
 
       for (var i = 0; i < this.data[category].sources.length; i++) {
-
+          var sn = this.data[category].sources[i].toLowerCase();
+          sn = sn.replace(/[\s\-]/g, "_"); 
+          
         sourcesUl.append('<li class="result-category-sources-item" style="width:' +
-          sourcesWidth + '%"><div class="sources-item-title" title="'+ this.data[category].sources[i]
+          sourcesWidth + '%"><div class="sources-item-title" title="'+ sn
           +'"><strong>' +
-          SCHEMA[this.data[category].sources[i]] + '</strong></div><div class="sources-item-count">' +
+          SCHEMA[sn] + '</strong></div><div class="sources-item-count">' +
           this.data[category].sources_count[i] + '<div></li>');
 
       }
