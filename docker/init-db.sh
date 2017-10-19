@@ -9,5 +9,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
 EOSQL
 mkdir -pv /var/lib/postgresql/backups/data/
 echo  "0 1 * * * pg_dump -U dataarc dataarc > /var/lib/postgresql/data/backups/\`date  +%Y-%m-%d\`.sql" > .crontab 
+touch /var/log/cron.log
 /etc/init.d/cron start
+
 crontab .crontab
