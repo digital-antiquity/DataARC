@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.Iterator;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.xml.bind.JAXBException;
 
 import org.dataarc.AbstractServiceTest;
@@ -59,15 +61,17 @@ public class TopicMapServiceTest extends AbstractServiceTest {
         });
     }
 
+    @PersistenceContext
+    private EntityManager manager;
 
     @Test
     @Rollback(true)
     public void testParents() throws JAXBException, SAXException {
-        TopicMap map = topicMapService.load("src/main/data/landscape_wandora.xtm");
-        map.getTopics().forEach(topic -> {
-            logger.debug("{} - {}", topic.getName() , topic.getIdentifier());
-            logger.debug("\t - {}", topic.getParents());
-        });
+        topicMapService.deleteTopicMap();
+        TopicMap map = topicMapService.load("src/main/data/data_arc_2nov2017.xtm");
+        manager.flush();
+        manager.clear();
+        topicMapService.listHierarchicalTopics();
     }
 
     

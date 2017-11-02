@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +17,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.Indicator;
 import org.dataarc.bean.topic.Association;
-import org.dataarc.bean.topic.CategoryAssociation;
 import org.dataarc.bean.topic.CategoryAssociation;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.bean.topic.TopicCategory;
@@ -45,6 +46,8 @@ import topicmap.v2_0.SubjectIdentifier;
 
 @Service
 public class TopicMapService {
+
+    private static final String CIDOC = "^[A-Z]\\d+i?_.+";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -180,7 +183,7 @@ public class TopicMapService {
                 }
 
                 associationFrom.setFrom(get(internalMap, fromHref));
-//                associationFrom.setType(get(internalMap, fromTypeHref));
+                // associationFrom.setType(get(internalMap, fromTypeHref));
                 if (Objects.equal(associationFrom.getTo(), associationFrom.getFrom())) {
                     associationFrom.setFrom(get(internalMap, associTypeHref));
                 }
@@ -199,6 +202,7 @@ public class TopicMapService {
     }
 
     private void loadTopic(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, Set<Topic> topics) {
+        Map<String, List<String>> parentRefMap = new HashMap<>();
         topicMap_.getTopicOrAssociation().forEach(item -> {
             if (item instanceof topicmap.v2_0.Topic) {
                 Topic topic = new Topic();
@@ -208,8 +212,9 @@ public class TopicMapService {
                 topic_.getNameOrOccurrence().forEach(noc -> {
                     // topic_.setParent(topic.getInstanceOf().);
                     if (topic_.getInstanceOf() != null) {
+                        parentRefMap.put(topic_.getId(), new ArrayList<>());
                         topic_.getInstanceOf().getTopicRef().forEach(ref -> {
-                            topic.getParents().add(get(internalMap, ref.getHref()));
+                            parentRefMap.get(topic_.getId()).add(ref.getHref());
                         });
                     }
                     if (noc instanceof Name) {
@@ -244,11 +249,22 @@ public class TopicMapService {
                         }
                     });
                 }
-                topicDao.save(topic);
                 internalMap.put("#" + topic_.getId(), topic);
+                topicDao.save(topic);
                 logger.debug("{} - {}", topic, topic.getIdentifier());
                 topics.add(topic);
             }
+        });
+        parentRefMap.entrySet().forEach(entry -> {
+            Topic topic_ = get(internalMap, "#" + entry.getKey());
+            entry.getValue().forEach(ref -> {
+                Topic e = get(internalMap, ref);
+                if (topic_.getParents() == null) {
+                    logger.error("parents is null: {}, {}", topic_, topic_.getParents());
+                }
+                topic_.getParents().add(e);
+            });
+            topicDao.save(topic_);
         });
     }
 
@@ -341,5 +357,29 @@ public class TopicMapService {
     @Transactional(readOnly = true)
     public List<CategoryAssociation> findAllCategoryAssociations() {
         return topicDao.findAllCategoryAssociations();
+    }
+
+    @Transactional(readOnly = true)
+    public void listHierarchicalTopics() {
+        List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();
+        List<Topic> roots = new ArrayList<>();
+        for (Topic t : findTopicsForIndicators) {
+            if (CollectionUtils.isEmpty(t.getParents()) && !t.getName().matches(CIDOC)) {
+                roots.add(t);
+                logger.debug("root:{} ({})", t, t.getParents());
+                logger.debug("    :   {}", t.getChildren());
+            }
+
+            Iterator<Topic> i = t.getParents().iterator();
+            while (i.hasNext()) {
+                Topic p = i.next();
+                if (p == null || p.getName() == null) {
+                    continue;
+                }
+                if (p.getName().matches(CIDOC)) {
+                    i.remove();
+                }
+            }
+        }
     }
 }
