@@ -3,6 +3,7 @@ package org.dataarc.service;
 import static org.junit.Assert.*;
 
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +11,7 @@ import javax.xml.bind.JAXBException;
 
 import org.dataarc.AbstractServiceTest;
 import org.dataarc.bean.topic.Association;
+import org.dataarc.bean.topic.Topic;
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.service.TopicMapService;
 import org.junit.Test;
@@ -71,7 +73,10 @@ public class TopicMapServiceTest extends AbstractServiceTest {
         TopicMap map = topicMapService.load("src/main/data/data_arc_2nov2017.xtm");
         manager.flush();
         manager.clear();
-        topicMapService.listHierarchicalTopics();
+        Set<Topic> topics = topicMapService.listHierarchicalTopics();
+        for (Topic t: topics) {
+            logger.debug("{}\n\t{}", t, t.getChildren());
+        }
     }
 
     

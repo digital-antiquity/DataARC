@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -360,14 +361,13 @@ public class TopicMapService {
     }
 
     @Transactional(readOnly = true)
-    public void listHierarchicalTopics() {
+    public Set<Topic> listHierarchicalTopics() {
         List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();
-        List<Topic> roots = new ArrayList<>();
+        Collection<Topic> roots = new ArrayList<>();
         for (Topic t : findTopicsForIndicators) {
-            if (CollectionUtils.isEmpty(t.getParents()) && !t.getName().matches(CIDOC)) {
+            if (CollectionUtils.isEmpty(t.getParents()) && !t.getName().matches(CIDOC) &&
+                    CollectionUtils.isNotEmpty(t.getChildren())) {
                 roots.add(t);
-                logger.debug("root:{} ({})", t, t.getParents());
-                logger.debug("    :   {}", t.getChildren());
             }
 
             Iterator<Topic> i = t.getParents().iterator();
@@ -381,5 +381,26 @@ public class TopicMapService {
                 }
             }
         }
+
+        Topic root = roots.iterator().next();
+        if (roots.size() > 1) {
+            roots = root.getChildren();
+        }
+        for (Topic r : root.getChildren()) {
+            flattenChildren(r, r);
+        }
+        return root.getChildren();
+    }
+
+    private void flattenChildren(Topic r, Topic p) {
+        r.getParents().clear();
+        List<Topic> children = new ArrayList<>(r.getChildren());
+        if (!p.equals(r)) {
+            r.getChildren().clear();
+        }
+        p.getChildren().addAll(children);
+        children.forEach(c -> {
+            flattenChildren(c, p);
+        });
     }
 }
