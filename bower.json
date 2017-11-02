@@ -19,6 +19,7 @@
     "jquery": "^3.1.0",
     "typeahead.js": "^0.11.1",
     "vue": "^2.4.2",
+    "selectize":"v0.12.4",
     "vue-resource": "^1.3.4",
     "requirejs": "^2.3.5",
     "json-human": "^0.1.1"

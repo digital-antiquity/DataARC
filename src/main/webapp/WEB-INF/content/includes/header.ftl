@@ -17,16 +17,16 @@ var _rollbarConfig = {
 <!--
 -->
 <script src="${contextPath}/components/vue/dist/vue.min.js"></script>
-<script src="${contextPath}/components/json-human/src/json.human.js"></script>
 <script src="${contextPath}/components/vee-validate/dist/vee-validate.min.js"></script>
 <script src="${contextPath}/components/vue-resource/dist/vue-resource.min.js"></script>
 
 
 <link href="${contextPath}/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="${contextPath}/css/mapping.css" rel="stylesheet" media="screen">
+<link href="${contextPath}/components/selectize/dist/css/selectize.bootstrap3.css" rel="stylesheet" media="screen">
 <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
 <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script> 
-<script src="${contextPath}/components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="${contextPath}/components/selectize/dist/js/standalone/selectize.js"></script>
 <script src="${contextPath}/components/handlebars/handlebars.js"></script>
 <link href="${contextPath}/css/typeahead.css" rel="stylesheet" media="screen">
 <script>

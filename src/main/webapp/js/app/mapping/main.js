@@ -88,19 +88,43 @@ Vue.use(VueResource);
             parent.setValue(suggestion.value);
         });
       }
-    Vue.directive('typeahead', {
-        update : function(el_,binding,v){
-            setupTypeahead(el_,binding,v.context._self);
 
+
+    Vue.component('selectize', {
+        props: ['options', 'value'],
+        template: '<select><slot></slot></select>',
+        mounted: function () {
+          var vm = this;
+          var opt = $.extend({},$(this.$el).data());
+          if (this.options != null) {
+              opt.options = this.options;
+          }
+          
+          this.sel = $(this.$el).selectize(opt)
+              .on("change",function(){
+                vm.$emit('input', vm.sel.getValue());
+              })[0].selectize;
+          this.sel.setValue(this.value,true);
         },
-        inserted:  function(el_, binding,v) {
-            setupTypeahead(el_,binding,v.context._self);
+        watch: {
+          value: function (value) {
+              this.sel.setValue(value,true);
+          },
+          options: function (options) {
+                  var val = this.sel.getValue();
+              this.sel.clearOptions();
+              this.sel.addOption(options);
+              this.sel.refreshOptions(false);
+              this.sel.setValue(val);
+          }
+        },
+        destroyed: function () {
+          this.sel.destroy();
         }
-    })
-/**
+      })
 
- */    
-/** https://jsfiddle.net/krn9v4vr/59/ **/
+
+    /** https://jsfiddle.net/krn9v4vr/59/ **/
 
     
  Vue.component('spart', {

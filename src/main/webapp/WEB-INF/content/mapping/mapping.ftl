@@ -204,8 +204,11 @@
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-  			    <input class="typeahead" type="text" placeholder="Search" name='typeahead' v-typeahead="{'values':getFieldValues(part.fieldName) , 'fieldName': part.fieldName}"  v-model="part.value" v-bind:value="part.value"
-  			      v-on:change="updateTest()" @input="onValidChange()" >
+                <selectize v-bind:options="getFieldValues(part.fieldName)" v-model="part.value" size="1" style="width:250px" class="form-control"
+         data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()"
+         data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'>
+
+
                 
                 <span v-show="rowindex > 0">
                 <button type="button" class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
