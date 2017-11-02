@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ ! -f docker/postgres/docker-data-load ]; then
+if [ ! -f docker/postgres/docker-data-load ]
+then
     /usr/bin/mvn clean compile -PloadTestData
     echo "" > docker/postgres/docker-data-load
 fi

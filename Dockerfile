@@ -46,5 +46,5 @@ ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
   ADD . /app
 
 # RUN mvn clean compile jetty:run
-  ENTRYPOINT ["/bin/sh","/app/docker/startup.sh"]
+  ENTRYPOINT ["/bin/bash","/app/docker/startup.sh"]
   EXPOSE 8280
