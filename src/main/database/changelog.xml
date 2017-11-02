@@ -438,4 +438,9 @@
         </createTable>
         
     </changeSet>
+    <changeSet id="alpha-43" author="abrin">
+        <addColumn tableName="change_log">
+            <column name="action" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

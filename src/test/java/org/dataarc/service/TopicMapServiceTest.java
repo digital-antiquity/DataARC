@@ -59,6 +59,17 @@ public class TopicMapServiceTest extends AbstractServiceTest {
         });
     }
 
+
+    @Test
+    @Rollback(true)
+    public void testParents() throws JAXBException, SAXException {
+        TopicMap map = topicMapService.load("src/main/data/landscape_wandora.xtm");
+        map.getTopics().forEach(topic -> {
+            logger.debug("{} - {}", topic.getName() , topic.getIdentifier());
+            logger.debug("\t - {}", topic.getParents());
+        });
+    }
+
     
     @Test
     @Rollback(true)
