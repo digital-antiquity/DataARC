@@ -1,31 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
   <title>DataARC - Linking Data from Archaeology, the Sagas, and Climate</title>
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom fonts for this template -->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-  <!-- Plugin CSS -->
-  <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-  <link href="vendor/leaflet/leaflet.css" rel="stylesheet">
-  <link href="vendor/leaflet.draw/leaflet.draw.css" rel="stylesheet">
-  <link href="vendor/leaflet.easybutton/easy-button.css" rel="stylesheet">
-  <link href="vendor/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-  <!-- Custom styles for this template -->
-  <link href="css/global.css" rel="stylesheet">
-  <link href="css/timeline.css" rel="stylesheet">
-  <link href="css/results.css" rel="stylesheet">
-  <link href="css/concepts.css" rel="stylesheet">
-  <link href="css/geography.css" rel="stylesheet">
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107693214-1"></script>
 
+    <#include "includes/public-header.ftl" />
 	<script>
 	var testing = false;
 	// Global variables
@@ -49,13 +27,6 @@
 
    
       
-<!-- Global Site Tag (gtag.js) - Google Analytics -->
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-107693214-1');
-
             
 	</script>
   </head>
@@ -94,7 +65,7 @@
       </div>
     </div>
   </nav>
-  <header class="masthead">
+  <header class="masthead home-shore">
     <div class="header-content">
       <div class="header-content-inner">
         <h1 id="homeHeading">Simple Interface, Data That Matters</h1>
@@ -259,25 +230,8 @@
     </div>
   </section>
   <!-- Vendor scripts -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/popper/popper.min.js"></script>
-  <script src="vendor/lodash/lodash.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-  <script src="vendor/d3/d3.v4.min.js"></script>
-  <script src="vendor/leaflet/leaflet.js"></script>
-  <script src="vendor/leaflet.draw/leaflet.draw.js"></script>
-  <script src="vendor/leaflet.easybutton/easy-button.js"></script>
-  <script src="vendor/leaflet.esri/esri-leaflet.js"></script>
-  <script src="vendor/handlebars/handlebars.js"></script>
-  <script src="vendor/moment/moment.min.js"></script>
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-  <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-  <script src="vendor/datatables/datatables.min.js"></script>
-  <script src="vendor/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-  <script src="vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
 
-  <script src="vendor/chartjs/Chart.min.js"></script>
+    <#include "includes/public-footer.ftl">
 
   <!-- Custom scripts -->
   <script src="js/global.js"></script>

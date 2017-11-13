@@ -1,5 +1,8 @@
 package org.dataarc.core.service;
 
+import java.util.Date;
+import java.util.List;
+
 import org.dataarc.bean.ActionType;
 import org.dataarc.bean.ChangeLogEntry;
 import org.dataarc.bean.DataArcUser;
@@ -24,13 +27,14 @@ public class ChangeLogService {
     }
 
     @Transactional(readOnly = true)
-    public void findAll() {
-        changeLogDao.findAll();
+    public List<ChangeLogEntry> findAll() {
+        return changeLogDao.findAll();
     }
 
     @Transactional(readOnly = false)
     public void save(ActionType save, ObjectType topic, DataArcUser user, String string) {
         ChangeLogEntry change = new ChangeLogEntry( save, topic, user, string);
+        change.setDateCreated(new Date());
         save(change);
         
     }

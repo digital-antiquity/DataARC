@@ -107,10 +107,11 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public void updateSchema(Schema schema, String displayName, String description, String url, CategoryType category) {
+    public void updateSchema(Schema schema, String displayName, String description, String logoUrl, String url, CategoryType category) {
         schema.setDescription(description);
         schema.setDisplayName(displayName);
         schema.setCategory(category);
+        schema.setLogoUrl(logoUrl);
         schema.setUrl(url);
         schemaDao.save(schema);
 

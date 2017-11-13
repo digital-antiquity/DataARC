@@ -20,10 +20,14 @@
 	        <label for="schemaName" class="control-label">Display Name:</label>
 	        <input type="text" id="schemaName" name="displayName" value="${schema.displayName}" class="form-control"/>
 		</div>
-		<div class="form-group">
-	        <label for="schemaUrl" class="control-label">Link to the Data Source:</label>
-	        <input type="text" id="schemaUrl" name="url" value="${schema.url!''}" class="form-control"/>
-		</div>
+        <div class="form-group">
+            <label for="schemaUrl" class="control-label">Link to the Data Source:</label>
+            <input type="text" id="schemaUrl" name="url" value="${schema.url!''}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="schemaUrl" class="control-label">Image Url for Data Source:</label>
+            <input type="text" id="schemaLogoUrl" name="logoUrl" value="${schema.logoUrl!''}" class="form-control"/>
+        </div>
 		<div class="form-group">
 	        <label for="schemaCategory" class="control-label">Category:</label>
 	        

@@ -23,7 +23,7 @@ public class ChangeLogDao {
     }
 
     public List<ChangeLogEntry> findAll() {
-        return manager.createQuery("from ChangeLogEntry", ChangeLogEntry.class).getResultList();
+        return manager.createQuery("from ChangeLogEntry order by dateCreated desc", ChangeLogEntry.class).getResultList();
     }
 
 }

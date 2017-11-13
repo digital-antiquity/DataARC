@@ -43,5 +43,6 @@ public interface UrlConstants {
     String LIST_COMBINATORS = "/a/combinators";
     String JSON_UTF8 = "application/json;charset=UTF-8";
     String GET_ID = "/api/getId";
+    String ABOUT = "/about";
 
 }

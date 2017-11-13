@@ -44,6 +44,10 @@ public class Schema extends AbstractPersistable {
     @JsonView(View.Schema.class)
     private String url;
 
+    @Column(length = 1024, name ="logourl")
+    @JsonView(View.Schema.class)
+    private String logoUrl;
+
     @Column()
     @Lob
     @JsonView(View.Schema.class)
@@ -173,6 +177,14 @@ public class Schema extends AbstractPersistable {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 
 }

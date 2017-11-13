@@ -101,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
             web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", UrlConstants.TOPIC_MAP_VIEW, UrlConstants.SEARCH,
-                    UrlConstants.GET_ID,
+                    UrlConstants.GET_ID,UrlConstants.ABOUT,
                     "/login**","/geojson/**","/vendor/**","/img/**");
         } else {
             web.ignoring().antMatchers("/**");
