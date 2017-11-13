@@ -23,7 +23,8 @@
 				 defining a mid-level idea, which we call a combinator, which acts as a bridge between your data and the concept 
 				 map.</p>
 				</div>
-			</div>
+            </div>
+
 			<div class="row">
 			<div class="col-sm-8">
 			<form>
@@ -107,10 +108,19 @@
                     <label for="chooseTopic" class="control-label col-sm-4"><span class="badge badge-info">5</span> Assign Topic:</label>
                     <div class="col-sm-7">
                     <!-- fixme: was indicators[currentIndicator].topicIdentifiers[_idx]  -->
+              
 					<ul class="list-unstyled">
                         <li v-for="(ident, _idx) in selectedTopics"  >
                                 <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control col-sm-6">
-                                    <option v-for="(topic, index) in topics"  v-bind:value="topic.identifier"> {{ topic.name }} ({{topic.indicatorCount}}) </option>
+                                    <#list topicCategories as cat>
+                                    <optgroup label="${cat}">
+                                        <#list topics as topic>
+                                            <#if topic.category == cat>
+                                                <option value="${topic.identifier}" :selected='"${topic.identifier}" == selectedTopics[_idx].identifier'>${topic.name} (${topic.count?c})</option>
+                                            </#if>
+                                        </#list>
+                                    </optgroup>
+                                    </#list>
                                 </select>
                             <button type="button" class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>
 

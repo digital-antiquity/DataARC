@@ -14,6 +14,8 @@ import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.service.TopicMapService;
+import org.dataarc.core.service.TopicMapWrapper;
+import org.dataarc.core.service.TopicWrapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -73,9 +75,9 @@ public class TopicMapServiceTest extends AbstractServiceTest {
         TopicMap map = topicMapService.load("src/main/data/data_arc_2nov2017.xtm");
         manager.flush();
         manager.clear();
-        Set<Topic> topics = topicMapService.listHierarchicalTopics();
-        for (Topic t: topics) {
-            logger.debug("{}\n\t{}", t, t.getChildren());
+        TopicMapWrapper topics = topicMapService.listHierarchicalTopics();
+        for (TopicWrapper t: topics.getTopics()) {
+            logger.debug("{}\n\t{}", t.getName(), t.getCategory());
         }
     }
 

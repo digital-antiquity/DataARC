@@ -361,8 +361,9 @@ public class TopicMapService {
     }
 
     @Transactional(readOnly = true)
-    public Set<Topic> listHierarchicalTopics() {
+    public TopicMapWrapper listHierarchicalTopics() {
         List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();
+
         Collection<Topic> roots = new ArrayList<>();
         for (Topic t : findTopicsForIndicators) {
             if (CollectionUtils.isEmpty(t.getParents()) && !t.getName().matches(CIDOC) &&
@@ -383,13 +384,14 @@ public class TopicMapService {
         }
 
         Topic root = roots.iterator().next();
-        if (roots.size() > 1) {
+        if (roots.size() == 1) {
             roots = root.getChildren();
         }
         for (Topic r : root.getChildren()) {
             flattenChildren(r, r);
         }
-        return root.getChildren();
+        TopicMapWrapper wrapper = new TopicMapWrapper(roots, root);
+        return wrapper;
     }
 
     private void flattenChildren(Topic r, Topic p) {
