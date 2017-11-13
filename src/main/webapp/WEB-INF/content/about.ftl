@@ -45,7 +45,7 @@
           <ul class="list-unstyled">
               <#list schema as scheme>
                   <li class="media">
-                      <img class="mr-3" src="..." alt="Generic placeholder image">
+                      <#if scheme.logoUrl?has_content><img class="mr-3" src="${scheme.logoUrl}" alt="Generic placeholder image"></#if>
                       <div class="media-body">
                         <h5 class="mt-0 mb-1">${scheme.displayName!scheme.name}</h5>
                         <p>${scheme.description!''}</p>
