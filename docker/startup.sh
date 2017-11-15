@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ ! -f docke/postges/docke-data-load ]
+if [ ! -f docker/postgres/docker-data-load ]
 then
-    /us/bin/mvn clean compile -PloadTestData
-    echo "" > docke/postges/docke-data-load
+    /usr/bin/mvn clean compile -PloadTestData
+    echo "" > docker/postgres/docker-data-load
 fi
-/us/bin/mvn clean compile jetty:un -Pliquibase
+/usr/bin/mvn clean compile jetty:run -Pliquibase
