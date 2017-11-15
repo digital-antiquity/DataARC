@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
@@ -161,9 +162,12 @@ public class SearchIndexObject {
         if (o instanceof Number) {
             return ((Number) o).intValue();
         }
-        if (o instanceof String && NumberUtils.isNumber((String) o)) {
-            float f = NumberUtils.toFloat((String) o);
+        if (o instanceof String) {
+            String str = StringUtils.trim((String) o);
+            if (NumberUtils.isNumber(str)) {
+            float f = NumberUtils.toFloat(str);
             return new Float(f).intValue();
+            }
         }
         return null;
     }
