@@ -114,7 +114,7 @@
                                 <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control col-sm-6">
                                     <#list topicCategories as cat>
                                     <optgroup label="${cat}">
-                                        <#list topics as topic>
+                                        <#list topics?sort_by('name') as topic>
                                             <#if topic.category == cat>
                                                 <option value="${topic.identifier}" :selected='"${topic.identifier}" == selectedTopics[_idx].identifier'>${topic.name} (${topic.count?c})</option>
                                             </#if>
