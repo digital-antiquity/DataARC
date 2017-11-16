@@ -138,42 +138,29 @@ public class SearchIndexObject {
     }
 
     private void applyStartEnd(DataEntry entry, Schema schema, TemporalCoverageService coverageLookup) {
-        SchemaField startField = null;
-        SchemaField endField = null;
-        SchemaField textField = null;
-        for (SchemaField field : schema.getFields()) {
-            if (field.isStartField()) {
-                startField = field;
-            }
-            if (field.isEndField()) {
-                endField = field;
-            }
-            if (field.isTextDateField()) {
-                textField = field;
-            }
+        if (startFieldValue != null) {
+            setStart(toInt(startFieldValue, coverageLookup, true));
         }
-        if (startField != null) {
-            setStart(toInt(getFieldValue(schema, startField), coverageLookup, true));
-        }
-        if (endField != null) {
-            setEnd(toInt(getFieldValue(schema, endField), coverageLookup, false));
+        if (endFieldValue != null) {
+            setEnd(toInt(endFieldValue, coverageLookup, false));
         }
 
-        if (textField != null && end == null && start == null) {
-            TemporalCoverage coverage = coverageLookup.find((String) getFieldValue(schema, textField));
+        if (textFieldValue != null && end == null && start == null) {
+            TemporalCoverage coverage = coverageLookup.find((String) textFieldValue);
             if (coverage != null) {
                 setStart(coverage.getStartDate());
                 setEnd(coverage.getEndDate());
             }
         }
-        // logger.debug("{} ({}) - {} ({})", startField,start, endField, end);
-        // logger.debug("\t {} ", properties);
+        if (start != null && end != null) {
+         logger.trace("{} - {} - {}", source ,start, end);
+        }
     }
 
-    private Object getFieldValue(Schema schema, SchemaField startField) {
-        return properties.getOrDefault(SchemaUtils.formatForSolr(schema, startField), null);
-    }
-
+    private transient Object startFieldValue;
+    private transient Object endFieldValue;
+    private transient Object textFieldValue;
+    
     private Integer toInt(Object o, TemporalCoverageService coverageLookup, boolean start) {
         if (o == null) {
             return null;
@@ -218,7 +205,7 @@ public class SearchIndexObject {
                     if (getData() == null) {
                         setData(new ArrayList<>());
                     }
-                    getData().add(new ExtraProperties(data, schema));
+                    getData().add(new ExtraProperties(this, data, schema));
                     logger.trace("{}", data);
                 } else if (v instanceof Collection) {
                     if (getData() == null) {
@@ -227,13 +214,26 @@ public class SearchIndexObject {
                     List<Map<String, Object>> sites = (List<Map<String, Object>>) v;
                     logger.trace("{}", sites);
                     sites.forEach(s -> {
-                        getData().add(new ExtraProperties(s, schema));
+                        getData().add(new ExtraProperties(this, s, schema));
                     });
                 } else if (v != null && field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
                     getProperties().put(SchemaUtils.formatForSolr(schema, field), v);
+                    applyTransientDateFields(field, v);
                 }
             }
         });
+    }
+
+    void applyTransientDateFields(SchemaField field, Object v2) {
+        if (field.isEndField()) {
+            endFieldValue = v2;
+        }
+        if (field.isStartField()) {
+            startFieldValue = v2;
+        }
+        if (field.isTextDateField()) {
+            textFieldValue = v2;
+        }
     }
 
     private void applyTopicIdentifiers(DataEntry entry) {

@@ -25,7 +25,7 @@ public class ExtraProperties {
     @Field("*")
     private Map<String, Object> data = new HashMap<>();
 
-    public ExtraProperties(Map<String, Object> data2, Schema schema) {
+    public ExtraProperties(SearchIndexObject searchIndexObject, Map<String, Object> data2, Schema schema) {
         String prefix = null;
         for (Entry<String, Object> e : data2.entrySet()) {
             if (e.getValue() == null || e.getValue() instanceof String &&StringUtils.isBlank((CharSequence) e.getValue())){
@@ -52,6 +52,8 @@ public class ExtraProperties {
                 logger.warn("field still null: {} | {}", key, schema.getFields());
             } else {
                 data.put(SchemaUtils.formatForSolr(schema, fieldByName), e.getValue());
+                searchIndexObject.applyTransientDateFields(fieldByName, e.getValue());
+
             }
         }
         data.put(IndexFields.PREFIX, prefix);

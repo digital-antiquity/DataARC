@@ -9,7 +9,7 @@
     </head>
     
     <@body.body>
-<h1> Schema</h1>
+<h1>Data Sources</h1>
 <table class="table">
 <thead>
 <tr>

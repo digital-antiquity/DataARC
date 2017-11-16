@@ -9,27 +9,46 @@
     </head>
     
     <@body.body>
-<h1> Schema</h1>
+<h1>Mapped Temporal Ranges</h1>
 <table class="table">
 <thead>
 <tr>
 <th>id</th>
 <th>name</th>
-<th>display name</th>
-<th>description</th>
-<th>url</th>
-<th>category</th>
-<th># of entries</th>
+<th>start</th>
+<th>end</th>
 </tr>
 </thead>
 <#list coverage as temp>
 	<tr>
 		<td>${temp.id?c}</td>
-		<td>${temp.name}</td>
 		<td>${temp.term}</td>
 		<td>${temp.start?c!''}</td>
 		<td>${temp.end?c!''}</td>
 	</tr>
 </#list>
+</table>
+
+
+<h2>Existing Values From our Data Sources</h2>
+<table class="table">
+<thead>
+<tr>
+<th>Data Source</th>
+<th>Value</th>
+<th>Ocurrence</th>
+</tr>
+</thead>
+<#list values as schema, valueList>
+    <#list valueList as value>
+<tr>
+<td>${schema.name}</td>
+<td>${value.value}</td>  
+<td>${value.occurrence}</td>  
+</tr>
+    </#list>
+</#list>
+</table>
+
 </@body.body>
 </html>

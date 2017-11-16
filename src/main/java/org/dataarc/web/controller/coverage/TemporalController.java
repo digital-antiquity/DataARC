@@ -1,8 +1,9 @@
-package org.dataarc.web.controller.temporal;
+package org.dataarc.web.controller.coverage;
 
 import org.dataarc.core.service.TemporalCoverageService;
 import org.dataarc.core.service.UserService;
 import org.dataarc.util.View;
+import org.dataarc.web.AbstractController;
 import org.dataarc.web.UrlConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -14,11 +15,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @Controller
 @Secured(UserService.EDITOR_ROLE)
-public class TemporalController {
+public class TemporalController extends AbstractController {
 
 
     @Autowired
     private TemporalCoverageService temporalCoverageService;
+
 
 
     @RequestMapping(path = UrlConstants.LIST_COVERAGE)
@@ -26,6 +28,7 @@ public class TemporalController {
     public ModelAndView coverage() {
         ModelAndView mav = new ModelAndView("coverage/list");
         mav.addObject("coverage", temporalCoverageService.findAll());
+        mav.addObject("values", temporalCoverageService.findUserValue());
         return mav;
     }
 

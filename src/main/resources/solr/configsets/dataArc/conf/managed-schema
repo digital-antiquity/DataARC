@@ -717,7 +717,31 @@
   <field name="sead_general_synanthropic" type="int" multiValued="false" stored="true"/>
   <field name="sead_halotolerant" type="int" multiValued="false" stored="true"/>
   <field name="sead_heathland_moorland" type="int" multiValued="false" stored="true"/>
+  <field name="sead_id" type="int" multiValued="false" stored="true"/>
   <field name="sead_identifier" type="string" multiValued="false" stored="true"/>
+  <field name="sead_indicators" type="string" multiValued="false" stored="true"/>
+  <field name="sead_indicators.aquatics" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.carrion" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.disturbedarable" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.dry_dead_wood" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.dungfoul_habitats" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.ectoparasite" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.general_synanthropic" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.halotolerant" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.heathland_moorland" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.indicators_coniferous" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.indicators_deciduous" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.indicators_dung" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.indicators_running_water" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.indicators_standing_water" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.meadowland" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.mould_beetles" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.open_wet_habitats" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.pasturedung" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.sandydry_disturbedarable" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.stored_grain_pest" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.wetlandsmarshes" type="int" multiValued="false" stored="true"/>
+  <field name="sead_indicators.wood_and_trees" type="int" multiValued="false" stored="true"/>
   <field name="sead_indicators_coniferous" type="int" multiValued="false" stored="true"/>
   <field name="sead_indicators_deciduous" type="int" multiValued="false" stored="true"/>
   <field name="sead_indicators_dung" type="int" multiValued="false" stored="true"/>
@@ -739,6 +763,16 @@
   <field name="sead_relative_age_name" type="string" multiValued="false" stored="true"/>
   <field name="sead_sample_group_id" type="int" multiValued="false" stored="true"/>
   <field name="sead_sample_name" type="string" multiValued="false" stored="true"/>
+  <field name="sead_sampledata" type="string" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.age_abbreviation" type="string" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.age_name" type="string" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.dating_type" type="string" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.end" type="float" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.sample_group_id" type="int" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.sample_name" type="string" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.site_id" type="int" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.site_name" type="string" multiValued="false" stored="true"/>
+  <field name="sead_sampledata.start" type="float" multiValued="false" stored="true"/>
   <field name="sead_sandydry_disturbedarable" type="int" multiValued="false" stored="true"/>
   <field name="sead_site_id" type="int" multiValued="false" stored="true"/>
   <field name="sead_site_name" type="string" multiValued="false" stored="true"/>
@@ -777,8 +811,167 @@
   <field name="tdar_tags" type="string" multiValued="false" stored="true"/>
   <field name="tdar_type_of_site" type="string" multiValued="false" stored="true"/>
   <field name="tdar_what" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer1" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer1.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer1.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer1.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer1.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer1.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer1.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer10" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer10.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer10.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer10.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer10.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer10.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer10.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer11" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer11.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer11.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer11.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer11.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer11.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer11.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer12" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer12.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer12.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer12.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer12.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer12.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer12.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer13" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer13.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer13.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer13.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer13.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer13.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer13.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer14" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer14.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer14.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer14.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer14.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer14.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer14.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer15" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer15.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer15.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer15.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer15.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer15.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer15.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer16" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer16.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer16.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer16.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer16.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer16.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer16.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer17" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer17.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer17.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer17.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer17.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer17.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer17.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer18" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer18.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer18.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer18.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer18.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer18.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer18.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer19" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer19.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer19.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer19.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer19.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer19.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer19.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer2" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer2.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer2.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer2.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer2.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer2.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer2.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer20" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer20.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer20.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer20.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer20.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer20.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer20.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer21" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer21.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer21.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer21.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer21.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer21.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer21.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer22" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer22.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer22.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer22.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer22.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer22.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer22.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer3" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer3.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer3.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer3.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer3.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer3.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer3.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer4" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer4.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer4.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer4.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer4.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer4.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer4.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer5" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer5.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer5.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer5.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer5.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer5.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer5.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer6" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer6.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer6.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer6.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer6.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer6.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer6.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer7" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer7.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer7.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer7.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer7.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer7.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer7.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer8" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer8.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer8.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer8.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer8.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer8.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer8.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer9" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer9.ldepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer9.name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_layer9.reference" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer9.tephra_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_layer9.udepth" type="float" multiValued="false" stored="true"/>
+  <field name="teph_layer9.year" type="int" multiValued="false" stored="true"/>
+  <field name="teph_profile_name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_profile_number" type="int" multiValued="false" stored="true"/>
+  <field name="teph_site_name" type="string" multiValued="false" stored="true"/>
+  <field name="teph_site_number" type="int" multiValued="false" stored="true"/>
   <field name="title" type="text_general" multiValued="false" stored="true"/>
   <field name="topic" type="text_general" multiValued="true" stored="true"/>
+  <field name="topicName" type="strings" multiValued="true" stored="true"/>
   <field name="topic_id" type="strings" multiValued="true" stored="true"/>
   <field name="topic_id_2" type="strings" multiValued="true" stored="true"/>
   <field name="topic_id_3" type="strings" multiValued="true" stored="true"/>

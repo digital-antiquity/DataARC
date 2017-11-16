@@ -15,6 +15,7 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.dataarc.bean.AbstractPersistable;
 import org.dataarc.util.View;
@@ -44,7 +45,7 @@ public class Schema extends AbstractPersistable {
     @JsonView(View.Schema.class)
     private String url;
 
-    @Column(length = 1024, name ="logourl")
+    @Column(length = 1024, name = "logourl")
     @JsonView(View.Schema.class)
     private String logoUrl;
 
@@ -69,7 +70,7 @@ public class Schema extends AbstractPersistable {
     @Type(type = "org.hibernate.type.TextType")
     private String linkTemplate;
 
-    @Column(name = "date_created", nullable=false)
+    @Column(name = "date_created", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 
@@ -185,6 +186,36 @@ public class Schema extends AbstractPersistable {
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    @Transient
+    public Long getStartFieldId() {
+        for (SchemaField field : getFields()) {
+            if (field.isStartField()) {
+                return field.getId();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public Long getEndFieldId() {
+        for (SchemaField field : getFields()) {
+            if (field.isEndField()) {
+                return field.getId();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public Long getTextFieldId() {
+        for (SchemaField field : getFields()) {
+            if (field.isTextDateField()) {
+                return field.getId();
+            }
+        }
+        return null;
     }
 
 }

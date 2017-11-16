@@ -61,9 +61,16 @@ public class SchemaController extends AbstractController {
     public ModelAndView getSchema(@PathVariable(value = "id", required = true) Long id) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.findById(id);
-        mav.addObject("schema", schema);
-        mav.addObject("files", dataFileService.findBySchemaId(schema.getId()));
+        appendModelValues(mav, schema);
         return mav;
+    }
+
+    private void appendModelValues(ModelAndView mav, Schema schema) {
+        mav.addObject("schema", schema);
+        mav.addObject("startFieldId", schema.getStartFieldId());
+        mav.addObject("endFieldId", schema.getEndFieldId());
+        mav.addObject("textFieldId", schema.getTextFieldId());
+        mav.addObject("files", dataFileService.findBySchemaId(schema.getId()));
     }
 
     @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.POST)
@@ -79,8 +86,8 @@ public class SchemaController extends AbstractController {
             ) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.findById(id);
-        schemaService.updateSchema(schema, displayName, description, logoUrl, url, category);
-        mav.addObject("schema", schema);
+        schemaService.updateSchema(schema, displayName, description, logoUrl, url, category, startFieldId, endFieldId, textFieldId);
+        appendModelValues(mav, schema);
         return mav;
     }
 

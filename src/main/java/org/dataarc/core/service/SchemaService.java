@@ -107,14 +107,60 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public void updateSchema(Schema schema, String displayName, String description, String logoUrl, String url, CategoryType category) {
+    public void updateSchema(Schema schema, String displayName, String description, String logoUrl, String url, CategoryType category, Long startFieldId,
+            Long endFieldId, Long textFieldId) {
         schema.setDescription(description);
         schema.setDisplayName(displayName);
         schema.setCategory(category);
         schema.setLogoUrl(logoUrl);
         schema.setUrl(url);
+        logger.debug("start: {}  end: {} text:{}", startFieldId, endFieldId, textFieldId);
+        resetDateFields(schema, startFieldId, endFieldId, textFieldId);
+        setDateFields(schema, startFieldId, endFieldId, textFieldId);
         schemaDao.save(schema);
+    }
 
+    private void setDateFields(Schema schema, Long startFieldId, Long endFieldId, Long textFieldId) {
+        for (SchemaField field : schema.getFields()) {
+            if (Objects.equal(field.getId(), endFieldId)) {
+                logger.debug("setting EndField: {}", field);
+                field.setEndField(true);
+                fieldDao.save(field);
+            }
+            if (Objects.equal(field.getId(), textFieldId)) {
+                logger.debug("setting TextField: {}", field);
+                field.setTextDateField(true);
+                fieldDao.save(field);
+            }
+            if (Objects.equal(field.getId(), startFieldId)) {
+                logger.debug("setting StartField: {}", field);
+                field.setStartField(true);
+                fieldDao.save(field);
+            }
+        }
+    }
+
+    private void resetDateFields(Schema schema, Long startFieldId, Long endFieldId, Long textFieldId) {
+        for (SchemaField field : schema.getFields()) {
+            if (schema.getEndFieldId() != endFieldId) {
+                if (field.isEndField()) {
+                    field.setEndField(false);
+                    fieldDao.save(field);
+                }
+            }
+            if (schema.getTextFieldId() != textFieldId) {
+                if (field.isTextDateField()) {
+                    field.setTextDateField(false);
+                    fieldDao.save(field);
+                }
+            }
+            if (schema.getStartFieldId() != startFieldId) {
+                if (field.isStartField()) {
+                    field.setStartField(false);
+                    fieldDao.save(field);
+                }
+            }
+        }
     }
 
     @Transactional(readOnly = false)
@@ -122,13 +168,13 @@ public class SchemaService {
         return schemaDao.findById(schemaId);
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void updateSchemaTemplates(Schema schema, String title, String result, String link) {
         schema.setTitleTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), title));
         schema.setLinkTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), link));
         schema.setResultTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), result));
         schemaDao.save(schema);
-        
+
     }
 
     public List<SchemaField> findAllFields() {
