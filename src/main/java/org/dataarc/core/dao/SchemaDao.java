@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dataarc.bean.schema.Field;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.util.FieldDataCollector;
@@ -35,7 +35,7 @@ public class SchemaDao {
     public void deleteAll() {
         manager.createQuery("delete from Indicator").executeUpdate();
         manager.createQuery("delete from Value").executeUpdate();
-        manager.createQuery("delete from Field").executeUpdate();
+        manager.createQuery("delete from SchemaField").executeUpdate();
         manager.createQuery("delete from DataFile").executeUpdate();
         manager.createQuery("delete from Schema").executeUpdate();
     }
@@ -45,7 +45,7 @@ public class SchemaDao {
         if (schema == null) {
             return null;
         }
-        Field field = schema.getFields().stream().filter(fld -> StringUtils.equals(fld.getName(), fieldName)).findFirst().get();
+        SchemaField field = schema.getFields().stream().filter(fld -> StringUtils.equals(fld.getName(), fieldName)).findFirst().get();
         logger.debug("field {} --> {}", field, field.getValues());
         return field.getValues();
     }
@@ -60,7 +60,7 @@ public class SchemaDao {
         }
     }
 
-    public Set<Field> getFields(String source) {
+    public Set<SchemaField> getFields(String source) {
         Schema schema = getSchemaByName(source);
         if (schema == null) {
             return null;
@@ -87,11 +87,11 @@ public class SchemaDao {
             schema.setDisplayName(collector.getDisplayName());
         }
         schema.setRows(rows);
-        Set<Field> toRemove = new HashSet<>(schema.getFields());
+        Set<SchemaField> toRemove = new HashSet<>(schema.getFields());
         for (String fieldName : collector.getNames()) {
-            Field field = schema.getFieldByName(fieldName);
+            SchemaField field = schema.getFieldByName(fieldName);
             if (field == null) {
-                field = new Field(fieldName, collector);
+                field = new SchemaField(fieldName, collector);
                 schema.getFields().add(field);
             } else {
                 toRemove.remove(field);
@@ -138,8 +138,8 @@ public class SchemaDao {
         return (Schema) query.getSingleResult();
     }
 
-    public List<Field> findAllFields() {
-        Query query = manager.createQuery("from Field f", Field.class);
+    public List<SchemaField> findAllFields() {
+        Query query = manager.createQuery("from SchemaField f", SchemaField.class);
         return query.getResultList();
     }
 

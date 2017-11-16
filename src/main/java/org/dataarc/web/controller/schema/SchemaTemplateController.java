@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.schema.CategoryType;
-import org.dataarc.bean.schema.Field;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.service.DataFileService;
 import org.dataarc.core.service.ImportDataService;

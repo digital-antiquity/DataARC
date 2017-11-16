@@ -448,5 +448,20 @@
             <column name="logourl" type="varchar(1024)" />
         </addColumn>
     </changeSet>
+    <changeSet id="beta-2" author="abrin">
+        <addColumn tableName="schema_field">
+            <column name="text_date_field" type="boolean" defaultValueBoolean="false" />
+        </addColumn>
+        
+       <createTable tableName="temporal_coverage">
+            <column name="id" autoIncrement="true" type="bigserial" />
+            <column name="date_created" type="timestamp" defaultValue="now()" />
+            <column name="date_updated" type="timestamp" defaultValue="now()" />
+            <column name="start_date" type="int" />
+            <column name="end_date" type="int" />
+            <column name="term" type="varchar(1024)" />
+            <column name="description" type="text" />
+        </createTable>
+    </changeSet>
     
 </databaseChangeLog>

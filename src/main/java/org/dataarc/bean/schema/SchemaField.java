@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "schema_field")
-public class Field extends AbstractPersistable {
+public class SchemaField extends AbstractPersistable {
 
     private static final long serialVersionUID = -274948984918121197L;
 
@@ -46,6 +46,10 @@ public class Field extends AbstractPersistable {
     @JsonView(View.Schema.class)
     private boolean startField;
 
+    @Column(name = "text_date_field")
+    @JsonView(View.Schema.class)
+    private boolean textDateField;
+
     @Column(name = "end_field")
     @JsonView(View.Schema.class)
     private boolean endField;
@@ -54,10 +58,10 @@ public class Field extends AbstractPersistable {
     @JoinColumn(name = "field_id", nullable = false)
     private Set<Value> values = new HashSet<>();
 
-    public Field() {
+    public SchemaField() {
     }
 
-    public Field(String field, FieldDataCollector collector) {
+    public SchemaField(String field, FieldDataCollector collector) {
         this.name = field;
         this.type = collector.getType(field);
         this.displayName = collector.getDisplayName(field);
@@ -123,6 +127,14 @@ public class Field extends AbstractPersistable {
 
     public void setEndField(boolean endField) {
         this.endField = endField;
+    }
+
+    public boolean isTextDateField() {
+        return textDateField;
+    }
+
+    public void setTextDateField(boolean textDateField) {
+        this.textDateField = textDateField;
     }
 
 }

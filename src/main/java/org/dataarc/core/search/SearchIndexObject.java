@@ -9,12 +9,15 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.beans.Field;
 import org.dataarc.bean.DataEntry;
+import org.dataarc.bean.TemporalCoverage;
 import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.bean.schema.SchemaField;
+import org.dataarc.core.service.TemporalCoverageService;
 import org.dataarc.util.SchemaUtils;
 import org.geojson.Feature;
 import org.slf4j.Logger;
@@ -43,7 +46,7 @@ public class SearchIndexObject {
 
     @Field(value = IndexFields.TOPIC_NAMES)
     private List<String> topicNames = new ArrayList<>();
-    
+
     @Field(value = IndexFields.END)
     private Integer end;
 
@@ -111,7 +114,7 @@ public class SearchIndexObject {
     public SearchIndexObject() {
     }
 
-    public SearchIndexObject(DataEntry entry, Schema schema) {
+    public SearchIndexObject(DataEntry entry, Schema schema, TemporalCoverageService temporal) {
         if (schema == null) {
             return;
         }
@@ -131,31 +134,47 @@ public class SearchIndexObject {
         applyGeographicRegions(entry);
         applyTopicIdentifiers(entry);
         applyProperties(entry, schema);
-        applyStartEnd(entry, schema);
+        applyStartEnd(entry, schema, temporal);
     }
 
-    private void applyStartEnd(DataEntry entry, Schema schema) {
-        org.dataarc.bean.schema.Field  startField = null;
-        org.dataarc.bean.schema.Field  endField = null;
-        for (org.dataarc.bean.schema.Field field : schema.getFields()) {
+    private void applyStartEnd(DataEntry entry, Schema schema, TemporalCoverageService coverageLookup) {
+        SchemaField startField = null;
+        SchemaField endField = null;
+        SchemaField textField = null;
+        for (SchemaField field : schema.getFields()) {
             if (field.isStartField()) {
                 startField = field;
             }
             if (field.isEndField()) {
                 endField = field;
             }
+            if (field.isTextDateField()) {
+                textField = field;
+            }
         }
         if (startField != null) {
-            setStart(toInt(properties.getOrDefault(SchemaUtils.formatForSolr(schema, startField), null)));
+            setStart(toInt(getFieldValue(schema, startField), coverageLookup, true));
         }
         if (endField != null) {
-            setEnd(toInt(properties.getOrDefault(SchemaUtils.formatForSolr(schema, endField), null)));
+            setEnd(toInt(getFieldValue(schema, endField), coverageLookup, false));
         }
-//        logger.debug("{} ({}) - {} ({})", startField,start,  endField, end);
-//        logger.debug("\t {} ", properties);
+
+        if (textField != null && end == null && start == null) {
+            TemporalCoverage coverage = coverageLookup.find((String) getFieldValue(schema, textField));
+            if (coverage != null) {
+                setStart(coverage.getStartDate());
+                setEnd(coverage.getEndDate());
+            }
+        }
+        // logger.debug("{} ({}) - {} ({})", startField,start, endField, end);
+        // logger.debug("\t {} ", properties);
     }
 
-    private Integer toInt(Object o) {
+    private Object getFieldValue(Schema schema, SchemaField startField) {
+        return properties.getOrDefault(SchemaUtils.formatForSolr(schema, startField), null);
+    }
+
+    private Integer toInt(Object o, TemporalCoverageService coverageLookup, boolean start) {
         if (o == null) {
             return null;
         }
@@ -165,8 +184,16 @@ public class SearchIndexObject {
         if (o instanceof String) {
             String str = StringUtils.trim((String) o);
             if (NumberUtils.isNumber(str)) {
-            float f = NumberUtils.toFloat(str);
-            return new Float(f).intValue();
+                float f = NumberUtils.toFloat(str);
+                return new Float(f).intValue();
+            }
+            TemporalCoverage coverage = coverageLookup.find(str);
+            if (coverage != null) {
+                if (start) {
+                    return coverage.getStartDate();
+                } else {
+                    return coverage.getEndDate();
+                }
             }
         }
         return null;
@@ -181,7 +208,7 @@ public class SearchIndexObject {
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
             // make sure that the schema field exists, is not a null type (i.e. we inspected it) and has a value
-            org.dataarc.bean.schema.Field field = schema.getFieldByName(k);
+            org.dataarc.bean.schema.SchemaField field = schema.getFieldByName(k);
             // if (field == null) {
             // logger.debug("{} -- null", k);
             // }

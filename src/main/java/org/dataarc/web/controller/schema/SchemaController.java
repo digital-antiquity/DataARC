@@ -72,7 +72,11 @@ public class SchemaController extends AbstractController {
             @RequestParam(value = "displayName") String displayName,
             @RequestParam(value = "category") CategoryType category,
             @RequestParam(value = "logoUrl") String logoUrl,
-            @RequestParam(value = "url") String url) throws Exception {
+            @RequestParam(value = "url") String url,
+            @RequestParam(value = "startFieldId" , required = false, defaultValue="-1") Long startFieldId, 
+            @RequestParam(value = "endFieldId", required = false, defaultValue="-1") Long endFieldId,
+            @RequestParam(value = "textFieldId", required = false, defaultValue="-1") Long textFieldId
+            ) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.findById(id);
         schemaService.updateSchema(schema, displayName, description, logoUrl, url, category);

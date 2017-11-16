@@ -80,7 +80,7 @@ public class Schema extends AbstractPersistable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "schema_id", nullable = false)
     @JsonView(View.Schema.class)
-    private Set<Field> fields = new HashSet<>();
+    private Set<SchemaField> fields = new HashSet<>();
 
     public String getName() {
         return name;
@@ -90,16 +90,16 @@ public class Schema extends AbstractPersistable {
         this.name = source;
     }
 
-    public Set<Field> getFields() {
+    public Set<SchemaField> getFields() {
         return fields;
     }
 
-    public void setFields(Set<Field> fields) {
+    public void setFields(Set<SchemaField> fields) {
         this.fields = fields;
     }
 
-    public Field getFieldByName(String name) {
-        for (Field fld : fields) {
+    public SchemaField getFieldByName(String name) {
+        for (SchemaField fld : fields) {
             if (fld.getDisplayName().equals(name) || fld.getName().equals(name)) {
                 return fld;
             }

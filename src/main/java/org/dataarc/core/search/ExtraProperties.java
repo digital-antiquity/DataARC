@@ -32,9 +32,9 @@ public class ExtraProperties {
                 continue;
             }
             String key = e.getKey();
-            org.dataarc.bean.schema.Field fieldByName = schema.getFieldByName(key);
+            org.dataarc.bean.schema.SchemaField fieldByName = schema.getFieldByName(key);
             if (fieldByName == null) {
-                for (org.dataarc.bean.schema.Field fld : schema.getFields()) {
+                for (org.dataarc.bean.schema.SchemaField fld : schema.getFields()) {
                     if (fieldByName != null) {
                         break;
                     }

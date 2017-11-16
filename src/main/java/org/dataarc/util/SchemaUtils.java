@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dataarc.bean.schema.Field;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.search.IndexFields;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class SchemaUtils {
 
     private static final List<String> ignorePrefix = Arrays.asList(IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.TITLE);
 
-    public static String formatForSolr(Schema schema, org.dataarc.bean.schema.Field field) {
+    public static String formatForSolr(Schema schema, org.dataarc.bean.schema.SchemaField field) {
         if (field == null) {
             return null;
         }
@@ -72,7 +72,7 @@ public class SchemaUtils {
         return String.format("%s", id2.intValue());
     }
 
-    public static String unFormat(String name, Set<Field> fields, String titleTemplate_) {
+    public static String unFormat(String name, Set<SchemaField> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         return titleTemplate;
 /*
@@ -88,7 +88,7 @@ public class SchemaUtils {
  */
     }
 
-    public static String format(String name, Set<Field> fields, String titleTemplate_) {
+    public static String format(String name, Set<SchemaField> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         return titleTemplate;
         /*
@@ -101,11 +101,11 @@ public class SchemaUtils {
          */
     }
 
-    private static String formatId(String prefix, Field f) {
+    private static String formatId(String prefix, SchemaField f) {
         return String.format("{{%s%s}}", prefix, f.getId().intValue());
     }
 
-    private static String formatName(String name, Field f) {
+    private static String formatName(String name, SchemaField f) {
         return String.format("{{%s_%s}}", name, f.getName());
     }
 

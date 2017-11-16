@@ -2,7 +2,7 @@ package org.dataarc.web.api.schema;
 
 import java.util.Set;
 
-import org.dataarc.bean.schema.Field;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
@@ -20,7 +20,7 @@ public class ListFields extends AbstractRestController {
 
     @RequestMapping(path=UrlConstants.SCHEMA_LIST_FIELDS, produces={"application/json;charset=UTF-8"})
     @ResponseBody
-    public Set<Field> listFields(@RequestParam(value = "schema", required = true) String source) throws Exception {
+    public Set<SchemaField> listFields(@RequestParam(value = "schema", required = true) String source) throws Exception {
         
         return schemaService.getFields(source);
     }

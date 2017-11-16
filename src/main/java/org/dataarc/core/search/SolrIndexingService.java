@@ -26,6 +26,7 @@ import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
+import org.dataarc.core.service.TemporalCoverageService;
 import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,8 @@ public class SolrIndexingService {
 
     @Autowired
     SerializationDao serializationService;
+    @Autowired
+    TemporalCoverageService temporalCoverageService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -129,7 +132,7 @@ public class SolrIndexingService {
         SolrInputDocument doc = null;
         try {
             Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
-            SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema);
+            SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema,temporalCoverageService);
             applyFacets(searchIndexObject);
             applyTopics(searchIndexObject);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);

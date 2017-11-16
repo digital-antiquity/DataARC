@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.dataarc.bean.schema.CategoryType;
-import org.dataarc.bean.schema.Field;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.core.dao.FieldDao;
@@ -55,7 +55,7 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public void saveField(Field field) {
+    public void saveField(SchemaField field) {
         fieldDao.save(field);
     }
 
@@ -65,7 +65,7 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = true)
-    public Set<Field> getFields(String source) {
+    public Set<SchemaField> getFields(String source) {
         return schemaDao.getFields(source);
     }
 
@@ -80,9 +80,9 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public Field updateFieldDisplayName(Long schemaId, Long fieldId, String displayName, Boolean startField, Boolean endField) {
+    public SchemaField updateFieldDisplayName(Long schemaId, Long fieldId, String displayName, Boolean startField, Boolean endField) {
         Schema schema = schemaDao.findById(schemaId);
-        for (Field field : schema.getFields()) {
+        for (SchemaField field : schema.getFields()) {
             if (Objects.equal(field.getId(), fieldId)) {
                 field.setDisplayName(displayName);
                 field.setStartField(startField);
@@ -131,7 +131,7 @@ public class SchemaService {
         
     }
 
-    public List<Field> findAllFields() {
+    public List<SchemaField> findAllFields() {
         return schemaDao.findAllFields();
     }
 }

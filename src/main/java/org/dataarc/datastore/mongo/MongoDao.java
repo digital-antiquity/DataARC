@@ -13,7 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
-import org.dataarc.bean.schema.Field;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.QueryDao;
@@ -122,7 +122,7 @@ public class MongoDao implements ImportDao, QueryDao {
                 throw new QueryException(INVALID_QUERY_NO_FIELD_SPECIFIED);
             }
             String name = "properties.";
-            for (Field f : schema.getFields()) {
+            for (SchemaField f : schema.getFields()) {
                 if (f.getId() == part.getFieldId()) {
                     name += f.getMongoName();
                 }
