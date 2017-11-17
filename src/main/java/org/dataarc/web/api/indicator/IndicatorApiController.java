@@ -39,7 +39,7 @@ public class IndicatorApiController extends AbstractRestController {
         try {
         logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
         indicatorService.save(indicator, getUser());
-        changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator.toString() );
+        changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator.getName() );
 
         } catch (Throwable t) {
             logger.error("error saving indicator", t);
@@ -55,7 +55,7 @@ public class IndicatorApiController extends AbstractRestController {
         Indicator indicator = indicatorService.merge(_indicator);
         indicator.setTopicIdentifiers(topicIdentifier);
         indicatorService.save(indicator, getUser());
-        changelogservice.save(ActionType.UPDATE, ObjectType.COMBINATOR, getUser(), indicator.toString() );
+        changelogservice.save(ActionType.UPDATE, ObjectType.COMBINATOR, getUser(), indicator.getName() );
         return indicator.getId();
 
     }
