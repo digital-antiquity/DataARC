@@ -21,6 +21,7 @@ import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.util.hibernate.type.QueryJsonType;
+import org.dataarc.web.api.indicator.IndicatorDataObject;
 import org.dataarc.util.View;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -149,6 +150,13 @@ public class Indicator extends AbstractPersistable {
 
     public void setSchema(Schema schema) {
         this.schema = schema;
+    }
+
+    public void updateFrom(IndicatorDataObject _indicator) {
+        setCitation(_indicator.getCitation());
+        setDescription(_indicator.getDescription());
+        setName(_indicator.getName());
+        setQuery(_indicator.getQuery());
     }
     
 }

@@ -35,7 +35,7 @@ public class IndicatorApiController extends AbstractRestController {
     private ChangeLogService changelogservice;
 
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
-    public Long save(@RequestBody(required = true) Indicator indicator) throws Exception {
+    public Long save(@RequestBody(required = true) IndicatorDataObject indicator) throws Exception {
         try {
         logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
         indicatorService.save(indicator, getUser());
@@ -49,11 +49,8 @@ public class IndicatorApiController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
-    public Long update(@PathVariable("id") Long id, @RequestBody(required = true) Indicator _indicator) throws Exception {
-        Set<String> topicIdentifier = _indicator.getTopicIdentifiers();
-        logger.debug("Saving indicator: {} :: {}", _indicator, topicIdentifier);
-        Indicator indicator = indicatorService.merge(_indicator);
-        indicator.setTopicIdentifiers(topicIdentifier);
+    public Long update(@PathVariable("id") Long id, @RequestBody(required = true)  IndicatorDataObject indicator) throws Exception {
+        Set<String> topicIdentifier = indicator.getTopicIdentifiers();
         indicatorService.save(indicator, getUser());
         changelogservice.save(ActionType.UPDATE, ObjectType.COMBINATOR, getUser(), indicator.getName() );
         return indicator.getId();

@@ -232,16 +232,17 @@ var Hack = new Vue({
       cannotSubmit: function() {
           if (this.currentIndicator != undefined) {
               var ind = this.indicators[this.currentIndicator];
-              console.log(ind.name);
+              //console.log(ind.name);
               if (ind.name == '' || ind.name == undefined) {
                   return true;
               }
+//              console.log(JSON.stringify(this.selectedTopics));
               if (this.selectedTopics.length == 0) {
                   return true;
               }
               var valid = false;
               this.selectedTopics.forEach(function(tid){
-                  if (tid != '' && tid != undefined) {
+                  if (tid != '' && tid != undefined && !jQuery.isEmptyObject(tid)) {
                       valid = true;
                   } 
               });
@@ -410,10 +411,16 @@ var Hack = new Vue({
           saveIndicator() {
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
-              indicator.topicIdentifiers = this.selectedTopics;
+              indicator.topicIdentifiers = [];
+              this.selectedTopics.forEach(function(topic){
+                  if (topic != undefined && topic != '' && !jQuery.isEmptyObject(topic)) {
+                      indicator.topicIdentifiers.push(topic);
+                  }
+              });
+              
               Vue.set(this,"saveStatus","saving...");
+              var json = JSON.stringify(indicator);
               if (indicator.id == -1 || indicator.id == undefined) {
-                  var json = JSON.stringify(indicator);
                   this.$http.post(getContextPath() + '/api/indicator/save' , json, {emulateJSON:true,
                       headers: {
                           'Content-Type': 'application/json'
@@ -432,7 +439,6 @@ var Hack = new Vue({
                       Rollbar.errors(err);
                   });
               } else {
-                  var json = JSON.stringify(indicator);
                   this.$http.put(getContextPath() + '/api/indicator/' + indicator.id , json, {emulateJSON:true,
                       headers: {
                           'Content-Type': 'application/json'
@@ -441,6 +447,7 @@ var Hack = new Vue({
                       console.log(JSON.stringify(request.body));
                       Vue.set(this,"saveStatus","successful");
                       Vue.set(this, "indicatorId", request.body);
+                      indicator.id = request.body;
                   })
                   .catch(function (err) {
                       Vue.set(this,"saveStatus",err);

@@ -215,7 +215,7 @@
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
                 <selectize v-bind:options="getFieldValues(part.fieldName)" v-model="part.value" size="1" style="width:250px" class="form-control"
-         data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()"
+         data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()" data-create="true" data-create-on-blur="true" data-persist="false"
          data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'>
 
 

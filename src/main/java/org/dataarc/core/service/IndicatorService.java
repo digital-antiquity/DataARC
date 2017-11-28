@@ -15,6 +15,8 @@ import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.TopicDao;
+import org.dataarc.util.PersistableUtils;
+import org.dataarc.web.api.indicator.IndicatorDataObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,28 +46,48 @@ public class IndicatorService {
 
     @Transactional(readOnly = false)
     @PreAuthorize("hasPermission('Indicator', 'CREATE_EDIT')")
-    public void save(Indicator indicator, DataArcUser user) {
-        Set<String> incomingIdentifiers = indicator.getTopicIdentifiers();
-        logger.debug("{}", incomingIdentifiers);
+    public void save(IndicatorDataObject _indicator, DataArcUser user) {
+        Indicator indicator = null;
+        if (PersistableUtils.isNotNullOrTransient(_indicator.getId())) {
+            indicator = indicatorDao.findById(_indicator.getId());
+        } else {
+            indicator = new Indicator();
+        }
+        
+        indicator.updateFrom(_indicator);
         indicator.setUser(user);
-        String schemaName = indicator.getQuery().getSchema();
+        resolveTopics(_indicator, indicator);
+        String schemaName = _indicator.getQuery().getSchema();
         if (indicator.getSchema() == null) {
             Schema schema = schemoDao.findByName(schemaName);
             indicator.setSchema(schema);
         }
+        indicatorDao.save(indicator);
+        try { 
+        applyIndicators(schemaName);
+        } catch (Throwable t) {
+            logger.error("{}",t,t);
+        }
+    }
+
+    private void resolveTopics(IndicatorDataObject _indicator, Indicator indicator) {
+        Set<String> incomingIdentifiers = _indicator.getTopicIdentifiers();
+        logger.debug("{}", incomingIdentifiers);
+        
         List<Topic> topics = new ArrayList<>();
         Set<String> existingIdentifiers = new HashSet<>();
         indicator.getTopics().forEach(t -> {
             existingIdentifiers.add(t.getIdentifier());
         });
-        incomingIdentifiers.forEach(ident -> {
+        for (String ident : incomingIdentifiers) {
             Topic topic = topicDao.findTopicByIdentifier(ident);
             topics.add(topic);
             logger.debug("  topic: {}", topic);
             indicator.getTopics().add(topic);
             existingIdentifiers.remove(ident);
-        });
-        existingIdentifiers.forEach(id -> {
+        };
+        
+        for (String id : existingIdentifiers) {
             Iterator<Topic> iterator = indicator.getTopics().iterator();
             while (iterator.hasNext()) {
                 Topic topic = iterator.next();
@@ -74,12 +96,6 @@ public class IndicatorService {
                     iterator.remove();
                 }
             }
-        });
-        indicatorDao.save(indicator);
-        try { 
-        applyIndicators(schemaName);
-        } catch (Throwable t) {
-            logger.error("{}",t,t);
         }
     }
 
