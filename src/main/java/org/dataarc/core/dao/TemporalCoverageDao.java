@@ -3,6 +3,7 @@ package org.dataarc.core.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -26,9 +27,11 @@ public class TemporalCoverageDao {
 
     public TemporalCoverage find(String term) {
         try {
-            TypedQuery<TemporalCoverage> query = manager.createQuery("from TemporalCoverage where term ilike :term", TemporalCoverage.class);
+            TypedQuery<TemporalCoverage> query = manager.createQuery("from TemporalCoverage where lower(term) like :term", TemporalCoverage.class);
             query.setParameter("term", term);
             return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } catch (Exception e) {
             logger.error("error in sql:{}", e, e);
             return null;

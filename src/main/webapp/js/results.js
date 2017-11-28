@@ -317,14 +317,13 @@ ResultDetail.prototype = {
         this.data[this.features[i].properties.source].features = [];
 
       }
-
       // push the new feature object for datatables
-      this.data[this.features[i].properties.source].tabledata.push({
-        id: (typeof this.features[i].properties.id == 'undefined' ? "" : this.features[i].properties.id),
-        date: (typeof this.features[i].properties.date == 'undefined' ? "" : this.features[i].properties.date),
-        title: (typeof this.features[i].properties.title == 'undefined' ? "" : this.features[i].properties.title)
-      });
-
+      var row = {
+              id: (typeof this.features[i].properties.id == 'undefined' ? "" : this.features[i].properties.id),
+              date: (typeof this.features[i].properties.date == 'undefined' ? "" : this.features[i].properties.date),
+              title: (typeof this.features[i].properties.title == 'undefined' ? "" : this.features[i].properties.title)
+            };
+      this.data[this.features[i].properties.source].tabledata.push(row);
       // push the full feature object for display
       this.data[this.features[i].properties.source].features.push(this.features[i]);
 

@@ -10,6 +10,7 @@ import org.dataarc.bean.ObjectType;
 import org.dataarc.core.service.ChangeLogService;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.core.service.UserService;
+import org.dataarc.util.PersistableUtils;
 import org.dataarc.util.View;
 import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
@@ -50,7 +51,9 @@ public class IndicatorApiController extends AbstractRestController {
 
     @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
     public Long update(@PathVariable("id") Long id, @RequestBody(required = true)  IndicatorDataObject indicator) throws Exception {
-        Set<String> topicIdentifier = indicator.getTopicIdentifiers();
+        if (PersistableUtils.isNullOrTransient(indicator.getId()) && PersistableUtils.isNotNullOrTransient(id) ) {
+            indicator.setId(id);
+        }
         indicatorService.save(indicator, getUser());
         changelogservice.save(ActionType.UPDATE, ObjectType.COMBINATOR, getUser(), indicator.getName() );
         return indicator.getId();
