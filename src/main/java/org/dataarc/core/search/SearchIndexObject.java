@@ -34,6 +34,8 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
+import javassist.compiler.ast.Keyword;
+
 @JsonInclude(Include.NON_EMPTY)
 public class SearchIndexObject {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -135,6 +137,13 @@ public class SearchIndexObject {
         applyTopicIdentifiers(entry);
         applyProperties(entry, schema);
         applyStartEnd(entry, schema, temporal);
+        
+        
+        values.addAll(topic_2nd);
+        values.addAll(topic_3rd);
+        values.addAll(topicIdentifiers);
+        values.addAll(topicNames);
+        
     }
 
     private void applyStartEnd(DataEntry entry, Schema schema, TemporalCoverageService coverageLookup) {

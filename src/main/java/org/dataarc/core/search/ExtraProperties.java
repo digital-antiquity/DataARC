@@ -52,6 +52,9 @@ public class ExtraProperties {
                 logger.warn("field still null: {} | {}", key, schema.getFields());
             } else {
                 data.put(SchemaUtils.formatForSolr(schema, fieldByName), e.getValue());
+                if (e.getValue() instanceof String) {
+                    searchIndexObject.getValues().add((String)e.getValue());
+                }
                 searchIndexObject.applyTransientDateFields(fieldByName, e.getValue());
 
             }

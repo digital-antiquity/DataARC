@@ -193,9 +193,11 @@ public class SolrIndexingService {
             searchIndexObject.setTopic_3rd(new HashSet<>());
             for (Topic t : children) {
                 searchIndexObject.getTopic_2nd().add(t.getIdentifier());
+                searchIndexObject.getTopic_2nd().add(t.getName());
             }
             for (Topic t : grandChildren) {
                 searchIndexObject.getTopic_3rd().add(t.getIdentifier());
+                searchIndexObject.getTopic_3rd().add(t.getName());
             }
         }
     }
