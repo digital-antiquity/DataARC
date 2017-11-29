@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.sun.tools.internal.xjc.model.CPluginCustomization;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -139,10 +140,18 @@ public class SearchIndexObject {
         applyStartEnd(entry, schema, temporal);
         
         
-        values.addAll(topic_2nd);
-        values.addAll(topic_3rd);
-        values.addAll(topicIdentifiers);
-        values.addAll(topicNames);
+        if (CollectionUtils.isNotEmpty(topic_2nd)) {
+            values.addAll(topic_2nd);
+        }
+        if (CollectionUtils.isNotEmpty(topic_3rd)) {
+            values.addAll(topic_3rd);
+        }
+        if (CollectionUtils.isNotEmpty(topicIdentifiers)) {
+            values.addAll(topicIdentifiers);
+        }
+        if (CollectionUtils.isNotEmpty(topicNames)) {
+            values.addAll(topicNames);
+        }
         
     }
 
