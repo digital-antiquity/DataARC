@@ -29,6 +29,11 @@
       
             
 	</script>
+	
+	<style>
+	.homesubhead {font-size:140%;}
+	.service-box p {font-size:80% !important; font-weight:bold !Important}
+	</style>
   </head>
 <body id="page-top">
   <!-- Navigation -->
@@ -69,8 +74,9 @@
     <div class="header-content">
       <div class="header-content-inner">
         <h1 id="homeHeading">Simple Interface, Data That Matters</h1>
+        <h2 id="homesubhead">Human Ecodynamics in the North Atlantic, Interdisciplinary Research Tool <b><a href="http://www.data-arc.org">learn more</a></b> </h2>
         <hr>
-        <p>Enter a word or phrase to begin filtering the result data or select a preconfigured example.</p>
+        <p>Find contextualized data from ecological, archaeological, and historical sources for the North Atlantic.</p>
         <p>
           <div class="row justify-content-md-center">
             <div class="col-lg-6 text-center">
@@ -89,7 +95,7 @@
               <div class="service-box">
                 <i class="fa fa-4x fa-superpowers text-primary sr-icons"></i>
                 <h3>Keyword Example</h3>
-                <p>Using the keyword example, you can see how a simple phrase in the keyword box will filter our results.</p>
+                <p>Using the keyword example, you can see how a simple phrase in the keyword box will filter our results based on terms that you specify.</p>
               </div>
             </div>
             <div class="col-lg-3 col-md-6 text-center">
@@ -110,7 +116,7 @@
               <div class="service-box">
                 <i class="fa fa-4x fa-sitemap text-primary sr-icons"></i>
                 <h3>Concept Example</h3>
-                <p>Looking for a way to view results that only relate to specific concapts?</p>
+                <p>Looking for a way to view results that only relate to specific concepts? Filter results based on the concept map. Learn about <a href="https://www.data-arc.org/conceptmapping/">dataARC&apos;s concept map</a>.</p>
               </div>
             </div>
           </div>
@@ -124,7 +130,7 @@
         <div class="col-lg-8 mx-auto text-center">
           <h2 class="section-heading text-white">Explore the data!</h2>
           <hr class="light">
-          <p class="text-faded">Make your way through the different types of data using the tools below.</p>
+          <p class="text-faded">You can search and filter by any combination of space, time and concept. Combine filters to narrow your search.</p>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#timeline-section"><i class="fa fa-clock-o text-white sr-icons"></i> Timeline</a>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#map-section"><i class="fa fa-map-o text-white sr-icons"></i> Map</a>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#concept-section"><i class="fa fa-sitemap text-white sr-icons"></i> Concept</a>
@@ -140,9 +146,9 @@
           <hr class="primary">
           <div class="legend justify-content-md-center">
             <ul class="list-inline">
-              <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Textual</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Environmental</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological Sources</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Textual Sources</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Environmental Sources</li>
             </ul>
           </div>
           <div id="timeline">
@@ -164,9 +170,9 @@
           <hr class="primary">
           <div class="legend justify-content-md-center">
             <ul class="list-inline">
-              <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Textual</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Environmental</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological Sources</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Textual Sources</li>
+              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Environmental Sources</li>
             </ul>
           </div>
           <div id="map">
@@ -313,6 +319,10 @@
 	  </div>
 	</script>
   </#list>
-
+  <div class="hidden">
+<#list schema as schemum>
+ <div id="${schemum.name?replace(" ","_")}_bio">${schemum.description!"No description"}</div>
+</#list>
+</div>
   </body>
 </html>

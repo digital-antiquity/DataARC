@@ -321,7 +321,7 @@ ResultDetail.prototype = {
       var row = {
               id: (typeof this.features[i].properties.id == 'undefined' ? "" : this.features[i].properties.id),
               date: (typeof this.features[i].properties.date == 'undefined' ? "" : this.features[i].properties.date),
-              title: (typeof this.features[i].properties.title == 'undefined' ? "" : this.features[i].properties.title)
+              title: (typeof this.features[i].properties.title == 'undefined' ? "not yet implmeneted" : this.features[i].properties.title)
             };
       this.data[this.features[i].properties.source].tabledata.push(row);
       // push the full feature object for display
@@ -464,6 +464,7 @@ ResultSource.prototype = {
     this.container.append(this.tableContainer);
 
     this.featureContainer = $('<div>', {'class':'col-sm-7'});
+    this.featureContainer.html("<p>" + $("#" + this.source.replace(/ /g, "_")+"_bio").html()+ "</p>"); 
     this.container.append(this.featureContainer);
 
     this.table = $('<table>', { 'id': this.source.replace(/ /g, "_") + "_table_detail", 'class': 'table table-striped table-bordered table-sm', 'style': 'width:100%;', 'cellspacing': '0' });
@@ -495,7 +496,6 @@ ResultSource.prototype = {
         "targets": 0,
         "searchable": false,
         "render": function(id, type, row, meta) {
-
           return _this.createBtn(id);
 
         }
