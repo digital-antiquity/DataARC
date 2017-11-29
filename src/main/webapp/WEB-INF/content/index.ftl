@@ -33,7 +33,8 @@
 	<style>
 	.homesubhead {font-size:140%;}
 	.service-box p {font-size:80% !important; font-weight:bold !Important}
-	</style>
+    .hidden {display:none;visibility:hidden}
+     </style>
   </head>
 <body id="page-top">
   <!-- Navigation -->
