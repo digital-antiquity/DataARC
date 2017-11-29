@@ -927,7 +927,10 @@ TopicMap.prototype =  {
       if (Object.keys(Search.facets.T_id).length > 0){
         _.each(Search.facets.T_id, function(value,topic){
             try {
-                _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
+                var topics = _this.graph.nodes.filter(node => node.identifier == topic);
+                if (topics.length > 0) {
+                    _this.topics.push(topics[0].id);
+                }
             } catch(e) {
                 console.error(e);
                 console.log(_this.graph.nodes);

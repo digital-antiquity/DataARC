@@ -219,12 +219,12 @@ public class SearchIndexObject {
             // }
             if (field != null) {
                 if (v instanceof Map) {
-                    Map<String, Object> data = (Map<String, Object>) v;
+                    Map<String, Object> data_ = (Map<String, Object>) v;
                     if (getData() == null) {
                         setData(new ArrayList<>());
                     }
-                    getData().add(new ExtraProperties(this, data, schema));
-                    logger.trace("{}", data);
+                    getData().add(new ExtraProperties(this, data_, schema));
+                    logger.trace("{}", data_);
                 } else if (v instanceof Collection) {
                     if (getData() == null) {
                         setData(new ArrayList<>());

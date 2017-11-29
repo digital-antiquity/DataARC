@@ -321,7 +321,7 @@ ResultDetail.prototype = {
       var row = {
               id: (typeof this.features[i].properties.id == 'undefined' ? "" : this.features[i].properties.id),
               date: (typeof this.features[i].properties.date == 'undefined' ? "" : this.features[i].properties.date),
-              title: (typeof this.features[i].properties.title == 'undefined' ? "not yet implmeneted" : this.features[i].properties.title)
+              title: (typeof this.features[i].properties.title == 'undefined' ? "not yet implemented" : this.features[i].properties.title)
             };
       this.data[this.features[i].properties.source].tabledata.push(row);
       // push the full feature object for display
