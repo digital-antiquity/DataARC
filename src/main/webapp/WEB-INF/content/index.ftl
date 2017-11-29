@@ -74,8 +74,7 @@
   <header class="masthead home-shore">
     <div class="header-content">
       <div class="header-content-inner">
-        <h1 id="homeHeading">Simple Interface, Data That Matters</h1>
-        <h2 id="homesubhead">Human Ecodynamics in the North Atlantic, Interdisciplinary Research Tool <b><a href="http://www.data-arc.org">learn more</a></b> </h2>
+        <h1 id="homeHeading">Human Ecodynamics in the North Atlantic, Interdisciplinary Research Tool <b><a href="http://www.data-arc.org">learn more</a></b> </h1>
         <hr>
         <p>Find contextualized data from ecological, archaeological, and historical sources for the North Atlantic.</p>
         <p>

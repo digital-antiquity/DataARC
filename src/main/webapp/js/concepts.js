@@ -926,7 +926,9 @@ TopicMap.prototype =  {
     if (typeof Search.facets.T_id != 'undefined') {
       if (Object.keys(Search.facets.T_id).length > 0){
         _.each(Search.facets.T_id, function(value,topic){
-          _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
+            try {
+                _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
+            } catch(e) {console.error(e);}
         });
       }
     }
