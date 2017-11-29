@@ -928,7 +928,14 @@ TopicMap.prototype =  {
         _.each(Search.facets.T_id, function(value,topic){
             try {
                 _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
-            } catch(e) {console.error(e);}
+            } catch(e) {
+                console.error(e);
+                console.log(_this.graph.nodes);
+                console.log(topic);
+                try{ 
+                    console.log(_this.graph.nodes.filter(node => node.identifier == topic));
+                } catch(ee) {}
+            }
         });
       }
     }
