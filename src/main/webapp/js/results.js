@@ -303,29 +303,35 @@ ResultDetail.prototype = {
 
   fetchData: function() {
 
-    this.features = Search.getResultsByCategory(this.category);
-
+    this.features = [];
+    // FIXME: This was setup based on jsut working through "all" what is "tmp" below, not the search results
+    // I changed this to filter by only things in the search results
+    var tmp = Search.getResultsByCategory(this.category);
     this.data = {};
+    var results = Search.results;
+    for (var i = 0; i < tmp.length; i++) {
 
-    for (var i = 0; i < this.features.length; i++) {
-
+        var rec = tmp[i];
+        if (results != undefined && results.length > 0 && results.indexOf(rec.properties.id) < 0 ) {
+            continue;
+        }
       // compile expected sources
-      if (typeof this.data[this.features[i].properties.source] == 'undefined') {
+      if (typeof this.data[rec.properties.source] == 'undefined') {
 
-        this.data[this.features[i].properties.source] = {};
-        this.data[this.features[i].properties.source].tabledata = [];
-        this.data[this.features[i].properties.source].features = [];
+        this.data[rec.properties.source] = {};
+        this.data[rec.properties.source].tabledata = [];
+        this.data[rec.properties.source].features = [];
 
       }
       // push the new feature object for datatables
       var row = {
-              id: (typeof this.features[i].properties.id == 'undefined' ? "" : this.features[i].properties.id),
-              date: (typeof this.features[i].properties.date == 'undefined' ? "" : this.features[i].properties.date),
-              title: (typeof this.features[i].properties.title == 'undefined' ? "not yet implemented" : this.features[i].properties.title)
+              id: (typeof rec.properties.id == 'undefined' ? "" : rec.properties.id),
+              date: (typeof rec.properties.date == 'undefined' ? "" : rec.properties.date),
+              title: (typeof rec.properties.title == 'undefined' ? "not yet implemented" : rec.properties.title)
             };
-      this.data[this.features[i].properties.source].tabledata.push(row);
+      this.data[rec.properties.source].tabledata.push(row);
       // push the full feature object for display
-      this.data[this.features[i].properties.source].features.push(this.features[i]);
+      this.data[rec.properties.source].features.push(rec);
 
     }
     console.log("Still need source inside each feature.properties");
