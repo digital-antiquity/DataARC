@@ -76,14 +76,18 @@ public class IndicatorService {
         
         List<Topic> topics = new ArrayList<>();
         Set<String> existingIdentifiers = new HashSet<>();
+        Set<Long> ids = new HashSet<>();
         indicator.getTopics().forEach(t -> {
             existingIdentifiers.add(t.getIdentifier());
+            ids.add(t.getId());
         });
         for (String ident : incomingIdentifiers) {
             Topic topic = topicDao.findTopicByIdentifier(ident);
             topics.add(topic);
             logger.debug("  topic: {}", topic);
-            indicator.getTopics().add(topic);
+            if (!ids.contains(topic.getId())) {
+                indicator.getTopics().add(topic);
+            }
             existingIdentifiers.remove(ident);
         };
         
