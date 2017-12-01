@@ -81,6 +81,24 @@ public class SolrIndexingService {
     @Autowired
     private SolrClient client;
 
+    
+    @Transactional(readOnly=true)
+    public void reindexIndicatorsOnly() {
+        SolrInputDocument doc = new SolrInputDocument();
+//        Map<String, Object> map = new HashMap<>();
+//        map.put(IndexFields.INDICATOR, );
+//        map.put(IndexFields.TOPIC_ID, );
+//        map.put(IndexFields.TOPIC_ID_2ND, );
+//        map.put(IndexFields.TOPIC_ID_3RD, );
+//        map.put(IndexFields.TOPIC_NAMES, );
+        
+    }
+    
+    private void replaceField(SolrInputDocument doc, Map<String,Object> map, String fieldName) {
+        Map<String, Object> partialUpdate = new HashMap<>();
+        partialUpdate.put("set", map.get(fieldName));
+        doc.setField(fieldName, partialUpdate);
+    }
     /**
      * Builds the index
      * 
