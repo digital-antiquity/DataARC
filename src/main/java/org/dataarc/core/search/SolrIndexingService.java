@@ -101,7 +101,7 @@ public class SolrIndexingService {
 
                 Integer c = totals.getOrDefault(key, 0);
                 totals.put(key, c + 1);
-                partialIndexRow(entry);
+                searchIndexObject = partialIndexRow(entry);
                 if (count % 500 == 0) {
                     if (searchIndexObject != null) {
                         logger.debug("{} - {}", searchIndexObject);
