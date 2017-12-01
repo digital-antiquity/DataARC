@@ -15,6 +15,7 @@ import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.TopicDao;
+import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.util.PersistableUtils;
 import org.dataarc.web.api.indicator.IndicatorDataObject;
 import org.slf4j.Logger;
@@ -39,6 +40,9 @@ public class IndicatorService {
     private TopicDao topicDao;
 
     @Autowired
+    private SolrIndexingService indexingService;
+
+    @Autowired
     private SchemaDao schemoDao;
 
     @Autowired
@@ -53,7 +57,7 @@ public class IndicatorService {
         } else {
             indicator = new Indicator();
         }
-        
+
         indicator.updateFrom(_indicator);
         indicator.setUser(user);
         resolveTopics(_indicator, indicator);
@@ -63,17 +67,17 @@ public class IndicatorService {
             indicator.setSchema(schema);
         }
         indicatorDao.save(indicator);
-        try { 
-        applyIndicators(schemaName);
+        try {
+            applyIndicators(schemaName);
         } catch (Throwable t) {
-            logger.error("{}",t,t);
+            logger.error("{}", t, t);
         }
     }
 
     private void resolveTopics(IndicatorDataObject _indicator, Indicator indicator) {
         Set<String> incomingIdentifiers = _indicator.getTopicIdentifiers();
         logger.debug("{}", incomingIdentifiers);
-        
+
         List<Topic> topics = new ArrayList<>();
         Set<String> existingIdentifiers = new HashSet<>();
         Set<Long> ids = new HashSet<>();
@@ -89,8 +93,9 @@ public class IndicatorService {
                 indicator.getTopics().add(topic);
             }
             existingIdentifiers.remove(ident);
-        };
-        
+        }
+        ;
+
         for (String id : existingIdentifiers) {
             Iterator<Topic> iterator = indicator.getTopics().iterator();
             while (iterator.hasNext()) {
@@ -125,6 +130,7 @@ public class IndicatorService {
         for (Indicator indicator : findAllForSchema(schemaName)) {
             importDao.applyIndicator(indicator);
         }
+        indexingService.reindexIndicatorsOnly(schemaName);
     }
 
     @Transactional(readOnly = false)

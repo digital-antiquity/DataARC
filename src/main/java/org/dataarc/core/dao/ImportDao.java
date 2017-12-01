@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
-import org.dataarc.bean.schema.Schema;
 import org.dataarc.datastore.mongo.QueryException;
 import org.geojson.Feature;
 
@@ -19,6 +18,8 @@ public interface ImportDao {
     void enhanceProperties(Feature feature, Map<String, Object> properties);
 
     Iterable<DataEntry> findAll();
+
+    Iterable<DataEntry> findBySource(String source);
 
     public default Integer parseIntProperty(Object object) {
         if (object == null) {

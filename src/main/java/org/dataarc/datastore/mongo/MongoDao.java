@@ -332,4 +332,12 @@ public class MongoDao implements ImportDao, QueryDao {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<DataEntry> findBySource(String source) {
+        Query q = new Query();
+        q.addCriteria(Criteria.where(IndexFields.SOURCE).is(source));
+        return template.find(q, DataEntry.class);
+    }
+
 }

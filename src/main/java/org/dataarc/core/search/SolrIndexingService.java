@@ -81,24 +81,90 @@ public class SolrIndexingService {
     @Autowired
     private SolrClient client;
 
-    
-    @Transactional(readOnly=true)
-    public void reindexIndicatorsOnly() {
-        SolrInputDocument doc = new SolrInputDocument();
-//        Map<String, Object> map = new HashMap<>();
-//        map.put(IndexFields.INDICATOR, );
-//        map.put(IndexFields.TOPIC_ID, );
-//        map.put(IndexFields.TOPIC_ID_2ND, );
-//        map.put(IndexFields.TOPIC_ID_3RD, );
-//        map.put(IndexFields.TOPIC_NAMES, );
-        
+    @Transactional(readOnly = true)
+    public void reindexIndicatorsOnly(String source) {
+        logger.debug("begin reindexing");
+        SolrInputDocument searchIndexObject = null;
+        Map<String, Integer> totals = new HashMap<>();
+        try {
+            Iterable<DataEntry> entries = sourceDao.findBySource(source);
+            int count = 0;
+            Set<String> findAll = schemaDao.findAllSchemaNames();
+            for (DataEntry entry : entries) {
+                String key = SchemaUtils.normalize(entry.getSource());
+
+                // FIME: move up into
+                if (!source.equalsIgnoreCase(key) || !source.equalsIgnoreCase(entry.getSource())) {
+                    logger.debug("skipping: {} {}", entry.getSource(), findAll);
+                    continue;
+                }
+
+                Integer c = totals.getOrDefault(key, 0);
+                totals.put(key, c + 1);
+                partialIndexRow(entry);
+                if (count % 500 == 0) {
+                    if (searchIndexObject != null) {
+                        logger.debug("{} - {}", searchIndexObject);
+                    } else {
+                        logger.debug("null object");
+                    }
+                    client.commit(DATA_ARC);
+                }
+                count++;
+            }
+
+            client.commit(DATA_ARC);
+        } catch (Exception ex) {
+            logger.error("exception indexing:", ex);
+            logger.error("{}", searchIndexObject);
+        }
+        logger.debug("done reindexing: {}", totals);
     }
-    
-    private void replaceField(SolrInputDocument doc, Map<String,Object> map, String fieldName) {
+
+    private SolrInputDocument partialIndexRow(DataEntry entry) {
+
+        SolrInputDocument doc = new SolrInputDocument();
+
+        try {
+            doc.setField(IndexFields.ID, entry.getId());
+            Map<String, Object> map = new HashMap<>();
+            if (CollectionUtils.isNotEmpty(entry.getDataArcIndicators())) {
+                map.put(IndexFields.INDICATOR, entry.getDataArcIndicators());
+            }
+            if (CollectionUtils.isNotEmpty(entry.getDataArcTopicIdentifiers())) {
+                map.put(IndexFields.TOPIC_ID, entry.getDataArcTopicIdentifiers());
+            }
+            if (CollectionUtils.isNotEmpty(entry.getDataArcTopics())) {
+                map.put(IndexFields.TOPIC_NAMES, entry.getDataArcTopics());
+            }
+
+            // map.put(IndexFields.TOPIC_ID_2ND, );
+            // map.put(IndexFields.TOPIC_ID_3RD, );
+
+            replaceField(doc, map, IndexFields.INDICATOR);
+            replaceField(doc, map, IndexFields.TOPIC_ID);
+            replaceField(doc, map, IndexFields.TOPIC_NAMES);
+            if (logger.isTraceEnabled()) {
+                logger.trace("{}", doc);
+            }
+            client.add(DATA_ARC, doc);
+        } catch (Throwable e) {
+            logger.error("exception indexing: {}", doc, e);
+            if (rollbar != null) {
+                rollbar.error(e);
+            }
+            return doc;
+        }
+        return doc;
+
+    }
+
+    private void replaceField(SolrInputDocument doc, Map<String, Object> map, String fieldName) {
         Map<String, Object> partialUpdate = new HashMap<>();
         partialUpdate.put("set", map.get(fieldName));
         doc.setField(fieldName, partialUpdate);
     }
+
     /**
      * Builds the index
      * 
@@ -108,7 +174,7 @@ public class SolrIndexingService {
     public void reindex() {
         logger.debug("begin reindexing");
         SearchIndexObject searchIndexObject = null;
-        Map<String,Integer> totals = new HashMap<>();
+        Map<String, Integer> totals = new HashMap<>();
         try {
             client.deleteByQuery(DATA_ARC, "*:*");
             client.commit(DATA_ARC);
@@ -123,12 +189,12 @@ public class SolrIndexingService {
                     logger.debug("skipping: {} {}", entry.getSource(), findAll);
                     continue;
                 }
-                
+
                 if (entry.getSource().equalsIgnoreCase("iceland-farms") || entry.getSource().equalsIgnoreCase("iceland-farm")) {
                     continue;
                 }
                 Integer c = totals.getOrDefault(key, 0);
-                totals.put(key, c +1);
+                totals.put(key, c + 1);
                 searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     if (searchIndexObject != null) {
@@ -154,7 +220,7 @@ public class SolrIndexingService {
         SolrInputDocument doc = null;
         try {
             Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
-            SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema,temporalCoverageService);
+            SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema, temporalCoverageService);
             applyFacets(searchIndexObject);
             applyTopics(searchIndexObject);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
@@ -246,12 +312,12 @@ public class SolrIndexingService {
     private void applyDateFacets(SearchIndexObject searchIndexObject) {
         int s = searchIndexObject.getStart().intValue();
         int e = searchIndexObject.getEnd().intValue();
-        logger.trace("{} - {}", s,e);
+        logger.trace("{} - {}", s, e);
         int startM = s - (s % 1_000);
         int endM = e - (e % 1_000);
-//        if (e % 1_000 != 0) {
-//            endM += 1_000;
-//        }
+        // if (e % 1_000 != 0) {
+        // endM += 1_000;
+        // }
         for (int i = startM; i <= endM; i = i + 1_000) {
             searchIndexObject.getMillenium().add(i);
         }
@@ -261,18 +327,18 @@ public class SolrIndexingService {
         }
         indexCenturies(searchIndexObject, s, e);
 
-        if (e - s > 200) {
-            return;
-        }
+        // if (e - s > 200) {
+        // return;
+        // }
         indexDecades(searchIndexObject, s, e);
     }
 
     private void indexDecades(SearchIndexObject searchIndexObject, int s, int e) {
         int startD = s - (s % 10);
         int endD = e - (e % 10);
-//        if (e % 10 != 0) {
-//            endD += 10;
-//        }
+        // if (e % 10 != 0) {
+        // endD += 10;
+        // }
         for (int i = startD; i <= endD; i = i + 10) {
             searchIndexObject.getDecade().add(i);
         }
@@ -281,9 +347,9 @@ public class SolrIndexingService {
     private void indexCenturies(SearchIndexObject searchIndexObject, int s, int e) {
         int startC = s - (s % 100);
         int endC = e - (e % 100);
-//        if (e % 100 != 0) {
-//            endC += 100;
-//        }
+        // if (e % 100 != 0) {
+        // endC += 100;
+        // }
         for (int i = startC; i <= endC; i = i + 100) {
             searchIndexObject.getCentury().add(i);
         }
@@ -320,9 +386,9 @@ public class SolrIndexingService {
         schemaFields.put(IndexFields.SOURCE, STRING);
         schemaFields.put(IndexFields.POINT, LOCATION_RPT);
         schemaFields.put(IndexFields.TYPE, STRING);
-        
-        deleteCopyField("*", Arrays.asList(IndexFields.KEYWORD));        
-        addCopyField("*", Arrays.asList(IndexFields.KEYWORD));        
+
+        deleteCopyField("*", Arrays.asList(IndexFields.KEYWORD));
+        addCopyField("*", Arrays.asList(IndexFields.KEYWORD));
         for (String field_ : schemaFields.keySet()) {
             String field = field_;
             boolean seen = false;
@@ -409,6 +475,7 @@ public class SolrIndexingService {
         SchemaRequest.AddDynamicField addFieldUpdateSchemaRequest_ = new SchemaRequest.AddDynamicField(fieldAttributes_);
         addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
     }
+
     private void addCopyField(String source, List<String> dest) throws SolrServerException, IOException {
         SchemaRequest.AddCopyField addFieldUpdateSchemaRequest_ = new SchemaRequest.AddCopyField(source, dest);
         addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
