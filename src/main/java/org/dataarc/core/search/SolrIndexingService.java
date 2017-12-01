@@ -105,6 +105,10 @@ public class SolrIndexingService {
                     logger.debug("skipping: {} {}", entry.getSource(), findAll);
                     continue;
                 }
+                
+                if (entry.getSource().equalsIgnoreCase("iceland-farms") || entry.getSource().equalsIgnoreCase("iceland-farm")) {
+                    continue;
+                }
                 Integer c = totals.getOrDefault(key, 0);
                 totals.put(key, c +1);
                 searchIndexObject = indexRow(entry);
