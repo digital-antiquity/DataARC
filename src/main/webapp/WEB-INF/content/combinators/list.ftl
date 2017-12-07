@@ -19,6 +19,7 @@
 <th>creator</th>
 <th>schema</th>
 <th>description</th>
+<th>citation</th>
 <th>query</th>
 <th>topics</th>
 </tr>
@@ -30,7 +31,8 @@
         <td>${facets[combinator.id?c]!0}</td>
         <td>${combinator.user.displayName}</td>
         <td>${combinator.schema.name}</td>
-        <td>${combinator.description}</td>
+        <td>${combinator.description!''}</td>
+        <td>${combinator.citation!''}</td>
         <td>${combinator.query}</td>
         <td><#list combinator.topics as topic><span class="label label-primary">${topic.name}</span> <#sep>, </#sep></#list></td>
     </tr>
