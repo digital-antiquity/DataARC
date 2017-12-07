@@ -5,6 +5,6 @@
 0	2	*	*	*	run-parts /etc/periodic/daily
 0	3	*	*	6	run-parts /etc/periodic/weekly
 0	5	1	*	*	run-parts /etc/periodic/monthly
-*/1	*	*	*	*	touch "/backups/hi"
-*/1	*	*	*	*	sh /app/docker/backups/pgbackup.sh
-*/1	*	*	*	*	sh /app/docker/backups/mongobackup.sh
+*/15	*	*	*	*	touch "/backups/hi"
+1	*	*	*	*	sh /app/docker/backups/scripts/pgbackup.sh
+1	*	*	*	*	sh /app/docker/backups/scripts/mongobackup.sh

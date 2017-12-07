@@ -9,23 +9,26 @@ services:
     environment:
         POSTGRES_PASSWORD: dataarc
         POSTGRES_USERNAME: dataarc
-  dbbackups:
-    image: kartoza/pg-backup:9.4
-    hostname: pg-backups
+  cron:
+    build: 
+      context: .
+      dockerfile: CronDockerfile 
+    hostname: cron
     restart: always
     volumes:
       - ./docker/backups:/backups
+      - /etc/localtime:/etc/localtime:ro
+    tty: true
+    entrypoint: ""
+    user: root
+    command: crond -f -d 8
     links:
       - db:db
+      - mongo:mongo
     environment:
-      - DUMPPREFIX=dataarc
-      # These are all defaults anyway, but setting explicitly in
-      # case we ever want to ever use different credentials
-      - POSTGRES_USER=dataarc
-      - POSTGRES_PASS=dataarc
-      - POSTGRES_PORT=5432
-      - POSTGRES_HOST=db
-      - POSTGRES_DBNAME=dataarc
+        POSTGRES_PASSWORD: dataarc
+        POSTGRES_USERNAME: dataarc
+        POSTGRES_HOST: db
   mongo:
     image: mongo:3.4
     restart: always

@@ -4,6 +4,9 @@ LABEL maintainer="Adam Brin"
 #https://firefart.at/post/docker_and_cron_jobs/
 
 ENV APP_USER appuser
+ENV POSTGRES_PASSWORD passsowrd
+ENV POSTGRES_USERNAME passsowrd
+ENV POSTGRES_HOST passsowrd
 
 RUN adduser -g "App User" -D $APP_USER
 
@@ -12,12 +15,12 @@ RUN apk add --update  --no-cache \
     mongodb-tools \
   && rm -rf /var/cache/apk/*
 
-COPY docker/crontab /var/spool/cron/crontabs/$APP_USER
+COPY docker/backups/scripts/crontab /var/spool/cron/crontabs/$APP_USER
 RUN chmod 0600 /var/spool/cron/crontabs/$APP_USER
 
 ADD . /app
-RUN echo "db:*:dataarc:dataarc:dataarc" > /root/.pgpass
-RUN chmod 600 /root/.pgpass
+RUN echo $POSTGRES_HOST+":*:dataarc:"+$POSTGRES_USERNAME+":"+$POSTGRES_PASSWORD > /root/.pgpass
+RUN chmod 0600 /root/.pgpass
 
 ENTRYPOINT "crond"
 
