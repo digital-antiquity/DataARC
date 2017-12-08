@@ -27,3 +27,4 @@ docker/mongo
 docker/postgres
 logs
 ${filestore.path}
+docker/backups
