@@ -30,16 +30,16 @@ public class IndicatorApiController extends AbstractRestController {
 
     @Autowired
     private IndicatorService indicatorService;
-    
+
     @Autowired
     private ChangeLogService changelogservice;
 
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) IndicatorDataObject indicator) throws Exception {
         try {
-        logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
-        indicatorService.save(indicator, getUser());
-        changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator.getName() );
+            logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
+            indicatorService.save(indicator, getUser());
+            changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator.getName());
 
         } catch (Throwable t) {
             logger.error("error saving indicator", t);
@@ -49,12 +49,12 @@ public class IndicatorApiController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
-    public Long update(@PathVariable("id") Long id, @RequestBody(required = true)  IndicatorDataObject indicator) throws Exception {
-        if (PersistableUtils.isNullOrTransient(indicator.getId()) && PersistableUtils.isNotNullOrTransient(id) ) {
+    public Long update(@PathVariable("id") Long id, @RequestBody(required = true) IndicatorDataObject indicator) throws Exception {
+        if (PersistableUtils.isNullOrTransient(indicator.getId()) && PersistableUtils.isNotNullOrTransient(id)) {
             indicator.setId(id);
         }
         indicatorService.save(indicator, getUser());
-        changelogservice.save(ActionType.UPDATE, ObjectType.COMBINATOR, getUser(), indicator.getName() );
+        changelogservice.save(ActionType.UPDATE, ObjectType.COMBINATOR, getUser(), indicator.getName());
         return indicator.getId();
 
     }
@@ -69,13 +69,12 @@ public class IndicatorApiController extends AbstractRestController {
 
     private void setTopics(Indicator findById) {
         if (CollectionUtils.isNotEmpty(findById.getTopics())) {
-            findById.getTopics().forEach(topic-> {
+            findById.getTopics().forEach(topic -> {
                 findById.getTopicIdentifiers().add(topic.getIdentifier());
             });
         }
     }
 
-    
     @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.DELETE)
     public void getDeleteId(@PathVariable(value = "id", required = true) Long id) {
         Indicator findById = indicatorService.findById(id);
@@ -86,7 +85,7 @@ public class IndicatorApiController extends AbstractRestController {
     @JsonView(View.Indicator.class)
     public List<Indicator> list(@RequestParam(value = "schema", required = true) String schemaName) {
         List<Indicator> indicators = indicatorService.findAllForSchema(schemaName);
-        indicators.forEach(findById-> {
+        indicators.forEach(findById -> {
             setTopics(findById);
         });
         logger.debug("{}", indicators);

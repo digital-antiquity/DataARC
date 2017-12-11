@@ -1,7 +1,5 @@
 package org.dataarc.web.config;
 
-import javax.annotation.PostConstruct;
-
 import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.web.interceptor.RequestLoggingInterceptor;
 import org.slf4j.Logger;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -19,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
-
 
 @Configuration
 @EnableWebMvc
@@ -39,19 +35,18 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new RequestLoggingInterceptor());
         super.addInterceptors(registry);
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
-//        registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
-//        registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
-//    }
+    // @Override
+    // public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    // registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
+    // registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
+    // registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
+    // }
 
     @Bean
     public FreeMarkerConfigurer freemarkerConfig() {
@@ -59,17 +54,15 @@ public class DataArcWebConfig extends WebMvcConfigurerAdapter {
         freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/content/");
         return freeMarkerConfigurer;
     }
-    
-
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
         resolver.setMaxUploadSize(50_000_000);
         return resolver;
     }
-    
+
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();

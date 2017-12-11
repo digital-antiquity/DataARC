@@ -5,7 +5,6 @@
 // Generated on: 2017.01.18 at 09:17:02 AM MST 
 //
 
-
 package topicmap.v2_0;
 
 import java.util.ArrayList;
@@ -23,11 +22,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -55,23 +55,23 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "itemIdentityOrSubjectLocatorOrSubjectIdentifier",
-    "instanceOf",
-    "nameOrOccurrence"
+        "itemIdentityOrSubjectLocatorOrSubjectIdentifier",
+        "instanceOf",
+        "nameOrOccurrence"
 })
 @XmlRootElement(name = "topic")
 public class Topic {
 
     @XmlElements({
-        @XmlElement(name = "itemIdentity", type = ItemIdentity.class),
-        @XmlElement(name = "subjectLocator", type = SubjectLocator.class),
-        @XmlElement(name = "subjectIdentifier", type = SubjectIdentifier.class)
+            @XmlElement(name = "itemIdentity", type = ItemIdentity.class),
+            @XmlElement(name = "subjectLocator", type = SubjectLocator.class),
+            @XmlElement(name = "subjectIdentifier", type = SubjectIdentifier.class)
     })
     protected List<Object> itemIdentityOrSubjectLocatorOrSubjectIdentifier;
     protected InstanceOf instanceOf;
     @XmlElements({
-        @XmlElement(name = "name", type = Name.class),
-        @XmlElement(name = "occurrence", type = Occurrence.class)
+            @XmlElement(name = "name", type = Name.class),
+            @XmlElement(name = "occurrence", type = Occurrence.class)
     })
     protected List<Object> nameOrOccurrence;
     @XmlAttribute(name = "id", required = true)
@@ -91,8 +91,9 @@ public class Topic {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getItemIdentityOrSubjectLocatorOrSubjectIdentifier().add(newItem);
+     * getItemIdentityOrSubjectLocatorOrSubjectIdentifier().add(newItem);
      * </pre>
      * 
      * 
@@ -115,9 +116,9 @@ public class Topic {
      * Gets the value of the instanceOf property.
      * 
      * @return
-     *     possible object is
-     *     {@link InstanceOf }
-     *     
+     *         possible object is
+     *         {@link InstanceOf }
+     * 
      */
     public InstanceOf getInstanceOf() {
         return instanceOf;
@@ -127,9 +128,9 @@ public class Topic {
      * Sets the value of the instanceOf property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link InstanceOf }
-     *     
+     *            allowed object is
+     *            {@link InstanceOf }
+     * 
      */
     public void setInstanceOf(InstanceOf value) {
         this.instanceOf = value;
@@ -146,8 +147,9 @@ public class Topic {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getNameOrOccurrence().add(newItem);
+     * getNameOrOccurrence().add(newItem);
      * </pre>
      * 
      * 
@@ -169,9 +171,9 @@ public class Topic {
      * Gets the value of the id property.
      * 
      * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *         possible object is
+     *         {@link String }
+     * 
      */
     public String getId() {
         return id;
@@ -181,9 +183,9 @@ public class Topic {
      * Sets the value of the id property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is
+     *            {@link String }
+     * 
      */
     public void setId(String value) {
         this.id = value;

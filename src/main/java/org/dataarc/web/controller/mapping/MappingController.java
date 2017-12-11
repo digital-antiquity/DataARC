@@ -20,7 +20,6 @@ public class MappingController extends AbstractController {
     @Autowired
     private TopicMapService topicMapService;
 
-    
     @RequestMapping("/a/mapping/")
     public ModelAndView mapping() {
         ModelAndView mv = new ModelAndView("mapping/mapping");

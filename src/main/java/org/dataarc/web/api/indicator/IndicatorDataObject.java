@@ -12,74 +12,73 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class IndicatorDataObject {
 
-        private static final long serialVersionUID = 4928837828590131513L;
+    private static final long serialVersionUID = 4928837828590131513L;
 
-        @JsonView(View.Indicator.class)
-        private Long id;
-        
-        @JsonView(View.Indicator.class)
-        private String name;
+    @JsonView(View.Indicator.class)
+    private Long id;
 
-        @JsonView(View.Indicator.class)
-        private String citation;
+    @JsonView(View.Indicator.class)
+    private String name;
 
-        @JsonView(View.Indicator.class)
-        private String description;
+    @JsonView(View.Indicator.class)
+    private String citation;
 
-        @JsonView(View.Indicator.class)
-        private Set<String> topicIdentifiers = new HashSet<>();
+    @JsonView(View.Indicator.class)
+    private String description;
 
-        @Column
-        @JsonView(View.Indicator.class)
-        private FilterQuery query;
+    @JsonView(View.Indicator.class)
+    private Set<String> topicIdentifiers = new HashSet<>();
 
-        
-        public String getName() {
-            return name;
-        }
+    @Column
+    @JsonView(View.Indicator.class)
+    private FilterQuery query;
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public FilterQuery getQuery() {
-            return query;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public void setQuery(FilterQuery query) {
-            this.query = query;
-        }
+    public FilterQuery getQuery() {
+        return query;
+    }
 
-        public Set<String> getTopicIdentifiers() {
-            return topicIdentifiers;
-        }
+    public void setQuery(FilterQuery query) {
+        this.query = query;
+    }
 
-        public void setTopicIdentifiers(Set<String> topicIdentifiers) {
-            this.topicIdentifiers = topicIdentifiers;
-        }
+    public Set<String> getTopicIdentifiers() {
+        return topicIdentifiers;
+    }
 
-        public String getCitation() {
-            return citation;
-        }
+    public void setTopicIdentifiers(Set<String> topicIdentifiers) {
+        this.topicIdentifiers = topicIdentifiers;
+    }
 
-        public void setCitation(String citation) {
-            this.citation = citation;
-        }
+    public String getCitation() {
+        return citation;
+    }
 
-        public String getDescription() {
-            return description;
-        }
+    public void setCitation(String citation) {
+        this.citation = citation;
+    }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    public String getDescription() {
+        return description;
+    }
 
-        public Long getId() {
-            return id;
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        public void setId(Long id) {
-            this.id = id;
-        }
-        
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }

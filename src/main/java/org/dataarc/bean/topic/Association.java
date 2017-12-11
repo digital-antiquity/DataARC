@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import org.dataarc.bean.AbstractPersistable;
 
 @Entity
-@Table(name="association")
+@Table(name = "association")
 public class Association extends AbstractPersistable {
 
     private static final long serialVersionUID = -1761609019419532654L;

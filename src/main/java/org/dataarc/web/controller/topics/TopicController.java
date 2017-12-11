@@ -1,7 +1,6 @@
 package org.dataarc.web.controller.topics;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.dataarc.bean.topic.TopicCategory;
 import org.dataarc.bean.topic.TopicMap;
@@ -40,7 +39,7 @@ public class TopicController extends AbstractController {
 
     @RequestMapping(path = UrlConstants.SAVE_TOPIC_ASSOCIATIONS, method = RequestMethod.POST)
     public ModelAndView save(@RequestParam(value = "topicIds[]") Long[] topicIds,
-            @RequestParam(value = "category[]" ) TopicCategory[] categories) {
+            @RequestParam(value = "category[]") TopicCategory[] categories) {
         topicMapService.saveCategoryAssociations(Arrays.asList(topicIds), Arrays.asList(categories));
         ModelAndView mav = new ModelAndView("topics/list");
         TopicMap topicMap = topicMapService.find();

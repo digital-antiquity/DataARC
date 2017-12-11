@@ -25,7 +25,6 @@ public class DataEntry implements Serializable {
     public static final String TOPICS = "dataArcTopics";
     public static final String TOPIC_IDENTIFIERS = "dataArcTopicIdentifiers";
 
-    
     @Field(POSITION)
     private GeoJsonPoint position;
 

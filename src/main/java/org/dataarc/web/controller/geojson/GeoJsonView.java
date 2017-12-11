@@ -13,10 +13,10 @@ public class GeoJsonView extends AbstractRestController {
 
     @Autowired
     private JsonFileService jsonFileService;
-    
-    @RequestMapping(path=UrlConstants.GEOJSON_VIEW, produces={"application/json;charset=UTF-8"})
-    public String getFile(@PathVariable(name="id") Long id) throws Exception {
+
+    @RequestMapping(path = UrlConstants.GEOJSON_VIEW, produces = { "application/json;charset=UTF-8" })
+    public String getFile(@PathVariable(name = "id") Long id) throws Exception {
         return jsonFileService.findById(id);
     }
-    
+
 }

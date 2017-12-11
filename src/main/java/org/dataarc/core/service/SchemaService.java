@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.dataarc.bean.schema.CategoryType;
-import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.core.dao.FieldDao;
 import org.dataarc.core.dao.SchemaDao;

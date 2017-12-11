@@ -17,7 +17,6 @@ public class LoginController extends AbstractController {
         }
         return "login";
     }
-    
 
     @RequestMapping("/logout")
     public String logout() {
@@ -25,7 +24,7 @@ public class LoginController extends AbstractController {
         Authentication authentication = securityContext.getAuthentication();
         logger.debug("logging {} out", authentication);
         securityContext.setAuthentication(null);
-        
+
         return "login";
     }
 

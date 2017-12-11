@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.dataarc.bean.AbstractPersistable;
 
 @Entity
-@Table(name="topic_category_association")
+@Table(name = "topic_category_association")
 public class CategoryAssociation extends AbstractPersistable {
 
     private static final long serialVersionUID = -780915672049150822L;
@@ -24,8 +24,9 @@ public class CategoryAssociation extends AbstractPersistable {
     @Column(length = 255)
     private TopicCategory category;
 
-    public CategoryAssociation() {}
-    
+    public CategoryAssociation() {
+    }
+
     public CategoryAssociation(Topic findById, TopicCategory topicCategory) {
         this.topic = findById;
         this.category = topicCategory;

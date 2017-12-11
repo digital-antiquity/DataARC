@@ -7,11 +7,11 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.core.search.IndexFields;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SchemaUtils {
     private static final String HANDLEBAR_FIELD_NAME = "fieldName ";
@@ -19,7 +19,6 @@ public class SchemaUtils {
     private static final Pattern PATTERN_NONWORD = Pattern.compile("[^\\w\\.\\s-]");
     private static final Pattern PATTERN_WHITESPACE = Pattern.compile("[-\\s]+");
     private static final Pattern PATTERN_AFFIX_SLUG = Pattern.compile("(^-)|(-$)");
-
 
     protected static final transient Logger logger = LoggerFactory.getLogger(SchemaUtils.class);
 
@@ -75,29 +74,29 @@ public class SchemaUtils {
     public static String unFormat(String name, Set<SchemaField> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         return titleTemplate;
-/*
-        for (Field f : fields) {
-            
-            //FIXME: need a regex that replaces " field}}" " field "
-            titleTemplate = StringUtils.replace(titleTemplate,formatId("",f), formatName(name, f));
-            titleTemplate = StringUtils.replace(titleTemplate,formatId("fieldName ",f), formatName(HANDLEBAR_FIELD_NAME + name, f));
-        }
-        logger.debug("{} --> {}", titleTemplate_, titleTemplate);
-        return titleTemplate;
-
- */
+        /*
+         * for (Field f : fields) {
+         * 
+         * //FIXME: need a regex that replaces " field}}" " field "
+         * titleTemplate = StringUtils.replace(titleTemplate,formatId("",f), formatName(name, f));
+         * titleTemplate = StringUtils.replace(titleTemplate,formatId("fieldName ",f), formatName(HANDLEBAR_FIELD_NAME + name, f));
+         * }
+         * logger.debug("{} --> {}", titleTemplate_, titleTemplate);
+         * return titleTemplate;
+         * 
+         */
     }
 
     public static String format(String name, Set<SchemaField> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         return titleTemplate;
         /*
-        for (Field f : fields) {
-            titleTemplate = StringUtils.replace(titleTemplate,  formatName(name,f), formatId("",f));
-            titleTemplate = StringUtils.replace(titleTemplate,  formatName(HANDLEBAR_FIELD_NAME + name,f), formatId("fieldName ",f));
-        }
-        logger.debug("{} --> {}", titleTemplate_, titleTemplate);
-        return titleTemplate;
+         * for (Field f : fields) {
+         * titleTemplate = StringUtils.replace(titleTemplate, formatName(name,f), formatId("",f));
+         * titleTemplate = StringUtils.replace(titleTemplate, formatName(HANDLEBAR_FIELD_NAME + name,f), formatId("fieldName ",f));
+         * }
+         * logger.debug("{} --> {}", titleTemplate_, titleTemplate);
+         * return titleTemplate;
          */
     }
 

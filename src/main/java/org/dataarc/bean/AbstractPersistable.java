@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * fields for ID and a property-aware equals()/hashCode() implementations.
  */
 @MappedSuperclass
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class AbstractPersistable implements Serializable {
 
     private static final long serialVersionUID = -478523777995582558L;

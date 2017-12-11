@@ -2,8 +2,8 @@ package org.dataarc.bean;
 
 public enum ActionType {
 
-    SAVE,DELETE,UPDATE;
-    
+    SAVE, DELETE, UPDATE;
+
     public String getLabel() {
         switch (this) {
             case SAVE:

@@ -10,7 +10,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.dataarc.bean.schema.FieldType;
 import org.dataarc.bean.schema.Value;
 import org.slf4j.Logger;
@@ -20,13 +19,12 @@ public class FieldDataCollector {
 
     private String schemaName;
     private Set<String> names = new HashSet<>();
-    private Map<String,String> displayNames = new HashMap<>();
+    private Map<String, String> displayNames = new HashMap<>();
     private Map<String, FieldType> fieldTypes = new HashMap<>();
     private Map<String, Map<Object, Long>> uniqueValues = new HashMap<>();
     private String displayName;
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
-    
     public FieldDataCollector(String schema) {
         this.setSchemaName(schema);
         this.setDisplayName(schema);
@@ -41,7 +39,7 @@ public class FieldDataCollector {
         }
 
         FieldType type = FieldType.STRING;
-        if (value instanceof Number || value instanceof String && ((String)(value)).matches("^[-+]?([0-9]*\\.[0-9]+|[0-9]+)$")) {
+        if (value instanceof Number || value instanceof String && ((String) (value)).matches("^[-+]?([0-9]*\\.[0-9]+|[0-9]+)$")) {
             if (value instanceof Float || value instanceof Double) {
                 type = FieldType.FLOAT;
             }
@@ -87,7 +85,7 @@ public class FieldDataCollector {
         }
 
         if (value instanceof Date || value instanceof String || value instanceof Number) {
-            logger.trace("add:: {} {} ==> {}", path, normalizedName,value);
+            logger.trace("add:: {} {} ==> {}", path, normalizedName, value);
             Map<Object, Long> set = uniqueValues.getOrDefault(normalizedName, new HashMap<>());
             if (value instanceof String) {
                 String left = StringUtils.left((String) value, Value.VALUE_LENGTH - 1);

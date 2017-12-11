@@ -28,7 +28,7 @@ public class ExtraProperties {
     public ExtraProperties(SearchIndexObject searchIndexObject, Map<String, Object> data2, Schema schema) {
         String prefix = null;
         for (Entry<String, Object> e : data2.entrySet()) {
-            if (e.getValue() == null || e.getValue() instanceof String &&StringUtils.isBlank((CharSequence) e.getValue())){
+            if (e.getValue() == null || e.getValue() instanceof String && StringUtils.isBlank((CharSequence) e.getValue())) {
                 continue;
             }
             String key = e.getKey();
@@ -39,8 +39,8 @@ public class ExtraProperties {
                         break;
                     }
                     prefix = StringUtils.substringBefore(fld.getName(), ".");
-                    String dn = StringUtils.substringAfter(fld.getDisplayName(),".");
-                    String n = StringUtils.substringAfter(fld.getName(),".");
+                    String dn = StringUtils.substringAfter(fld.getDisplayName(), ".");
+                    String n = StringUtils.substringAfter(fld.getName(), ".");
                     logger.trace("{} -> {}/{}", key, dn, n);
                     String esc = SchemaUtils.normalize(key);
                     if (StringUtils.equalsIgnoreCase(esc, dn) || StringUtils.equalsIgnoreCase(esc, n)) {
@@ -53,7 +53,7 @@ public class ExtraProperties {
             } else {
                 data.put(SchemaUtils.formatForSolr(schema, fieldByName), e.getValue());
                 if (e.getValue() instanceof String) {
-                    searchIndexObject.getValues().add((String)e.getValue());
+                    searchIndexObject.getValues().add((String) e.getValue());
                 }
                 searchIndexObject.applyTransientDateFields(fieldByName, e.getValue());
 

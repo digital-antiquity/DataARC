@@ -14,27 +14,25 @@ import javax.persistence.Table;
 import org.dataarc.bean.AbstractPersistable;
 
 @Entity()
-@Table(name="topic_map")
+@Table(name = "topic_map")
 public class TopicMap extends AbstractPersistable {
 
     private static final long serialVersionUID = -1653971032063184550L;
 
-
     private String name;
 
-
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "topic_map_id")
     private Set<Topic> topics = new LinkedHashSet<>();
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "topic_map_id")
     private Set<Association> associations = new LinkedHashSet<>();
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "topic_map_id")
     private Set<CategoryAssociation> categoryAssociations = new LinkedHashSet<>();
-    
+
     @Column(length = 255)
     public String getName() {
         return name;

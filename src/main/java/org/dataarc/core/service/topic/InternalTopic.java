@@ -15,7 +15,7 @@ public class InternalTopic extends AbstractPersistable {
     private String identifier;
 
     private TopicCategory category;
-    
+
     private List<String> varients = new ArrayList<>();
 
     public String getName() {

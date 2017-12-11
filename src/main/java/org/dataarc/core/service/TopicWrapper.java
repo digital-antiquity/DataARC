@@ -3,6 +3,7 @@ package org.dataarc.core.service;
 import org.dataarc.bean.topic.Topic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 @JsonAutoDetect
 public class TopicWrapper {
 

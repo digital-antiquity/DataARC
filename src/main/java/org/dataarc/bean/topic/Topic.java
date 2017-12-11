@@ -38,22 +38,22 @@ public class Topic extends AbstractPersistable {
     @Column(name = "varient")
     private List<String> varients = new ArrayList<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "topic_parents",
-            joinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName="id") },
+            joinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName = "id") },
             inverseJoinColumns = { @JoinColumn(nullable = false, name = "parent_id") })
     private Set<Topic> parents = new LinkedHashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "topic_parents",
-            inverseJoinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName="id") },
+            inverseJoinColumns = { @JoinColumn(nullable = false, name = "topic_id", referencedColumnName = "id") },
             joinColumns = { @JoinColumn(nullable = false, name = "parent_id") })
     private Set<Topic> children = new LinkedHashSet<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(length=255)
+    @Column(length = 255)
     private TopicCategory category;
-    
+
     public String getName() {
         return name;
     }
@@ -111,7 +111,7 @@ public class Topic extends AbstractPersistable {
     public int getIndicatorCount() {
         return indicatorCount;
     }
-    
+
     public void incrementIndicatorCount() {
         indicatorCount++;
     }

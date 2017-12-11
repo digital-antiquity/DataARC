@@ -5,7 +5,6 @@
 // Generated on: 2017.01.18 at 09:17:02 AM MST 
 //
 
-
 package topicmap.v2_0;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "topicRef"
+        "topicRef"
 })
 @XmlRootElement(name = "type")
 public class Type {
@@ -46,9 +46,9 @@ public class Type {
      * Gets the value of the topicRef property.
      * 
      * @return
-     *     possible object is
-     *     {@link TopicRef }
-     *     
+     *         possible object is
+     *         {@link TopicRef }
+     * 
      */
     public TopicRef getTopicRef() {
         return topicRef;
@@ -58,9 +58,9 @@ public class Type {
      * Sets the value of the topicRef property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link TopicRef }
-     *     
+     *            allowed object is
+     *            {@link TopicRef }
+     * 
      */
     public void setTopicRef(TopicRef value) {
         this.topicRef = value;

@@ -38,10 +38,9 @@ public class UploadSourceDataController extends AbstractController {
 
     @Autowired
     private ImportDataService importService;
-    
+
     @Autowired
     private ChangeLogService changelogservice;
-
 
     @ModelAttribute("schema")
     public Set<String> getSchema() {
@@ -55,20 +54,30 @@ public class UploadSourceDataController extends AbstractController {
     public ModelAndView uploadFileHandler(@RequestParam("name") String schemaName,
             @RequestParam("file") MultipartFile file) {
         ModelAndView mav = new ModelAndView(ADMIN_SOURCE_FAILED);
+
+        // FIXME: need to move this to a n-step process
+        /*
+         * 1. upload the dataset
+         * 2. validate the dataset for GeoJSON; projection, and other isssues
+         * 3. identify if replacing dataset will break any combinators
+         * 4. if yes to 3 or or issues with 2, then prompt the user to confirm they want to continue, or produce error.
+         * 5. load dataset
+         */
+
         mav.addObject("schemaName", schemaName);
         if (!file.isEmpty()) {
             try {
                 importService.importAndLoad(file.getInputStream(), file.getOriginalFilename(), schemaName);
-                changelogservice.save(ActionType.SAVE, ObjectType.DATA_SOURCE, getUser(), schemaName );
+                changelogservice.save(ActionType.SAVE, ObjectType.DATA_SOURCE, getUser(), schemaName);
 
                 mav.setViewName(ADMIN_SOURCE_SUCCESS);
             } catch (Exception e) {
-                logger.error("{}",e,e);
+                logger.error("{}", e, e);
                 mav.addObject(ERROR_MESSAGE, e.getMessage());
                 mav.addObject(EXCEPTION, e.getMessage());
             }
         }
         return mav;
     }
-    
+
 }

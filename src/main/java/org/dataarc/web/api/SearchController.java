@@ -24,8 +24,10 @@ public class SearchController extends AbstractRestController {
     public SearchResultObject search(
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size,
-            @RequestParam(value = "id", required = false) String id
-            ) throws Exception {
+            @RequestParam(value = "id", required = false) String id) throws Exception {
+
+        // if there have been no changes to the results and it's a find-all; then pull data out of cache
+
         SearchQueryObject query_ = new SearchQueryObject();
         if (StringUtils.isNotBlank(id)) {
             query_.setIds(Arrays.asList(id));
@@ -34,12 +36,9 @@ public class SearchController extends AbstractRestController {
         return performSearch(query_, page, size);
     }
 
-    
-
-    @RequestMapping(path = UrlConstants.GET_ID, method = {RequestMethod.GET, RequestMethod.POST}, produces = { UrlConstants.JSON_UTF8 })
+    @RequestMapping(path = UrlConstants.GET_ID, method = { RequestMethod.GET, RequestMethod.POST }, produces = { UrlConstants.JSON_UTF8 })
     public SearchResultObject getId(@RequestParam(value = "id", required = false) String id,
-            @RequestParam(value = "schemaId", required = false) Long schemaId
-            ) throws Exception {
+            @RequestParam(value = "schemaId", required = false) Long schemaId) throws Exception {
         SearchQueryObject query_ = new SearchQueryObject();
         query_.setIdAndMap(false);
         if (StringUtils.isNotBlank(id)) {
@@ -48,7 +47,7 @@ public class SearchController extends AbstractRestController {
         if (schemaId != null) {
             query_.setSchemaId(schemaId);
         }
-        return performSearch(query_,null, 1);
+        return performSearch(query_, null, 1);
     }
 
     private SearchResultObject performSearch(SearchQueryObject query_, Integer page, Integer size) {

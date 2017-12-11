@@ -28,7 +28,8 @@ public class AssociationDao {
     public Set<Topic> findRelatedTopics(Topic topic) {
         Set<Topic> topics = new HashSet<>();
         try {
-            TypedQuery<Association> query = manager.createQuery("SELECT assoc from Association assoc where assoc.from.id=:id or assoc.to.id=:id ",Association.class);
+            TypedQuery<Association> query = manager.createQuery("SELECT assoc from Association assoc where assoc.from.id=:id or assoc.to.id=:id ",
+                    Association.class);
             query.setParameter("id", topic.getId());
             for (Association association : query.getResultList()) {
                 if (!association.getFrom().equals(topic)) {
@@ -39,7 +40,7 @@ public class AssociationDao {
                 }
             }
         } catch (Throwable t) {
-            logger.error("{}",t,t);
+            logger.error("{}", t, t);
         }
         return topics;
     }

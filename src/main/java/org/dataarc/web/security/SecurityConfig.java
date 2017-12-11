@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.solr.update.processor.URLClassifyProcessor;
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.service.UserService;
 import org.dataarc.web.UrlConstants;
@@ -100,9 +99,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", UrlConstants.TOPIC_MAP_VIEW, UrlConstants.SEARCH,
-                    UrlConstants.GET_ID,UrlConstants.ABOUT,
-                    "/login**","/geojson/**","/vendor/**","/img/**");
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", UrlConstants.TOPIC_MAP_VIEW,
+                    UrlConstants.SEARCH,
+                    UrlConstants.GET_ID, UrlConstants.ABOUT,
+                    "/login**", "/geojson/**", "/vendor/**", "/img/**");
         } else {
             web.ignoring().antMatchers("/**");
         }
@@ -189,13 +189,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public LocalCrowdAuthenticationProvider crowdAuthenticationProvider() {
         return new LocalCrowdAuthenticationProvider(crowdClient());
     }
-    
-     @Override
-     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-         if (env.getProperty("security.ussOauth", Boolean.class, false)) {
-             auth.authenticationProvider(crowdAuthenticationProvider());
-         }
-     }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        if (env.getProperty("security.ussOauth", Boolean.class, false)) {
+            auth.authenticationProvider(crowdAuthenticationProvider());
+        }
+    }
 
     @Bean
     public ResourceServerProperties googleResource() {

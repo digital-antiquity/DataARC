@@ -30,7 +30,7 @@ public class OpenIdConnectUserDetails implements UserDetails {
     public String toString() {
         return String.format("%s - %s --> %s", userId, username, userInfo);
     }
-    
+
     @Override
     public String getUsername() {
         return username;

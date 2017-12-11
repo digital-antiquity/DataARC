@@ -18,10 +18,10 @@ public class ListFields extends AbstractRestController {
     @Autowired
     private SchemaService schemaService;
 
-    @RequestMapping(path=UrlConstants.SCHEMA_LIST_FIELDS, produces={"application/json;charset=UTF-8"})
+    @RequestMapping(path = UrlConstants.SCHEMA_LIST_FIELDS, produces = { "application/json;charset=UTF-8" })
     @ResponseBody
     public Set<SchemaField> listFields(@RequestParam(value = "schema", required = true) String source) throws Exception {
-        
+
         return schemaService.getFields(source);
     }
 

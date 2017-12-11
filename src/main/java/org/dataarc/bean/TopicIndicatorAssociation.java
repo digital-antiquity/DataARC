@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 
 import org.dataarc.bean.topic.Topic;
 
-@Entity(name="topic_indicator")
+@Entity(name = "topic_indicator")
 public class TopicIndicatorAssociation extends AbstractPersistable {
 
     private static final long serialVersionUID = 4025500335159592842L;

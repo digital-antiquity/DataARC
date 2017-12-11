@@ -18,25 +18,23 @@ public class JsonFileDao {
     public void save(JsonFile file) {
         manager.persist(file);
     }
-    
+
     public List<JsonFile> findAll() {
         TypedQuery<JsonFile> query = manager.createQuery("from JsonFile", JsonFile.class);
         return query.getResultList();
     }
 
-    
     public JsonFile findById(Long id) {
         TypedQuery<JsonFile> query = manager.createQuery("from JsonFile where id=:id", JsonFile.class);
         query.setParameter("id", id);
         return query.getSingleResult();
-            
+
     }
 
     public void deleteById(Long id) {
         JsonFile findById = findById(id);
         manager.remove(findById);
-        
-    }
 
+    }
 
 }

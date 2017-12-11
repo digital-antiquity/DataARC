@@ -2,11 +2,8 @@ package org.dataarc.web.controller.schema;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.schema.CategoryType;
-import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.service.DataFileService;
 import org.dataarc.core.service.ImportDataService;
@@ -52,14 +49,12 @@ public class SchemaTemplateController extends AbstractController {
         ModelAndView mav = new ModelAndView("schema/view-template");
         Schema schema = schemaService.findById(id);
         mav.addObject(SCHEMA, schema);
-        mav.addObject(TITLE_TEMPLATE, SchemaUtils.unFormat(schema.getName(), schema.getFields(),schema.getTitleTemplate()));
-        mav.addObject(RESULT_TEMPLATE, SchemaUtils.unFormat(schema.getName(), schema.getFields(),schema.getResultTemplate()));
-        mav.addObject(LINK_TEMPLATE, SchemaUtils.unFormat(schema.getName(), schema.getFields(),schema.getLinkTemplate()));
-        
+        mav.addObject(TITLE_TEMPLATE, SchemaUtils.unFormat(schema.getName(), schema.getFields(), schema.getTitleTemplate()));
+        mav.addObject(RESULT_TEMPLATE, SchemaUtils.unFormat(schema.getName(), schema.getFields(), schema.getResultTemplate()));
+        mav.addObject(LINK_TEMPLATE, SchemaUtils.unFormat(schema.getName(), schema.getFields(), schema.getLinkTemplate()));
+
         return mav;
     }
-
-
 
     @RequestMapping(path = UrlConstants.SCHEMA_TEMPLATES, method = RequestMethod.POST)
     public ModelAndView saveSchemaTemplates(@PathVariable(value = "id", required = true) Long id,

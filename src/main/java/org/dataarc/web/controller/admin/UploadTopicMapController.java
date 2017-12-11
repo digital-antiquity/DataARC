@@ -1,7 +1,6 @@
 package org.dataarc.web.controller.admin;
 
 import org.dataarc.bean.ActionType;
-import org.dataarc.bean.ChangeLogEntry;
 import org.dataarc.bean.ObjectType;
 import org.dataarc.core.service.ChangeLogService;
 import org.dataarc.core.service.TopicMapService;
@@ -35,7 +34,7 @@ public class UploadTopicMapController extends AbstractController {
 
     @Autowired
     private ChangeLogService changelogservice;
-    
+
     /**
      * Upload single file using Spring Controller
      */
@@ -44,18 +43,27 @@ public class UploadTopicMapController extends AbstractController {
         ModelAndView mav = new ModelAndView(ADMIN_TOPIC_FAILED);
         if (!file.isEmpty()) {
             try {
-                mav.addObject(TOPIC_NAME , file.getOriginalFilename());
+                // FIXME: need to move this to a n-step process
+                /*
+                 * 1. upload the dataset
+                 * 2. validate the dataset for GeoJSON; projection, and other isssues
+                 * 3. identify if replacing dataset will break any combinators
+                 * 4. if yes to 3 or or issues with 2, then prompt the user to confirm they want to continue, or produce error.
+                 * 5. load dataset
+                 */
+
+                mav.addObject(TOPIC_NAME, file.getOriginalFilename());
                 topicMapService.importAndLoad(file.getInputStream(), file.getOriginalFilename());
-                changelogservice.save(ActionType.SAVE, ObjectType.TOPIC, getUser(), "uploaded " + file.getOriginalFilename() );
+                changelogservice.save(ActionType.SAVE, ObjectType.TOPIC, getUser(), "uploaded " + file.getOriginalFilename());
                 return ADMIN_TOPIC_SUCCESS;
             } catch (Exception e) {
-                logger.error("{}",e,e);
-                mav.addObject(ERROR_MESSAGE , e.getMessage());
+                logger.error("{}", e, e);
+                mav.addObject(ERROR_MESSAGE, e.getMessage());
                 return ADMIN_TOPIC_FAILED;
             }
         } else {
             return ADMIN_TOPIC_FAILED;
         }
     }
-    
+
 }

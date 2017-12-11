@@ -13,10 +13,10 @@ import org.sitemesh.webapp.contentfilter.ResponseMetaData;
 public class DataARCSitemeshFilter extends SiteMeshFilter {
 
     public DataARCSitemeshFilter() {
-        super(null, null, null,false);
+        super(null, null, null, false);
         // TODO Auto-generated constructor stub
     }
-    
+
     @Override
     protected boolean postProcess(String contentType, CharBuffer buffer, HttpServletRequest request, HttpServletResponse response, ResponseMetaData metaData)
             throws IOException, ServletException {
@@ -28,5 +28,4 @@ public class DataARCSitemeshFilter extends SiteMeshFilter {
         return super.postProcess(contentType, buffer, request, response, metaData);
     }
 
-    
 }

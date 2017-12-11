@@ -20,9 +20,9 @@ import javax.persistence.Transient;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.query.FilterQuery;
+import org.dataarc.util.View;
 import org.dataarc.util.hibernate.type.QueryJsonType;
 import org.dataarc.web.api.indicator.IndicatorDataObject;
-import org.dataarc.util.View;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -39,13 +39,13 @@ public class Indicator extends AbstractPersistable {
     @JsonView(View.Indicator.class)
     private String name;
 
-    @Column(name = "date_created", nullable=false)
+    @Column(name = "date_created", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @JsonView(View.Indicator.class)
     private Date dateCreated;
 
     @ManyToOne
-    @JoinColumn(name="schema_id")
+    @JoinColumn(name = "schema_id")
     @JsonView(View.Indicator.class)
     private Schema schema;
 
@@ -71,12 +71,13 @@ public class Indicator extends AbstractPersistable {
     private FilterQuery query;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     @JsonView(View.Indicator.class)
     private DataArcUser user;
-    
+
     @ManyToMany
-    @JoinTable(name = "topic_indicator", joinColumns = @JoinColumn(name = "indicator_id"), inverseJoinColumns= @JoinColumn(name="topic_id",referencedColumnName="identifier"))
+    @JoinTable(name = "topic_indicator", joinColumns = @JoinColumn(name = "indicator_id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id", referencedColumnName = "identifier"))
     private List<Topic> topics = new ArrayList<>();
 
     public String getName() {
@@ -119,11 +120,10 @@ public class Indicator extends AbstractPersistable {
         this.citation = citation;
     }
 
-    
     public List<Topic> getTopics() {
         return topics;
     }
-    
+
     public void setTopics(List<Topic> topics) {
         this.topics = topics;
     }
@@ -158,5 +158,5 @@ public class Indicator extends AbstractPersistable {
         setName(_indicator.getName());
         setQuery(_indicator.getQuery());
     }
-    
+
 }

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Controller
 @Secured(UserService.EDITOR_ROLE)
 public class SchemaController extends AbstractController {
-    
+
     @Autowired
     SchemaService schemaService;
 
@@ -80,10 +80,9 @@ public class SchemaController extends AbstractController {
             @RequestParam(value = "category") CategoryType category,
             @RequestParam(value = "logoUrl") String logoUrl,
             @RequestParam(value = "url") String url,
-            @RequestParam(value = "startFieldId" , required = false, defaultValue="-1") Long startFieldId, 
-            @RequestParam(value = "endFieldId", required = false, defaultValue="-1") Long endFieldId,
-            @RequestParam(value = "textFieldId", required = false, defaultValue="-1") Long textFieldId
-            ) throws Exception {
+            @RequestParam(value = "startFieldId", required = false, defaultValue = "-1") Long startFieldId,
+            @RequestParam(value = "endFieldId", required = false, defaultValue = "-1") Long endFieldId,
+            @RequestParam(value = "textFieldId", required = false, defaultValue = "-1") Long textFieldId) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.findById(id);
         schemaService.updateSchema(schema, displayName, description, logoUrl, url, category, startFieldId, endFieldId, textFieldId);

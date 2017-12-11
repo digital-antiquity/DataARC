@@ -23,9 +23,8 @@ public class ClearContentLengthFilter extends OncePerRequestFilter {
             public void setContentLength(int len) {
                 logger.debug("pseudo setting length:" + len);
                 // TODO Auto-generated method stub
-//                super.setContentLength(len);
+                // super.setContentLength(len);
             }
-
 
         };
         filterChain.doFilter(request, wrapper);

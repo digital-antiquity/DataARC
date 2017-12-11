@@ -56,16 +56,16 @@ public class UploadGeoJsonDataController extends AbstractController {
         if (!file.isEmpty()) {
             try {
                 importService.importGeoJsonFile(file.getInputStream(), file.getOriginalFilename());
-                changelogservice.save(ActionType.SAVE, ObjectType.GEOJSON, getUser(), file.getOriginalFilename() );
+                changelogservice.save(ActionType.SAVE, ObjectType.GEOJSON, getUser(), file.getOriginalFilename());
 
                 mav.setViewName(ADMIN_GEOJSON_SUCCESS);
             } catch (Exception e) {
-                logger.error("{}",e,e);
+                logger.error("{}", e, e);
                 mav.addObject(ERROR_MESSAGE, e.getMessage());
                 mav.addObject(EXCEPTION, e.getMessage());
             }
         }
         return mav;
     }
-    
+
 }

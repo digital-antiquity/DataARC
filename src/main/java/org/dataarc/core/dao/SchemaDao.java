@@ -12,8 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.util.FieldDataCollector;
 import org.slf4j.Logger;
@@ -120,8 +120,8 @@ public class SchemaDao {
     }
 
     public void deleteSchema(Schema schema) {
-        schema.getFields().forEach(field ->{
-            field.getValues().forEach(val ->{
+        schema.getFields().forEach(field -> {
+            field.getValues().forEach(val -> {
                 manager.remove(val);
             });
             manager.remove(field);

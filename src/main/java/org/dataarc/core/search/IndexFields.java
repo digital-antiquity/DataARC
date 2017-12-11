@@ -33,7 +33,7 @@ public interface IndexFields {
     static final String NISP = "nisp";
     static final String DATA = "_data";
     static final String INDICATOR = "I_1";
-    static final String TOPIC  = "T";
+    static final String TOPIC = "T";
     static final String INDICATOR_2ND = "I_2";
     static final String TOPIC_ID = "T_id";
     static final String POINT = "point";

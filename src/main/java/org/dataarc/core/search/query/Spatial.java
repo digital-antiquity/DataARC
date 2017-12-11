@@ -8,7 +8,7 @@ public class Spatial implements Serializable {
     private double[] topLeft;
     private double[] bottomRight;
     private String region;
-    
+
     public double[] getBottomRight() {
         return bottomRight;
     }

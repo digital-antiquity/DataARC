@@ -18,7 +18,7 @@ public class DataFileDao {
     public void save(DataFile file) {
         manager.persist(file);
     }
-    
+
     public List<DataFile> findAll() {
         TypedQuery<DataFile> query = manager.createQuery("from DataFile", DataFile.class);
         return query.getResultList();
@@ -29,6 +29,5 @@ public class DataFileDao {
         query.setParameter("id", id);
         return query.getResultList();
     }
-
 
 }

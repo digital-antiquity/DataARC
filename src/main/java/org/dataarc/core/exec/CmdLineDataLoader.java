@@ -20,7 +20,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
 
     @Autowired
     ImportService importService;
-    
+
     @Autowired
     TopicMapService topicMapService;
 
@@ -51,7 +51,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
             topicMapService.importAndLoad(new FileInputStream(file), file.getName());
             logger.debug("done loading wandora");
         } catch (Exception e) {
-            logger.error("{}", e,e);
+            logger.error("{}", e, e);
         }
         logger.debug("applying indicators");
         indicatorService.applyIndicators();

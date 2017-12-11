@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
 
-@Entity(name="state")
+@Entity(name = "state")
 public class SavedStateJsonObject extends AbstractPersistable {
 
     private static final long serialVersionUID = -4107594961720051504L;
@@ -18,11 +18,11 @@ public class SavedStateJsonObject extends AbstractPersistable {
     @Type(type = "org.hibernate.type.TextType")
     private String data;
 
-    @Column(length=255)
+    @Column(length = 255)
     private String uid;
 
     @ManyToOne()
-    @JoinColumn(name="parent_id")
+    @JoinColumn(name = "parent_id")
     private State parent;
 
     @Column()
@@ -59,7 +59,5 @@ public class SavedStateJsonObject extends AbstractPersistable {
     public void setViews(Long views) {
         this.views = views;
     }
-
-    
 
 }

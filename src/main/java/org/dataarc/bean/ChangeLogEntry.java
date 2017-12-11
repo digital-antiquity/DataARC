@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name="change_log")
+@Table(name = "change_log")
 public class ChangeLogEntry extends AbstractPersistable {
 
     private static final long serialVersionUID = -8918383037524004105L;
@@ -30,17 +30,17 @@ public class ChangeLogEntry extends AbstractPersistable {
         this.objectType = obj;
         this.user = user;
     }
-    
-    @Column(name = "date_created", nullable=false)
+
+    @Column(name = "date_created", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
-    
-    @Column(name="action")
+
+    @Column(name = "action")
     @Enumerated(EnumType.STRING)
     private ActionType type;
-    
+
     @Enumerated(EnumType.STRING)
-    @Column(name="object_type")
+    @Column(name = "object_type")
     private ObjectType objectType;
 
     @Column()
@@ -49,7 +49,7 @@ public class ChangeLogEntry extends AbstractPersistable {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private DataArcUser user;
 
     public Date getDateCreated() {
@@ -91,5 +91,5 @@ public class ChangeLogEntry extends AbstractPersistable {
     public void setObjectType(ObjectType objectType) {
         this.objectType = objectType;
     }
-    
+
 }

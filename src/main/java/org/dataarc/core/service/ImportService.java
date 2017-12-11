@@ -1,7 +1,6 @@
 package org.dataarc.core.service;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,8 +31,6 @@ public class ImportService {
 
     Map<String, FieldDataCollector> collectors = new HashMap<>();
 
-    
-    
     @Transactional(readOnly = false)
     public void loadData(String filename) {
         deleteAll();
@@ -61,8 +58,6 @@ public class ImportService {
             schemaService.saveSchema(collector, rows);
         }
     }
-
-
 
     @Transactional(readOnly = false)
     public void deleteAll() {

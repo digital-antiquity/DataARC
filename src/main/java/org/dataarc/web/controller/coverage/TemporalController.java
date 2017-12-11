@@ -17,11 +17,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Secured(UserService.EDITOR_ROLE)
 public class TemporalController extends AbstractController {
 
-
     @Autowired
     private TemporalCoverageService temporalCoverageService;
-
-
 
     @RequestMapping(path = UrlConstants.LIST_COVERAGE)
     @JsonView(View.Schema.class)

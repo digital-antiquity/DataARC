@@ -14,7 +14,7 @@ public class AboutController extends AbstractController {
 
     @Autowired
     private ChangeLogService changeLogService;
-    
+
     @Autowired
     private SchemaService schemaService;
 
@@ -22,7 +22,7 @@ public class AboutController extends AbstractController {
     public ModelAndView index() {
         ModelAndView mv = new ModelAndView("about");
         mv.addObject("schema", schemaService.findAll());
-        mv.addObject("changes",changeLogService.findAll());
+        mv.addObject("changes", changeLogService.findAll());
         return mv;
     }
 

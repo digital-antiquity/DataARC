@@ -21,8 +21,7 @@ public class AdminReIndexController extends AbstractRestController {
 
     @Autowired
     private ThreadPoolTaskExecutor myExecutor;
-    
-    // https://github.com/frenos/spring-mvc-async-progress/blob/e670296e467b1301ad1d0d294330ea5c9bd5e1c1/src/main/java/de/codepotion/examples/asyncExample/WebController.java
+
     @Autowired
     private IndicatorService indicatorService;
     @Autowired
@@ -37,6 +36,8 @@ public class AdminReIndexController extends AbstractRestController {
     @RequestMapping(path = UrlConstants.REINDEX, method = RequestMethod.POST)
     public String reindex() throws Exception {
         jsonService.applyGeoJsonFiles();
+        // FIXME: this is really a JSON thing, work to convert this to something that will produce a progress indicator
+        // https://github.com/frenos/spring-mvc-async-progress/blob/e670296e467b1301ad1d0d294330ea5c9bd5e1c1/src/main/java/de/codepotion/examples/asyncExample/WebController.java
         indicatorService.applyIndicators();
         indexingService.reindex();
         return "admin/index";
@@ -49,7 +50,6 @@ public class AdminReIndexController extends AbstractRestController {
         return "admin/index";
     }
 
-    
     @RequestMapping(path = UrlConstants.RESET_EVERYTHING, method = RequestMethod.POST)
     public String resetEverything() throws Exception {
         schemaService.deleteAll();

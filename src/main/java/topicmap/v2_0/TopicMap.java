@@ -5,7 +5,6 @@
 // Generated on: 2017.01.18 at 09:17:02 AM MST 
 //
 
-
 package topicmap.v2_0;
 
 import java.util.ArrayList;
@@ -20,11 +19,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -49,9 +49,9 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "itemIdentity",
-    "mergeMap",
-    "topicOrAssociation"
+        "itemIdentity",
+        "mergeMap",
+        "topicOrAssociation"
 })
 @XmlRootElement(name = "topicMap")
 public class TopicMap {
@@ -59,8 +59,8 @@ public class TopicMap {
     protected List<ItemIdentity> itemIdentity;
     protected List<MergeMap> mergeMap;
     @XmlElements({
-        @XmlElement(name = "topic", type = Topic.class),
-        @XmlElement(name = "association", type = Association.class)
+            @XmlElement(name = "topic", type = Topic.class),
+            @XmlElement(name = "association", type = Association.class)
     })
     protected List<Object> topicOrAssociation;
     @XmlAttribute(name = "reifier")
@@ -81,8 +81,9 @@ public class TopicMap {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getItemIdentity().add(newItem);
+     * getItemIdentity().add(newItem);
      * </pre>
      * 
      * 
@@ -110,8 +111,9 @@ public class TopicMap {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getMergeMap().add(newItem);
+     * getMergeMap().add(newItem);
      * </pre>
      * 
      * 
@@ -139,8 +141,9 @@ public class TopicMap {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getTopicOrAssociation().add(newItem);
+     * getTopicOrAssociation().add(newItem);
      * </pre>
      * 
      * 
@@ -162,9 +165,9 @@ public class TopicMap {
      * Gets the value of the reifier property.
      * 
      * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *         possible object is
+     *         {@link String }
+     * 
      */
     public String getReifier() {
         return reifier;
@@ -174,9 +177,9 @@ public class TopicMap {
      * Sets the value of the reifier property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is
+     *            {@link String }
+     * 
      */
     public void setReifier(String value) {
         this.reifier = value;
@@ -186,9 +189,9 @@ public class TopicMap {
      * Gets the value of the version property.
      * 
      * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *         possible object is
+     *         {@link String }
+     * 
      */
     public String getVersion() {
         if (version == null) {
@@ -202,9 +205,9 @@ public class TopicMap {
      * Sets the value of the version property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is
+     *            {@link String }
+     * 
      */
     public void setVersion(String value) {
         this.version = value;

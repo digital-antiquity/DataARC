@@ -15,7 +15,7 @@ public class ViewTopicMap extends AbstractRestController {
     @Autowired
     private TopicMapService topicMapService;
 
-    @RequestMapping(path=UrlConstants.TOPIC_MAP_VIEW, method=RequestMethod.GET)
+    @RequestMapping(path = UrlConstants.TOPIC_MAP_VIEW, method = RequestMethod.GET)
     public InternalTopicMap viewTopicMap() throws Exception {
         return topicMapService.convert(topicMapService.find());
     }

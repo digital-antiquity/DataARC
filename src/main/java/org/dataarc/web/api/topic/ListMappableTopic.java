@@ -18,8 +18,8 @@ public class ListMappableTopic extends AbstractRestController {
     @Autowired
     private TopicMapService topicMapService;
 
-    @RequestMapping(path=UrlConstants.TOPIC_INDICATOR_LIST, method=RequestMethod.GET)
-    public List<Topic> list(@RequestParam(name="schemaId")Long schemaId) throws Exception {
+    @RequestMapping(path = UrlConstants.TOPIC_INDICATOR_LIST, method = RequestMethod.GET)
+    public List<Topic> list(@RequestParam(name = "schemaId") Long schemaId) throws Exception {
         return topicMapService.findFlattenedTopicsForIndicators(schemaId);
     }
 

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -81,9 +82,14 @@ public class SolrIndexingService {
     @Autowired
     private SolrClient client;
 
+    public void invalidateFindAllCache() {
+        UUID.randomUUID();
+    }
+
     @Transactional(readOnly = true)
     public void reindexIndicatorsOnly(String source) {
         logger.debug("begin reindexing");
+        invalidateFindAllCache();
         SolrInputDocument searchIndexObject = null;
         Map<String, Integer> totals = new HashMap<>();
         try {
@@ -174,6 +180,7 @@ public class SolrIndexingService {
     public void reindex() {
         logger.debug("begin reindexing");
         SearchIndexObject searchIndexObject = null;
+        invalidateFindAllCache();
         Map<String, Integer> totals = new HashMap<>();
         try {
             client.deleteByQuery(DATA_ARC, "*:*");

@@ -13,9 +13,8 @@ public class TopicMapWrapper {
 
     public TopicMapWrapper(Collection<Topic> roots, Topic root) {
         this.root = root;
-        this.topicCategories =roots; 
+        this.topicCategories = roots;
     }
-
 
     public List<String> getCategories() {
         List<String> categories = new ArrayList<>();
@@ -24,7 +23,6 @@ public class TopicMapWrapper {
         }
         return categories;
     }
-
 
     public List<TopicWrapper> getTopics() {
         List<TopicWrapper> topicWrappers = new ArrayList<>();

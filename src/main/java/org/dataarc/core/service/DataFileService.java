@@ -13,9 +13,9 @@ public class DataFileService {
 
     @Autowired
     private DataFileDao dataFileDao;
-    
-    @Transactional(readOnly=true)
+
+    @Transactional(readOnly = true)
     public List<DataFile> findBySchemaId(Long id) {
         return dataFileDao.findBySchemaId(id);
     }
-}   
+}

@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 import org.dataarc.bean.AbstractPersistable;
 
@@ -19,11 +18,11 @@ public class JsonFile extends AbstractPersistable {
 
     @Column(length = 100)
     private String name;
-    
+
     @Column(length = 100, name = "display_name")
     private String displayName;
 
-    @Column(name = "date_created", nullable=false)
+    @Column(name = "date_created", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 

@@ -28,10 +28,9 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
     public LocalCrowdAuthenticationProvider(CrowdClient crowdClient) {
         this.crowdClient = crowdClient;
     }
-    
+
     @Autowired
     private UserService userService;
-    
 
     /**
      * @see org.springframework.security.authentication.AuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
@@ -42,12 +41,12 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
         try {
             User user = null;
 
-            if( auth.getCredentials() != null && !auth.getCredentials().toString().equalsIgnoreCase("n/a")) {
+            if (auth.getCredentials() != null && !auth.getCredentials().toString().equalsIgnoreCase("n/a")) {
                 user = crowdClient.authenticateUser(auth.getName(), auth.getCredentials().toString());
             }
             logger.debug("user:{}", user);
             return getAuthenticationForUser(user);
- 
+
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -57,6 +56,7 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
 
     /**
      * Return the Authentication Object for the given user.
+     * 
      * @param user
      * @return
      * @throws Exception
@@ -69,16 +69,15 @@ public class LocalCrowdAuthenticationProvider implements AuthenticationProvider 
 
             List<Group> groupsForUser = crowdClient.getGroupsForNestedUser(user.getName(), 0, -1);
 
-            if( groupsForUser != null && !groupsForUser.isEmpty() ) {
-                for(Group group : groupsForUser) {
+            if (groupsForUser != null && !groupsForUser.isEmpty()) {
+                for (Group group : groupsForUser) {
                     grantedAuthorities.add(new SimpleGrantedAuthority(group.getName()));
                 }
             }
-            
+
             DataArcUser user_ = userService.findByExternalId(user.getExternalId());
             userService.enhanceGroupMembership(user_, grantedAuthorities);
-            
-            
+
             upAuth = new UsernamePasswordAuthenticationToken(user.getName(), "", grantedAuthorities);
             upAuth.setDetails(user);
             logger.debug("LOGIN attempt for user " + user.getName() + " successful");

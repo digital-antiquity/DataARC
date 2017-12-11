@@ -5,7 +5,6 @@
 // Generated on: 2017.01.18 at 09:17:02 AM MST 
 //
 
-
 package topicmap.v2_0;
 
 import java.util.ArrayList;
@@ -19,11 +18,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -48,11 +48,11 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "itemIdentity",
-    "type",
-    "scope",
-    "resourceRef",
-    "resourceData"
+        "itemIdentity",
+        "type",
+        "scope",
+        "resourceRef",
+        "resourceData"
 })
 @XmlRootElement(name = "occurrence")
 public class Occurrence {
@@ -78,8 +78,9 @@ public class Occurrence {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getItemIdentity().add(newItem);
+     * getItemIdentity().add(newItem);
      * </pre>
      * 
      * 
@@ -100,9 +101,9 @@ public class Occurrence {
      * Gets the value of the type property.
      * 
      * @return
-     *     possible object is
-     *     {@link Type }
-     *     
+     *         possible object is
+     *         {@link Type }
+     * 
      */
     public Type getType() {
         return type;
@@ -112,9 +113,9 @@ public class Occurrence {
      * Sets the value of the type property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Type }
-     *     
+     *            allowed object is
+     *            {@link Type }
+     * 
      */
     public void setType(Type value) {
         this.type = value;
@@ -124,9 +125,9 @@ public class Occurrence {
      * Gets the value of the scope property.
      * 
      * @return
-     *     possible object is
-     *     {@link Scope }
-     *     
+     *         possible object is
+     *         {@link Scope }
+     * 
      */
     public Scope getScope() {
         return scope;
@@ -136,9 +137,9 @@ public class Occurrence {
      * Sets the value of the scope property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Scope }
-     *     
+     *            allowed object is
+     *            {@link Scope }
+     * 
      */
     public void setScope(Scope value) {
         this.scope = value;
@@ -148,9 +149,9 @@ public class Occurrence {
      * Gets the value of the resourceRef property.
      * 
      * @return
-     *     possible object is
-     *     {@link ResourceRef }
-     *     
+     *         possible object is
+     *         {@link ResourceRef }
+     * 
      */
     public ResourceRef getResourceRef() {
         return resourceRef;
@@ -160,9 +161,9 @@ public class Occurrence {
      * Sets the value of the resourceRef property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link ResourceRef }
-     *     
+     *            allowed object is
+     *            {@link ResourceRef }
+     * 
      */
     public void setResourceRef(ResourceRef value) {
         this.resourceRef = value;
@@ -172,9 +173,9 @@ public class Occurrence {
      * Gets the value of the resourceData property.
      * 
      * @return
-     *     possible object is
-     *     {@link AnyMarkup }
-     *     
+     *         possible object is
+     *         {@link AnyMarkup }
+     * 
      */
     public AnyMarkup getResourceData() {
         return resourceData;
@@ -184,9 +185,9 @@ public class Occurrence {
      * Sets the value of the resourceData property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link AnyMarkup }
-     *     
+     *            allowed object is
+     *            {@link AnyMarkup }
+     * 
      */
     public void setResourceData(AnyMarkup value) {
         this.resourceData = value;
@@ -196,9 +197,9 @@ public class Occurrence {
      * Gets the value of the reifier property.
      * 
      * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *         possible object is
+     *         {@link String }
+     * 
      */
     public String getReifier() {
         return reifier;
@@ -208,9 +209,9 @@ public class Occurrence {
      * Sets the value of the reifier property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is
+     *            {@link String }
+     * 
      */
     public void setReifier(String value) {
         this.reifier = value;

@@ -20,9 +20,9 @@ public class Filestore {
 
     private static final String S_S_S = "%s-%s.%s";
     private static final String SCHEMA_S_S = "schema-%s.%s";
-    @Value("${filestore.path}") 
+    @Value("${filestore.path}")
     public String filestorePath = System.getProperty("java.io.tmpdir");
-    
+
     public File getBaseDir() {
         File root = new File(filestorePath);
         File store = mkdir(new File(root, "data-arc"));
@@ -35,10 +35,10 @@ public class Filestore {
         }
         return store;
     }
-    
+
     public File store(String schema, File file) throws FileNotFoundException, IOException {
         File schemaDir = mkdir(new File(getBaseDir(), schema));
-        File outfile = new File(schemaDir, String.format(SCHEMA_S_S,System.currentTimeMillis(), FilenameUtils.getExtension(file.getName())));
+        File outfile = new File(schemaDir, String.format(SCHEMA_S_S, System.currentTimeMillis(), FilenameUtils.getExtension(file.getName())));
         torefile(file, outfile);
         return outfile;
     }
@@ -52,8 +52,8 @@ public class Filestore {
         File schemaDir = mkdir(new File(getBaseDir(), schema));
         return getLatestFilefromDir(schemaDir);
     }
-    
-    private File getLatestFilefromDir(File dir){
+
+    private File getLatestFilefromDir(File dir) {
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
             return null;
@@ -61,23 +61,23 @@ public class Filestore {
 
         File lastModifiedFile = files[0];
         for (int i = 1; i < files.length; i++) {
-           if (lastModifiedFile.lastModified() < files[i].lastModified()) {
-               lastModifiedFile = files[i];
-           }
+            if (lastModifiedFile.lastModified() < files[i].lastModified()) {
+                lastModifiedFile = files[i];
+            }
         }
         return lastModifiedFile;
     }
 
     public File storeFile(InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
         File schemaDir = mkdir(new File(getBaseDir(), "files"));
-        File outfile = new File(schemaDir, String.format(S_S_S,originalFilename, System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
+        File outfile = new File(schemaDir, String.format(S_S_S, originalFilename, System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
         IOUtils.copy(inputStream, new FileOutputStream(outfile));
         return outfile;
     }
 
     public File store(String schema, InputStream inputStream, String originalFilename) throws FileNotFoundException, IOException {
         File schemaDir = mkdir(new File(getBaseDir(), schema));
-        File outfile = new File(schemaDir, String.format(SCHEMA_S_S,System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
+        File outfile = new File(schemaDir, String.format(SCHEMA_S_S, System.currentTimeMillis(), FilenameUtils.getExtension(originalFilename)));
         IOUtils.copy(inputStream, new FileOutputStream(outfile));
         return outfile;
     }

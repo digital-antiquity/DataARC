@@ -3,7 +3,6 @@ package org.dataarc.core.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -51,7 +50,7 @@ public class DataArcUserDao {
 
     public void delete(DataArcUser findByUserId) {
         manager.remove(findByUserId);
-        
+
     }
 
 }

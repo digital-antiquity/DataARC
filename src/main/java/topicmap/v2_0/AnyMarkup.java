@@ -5,7 +5,6 @@
 // Generated on: 2017.01.18 at 09:17:02 AM MST 
 //
 
-
 package topicmap.v2_0;
 
 import java.util.ArrayList;
@@ -21,11 +20,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.w3c.dom.Element;
 
-
 /**
- * <p>Java class for any-markup complex type.
+ * <p>
+ * Java class for any-markup complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="any-markup">
@@ -44,7 +44,7 @@ import org.w3c.dom.Element;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "any-markup", propOrder = {
-    "content"
+        "content"
 })
 public class AnyMarkup {
 
@@ -66,8 +66,9 @@ public class AnyMarkup {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getContent().add(newItem);
+     * getContent().add(newItem);
      * </pre>
      * 
      * 
@@ -90,9 +91,9 @@ public class AnyMarkup {
      * Gets the value of the datatype property.
      * 
      * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *         possible object is
+     *         {@link String }
+     * 
      */
     public String getDatatype() {
         return datatype;
@@ -102,9 +103,9 @@ public class AnyMarkup {
      * Sets the value of the datatype property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is
+     *            {@link String }
+     * 
      */
     public void setDatatype(String value) {
         this.datatype = value;

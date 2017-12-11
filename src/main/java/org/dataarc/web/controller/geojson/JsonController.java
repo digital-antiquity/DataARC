@@ -16,15 +16,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class JsonController extends AbstractController {
     @Autowired
     JsonFileService jsonService;
-    
+
     @Secured(UserService.ADMIN_ROLE)
-    @RequestMapping(path=UrlConstants.LIST_JSON)
+    @RequestMapping(path = UrlConstants.LIST_JSON)
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("geojson/list");
         mav.addObject("files", jsonService.findAll());
         return mav;
     }
-
 
     @RequestMapping(path = UrlConstants.DELETE_GEOJSON, method = RequestMethod.POST)
     public ModelAndView deleteSchema(@PathVariable(value = "id", required = true) Long id) throws Exception {

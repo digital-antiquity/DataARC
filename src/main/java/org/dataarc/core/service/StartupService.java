@@ -23,7 +23,7 @@ public class StartupService implements ApplicationListener<ContextStartedEvent> 
 
     @Autowired
     SolrIndexingService indexingService;
-    
+
     @Autowired(required = false)
     @Qualifier("bce.properties")
     private Properties myProperties = new Properties();
@@ -31,7 +31,7 @@ public class StartupService implements ApplicationListener<ContextStartedEvent> 
     // get the spreadsheet id, and re-index on startup
     @Override
     public void onApplicationEvent(ContextStartedEvent arg0) {
-         indexingService.reindex();
+        indexingService.reindex();
     }
 
 }

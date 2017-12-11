@@ -78,18 +78,18 @@ public enum GeometryWriteConverter implements Converter<Geometry, GeoJson> {
         LineString exteriorRing = p.getExteriorRing();
         for (int i = 0; i < exteriorRing.getNumPoints(); i++) {
             GeoJsonPoint point = buildCoordinates(exteriorRing.getPointN(i));
-            if (!points.contains(point) || i == exteriorRing.getNumPoints() -1 ){
+            if (!points.contains(point) || i == exteriorRing.getNumPoints() - 1) {
                 points.add(point);
             }
         }
-        
+
         GeoJsonPolygon polygon = new GeoJsonPolygon(points);
         for (int i = 0; i < p.getNumInteriorRing(); i++) {
             List<org.springframework.data.geo.Point> icoords = new ArrayList<>();
             LineString interiorRingN = p.getInteriorRingN(i);
             for (int j = 0; j < interiorRingN.getNumPoints(); j++) {
                 GeoJsonPoint point = buildCoordinates(interiorRingN.getPointN(j));
-                if (!!icoords.contains(point) ||  j == interiorRingN.getNumPoints() -1) {
+                if (!!icoords.contains(point) || j == interiorRingN.getNumPoints() - 1) {
                     icoords.add(point);
                 }
             }

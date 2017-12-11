@@ -5,7 +5,6 @@
 // Generated on: 2017.01.18 at 09:17:02 AM MST 
 //
 
-
 package topicmap.v2_0;
 
 import java.util.ArrayList;
@@ -19,11 +18,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -47,10 +47,10 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "itemIdentity",
-    "scope",
-    "resourceData",
-    "resourceRef"
+        "itemIdentity",
+        "scope",
+        "resourceData",
+        "resourceRef"
 })
 @XmlRootElement(name = "variant")
 public class Variant {
@@ -75,8 +75,9 @@ public class Variant {
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getItemIdentity().add(newItem);
+     * getItemIdentity().add(newItem);
      * </pre>
      * 
      * 
@@ -97,9 +98,9 @@ public class Variant {
      * Gets the value of the scope property.
      * 
      * @return
-     *     possible object is
-     *     {@link Scope }
-     *     
+     *         possible object is
+     *         {@link Scope }
+     * 
      */
     public Scope getScope() {
         return scope;
@@ -109,9 +110,9 @@ public class Variant {
      * Sets the value of the scope property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Scope }
-     *     
+     *            allowed object is
+     *            {@link Scope }
+     * 
      */
     public void setScope(Scope value) {
         this.scope = value;
@@ -121,9 +122,9 @@ public class Variant {
      * Gets the value of the resourceData property.
      * 
      * @return
-     *     possible object is
-     *     {@link AnyMarkup }
-     *     
+     *         possible object is
+     *         {@link AnyMarkup }
+     * 
      */
     public AnyMarkup getResourceData() {
         return resourceData;
@@ -133,9 +134,9 @@ public class Variant {
      * Sets the value of the resourceData property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link AnyMarkup }
-     *     
+     *            allowed object is
+     *            {@link AnyMarkup }
+     * 
      */
     public void setResourceData(AnyMarkup value) {
         this.resourceData = value;
@@ -145,9 +146,9 @@ public class Variant {
      * Gets the value of the resourceRef property.
      * 
      * @return
-     *     possible object is
-     *     {@link ResourceRef }
-     *     
+     *         possible object is
+     *         {@link ResourceRef }
+     * 
      */
     public ResourceRef getResourceRef() {
         return resourceRef;
@@ -157,9 +158,9 @@ public class Variant {
      * Sets the value of the resourceRef property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link ResourceRef }
-     *     
+     *            allowed object is
+     *            {@link ResourceRef }
+     * 
      */
     public void setResourceRef(ResourceRef value) {
         this.resourceRef = value;
@@ -169,9 +170,9 @@ public class Variant {
      * Gets the value of the reifier property.
      * 
      * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *         possible object is
+     *         {@link String }
+     * 
      */
     public String getReifier() {
         return reifier;
@@ -181,9 +182,9 @@ public class Variant {
      * Sets the value of the reifier property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is
+     *            {@link String }
+     * 
      */
     public void setReifier(String value) {
         this.reifier = value;

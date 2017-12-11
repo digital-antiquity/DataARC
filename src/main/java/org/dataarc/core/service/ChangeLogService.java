@@ -33,9 +33,9 @@ public class ChangeLogService {
 
     @Transactional(readOnly = false)
     public void save(ActionType save, ObjectType topic, DataArcUser user, String string) {
-        ChangeLogEntry change = new ChangeLogEntry( save, topic, user, string);
+        ChangeLogEntry change = new ChangeLogEntry(save, topic, user, string);
         change.setDateCreated(new Date());
         save(change);
-        
+
     }
 }

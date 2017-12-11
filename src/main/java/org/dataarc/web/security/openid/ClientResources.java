@@ -16,10 +16,10 @@ public class ClientResources {
     }
 
     public OAuth2ProtectedResourceDetails getClient() {
-      return client;
+        return client;
     }
 
     public ResourceServerProperties getResource() {
-      return resource;
+        return resource;
     }
-  }
+}

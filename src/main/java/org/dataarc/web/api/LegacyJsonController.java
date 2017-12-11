@@ -32,11 +32,11 @@ public class LegacyJsonController extends AbstractController {
             @RequestParam(value = "idOnly", required = false) boolean idOnly,
             @RequestParam(value = "types", required = false) List<String> types) throws IOException, ParseException, Exception {
         SearchQueryObject sqo = new SearchQueryObject();
-        if (x1 != null && y1 != null){
-            sqo.getSpatial().setTopLeft(new double[] {x1,y1});
+        if (x1 != null && y1 != null) {
+            sqo.getSpatial().setTopLeft(new double[] { x1, y1 });
         }
-        if (x2 != null && y2 != null){
-        sqo.getSpatial().setBottomRight(new double[] {x2,y2});
+        if (x2 != null && y2 != null) {
+            sqo.getSpatial().setBottomRight(new double[] { x2, y2 });
         }
         sqo.getTemporal().setStart(start);
         sqo.getTemporal().setEnd(end);

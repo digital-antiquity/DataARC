@@ -64,13 +64,13 @@ public class SolrService {
     private static final boolean includeMissing = false;
     private static final String OBJECT_TYPE = "internalType";
     private static final List<String> IGNORE_FIELDS = Arrays.asList(OBJECT_TYPE, IndexFields.X, IndexFields.Y, _VERSION, IndexFields.COUNTRY, IndexFields.POINT,
-            IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.KEYWORD); //, IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM?
+            IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.KEYWORD); // , IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM?
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SchemaService schemaService;
-    
+
     SpatialContext ctx = SpatialContext.GEO;
     SpatialPrefixTree grid = new GeohashPrefixTree(ctx, 24);
     RecursivePrefixTreeStrategy strategy = new RecursivePrefixTreeStrategy(grid, "location");
@@ -126,11 +126,10 @@ public class SolrService {
 
         buildResultsFacets(result, query);
 
-        
         // aggregate results in a map by point
         result.setIdList(idList);
         if (!sqo.isIdOnly()) {
-        result.setResults(fc);
+            result.setResults(fc);
         }
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
@@ -206,20 +205,18 @@ public class SolrService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
-//        addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
-//        addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
-//        addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
 
-        
+        // addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
+        // addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
+        // addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
+
         // logger.debug("{}", document);
         // logger.debug("{}", document.getChildDocumentCount());
         if (!idMapOnly && CollectionUtils.isNotEmpty(document.getChildDocuments())) {
             // logger.debug("child docs: " + document.getChildDocuments());
             for (SolrDocument doc : document.getChildDocuments()) {
-                Map<String,Object> row = new HashMap<>();
-                
+                Map<String, Object> row = new HashMap<>();
+
                 String prefix = (String) doc.get(IndexFields.PREFIX);
                 Object entry = feature.getProperty(prefix);
                 if (prefix == null) {
@@ -246,13 +243,12 @@ public class SolrService {
         String date = formateDate(document);
         addKeyValue(feature.getProperties(), IndexFields.DATE, date);
 
-        
         addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
         addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
         addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
         Object id = document.get(IndexFields.SCHEMA_ID);
         addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, id);
-        Schema schema = schemaService.findById((Number)id);
+        Schema schema = schemaService.findById((Number) id);
         feature.setProperty(IndexFields.SOURCE, schema.getName());
         if (!idMapOnly) {
             for (String name : document.getFieldNames()) {
@@ -263,21 +259,20 @@ public class SolrService {
             addKeyValue(feature.getProperties(), IndexFields.START, document);
             addKeyValue(feature.getProperties(), IndexFields.END, document);
 
-        } 
+        }
         fc.add(feature);
 
     }
 
-
-    private void addKeyValue(Map<String,Object> prop, String name_, Object v) {
+    private void addKeyValue(Map<String, Object> prop, String name_, Object v) {
         String name = name_;
-        if (v == null || v instanceof String && StringUtils.isBlank(StringUtils.trim((String)v))) {
+        if (v == null || v instanceof String && StringUtils.isBlank(StringUtils.trim((String) v))) {
             return;
         }
-        
+
         if (IGNORE_FIELDS.contains(name)) {
-                return;
-        } 
+            return;
+        }
 
         int idx = name.indexOf("_");
         idx = name.indexOf(".", idx);
@@ -291,11 +286,11 @@ public class SolrService {
         @SuppressWarnings("rawtypes")
         SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get(FACETS);
 
-            logger.debug("{}", facetMap);
+        logger.debug("{}", facetMap);
         for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
             if (logger.isTraceEnabled()) {
-            logger.trace("{}", field);
-            logger.trace("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
+                logger.trace("{}", field);
+                logger.trace("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
             }
             if (facetMap.get(field) instanceof SimpleOrderedMap) {
                 SimpleOrderedMap<?> object = (SimpleOrderedMap<?>) facetMap.get(field);
@@ -307,7 +302,6 @@ public class SolrService {
             }
         }
 
-        
         if (CollectionUtils.isNotEmpty(query.getFacetFields())) {
             for (FacetField facet : query.getFacetFields()) {
                 Map<String, Object> map = new HashMap<>();

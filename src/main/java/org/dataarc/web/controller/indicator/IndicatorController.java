@@ -1,7 +1,6 @@
 package org.dataarc.web.controller.indicator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +27,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Controller
 @Secured(UserService.EDITOR_ROLE)
 public class IndicatorController extends AbstractController {
-    
+
     @Autowired
     IndicatorService indicatorService;
     @Autowired
     SolrService searchService;
-
 
     @RequestMapping(path = UrlConstants.LIST_COMBINATORS)
     @JsonView(View.Schema.class)
@@ -48,6 +46,5 @@ public class IndicatorController extends AbstractController {
         mav.addObject("facets", facets);
         return mav;
     }
-
 
 }

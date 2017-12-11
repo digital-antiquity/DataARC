@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.sun.tools.internal.xjc.model.CPluginCustomization;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -34,8 +33,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
-
-import javassist.compiler.ast.Keyword;
 
 @JsonInclude(Include.NON_EMPTY)
 public class SearchIndexObject {
@@ -138,8 +135,7 @@ public class SearchIndexObject {
         applyTopicIdentifiers(entry);
         applyProperties(entry, schema);
         applyStartEnd(entry, schema, temporal);
-        
-        
+
         if (CollectionUtils.isNotEmpty(topic_2nd)) {
             values.addAll(topic_2nd);
         }
@@ -152,7 +148,7 @@ public class SearchIndexObject {
         if (CollectionUtils.isNotEmpty(topicNames)) {
             values.addAll(topicNames);
         }
-        
+
     }
 
     private void applyStartEnd(DataEntry entry, Schema schema, TemporalCoverageService coverageLookup) {
@@ -171,14 +167,14 @@ public class SearchIndexObject {
             }
         }
         if (start != null && end != null) {
-         logger.trace("{} - {} - {}", source ,start, end);
+            logger.trace("{} - {} - {}", source, start, end);
         }
     }
 
     private transient Object startFieldValue;
     private transient Object endFieldValue;
     private transient Object textFieldValue;
-    
+
     private Integer toInt(Object o, TemporalCoverageService coverageLookup, boolean start) {
         if (o == null) {
             return null;

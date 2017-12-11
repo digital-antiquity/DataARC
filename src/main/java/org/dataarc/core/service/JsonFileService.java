@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.file.JsonFile;
-import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.file.JsonFileDao;
 import org.slf4j.Logger;
@@ -45,7 +43,7 @@ public class JsonFileService {
                 if (!file_.exists()) {
                     continue;
                 }
-                logger.debug("applying file: {}" ,file_ );
+                logger.debug("applying file: {}", file_);
                 FeatureCollection featureCollection = (FeatureCollection) GeoJSONFactory.create(IOUtils.toString(new FileReader(file_)));
                 for (Feature feature : featureCollection.getFeatures()) {
                     GeoJSONReader reader = new GeoJSONReader();
@@ -58,20 +56,20 @@ public class JsonFileService {
         }
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public List<JsonFile> findAll() {
         return jsonFileDao.findAll();
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public String findById(Long id) throws FileNotFoundException, IOException {
         JsonFile findById = jsonFileDao.findById(id);
         return IOUtils.toString(new FileReader(new File(findById.getPath())));
     }
 
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void deleteById(Long id) {
         jsonFileDao.deleteById(id);
-        
+
     }
 }
