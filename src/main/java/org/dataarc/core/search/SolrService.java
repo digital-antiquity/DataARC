@@ -114,6 +114,11 @@ public class SolrService {
             q = "*:*";
         }
         SolrQuery params = setupQueryWithFacetsAndFilters(limit, q);
+        if (sqo.isIdOnly()) {
+        params.addField(IndexFields.POINT);
+        params.addField(IndexFields.ID);
+        params.addField(IndexFields.SOURCE);
+        }
         params.setStart(startRecord);
         
         logger.debug(String.format("query begin"));
