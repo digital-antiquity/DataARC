@@ -18,11 +18,9 @@ import org.apache.lucene.spatial.prefix.tree.SpatialPrefixTree;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.solr.common.util.SimpleOrderedMap;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.core.search.query.Temporal;
@@ -47,7 +45,6 @@ import com.vividsolutions.jts.io.WKTReader;
 @Service
 public class SolrService {
     private static final String TEMPORAL = "temporal";
-    private static final String FACETS = "facets";
     private static final String _VERSION = "_version_";
 
     private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE,
@@ -56,12 +53,8 @@ public class SolrService {
     List<String> FACET_FIELDS = Arrays.asList(IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
             IndexFields.TOPIC_ID_3RD, IndexFields.SOURCE, IndexFields.DECADE);
 
-    private static final String VAL = "val";
-    private static final String MISSING = "missing";
-    private static final String BUCKETS = "buckets";
-    private static final String COUNT = "count";
     private static final String BCE = " BCE ";
-    private static final boolean includeMissing = false;
+    private static final String VAL = "val";
     private static final String OBJECT_TYPE = "internalType";
     private static final List<String> IGNORE_FIELDS = Arrays.asList(OBJECT_TYPE, IndexFields.X, IndexFields.Y, _VERSION, IndexFields.COUNTRY, IndexFields.POINT,
             IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.KEYWORD); // , IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM?
@@ -114,10 +107,12 @@ public class SolrService {
             q = "*:*";
         }
         SolrQuery params = setupQueryWithFacetsAndFilters(limit, q);
-        if (sqo.isIdOnly()) {
-        params.addField(IndexFields.POINT);
-        params.addField(IndexFields.ID);
-        params.addField(IndexFields.SOURCE);
+        logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
+        if (sqo.isIdOnly() || sqo.isIdAndMap()) {
+            params.addField(IndexFields.POINT);
+            params.addField(IndexFields.ID);
+            params.addField(IndexFields.SCHEMA_ID);
+            params.addField(IndexFields.SOURCE);
         }
         params.setStart(startRecord);
         
@@ -130,8 +125,8 @@ public class SolrService {
             return result;
         }
         WKTReader reader = new WKTReader();
-
-        buildResultsFacets(result, query);
+        SolrFacetBuilder builder = new SolrFacetBuilder(SUBGROUPS);
+        builder.buildResultsFacets(result, query);
 
         // aggregate results in a map by point
         result.setIdList(idList);
@@ -159,49 +154,7 @@ public class SolrService {
         return result;
     }
 
-    private Map<String, Object> appendChildren(SimpleOrderedMap<?> object) {
-        Map<String, Object> map = new HashMap<>();
-        List<?> list = (List<?>) object.get(BUCKETS);
 
-        for (Object obj : list) {
-            SimpleOrderedMap<?> f = (SimpleOrderedMap<?>) obj;
-            map.put(f.get(VAL).toString(), ((Number) f.get(COUNT)).longValue());
-            HashMap<String, SimpleOrderedMap<?>> subgroups = getSubgroups(f);
-            if (!subgroups.isEmpty()) {
-                Map<String, Object> subMap = new HashMap<>();
-                map.put(f.get(VAL).toString(), subMap);
-                subMap.put(COUNT, ((Number) f.get(COUNT)).longValue());
-
-                for (String key : subgroups.keySet()) {
-                    subMap.put(key, appendChildren((SimpleOrderedMap<?>) subgroups.get(key)));
-                }
-            }
-            for (String subgroup : SUBGROUPS) {
-                Object sub = f.get(subgroup);
-                if (sub != null) {
-                }
-            }
-        }
-        if (includeMissing) {
-            Object miss = object.get(MISSING);
-            if (miss != null) {
-                SimpleOrderedMap<?> missing = (SimpleOrderedMap<?>) miss;
-                map.put("", ((Number) missing.get(COUNT)).longValue());
-            }
-        }
-        return map;
-    }
-
-    private HashMap<String, SimpleOrderedMap<?>> getSubgroups(SimpleOrderedMap<?> f) {
-        HashMap<String, SimpleOrderedMap<?>> ret = new HashMap<>();
-        for (String subgroup : SUBGROUPS) {
-            Object sub = f.get(subgroup);
-            if (sub != null) {
-                ret.put(subgroup, (SimpleOrderedMap<?>) sub);
-            }
-        }
-        return ret;
-    }
 
     private void appendFeatureResult(SolrDocument document, WKTReader reader, FeatureCollection fc, String point, boolean idMapOnly) {
         Feature feature = new Feature();
@@ -247,17 +200,17 @@ public class SolrService {
                 }
             }
         }
-        String date = formateDate(document);
-        addKeyValue(feature.getProperties(), IndexFields.DATE, date);
 
-        addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
         addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
-        addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
         Object id = document.get(IndexFields.SCHEMA_ID);
         addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, id);
         Schema schema = schemaService.findById((Number) id);
         feature.setProperty(IndexFields.SOURCE, schema.getName());
         if (!idMapOnly) {
+            String date = formateDate(document);
+            addKeyValue(feature.getProperties(), IndexFields.DATE, date);
+            addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
+            addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
             for (String name : document.getFieldNames()) {
                 Object v = document.get(name);
                 // hide certain fields
@@ -289,36 +242,6 @@ public class SolrService {
         prop.put(name, v);
     }
 
-    private void buildResultsFacets(SearchResultObject result, QueryResponse query) {
-        @SuppressWarnings("rawtypes")
-        SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get(FACETS);
-
-        logger.debug("{}", facetMap);
-        for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
-            if (logger.isTraceEnabled()) {
-                logger.trace("{}", field);
-                logger.trace("{} : {}", facetMap.get(field).getClass(), facetMap.get(field));
-            }
-            if (facetMap.get(field) instanceof SimpleOrderedMap) {
-                SimpleOrderedMap<?> object = (SimpleOrderedMap<?>) facetMap.get(field);
-                if (object == null || object.get(BUCKETS) == null) {
-                    continue;
-                }
-                Map<String, Object> map = appendChildren(object);
-                result.getFacets().put(field, map);
-            }
-        }
-
-        if (CollectionUtils.isNotEmpty(query.getFacetFields())) {
-            for (FacetField facet : query.getFacetFields()) {
-                Map<String, Object> map = new HashMap<>();
-                facet.getValues().forEach(val -> {
-                    map.put(val.getName(), val.getCount());
-                });
-                result.getFacets().put(facet.getName(), map);
-            }
-        }
-    }
 
     private StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
         StringBuilder bq = new StringBuilder();
