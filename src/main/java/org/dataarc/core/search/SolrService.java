@@ -170,6 +170,8 @@ public class SolrService {
 
                     if (sqo.isIdAndMap()) {
                         com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
+                        
+                        // NOTE: this is only really safe because we have so much control over the specific fields here
                         String part = String.format(template, document.get(IndexFields.SCHEMA_ID), document.get(IndexFields.ID),
                                 document.get(IndexFields.SOURCE), document.get(IndexFields.CATEGORY), read.getX(), read.getY());
                         if (i > 0) {
