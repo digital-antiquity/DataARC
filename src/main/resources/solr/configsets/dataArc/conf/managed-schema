@@ -494,15 +494,6 @@
   <field name="farm_histories_description" type="string" multiValued="false" stored="true"/>
   <field name="farm_histories_function_of_site" type="string" multiValued="false" stored="true"/>
   <field name="farm_histories_type_of_site" type="string" multiValued="false" stored="true"/>
-  <field name="iceland_farms_1861_adjusted_value" type="float" multiValued="false" stored="true"/>
-  <field name="iceland_farms_end_date" type="int" multiValued="false" stored="true"/>
-  <field name="iceland_farms_farm_number" type="string" multiValued="false" stored="true"/>
-  <field name="iceland_farms_isleif_farms_id" type="int" multiValued="false" stored="true"/>
-  <field name="iceland_farms_jardabok_full_text" type="string" multiValued="false" stored="true"/>
-  <field name="iceland_farms_parish_name" type="string" multiValued="false" stored="true"/>
-  <field name="iceland_farms_shire_name" type="string" multiValued="false" stored="true"/>
-  <field name="iceland_farms_start_date" type="int" multiValued="false" stored="true"/>
-  <field name="iceland_farms_valuation" type="float" multiValued="false" stored="true"/>
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
   <field name="indicator" type="text_general" multiValued="true" stored="true"/>
   <field name="internalType" type="strings" multiValued="false" stored="true"/>
@@ -512,21 +503,6 @@
   <field name="isleif_tags" type="string" multiValued="false" stored="true"/>
   <field name="isleif_type_of_site" type="string" multiValued="false" stored="true"/>
   <field name="isleif_what" type="string" multiValued="false" stored="true"/>
-  <field name="jard_1861_adjusted_value" type="float" multiValued="false" stored="true"/>
-  <field name="jard_adjusted_value_1861" type="float" multiValued="false" stored="true"/>
-  <field name="jard_end_date" type="int" multiValued="false" stored="true"/>
-  <field name="jard_farm_name" type="string" multiValued="false" stored="true"/>
-  <field name="jard_farm_number" type="string" multiValued="false" stored="true"/>
-  <field name="jard_historic_value_1861" type="float" multiValued="false" stored="true"/>
-  <field name="jard_id" type="int" multiValued="false" stored="true"/>
-  <field name="jard_isleif_farms_id" type="int" multiValued="false" stored="true"/>
-  <field name="jard_jam_census_property_dyrleiki" type="int" multiValued="false" stored="true"/>
-  <field name="jard_jardabok_full_text" type="string" multiValued="false" stored="true"/>
-  <field name="jard_jardabok_full_text_base64" type="string" multiValued="false" stored="true"/>
-  <field name="jard_parish_name" type="string" multiValued="false" stored="true"/>
-  <field name="jard_shire_name" type="string" multiValued="false" stored="true"/>
-  <field name="jard_start_date" type="int" multiValued="false" stored="true"/>
-  <field name="jard_valuation" type="float" multiValued="false" stored="true"/>
   <field name="keywords" type="text_general" multiValued="true" stored="true"/>
   <field name="millenium" type="strings" multiValued="true" stored="true"/>
   <field name="millennium" type="strings" multiValued="true" stored="true"/>

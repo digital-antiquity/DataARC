@@ -115,6 +115,8 @@ public class SolrService {
         }
         SolrQuery params = setupQueryWithFacetsAndFilters(limit, q);
         params.setStart(startRecord);
+        
+        logger.debug(String.format("query begin"));
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
