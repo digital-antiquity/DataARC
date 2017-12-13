@@ -24,6 +24,8 @@ import org.apache.solr.common.SolrDocumentList;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.core.service.SchemaService;
+import org.dataarc.web.api.DefaultSearchResultObject;
+import org.dataarc.web.api.PerfSearchResultObject;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
@@ -48,7 +50,23 @@ public class SolrService {
     private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE,
             IndexFields.REGION, IndexFields.COUNTRY);
 
+    private String featureCollectionTemplate = " { \"features\": [";
+    private String featureCollectionTemplateEnd = "] }";
+private String template = "     {" + 
+        " \"type\": \"Feature\", " + 
+        " \"properties\": { " + 
+        " \"schema_id\": %s, " + 
+        " \"id\": \"%s\", " + 
+        " \"source\": \"%s\", " + 
+        " \"category\": \"%s\" " + 
+        " }, " + 
+        " \"geometry\": {\n" + 
+        " \"type\": \"Point\",\n" + 
+        " \"coordinates\": [  %s,  %s ] " + 
+        " } " + 
+        " }";
 
+    
     private static final String BCE = " BCE ";
     private static final String OBJECT_TYPE = "internalType";
     private static final List<String> IGNORE_FIELDS = Arrays.asList(OBJECT_TYPE, IndexFields.X, IndexFields.Y, _VERSION, IndexFields.COUNTRY, IndexFields.POINT,
@@ -87,7 +105,8 @@ public class SolrService {
     @SuppressWarnings("unchecked")
     public SearchResultObject search(SearchQueryObject sqo)
             throws IOException, ParseException, SolrServerException {
-        SearchResultObject result = new SearchResultObject();
+        SearchResultObject result = new DefaultSearchResultObject();
+        
         int limit = 1_000_000;
         if (sqo.getSize() != null) {
             limit = sqo.getSize();
@@ -107,9 +126,9 @@ public class SolrService {
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
         logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
         if (sqo.isIdOnly() || sqo.isIdAndMap()) {
-            params.addField(IndexFields.POINT);
             params.addField(IndexFields.ID);
             params.addField(IndexFields.SCHEMA_ID);
+            params.addField(IndexFields.POINT);
             params.addField(IndexFields.SOURCE);
             params.addField(IndexFields.CATEGORY);
         }
@@ -125,13 +144,18 @@ public class SolrService {
         }
         WKTReader reader = new WKTReader();
         SolrFacetBuilder builder = new SolrFacetBuilder(SUBGROUPS);
+        if (sqo.isIdAndMap() || sqo.isIdAndMap()) {
+            result = new PerfSearchResultObject();
+        }
+        
         builder.buildResultsFacets(result, query);
 
         // aggregate results in a map by point
         result.setIdList(idList);
-        if (!sqo.isIdOnly()) {
-            result.setResults(fc);
+        if (!sqo.isIdOnly() && !sqo.isIdAndMap()) {
+            ((DefaultSearchResultObject)result).setResults(fc);
         }
+        StringBuilder sb = new StringBuilder(featureCollectionTemplate);
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
             // logger.debug("{}", document);
@@ -144,12 +168,24 @@ public class SolrService {
 
                 idList.add((String) document.get(IndexFields.ID));
                 if (!sqo.isIdOnly()) {
-                    appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
+                    
+                    if (sqo.isIdAndMap()) {
+                        com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
+                        String part = String.format(template, document.get(IndexFields.SCHEMA_ID), document.get(IndexFields.ID), document.get(IndexFields.SOURCE), document.get(IndexFields.CATEGORY), read.getX(), read.getY());
+                        if (i > 0) {
+                            sb.append(",");
+                        }
+                        sb.append(part);
+                    } else {
+                        appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
+                    }
                 }
             } catch (Throwable t) {
                 logger.error("{}", t, t);
             }
         }
+        sb.append(featureCollectionTemplateEnd);
+        ((PerfSearchResultObject)result).setResults(sb.toString());
         return result;
     }
 
