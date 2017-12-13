@@ -52,21 +52,20 @@ public class SolrService {
 
     private String featureCollectionTemplate = " { \"features\": [";
     private String featureCollectionTemplateEnd = "] }";
-private String template = "     {" + 
-        " \"type\": \"Feature\", " + 
-        " \"properties\": { " + 
-        " \"schema_id\": %s, " + 
-        " \"id\": \"%s\", " + 
-        " \"source\": \"%s\", " + 
-        " \"category\": \"%s\" " + 
-        " }, " + 
-        " \"geometry\": {\n" + 
-        " \"type\": \"Point\",\n" + 
-        " \"coordinates\": [  %s,  %s ] " + 
-        " } " + 
-        " }";
+    private String template = "     {" +
+            " \"type\": \"Feature\", " +
+            " \"properties\": { " +
+            " \"schema_id\": %s, " +
+            " \"id\": \"%s\", " +
+            " \"source\": \"%s\", " +
+            " \"category\": \"%s\" " +
+            " }, " +
+            " \"geometry\": {\n" +
+            " \"type\": \"Point\",\n" +
+            " \"coordinates\": [  %s,  %s ] " +
+            " } " +
+            " }";
 
-    
     private static final String BCE = " BCE ";
     private static final String OBJECT_TYPE = "internalType";
     private static final List<String> IGNORE_FIELDS = Arrays.asList(OBJECT_TYPE, IndexFields.X, IndexFields.Y, _VERSION, IndexFields.COUNTRY, IndexFields.POINT,
@@ -106,7 +105,7 @@ private String template = "     {" +
     public SearchResultObject search(SearchQueryObject sqo)
             throws IOException, ParseException, SolrServerException {
         SearchResultObject result = new DefaultSearchResultObject();
-        
+
         int limit = 1_000_000;
         if (sqo.getSize() != null) {
             limit = sqo.getSize();
@@ -133,7 +132,7 @@ private String template = "     {" +
             params.addField(IndexFields.CATEGORY);
         }
         params.setStart(startRecord);
-        
+
         logger.debug(String.format("query begin"));
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
@@ -147,13 +146,13 @@ private String template = "     {" +
         if (sqo.isIdAndMap() || sqo.isIdAndMap()) {
             result = new PerfSearchResultObject();
         }
-        
+
         builder.buildResultsFacets(result, query);
 
         // aggregate results in a map by point
         result.setIdList(idList);
         if (!sqo.isIdOnly() && !sqo.isIdAndMap()) {
-            ((DefaultSearchResultObject)result).setResults(fc);
+            ((DefaultSearchResultObject) result).setResults(fc);
         }
         StringBuilder sb = new StringBuilder(featureCollectionTemplate);
         for (int i = 0; i < topDocs.size(); i++) {
@@ -168,10 +167,11 @@ private String template = "     {" +
 
                 idList.add((String) document.get(IndexFields.ID));
                 if (!sqo.isIdOnly()) {
-                    
+
                     if (sqo.isIdAndMap()) {
                         com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
-                        String part = String.format(template, document.get(IndexFields.SCHEMA_ID), document.get(IndexFields.ID), document.get(IndexFields.SOURCE), document.get(IndexFields.CATEGORY), read.getX(), read.getY());
+                        String part = String.format(template, document.get(IndexFields.SCHEMA_ID), document.get(IndexFields.ID),
+                                document.get(IndexFields.SOURCE), document.get(IndexFields.CATEGORY), read.getX(), read.getY());
                         if (i > 0) {
                             sb.append(",");
                         }
@@ -185,11 +185,11 @@ private String template = "     {" +
             }
         }
         sb.append(featureCollectionTemplateEnd);
-        ((PerfSearchResultObject)result).setResults(sb.toString());
+        if (sqo.isIdAndMap()) {
+            ((PerfSearchResultObject) result).setResults(sb.toString());
+        }
         return result;
     }
-
-
 
     private void appendFeatureResult(SolrDocument document, WKTReader reader, FeatureCollection fc, String point, boolean idMapOnly) {
         Feature feature = new Feature();
