@@ -23,7 +23,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.core.search.query.SearchQueryObject;
-import org.dataarc.core.search.query.Temporal;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.api.SearchResultObject;
 import org.geojson.Feature;
@@ -44,21 +43,19 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @Service
 public class SolrService {
-    private static final String TEMPORAL = "temporal";
     private static final String _VERSION = "_version_";
 
     private static final List<String> SUBGROUPS = Arrays.asList(IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM, IndexFields.SOURCE,
             IndexFields.REGION, IndexFields.COUNTRY);
 
-    List<String> FACET_FIELDS = Arrays.asList(IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
-            IndexFields.TOPIC_ID_3RD, IndexFields.SOURCE, IndexFields.DECADE);
 
     private static final String BCE = " BCE ";
-    private static final String VAL = "val";
     private static final String OBJECT_TYPE = "internalType";
     private static final List<String> IGNORE_FIELDS = Arrays.asList(OBJECT_TYPE, IndexFields.X, IndexFields.Y, _VERSION, IndexFields.COUNTRY, IndexFields.POINT,
             IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.KEYWORD); // , IndexFields.DECADE, IndexFields.CENTURY, IndexFields.MILLENIUM?
 
+    List<String> FACET_FIELDS = Arrays.asList(IndexFields.INDICATOR, IndexFields.TOPIC_ID, IndexFields.TOPIC_ID_2ND,
+            IndexFields.TOPIC_ID_3RD, IndexFields.SOURCE, IndexFields.DECADE);
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -101,18 +98,20 @@ public class SolrService {
         }
         FeatureCollection fc = new FeatureCollection();
         Set<String> idList = new HashSet<>();
-        StringBuilder bq = buildQuery(sqo);
+        SolrQueryBuilder queryBuilder = new SolrQueryBuilder();
+        StringBuilder bq = queryBuilder.buildQuery(sqo);
         String q = bq.toString();
         if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
             q = "*:*";
         }
-        SolrQuery params = setupQueryWithFacetsAndFilters(limit, q);
+        SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
         logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
         if (sqo.isIdOnly() || sqo.isIdAndMap()) {
             params.addField(IndexFields.POINT);
             params.addField(IndexFields.ID);
             params.addField(IndexFields.SCHEMA_ID);
             params.addField(IndexFields.SOURCE);
+            params.addField(IndexFields.CATEGORY);
         }
         params.setStart(startRecord);
         
@@ -206,10 +205,10 @@ public class SolrService {
         addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, id);
         Schema schema = schemaService.findById((Number) id);
         feature.setProperty(IndexFields.SOURCE, schema.getName());
+        addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
         if (!idMapOnly) {
             String date = formateDate(document);
             addKeyValue(feature.getProperties(), IndexFields.DATE, date);
-            addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
             addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));
             for (String name : document.getFieldNames()) {
                 Object v = document.get(name);
@@ -242,62 +241,6 @@ public class SolrService {
         prop.put(name, v);
     }
 
-
-    private StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
-        StringBuilder bq = new StringBuilder();
-        if (!sqo.emptyTemporal()) {
-            bq.append(createDateRangeQueryPart(sqo.getTemporal()));
-        }
-        appendTypes(sqo.getSources(), bq);
-        appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
-        appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
-        appendKeywordSearch(sqo.getIds(), IndexFields.ID, bq);
-        appendKeywordSearchNumeric(Arrays.asList(sqo.getSchemaId()), IndexFields.SCHEMA_ID, bq);
-        appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
-        if (sqo.emptySpatial() == false) {
-            appendSpatial(sqo, bq);
-        }
-        return bq;
-    }
-
-    static final String LIMIT = "limit:5";
-
-    private String makeFacet(String key) {
-        return String.format("%s: {type:terms, missing:true, %s, field:'%s'}", key, LIMIT, key);
-    }
-
-    private String makeFacetGroup(String name, String key, String internal) {
-        return String.format(" %s: { type:terms, field:%s, %s , missing:true, facet: { %s } } ", name, key, LIMIT, internal);
-    }
-
-    private SolrQuery setupQueryWithFacetsAndFilters(int limit, String q) {
-        SolrQuery params = new SolrQuery(q);
-        String normal = "";
-        for (int i = 0; i < FACET_FIELDS.size(); i++) {
-            String fld = FACET_FIELDS.get(i);
-            normal += ", " + makeFacet(fld);
-        }
-
-        String facet = "{" + makeFacetGroup(TEMPORAL, IndexFields.CATEGORY,
-                makeFacet(IndexFields.CENTURY) + ", "
-                        + makeFacet(IndexFields.MILLENIUM) + ","
-                        + makeFacet(IndexFields.DECADE));
-        facet += "," + makeFacetGroup("category", IndexFields.CATEGORY,
-                makeFacet(IndexFields.SOURCE));
-        facet += "," + makeFacetGroup("spatial", IndexFields.CATEGORY,
-                makeFacet(IndexFields.REGION) + "," +
-                        makeFacet(IndexFields.COUNTRY));
-        facet += normal + "}";
-
-        logger.debug(facet);
-        params.setParam("json.facet", facet);
-        params.setParam("rows", Integer.toString(limit));
-        params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
-        params.setFields("*", "[child parentFilter=\"internalType:object\"]");
-        params.setFacetMinCount(1);
-        return params;
-    }
-
     private String formateDate(SolrDocument document) {
         Integer start_ = (Integer) document.get(IndexFields.START);
         Integer end_ = (Integer) document.get(IndexFields.END);
@@ -320,188 +263,4 @@ public class SolrService {
         return date;
     }
 
-    public static boolean crossesDateline(double minLongitude, double maxLongitude) {
-        /*
-         * below is the logic that was originally used in PostGIS -- it worked to help identify issues where a box was
-         * drawn around Guam and Hawaii, but it's not really needed anymore because all of our logic looks at the box
-         * and breaks it in two over the IDL instead of choosing the smaller box.
-         * return (getMinObfuscatedLongitude() < -100f && getMaxObfuscatedLongitude() > 100f);
-         */
-        if (minLongitude > 0f && maxLongitude < 0f) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean crossesPrimeMeridian(double minLongitude, double maxLongitude) {
-        if (minLongitude < 0f && maxLongitude > 0f) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private void appendSpatial(SearchQueryObject sqo, StringBuilder bq) {
-        double[] topLeft = sqo.getSpatial().getTopLeft();
-        double[] bottomRight = sqo.getSpatial().getBottomRight();
-        String region = StringUtils.trim(sqo.getSpatial().getRegion());
-
-        StringBuilder spatial = new StringBuilder();
-        if (topLeft != null && bottomRight != null) {
-            // y Rect(minX=-180.0,maxX=180.0,minY=-90.0,maxY=90.0)
-            // *** NOTE *** ENVELOPE uses following pattern minX, maxX, maxy, minY *** //
-            Double minLong = topLeft[0];
-            Double maxLat = bottomRight[1];
-            Double minLat = topLeft[1];
-            Double maxLong = bottomRight[0];
-            if (crossesDateline(minLong, maxLong) && !crossesPrimeMeridian(minLong, maxLong)) {
-                spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" OR"
-                        + "  %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-                        minLong, -180d, maxLat, minLat,
-                        IndexFields.POINT,
-                        180d, minLong, maxLat, minLat));
-
-            } else if (crossesPrimeMeridian(minLong, maxLong)) {
-                spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-                        minLong, maxLong, maxLat, minLat));
-            } else {
-                if (minLat > maxLat) {
-                    Double t = maxLat;
-                    maxLat = minLat;
-                    minLat = t;
-                }
-                spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
-                        minLong, maxLong, maxLat, minLat));
-            }
-        }
-
-        if (StringUtils.isNotBlank(region)) {
-            if (spatial.length() > 0) {
-                spatial.append(" OR ");
-            }
-            spatial.append(String.format("%s:\"%s\" ", IndexFields.REGION, region));
-        }
-
-        if (spatial.length() > 0) {
-            if (bq.length() > 0) {
-                bq.append(" AND ");
-            }
-            bq.append(spatial);
-        }
-
-    }
-
-    /**
-     * Append the keyword phrase by searching all search fields
-     * 
-     * @param list
-     * @param bq
-     * @throws ParseException
-     */
-    private void appendKeywordSearch(List<String> list, String field, StringBuilder bq) throws ParseException {
-        String q = "";
-        for (String item : list) {
-            String kwd = StringUtils.trim(item);
-            if (StringUtils.isNotBlank(kwd)) {
-                if (StringUtils.isNotBlank(q)) {
-                    q += " OR ";
-                }
-                q += String.format(" %s:\"%s\" ", field, kwd);
-            }
-        }
-
-        if (StringUtils.isNotBlank(q)) {
-            if (bq.length() > 0) {
-                bq.append(" AND ");
-            }
-            bq.append("(").append(q).append(")");
-        }
-    }
-
-    /**
-     * Append the keyword phrase by searching all search fields
-     * 
-     * @param list
-     * @param bq
-     * @throws ParseException
-     */
-    private void appendKeywordSearchNumeric(List<Long> list, String field, StringBuilder bq) throws ParseException {
-        String q = "";
-        for (Number item : list) {
-            if (item != null) {
-                if (StringUtils.isNotBlank(q)) {
-                    q += " OR ";
-                }
-                q += String.format(" %s:%s ", field, item);
-            }
-        }
-
-        if (StringUtils.isNotBlank(q)) {
-            if (bq.length() > 0) {
-                bq.append(" AND ");
-            }
-            bq.append("(").append(q).append(")");
-        }
-    }
-
-    private Double correctForWorldWrapX(Double x_) {
-        Double x = x_;
-        while (x > 180) {
-            x -= 360;
-        }
-        while (x < -180) {
-            x += 360;
-        }
-        if (x != x_) {
-            logger.debug("   " + x_ + " --> " + x);
-        }
-        return x;
-    }
-
-    private Double correctForWorldWrapY(Double y_) {
-        Double y = y_;
-        while (y > 90) {
-            y -= 180;
-        }
-        while (y < -90) {
-            y += 180;
-        }
-        if (y != y_) {
-            logger.debug("   " + y_ + " --> " + y);
-        }
-        return y;
-    }
-
-    private void appendTypes(List<String> terms, StringBuilder bq) throws ParseException {
-        if (!CollectionUtils.isEmpty(terms)) {
-            String q = IndexFields.SOURCE + ":(";
-            boolean start = false;
-            for (String term : terms) {
-                if (start) {
-                    q += " OR ";
-                }
-                q += "\"" + term + "\"";
-                start = true;
-            }
-            q += ") ";
-            if (bq.length() > 0) {
-                bq.append(" AND ");
-            }
-            bq.append(q);
-        }
-    }
-
-    /**
-     * Create a range query (between the beginning of time and the end, and between the end date of time, and the end-date, thus if we have unbounded ranges,
-     * we're fine
-     * 
-     * @param start
-     * @param end
-     * @return
-     */
-    private String createDateRangeQueryPart(Temporal temporal) {
-
-        return String.format(" (%s:[%s TO %s] AND %s:[%s TO %s]) ", IndexFields.START, "*", temporal.getEnd(), IndexFields.END, temporal.getStart(), "*");
-    }
 }
