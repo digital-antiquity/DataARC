@@ -250,8 +250,10 @@ public class SolrIndexingService {
     }
 
     private void applyTitle(SearchIndexObject searchIndexObject, Schema source) {
+        if (true) {
+            return;
+        }
         Handlebars handlebars = new Handlebars();
-
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
             searchIndexObject.setTitle(template.apply(searchIndexObject));
