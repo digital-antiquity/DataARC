@@ -35,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Template;
 import com.rollbar.Rollbar;
 
 @Service
@@ -230,6 +232,7 @@ public class SolrIndexingService {
             SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema, temporalCoverageService);
             applyFacets(searchIndexObject);
             applyTopics(searchIndexObject);
+            applyTitle(searchIndexObject, schema);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
             if (logger.isTraceEnabled()) {
                 logger.trace("{}", doc);
@@ -244,6 +247,19 @@ public class SolrIndexingService {
 
         }
         return null;
+    }
+
+    private void applyTitle(SearchIndexObject searchIndexObject, Schema source) {
+        Handlebars handlebars = new Handlebars();
+
+        try {
+            Template template = handlebars.compileInline(source.getTitleTemplate());
+            searchIndexObject.setTitle(template.apply(searchIndexObject));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 
     private void applyTopics(SearchIndexObject searchIndexObject) {
