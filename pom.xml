@@ -24,6 +24,8 @@
         <exec-maven-version>1.5.0</exec-maven-version>
         <servlet.api.version>3.1.0</servlet.api.version>
         <crowd.version>2.12.0</crowd.version>
+        <handlebars-version>4.0.6</handlebars-version>
+        
     </properties>
 
     <dependencyManagement>
@@ -272,9 +274,14 @@
             <dependency>
                 <groupId>com.github.jknack</groupId>
                 <artifactId>handlebars</artifactId>
-                <version>4.0.6</version>
+                   <version>${handlebars-version}</version>
             </dependency>
-
+         <dependency>
+           <groupId>com.github.jknack</groupId>
+           <artifactId>handlebars-jackson2</artifactId>
+           <version>${handlebars-version}</version>
+         </dependency>
+ 
         <!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-solr</artifactId> 
             <version>2.0.5.RELEASE</version> <exclusions> <exclusion> <groupId>com.fasterxml.jackson.core</groupId> 
             <artifactId>jackson-databind</artifactId> </exclusion> <exclusion> <groupId>com.fasterxml.jackson.core</groupId> 
