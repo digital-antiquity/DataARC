@@ -22,8 +22,8 @@ var Search = {
   init: function(options) {
     this.defaults = {
       "spatial": {
-        "topLeft": [-75, 85],
-        "bottomRight": [-0.1, 58]
+          "topLeft": [-37, 68.46],
+          "bottomRight": [-2.75, 55]
       },
       "temporal": {
         "start": null,
