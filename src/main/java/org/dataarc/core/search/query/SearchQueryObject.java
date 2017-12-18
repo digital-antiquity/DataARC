@@ -11,6 +11,7 @@ public class SearchQueryObject {
     private Temporal temporal = new Temporal();
     private boolean idOnly = false;
     private boolean idAndMap = true;
+    private boolean facetOnly;
     private Integer size;
     private Integer page;
     private Long schemaId;
@@ -146,6 +147,14 @@ public class SearchQueryObject {
 
     public void setSchemaId(Long schemaId) {
         this.schemaId = schemaId;
+    }
+
+    public boolean isFacetOnly() {
+        return facetOnly;
+    }
+
+    public void setFacetOnly(boolean facetOnly) {
+        this.facetOnly = facetOnly;
     }
 
 }

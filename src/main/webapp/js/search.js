@@ -17,13 +17,15 @@
 }
  */
 
+var _PAGE_SIZE = 500;
+
 var Search = {
 
   init: function(options) {
     this.defaults = {
       "spatial": {
-          "topLeft": [-37, 68.46],
-          "bottomRight": [-2.75, 55]
+        "topLeft": [-37, 68.46],
+        "bottomRight": [-2.75, 55]
       },
       "temporal": {
         "start": null,
@@ -80,7 +82,7 @@ var Search = {
 
     // If first run then get all data before loading results
     if (Object.keys(Search.all).length === 0 && Search.all.constructor === Object)
-      Search.query("POST", {"spatial":Search.defaults.spatial}, Search.analyzeFirst);
+      Search.query("POST", {"spatial":Search.defaults.spatial, "size":0,"page":0,'facetOnly':true}, Search.analyzeFirst);
     else
       Search.query("POST", Search.values, Search.analyze);
   },
@@ -89,12 +91,45 @@ var Search = {
     if (error) throw error;
 
     // Save all the data
-    Search.all.features = data.results.features;
+    Search.all.features = [];
     Search.all.facets = data.facets;
+    Search.facets = data.facets;
+    console.log(Search.facets);
     console.log('Loaded all ' + Search.all.features.length + ' features.');
-
     // Once all data is loaded, fire of the results query
     Search.analyze(false, data);
+//    Search.results = [];
+    Search.query("POST", {"spatial":Search.defaults.spatial, "size":_PAGE_SIZE,"page":0}, Search.analyzePage);
+    
+  },
+
+  analyzePage: function(error, data) {
+    if (error) throw error;
+
+    // Save all the data
+    if (data.results == undefined) {
+        return;
+    }
+    data.results.features.forEach(function(r) {
+        Search.all.features.push(r);
+    })
+//    Search.all.facets.push( data.facets);
+    // Once all data is loaded, fire of the results query
+    data.idList.forEach(function(r) {
+        Search.results.push(r);
+    })
+//    console.trace('Loaded page of ' + Search.all.features.length + ' features. Results:' + Search.results.length);
+    var size = data.results.features.length;
+
+    Geography.addFeatures(data.results.features, Geography._defaultStyle, false);
+    $('#results-count').text(Search.results.length);
+    if (size > 0) {
+        Search.query("POST", {"spatial":Search.defaults.spatial, "size":_PAGE_SIZE,"page":Search.all.features.length}, Search.analyzePage);
+
+    }  else {
+        Search.options.after();
+    }
+
   },
 
   analyze: function(error, data) {
