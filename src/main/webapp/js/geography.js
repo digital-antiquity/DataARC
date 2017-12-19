@@ -1,14 +1,5 @@
 var map, svg, g;
 
-var _defaultStyle = {
-        radius: 1,
-        fillColor: "#eee",
-        color: "#000",
-        weight: 1,
-        opacity: 0.4,
-        fillOpacity: 0.1
-      };
-
 // Sets up the leaflet map and disables scroll wheel zoom until focused
 var basemap = new L.TileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.{ext}', {
     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -188,67 +179,71 @@ var Geography = {
     $('#mapSpinner').show();
   },
   refresh: function() {
-    this.addFeatures(Search.all.features, _defaultStyle);
+    this.addFeatures(Search.all.features, {
+      radius: 5,
+      fillColor: "#eee",
+      color: "#000",
+      weight: 1,
+      opacity: 0.4,
+      fillOpacity: 0.1
+    });
     $('#mapSpinner').hide();
   },
   eachFeature: function(feature, layer) {
   },
-  _handleCircleClick(e) {
-      var popup = e.target.getPopup();
-      var feature = e.target.feature;
-      console.log(e.target.feature.properties);
-      Search.getDetailsById(feature.properties.id, function( data ) {
-        var feature = data.results.features[0];
-        var handlebarHandler = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
-        console.log(feature.properties);
-        console.log(handlebarHandler.html());
-        var template = Handlebars.compile(handlebarHandler.html());
-        var content = template(feature.properties);
-        popup.setContent(content + "<span class='badge badge-secondary'>"+SCHEMA[feature.properties.source]+"</span>");
-        popup.update();
-      });
-  },
-  _styleFunction(feature){
-    var fill = "#fff";
-    var color = "#333";
-    var opacity = 1;
-    var fillOpacity = 0.8;
-    var active = Geography.checkActive(feature);
-    var pane = active ? 'activeFeatures' : 'overlayPane';
-    if(typeof Geography.categoryColors[feature.properties.category] != 'undefined' && active){
-      color = fill = Geography.categoryColors[feature.properties.category];
-    }
-    if(!active){
-      opacity = 0.4;
-      fillOpacity = 0.3;
-    }
-    var style = {
-      "fillColor": fill,
-      "color": color,
-      "weight":1,
-      "opacity":opacity,
-      "fillOpacity":fillOpacity,
-      "pane":pane
-    }
-    return style;
-  },
-  addFeatures: function(geojson, style, clear) {
-      if (clear == undefined || clear == true) {
-          this.clear();
-      }
-
-      this.layer = L.geoJSON(geojson, {
-      style: Geography._styleFunction,
+  addFeatures: function(geojson, style) {
+    this.clear();
+    this.layer = L.geoJSON(geojson, {
+      style: styleFunction,
       onEachFeature: Geography.eachFeature,
       pointToLayer: function(feature, latlng) {
         var shp = L.circleMarker(latlng, style);
 				shp.bindPopup("Loading...");
         $(shp).data('properties', feature.properties);
-        shp.on('click', Geography._handleCircleClick);
+        shp.on('click', _handleCircleClick);
         return shp;
       }
     }).addTo(map);
 
+    function _handleCircleClick(e) {
+        var popup = e.target.getPopup();
+        var feature = e.target.feature;
+        console.log(e.target.feature.properties);
+        Search.getDetailsById(feature.properties.id, function( data ) {
+          var feature = data.results.features[0];
+          var handlebarHandler = $("#title-template-"+ feature.properties.schema_id).length ? $("#title-template-"+ feature.properties.schema_id) : $("#title-template-generic");
+          console.log(feature.properties);
+          console.log(handlebarHandler.html());
+          var template = Handlebars.compile(handlebarHandler.html());
+          var content = template(feature.properties);
+          popup.setContent(content + "<span class='badge badge-secondary'>"+SCHEMA[feature.properties.source]+"</span>");
+          popup.update();
+        });
+    }
+		function styleFunction(feature){
+      var fill = "#fff";
+      var color = "#333";
+      var opacity = 1;
+      var fillOpacity = 0.8;
+      var active = Geography.checkActive(feature);
+      var pane = active ? 'activeFeatures' : 'overlayPane';
+      if(typeof Geography.categoryColors[feature.properties.category] != 'undefined' && active){
+        color = fill = Geography.categoryColors[feature.properties.category];
+      }
+      if(!active){
+        opacity = 0.4;
+        fillOpacity = 0.3;
+      }
+      var style = {
+        "fillColor": fill,
+        "color": color,
+        "weight":1,
+        "opacity":opacity,
+        "fillOpacity":fillOpacity,
+        "pane":pane
+      }
+      return style;
+    }
   },
   categoryColors: {
     "ARCHAEOLOGICAL": category_colors[0],

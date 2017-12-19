@@ -107,11 +107,11 @@ public class SolrService {
         SearchResultObject result = new DefaultSearchResultObject();
 
         int limit = 1_000_000;
-        if (sqo.getSize() != null && sqo.isFacetOnly() == false) {
+        if (sqo.getSize() != null) {
             limit = sqo.getSize();
         }
         Integer startRecord = 0;
-        if (sqo.getPage() != null && sqo.isFacetOnly() == false) {
+        if (sqo.getPage() != null) {
             startRecord = sqo.getPage();
         }
         FeatureCollection fc = new FeatureCollection();
@@ -123,7 +123,7 @@ public class SolrService {
             q = "*:*";
         }
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
-        logger.debug("start:{} , limit {}, IdOnly: {}, idAndMap:{}", startRecord, limit, sqo.isIdOnly(), sqo.isIdAndMap());
+        logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
         if (sqo.isIdOnly() || sqo.isIdAndMap()) {
             params.addField(IndexFields.ID);
             params.addField(IndexFields.SCHEMA_ID);
@@ -150,14 +150,7 @@ public class SolrService {
         builder.buildResultsFacets(result, query);
 
         // aggregate results in a map by point
-        if (!sqo.isFacetOnly()) {
-            result.setIdList(idList);
-        }
-        
-        
-        if (sqo.isFacetOnly() || sqo.isIdOnly()) {
-            return result;
-        }
+        result.setIdList(idList);
         if (!sqo.isIdOnly() && !sqo.isIdAndMap()) {
             ((DefaultSearchResultObject) result).setResults(fc);
         }

@@ -33,7 +33,7 @@ TimelineObject.prototype = {
 
     // Set calendar data
     this.data = Search.facets.temporal;
-console.log(Search.facets);
+
     // Set opacities
     this.opacities = [0.25, 0.5, 0.75, 1.0];
     this.buckets = 5;

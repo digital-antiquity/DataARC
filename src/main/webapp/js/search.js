@@ -17,8 +17,6 @@
 }
  */
 
-var _PAGE_SIZE = 500;
-
 var Search = {
 
   init: function(options) {
@@ -82,7 +80,7 @@ var Search = {
 
     // If first run then get all data before loading results
     if (Object.keys(Search.all).length === 0 && Search.all.constructor === Object)
-      Search.query("POST", {"spatial":Search.defaults.spatial, "size":0,"page":0,'facetOnly':true}, Search.analyzeFirst);
+      Search.query("POST", {"spatial":Search.defaults.spatial, "size":1,"page":0}, Search.analyzeFirst);
     else
       Search.query("POST", Search.values, Search.analyze);
   },
@@ -91,16 +89,17 @@ var Search = {
     if (error) throw error;
 
     // Save all the data
-    Search.all.features = [];
+    Search.all.features = data.results.features;
     Search.all.facets = data.facets;
-    Search.facets = data.facets;
-    console.log(Search.facets);
     console.log('Loaded all ' + Search.all.features.length + ' features.');
     // Once all data is loaded, fire of the results query
     Search.analyze(false, data);
-//    Search.results = [];
-    Search.query("POST", {"spatial":Search.defaults.spatial, "size":_PAGE_SIZE,"page":0}, Search.analyzePage);
-    
+    var size = data.results.features.length;
+    console.log("trying..." + size + " " + Search.all.features);
+    if (size > 0) {
+        console.log("trying..." + size.length + " " + Search.all.features.length);
+        Search.query("POST", {"spatial":Search.defaults.spatial, "size":1,"page":Search.all.features.length}, Search.analyzePage);
+    }
   },
 
   analyzePage: function(error, data) {
@@ -110,21 +109,15 @@ var Search = {
     if (data.results == undefined) {
         return;
     }
-    data.results.features.forEach(function(r) {
-        Search.all.features.push(r);
-    })
+    Search.all.features.push(data.results.features);
 //    Search.all.facets.push( data.facets);
+    console.log('Loaded page of ' + Search.all.features.length + ' features. Results:' + Search.results.length);
     // Once all data is loaded, fire of the results query
-    data.idList.forEach(function(r) {
-        Search.results.push(r);
-    })
-//    console.trace('Loaded page of ' + Search.all.features.length + ' features. Results:' + Search.results.length);
+    Search.results.push(data.idList);
     var size = data.results.features.length;
-
-    Geography.addFeatures(data.results.features, Geography._defaultStyle, false);
-    $('#results-count').text(Search.results.length);
     if (size > 0) {
-        Search.query("POST", {"spatial":Search.defaults.spatial, "size":_PAGE_SIZE,"page":Search.all.features.length}, Search.analyzePage);
+        console.log("trying..." + size + " " + Search.all.features.length);
+        Search.query("POST", {"spatial":Search.defaults.spatial, "size":1,"page":Search.all.features.length}, Search.analyzePage);
 
     }  else {
         Search.options.after();
