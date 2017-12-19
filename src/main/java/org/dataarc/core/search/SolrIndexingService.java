@@ -90,7 +90,7 @@ public class SolrIndexingService {
 
     @Transactional(readOnly = true)
     public void reindexIndicatorsOnly(String source) {
-        logger.debug("begin reindexing");
+        logger.debug("begin reindexing of indicators only {}", source);
         invalidateFindAllCache();
         SolrInputDocument searchIndexObject = null;
         Map<String, Integer> totals = new HashMap<>();

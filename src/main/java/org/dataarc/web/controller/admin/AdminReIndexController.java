@@ -38,7 +38,7 @@ public class AdminReIndexController extends AbstractRestController {
         jsonService.applyGeoJsonFiles();
         // FIXME: this is really a JSON thing, work to convert this to something that will produce a progress indicator
         // https://github.com/frenos/spring-mvc-async-progress/blob/e670296e467b1301ad1d0d294330ea5c9bd5e1c1/src/main/java/de/codepotion/examples/asyncExample/WebController.java
-        indicatorService.applyIndicators();
+        indicatorService.applyIndicators(false);
         indexingService.reindex();
         return "admin/index";
 

@@ -54,7 +54,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
             logger.error("{}", e, e);
         }
         logger.debug("applying indicators");
-        indicatorService.applyIndicators();
+        indicatorService.applyIndicators(true);
         logger.debug("done applying indicators");
     }
 

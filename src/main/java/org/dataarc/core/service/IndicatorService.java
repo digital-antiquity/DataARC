@@ -68,7 +68,7 @@ public class IndicatorService {
         }
         indicatorDao.save(indicator);
         try {
-            applyIndicators(schemaName);
+            applyIndicators(schemaName,true);
         } catch (Throwable t) {
             logger.error("{}", t, t);
         }
@@ -125,19 +125,21 @@ public class IndicatorService {
     }
 
     @Transactional(readOnly = false)
-    public void applyIndicators(String schemaName) throws Exception {
+    public void applyIndicators(String schemaName, boolean reindex) throws Exception {
         importDao.resetTopics(schemaName);
         for (Indicator indicator : findAllForSchema(schemaName)) {
             importDao.applyIndicator(indicator);
         }
-        indexingService.reindexIndicatorsOnly(schemaName);
+        if (reindex) {
+            indexingService.reindexIndicatorsOnly(schemaName);
+        }
     }
 
     @Transactional(readOnly = false)
-    public void applyIndicators() {
+    public void applyIndicators(boolean reindex) {
         schemoDao.findAllSchemaNames().forEach(name -> {
             try {
-                applyIndicators(name);
+                applyIndicators(name, reindex);
             } catch (Exception e) {
                 logger.error("{}", e, e);
             }

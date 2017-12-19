@@ -20,6 +20,7 @@ import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.core.service.TemporalCoverageService;
 import org.dataarc.util.SchemaUtils;
 import org.geojson.Feature;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,6 +136,7 @@ public class SearchIndexObject {
         applyTopicIdentifiers(entry);
         applyProperties(entry, schema);
         applyStartEnd(entry, schema, temporal);
+        cleanupSead(entry, schema);
 
         if (CollectionUtils.isNotEmpty(topic_2nd)) {
             values.addAll(topic_2nd);
@@ -147,6 +149,41 @@ public class SearchIndexObject {
         }
         if (CollectionUtils.isNotEmpty(topicNames)) {
             values.addAll(topicNames);
+        }
+
+    }
+
+    /** FIXME BRITTLE HACK
+     * 1. only for SEAD
+     * 2. assumes SEAD specific data structure (which can quickly change)
+     * 3. non-standardized types
+     * 
+     * @param entry
+     * @param schema
+     */
+    private void cleanupSead(DataEntry entry, Schema schema) {
+        
+        Object object = entry.getProperties().get("sampleData");
+//        logger.debug("keys: {}", entry.getProperties().keySet());
+        String type = null;
+        if (object != null && object instanceof Map) {
+            type = (String) ((Map)object).get("dating_type");
+        }
+
+        if ((type == null || getStart() == null || getEnd() == null) || !schema.getName().toLowerCase().contains("sead")) {
+            return;
+        }
+        if (type.toLowerCase().contains("radiocarbon")) {
+            logger.debug("radiocarbon");
+            int start_ = getStart();
+            int end_ = getEnd();
+            setStart(end_);
+            setEnd(start_);
+        }
+        if (type.toLowerCase().contains("relative")) {
+            logger.debug("relative");
+            setStart(getStart() + DateTime.now().getYear() - 1950);
+            setEnd(getEnd() + DateTime.now().getYear() - 1950);
         }
 
     }
