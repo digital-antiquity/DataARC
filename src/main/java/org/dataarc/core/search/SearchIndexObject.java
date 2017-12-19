@@ -174,16 +174,16 @@ public class SearchIndexObject {
             return;
         }
         if (type.toLowerCase().contains("radiocarbon")) {
-            logger.debug("radiocarbon");
             int start_ = getStart();
             int end_ = getEnd();
             setStart(end_);
             setEnd(start_);
+            logger.debug("radiocarbon: {} - {}", end_, start_);
         }
         if (type.toLowerCase().contains("relative")) {
-            logger.debug("relative");
             setStart(getStart() + DateTime.now().getYear() - 1950);
             setEnd(getEnd() + DateTime.now().getYear() - 1950);
+            logger.debug("relative: {} - {}", getStart(), getEnd());
         }
 
     }

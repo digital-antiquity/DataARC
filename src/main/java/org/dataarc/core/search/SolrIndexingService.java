@@ -232,8 +232,8 @@ public class SolrIndexingService {
             SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema, temporalCoverageService);
             applyFacets(searchIndexObject);
             applyTopics(searchIndexObject);
-            applyTitle(searchIndexObject, schema);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
+            applyTitle(doc, schema);
             if (logger.isTraceEnabled()) {
                 logger.trace("{}", doc);
             }
@@ -249,14 +249,14 @@ public class SolrIndexingService {
         return null;
     }
 
-    private void applyTitle(SearchIndexObject searchIndexObject, Schema source) {
-        if (true) {
-            return;
-        }
+    private void applyTitle(SolrInputDocument doc, Schema source) {
+//        if (true) {
+//            return;
+//        }
         Handlebars handlebars = new Handlebars();
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
-            searchIndexObject.setTitle(template.apply(searchIndexObject));
+            doc.setField(IndexFields.TITLE, template.apply(doc));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
