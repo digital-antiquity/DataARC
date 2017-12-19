@@ -256,7 +256,9 @@ public class SolrIndexingService {
         Handlebars handlebars = new Handlebars();
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
-            doc.setField(IndexFields.TITLE, template.apply(doc));
+            String val = template.apply(doc);
+            doc.setField(IndexFields.TITLE, val);
+            logger.debug(val);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

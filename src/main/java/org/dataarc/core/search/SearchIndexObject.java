@@ -174,15 +174,21 @@ public class SearchIndexObject {
             return;
         }
         if (type.toLowerCase().contains("radiocarbon")) {
-            int start_ = getStart();
-            int end_ = getEnd();
-            setStart(end_);
-            setEnd(start_);
-            logger.debug("radiocarbon: {} - {}", end_, start_);
+//            int start_ = getStart();
+//            int end_ = getEnd();
+//            setStart(end_);
+//            setEnd(start_);
+            logger.debug("radiocarbon: {} - {}", start, end);
         }
         if (type.toLowerCase().contains("relative")) {
-            setStart(getStart() + DateTime.now().getYear() - 1950);
-            setEnd(getEnd() + DateTime.now().getYear() - 1950);
+            int currentYear = DateTime.now().getYear();
+            int start_ = getStart() + currentYear - 1950;
+            int end_ = getEnd() + currentYear - 1950;
+            if (end_ > currentYear) {
+                end_ = currentYear;
+            }
+            setStart(end_);
+            setEnd(start_);
             logger.debug("relative: {} - {}", getStart(), getEnd());
         }
 
