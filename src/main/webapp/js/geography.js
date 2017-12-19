@@ -23,7 +23,7 @@ var arcticDem = L.esri.imageMapLayer({
       renderingRule: renderingRule,
       useCors: false
     });
-map = new L.Map("map", { center: [65, -18.5], zoom: 6, scrollWheelZoom: false })
+map = new L.Map("map", { center: [65, -18.5], zoom: 5, scrollWheelZoom: false })
   .addLayer(basemap)
   .on('focus', function() { map.scrollWheelZoom.enable() })
   .on('blur', function() { map.scrollWheelZoom.disable() })
