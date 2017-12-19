@@ -124,7 +124,7 @@ public class SolrService {
         }
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
         logger.debug("start:{} , limit {}, IdOnly: {}, idAndMap:{}", startRecord, limit, sqo.isIdOnly(), sqo.isIdAndMap());
-        if (sqo.isIdOnly() || sqo.isIdAndMap()) {
+        if (sqo.isIdOnly() || sqo.isIdAndMap() || sqo.isFacetOnly()) {
             params.addField(IndexFields.ID);
             params.addField(IndexFields.SCHEMA_ID);
             params.addField(IndexFields.POINT);
