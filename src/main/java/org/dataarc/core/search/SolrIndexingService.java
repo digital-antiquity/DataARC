@@ -256,6 +256,7 @@ public class SolrIndexingService {
         Handlebars handlebars = new Handlebars();
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
+            // fixme, we really need either a "map" here or a different data object
             String val = template.apply(doc);
             doc.setField(IndexFields.TITLE, val);
             logger.debug(val);
