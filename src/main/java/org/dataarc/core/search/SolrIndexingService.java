@@ -232,8 +232,8 @@ public class SolrIndexingService {
             SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema, temporalCoverageService);
             applyFacets(searchIndexObject);
             applyTopics(searchIndexObject);
+            applyTitle(searchIndexObject, schema);
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
-            applyTitle(doc, schema);
             if (logger.isTraceEnabled()) {
                 logger.trace("{}", doc);
             }
@@ -249,7 +249,7 @@ public class SolrIndexingService {
         return null;
     }
 
-    private void applyTitle(SolrInputDocument doc, Schema source) {
+    private void applyTitle(SearchIndexObject doc, Schema source) {
 //        if (true) {
 //            return;
 //        }
@@ -257,8 +257,8 @@ public class SolrIndexingService {
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
             // fixme, we really need either a "map" here or a different data object
-            String val = template.apply(doc);
-            doc.setField(IndexFields.TITLE, val);
+            String val = template.apply(doc.copyToFeature().getProperties());
+            doc.setTitle(val);
             logger.debug(val);
         } catch (IOException e) {
             // TODO Auto-generated catch block
