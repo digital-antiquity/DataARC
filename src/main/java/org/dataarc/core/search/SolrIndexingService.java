@@ -18,7 +18,6 @@ import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.rest.BaseSolrResource.SolrOutputRepresentation;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.FieldType;
 import org.dataarc.bean.schema.Schema;
@@ -260,29 +259,22 @@ public class SolrIndexingService {
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
             // fixme, we really need either a "map" here or a different data object
-            properties.putAll((Map<? extends String, ? extends Object>) properties.get("data"));
+            properties.putAll((Map<? extends String, ? extends Object>) properties.get(IndexFields.DATA));
             List<ExtraProperties> data = doc.getData();
             if (data != null) {
-            List<Map<String,Object>> dat = new ArrayList<Map<String,Object>>();
-            for (ExtraProperties prop : data) {
-                String prefix = (String) prop.getData().get("_prefix");
-                if (StringUtils.isNotBlank(prefix)) {
-                    HashMap<String, Object> subp = new HashMap<String,Object>();
-                    properties.put(prefix, subp);
-                    for (String key : prop.getData().keySet()) {
-                        subp.put(StringUtils.substringAfter(key, "."), prop.getData().get(key));
+                List<Map<String,Object>> dat = new ArrayList<Map<String,Object>>();
+                for (ExtraProperties prop : data) {
+                    String prefix = (String) prop.getData().get(IndexFields.PREFIX);
+                    if (StringUtils.isNotBlank(prefix) && !StringUtils.equals(IndexFields.DATA, prefix)) {
+                        properties.put(prefix, strip(prop, prefix));
+                    } else {
+                        dat.add(strip(prop, prefix));
                     }
-                } else {
-                    dat.add(prop.getData());
                 }
-            }
-            properties.put("data", dat);
+                properties.put(IndexFields.DATA, dat);
             }
             String val = template.apply(properties);
             doc.setTitle(val);
-            if (!source.getName().toLowerCase().contains("sead")) {
-                logger.trace("{}", properties);
-            }
             logger.debug("{}  ---- {}", val, source.getName());
         } catch (IOException e) {
             logger.debug("{}", properties);
@@ -291,6 +283,14 @@ public class SolrIndexingService {
             e.printStackTrace();
         }
         
+    }
+
+    private HashMap<String, Object> strip(ExtraProperties prop, String prefix) {
+        HashMap<String, Object> subp = new HashMap<String,Object>();
+        for (String key : prop.getData().keySet()) {
+            subp.put(StringUtils.substringAfter(key, "."), prop.getData().get(key));
+        }
+        return subp;
     }
 
     private void applyTopics(SearchIndexObject searchIndexObject) {
