@@ -1,6 +1,7 @@
 package org.dataarc.core.search;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.rest.BaseSolrResource.SolrOutputRepresentation;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.FieldType;
 import org.dataarc.bean.schema.Schema;
@@ -254,16 +256,37 @@ public class SolrIndexingService {
 //            return;
 //        }
         Handlebars handlebars = new Handlebars();
+        Map<String, Object> properties = doc.copyToFeature().getProperties();
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
             // fixme, we really need either a "map" here or a different data object
-            Map<String, Object> properties = doc.copyToFeature().getProperties();
             properties.putAll((Map<? extends String, ? extends Object>) properties.get("data"));
-            properties.put("data", doc.getData());
+            List<ExtraProperties> data = doc.getData();
+            if (data != null) {
+            List<Map<String,Object>> dat = new ArrayList<Map<String,Object>>();
+            for (ExtraProperties prop : data) {
+                String prefix = (String) prop.getData().get("_prefix");
+                if (StringUtils.isNotBlank(prefix)) {
+                    HashMap<String, Object> subp = new HashMap<String,Object>();
+                    properties.put(prefix, subp);
+                    for (String key : prop.getData().keySet()) {
+                        subp.put(StringUtils.substringAfter(key, "."), prop.getData().get(key));
+                    }
+                } else {
+                    dat.add(prop.getData());
+                }
+            }
+            properties.put("data", dat);
+            }
             String val = template.apply(properties);
             doc.setTitle(val);
-            logger.debug(val);
+            if (!source.getName().toLowerCase().contains("sead")) {
+                logger.trace("{}", properties);
+            }
+            logger.debug("{}  ---- {}", val, source.getName());
         } catch (IOException e) {
+            logger.debug("{}", properties);
+            logger.debug(source.getTitleTemplate());
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
