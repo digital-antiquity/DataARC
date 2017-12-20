@@ -288,13 +288,13 @@ public class SolrIndexingService {
                         }
                     }
                 }
-                properties.put(IndexFields.DATA, dat);
+                properties.put(DATA, dat);
             }
             String val = template.apply(properties);
             doc.setTitle(val);
             if (StringUtils.containsIgnoreCase(source.getName(), "bone")) {
                 logger.debug(source.getTitleTemplate());
-                logger.debug("{}", properties);
+                logger.debug("{}", properties.keySet());
             }
             logger.debug("{}  ---- {}", val, source.getName());
         } catch (IOException e) {
