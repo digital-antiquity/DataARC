@@ -1,5 +1,8 @@
 package org.dataarc.web.api;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,22 +24,21 @@ public class SearchController extends AbstractRestController {
     @Autowired
     private SolrService luceneService;
 
-    
-//    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET, produces = { UrlConstants.JSON_UTF8 })
-//    public SearchResultObject search(
-//            @RequestParam(value = "page", required = false) Integer page,
-//            @RequestParam(value = "size", required = false) Integer size,
-//            @RequestParam(value = "id", required = false) String id) throws Exception {
-//
-//        // if there have been no changes to the results and it's a find-all; then pull data out of cache
-//
-//        SearchQueryObject query_ = new SearchQueryObject();
-//        if (StringUtils.isNotBlank(id)) {
-//            query_.setIds(Arrays.asList(id));
-//        }
-//
-//        return performSearch(query_, page, size);
-//    }
+    // @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET, produces = { UrlConstants.JSON_UTF8 })
+    // public SearchResultObject search(
+    // @RequestParam(value = "page", required = false) Integer page,
+    // @RequestParam(value = "size", required = false) Integer size,
+    // @RequestParam(value = "id", required = false) String id) throws Exception {
+    //
+    // // if there have been no changes to the results and it's a find-all; then pull data out of cache
+    //
+    // SearchQueryObject query_ = new SearchQueryObject();
+    // if (StringUtils.isNotBlank(id)) {
+    // query_.setIds(Arrays.asList(id));
+    // }
+    //
+    // return performSearch(query_, page, size);
+    // }
 
     /**
      * Gets the full data for an ID of a record
@@ -80,7 +82,8 @@ public class SearchController extends AbstractRestController {
     }
 
     /**
-     * Performs a normal search for a given request 
+     * Performs a normal search for a given request
+     * 
      * @param query_
      * @param page
      * @param size
@@ -94,15 +97,27 @@ public class SearchController extends AbstractRestController {
             @RequestParam(value = "size", required = false) Integer size
 
     ) throws Exception {
+        try {
+            if (query_ == null || query_.isFindAll()) {
+                File file = new File(System.getProperty("java.io.tmpdir"), "temp-findall.bin");
+                logger.debug("using cache file: {}", file);
+                ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
+                SearchResultObject sro = (SearchResultObject) inputStream.readObject();
+                inputStream.close();
+                return sro;
+            }
+        } catch (Exception e) {
+            logger.error("{}", e, e);
+        }
+
         return performSearch(query_, page, size);
     }
-    
-    
-    
+
     /**
      * Performs a normal search for a given request;
      * 
-     *  assumes that the request has a single source specified, and that it returns some facets plus a page of results
+     * assumes that the request has a single source specified, and that it returns some facets plus a page of results
+     * 
      * @param query_
      * @param page
      * @param size

@@ -3,6 +3,7 @@ package org.dataarc.core.search.query;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class SearchQueryObject {
@@ -155,6 +156,17 @@ public class SearchQueryObject {
 
     public void setResultPage(boolean resultPage) {
         this.resultPage = resultPage;
+    }
+
+    public boolean isFindAll() {
+        if (CollectionUtils.isNotEmpty(getIndicators()) || CollectionUtils.isNotEmpty(getIds()) || CollectionUtils.isNotEmpty(getSources())
+                || CollectionUtils.isNotEmpty(getTopicIds()) || !emptyTemporal() || CollectionUtils.isNotEmpty(keywords)) {
+            return false;
+        }
+        if (isIdOnly()) {
+            return false;
+        }
+        return true;
     }
 
 }

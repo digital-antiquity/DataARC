@@ -1,6 +1,9 @@
 package org.dataarc.core.search;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -316,6 +319,22 @@ public class SolrService {
             }
         }
         return date;
+    }
+
+    public void buildFindAllCache() {
+        try {
+            SearchQueryObject query = new SearchQueryObject();
+            query.setIdAndMap(true);
+            SearchResultObject search = search(query);
+            File file = new File(System.getProperty("java.io.tmpdir"),"temp-findall.bin");
+            ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(file));
+            outStream.writeObject(search);
+            outStream.close();
+        } catch (IOException | ParseException | SolrServerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 
 }

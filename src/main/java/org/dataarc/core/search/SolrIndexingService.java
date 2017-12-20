@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
@@ -28,8 +29,10 @@ import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
+import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.core.service.TemporalCoverageService;
 import org.dataarc.util.SchemaUtils;
+import org.dataarc.web.api.SearchResultObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,15 +88,18 @@ public class SolrIndexingService {
 
     @Autowired
     private SolrClient client;
+    
+    @Autowired
+    SolrService searchService;
 
-    public void invalidateFindAllCache() {
+    public void revalidateFindAllCache() {
         UUID.randomUUID();
+        searchService.buildFindAllCache();
     }
 
     @Transactional(readOnly = true)
     public void reindexIndicatorsOnly(String source) {
         logger.debug("begin reindexing of indicators only {}", source);
-        invalidateFindAllCache();
         SolrInputDocument searchIndexObject = null;
         Map<String, Integer> totals = new HashMap<>();
         try {
@@ -129,6 +135,7 @@ public class SolrIndexingService {
             logger.error("{}", searchIndexObject);
         }
         logger.debug("done reindexing: {}", totals);
+        revalidateFindAllCache();
     }
 
     private SolrInputDocument partialIndexRow(DataEntry entry) {
@@ -184,7 +191,6 @@ public class SolrIndexingService {
     public void reindex() {
         logger.debug("begin reindexing");
         SearchIndexObject searchIndexObject = null;
-        invalidateFindAllCache();
         Map<String, Integer> totals = new HashMap<>();
         try {
             client.deleteByQuery(DATA_ARC, "*:*");
@@ -225,6 +231,7 @@ public class SolrIndexingService {
             logger.error("{}", searchIndexObject);
         }
         logger.debug("done reindexing: {}", totals);
+        revalidateFindAllCache();
     }
 
     private SearchIndexObject indexRow(DataEntry entry) {

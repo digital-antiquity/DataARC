@@ -123,6 +123,12 @@ var Search = {
       d3.json(Search.options.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
   },
 
+  queryResultsPage: function(type, filters, callback) {
+      console.log(Search.options.source, filters);
+    if (type === "POST")
+      d3.json(Search.options.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
+  },
+
   // ****************************************************
   // Specific runctions to return a subset of results
   // ****************************************************
