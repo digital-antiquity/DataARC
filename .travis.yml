@@ -14,6 +14,7 @@ before_install:
     - sh -e /etc/init.d/xvfb start
     - jdk_switcher use oraclejdk8
     - env
+    - cp src/test/resources/dataarc.properties src/main/resources/dataarc.properties
 addons:
   hosts:
     - db
