@@ -251,9 +251,9 @@ public class SolrIndexingService {
     }
 
     private void applyTitle(SearchIndexObject doc, Schema source) {
-//        if (true) {
-//            return;
-//        }
+        // if (true) {
+        // return;
+        // }
         Handlebars handlebars = new Handlebars();
         Map<String, Object> properties = doc.copyToFeature().getProperties();
         try {
@@ -262,18 +262,22 @@ public class SolrIndexingService {
             if (properties == null) {
                 properties = new HashMap<>();
             }
-            if (properties.get(IndexFields.DATA) != null) {
-                Map<? extends String, ? extends Object> prop = (Map<? extends String, ? extends Object>) properties.get(IndexFields.DATA);
+            Object rawDat = properties.get(IndexFields.DATA);
+            if (rawDat != null) {
+                Map<? extends String, ? extends Object> prop = (Map<? extends String, ? extends Object>) rawDat;
                 for (String key : prop.keySet()) {
                     properties.put(key, prop.get(key));
                 }
+                logger.debug("rawdat: {}", rawDat);
             }
             List<ExtraProperties> data = doc.getData();
             if (data != null) {
-                List<Map<String,Object>> dat = new ArrayList<Map<String,Object>>();
+                List<Map<String, Object>> dat = new ArrayList<Map<String, Object>>();
                 for (ExtraProperties prop : data) {
                     String prefix = (String) prop.getData().get(IndexFields.PREFIX);
-                    if (StringUtils.isNotBlank(prefix) && !StringUtils.equals(IndexFields.DATA, prefix)) {
+                    if (StringUtils.equals(IndexFields.DATA, prefix)) {
+                        dat.add(strip(prop, prefix));
+                    } else if (StringUtils.isNotBlank(prefix) && !StringUtils.equals(IndexFields.DATA, prefix)) {
                         properties.put(prefix, strip(prop, prefix));
                     } else {
                         for (String key : prop.getData().keySet()) {
@@ -296,11 +300,11 @@ public class SolrIndexingService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
     }
 
     private HashMap<String, Object> strip(ExtraProperties prop, String prefix) {
-        HashMap<String, Object> subp = new HashMap<String,Object>();
+        HashMap<String, Object> subp = new HashMap<String, Object>();
         for (String key : prop.getData().keySet()) {
             if (StringUtils.isNotBlank(prefix)) {
                 subp.put(StringUtils.substringAfter(key, "."), prop.getData().get(key));

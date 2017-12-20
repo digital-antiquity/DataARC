@@ -176,6 +176,13 @@ public class SearchIndexObject {
         int currentYear = DateTime.now().getYear();
         int start_ = 1950 - getStart() + currentYear - 1950;
         int end_ = 1950 - getEnd() + currentYear - 1950;
+        
+        if (end > start) {
+            int t = end_;
+            end_= start_;
+            start_ = t;
+        }
+        
         if (end_ > currentYear) {
             end_ = currentYear;
         }
