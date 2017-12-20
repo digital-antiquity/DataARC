@@ -173,20 +173,19 @@ public class SearchIndexObject {
         if ((type == null || getStart() == null || getEnd() == null) || !schema.getName().toLowerCase().contains("sead")) {
             return;
         }
+        int currentYear = DateTime.now().getYear();
+        int start_ = 1950 - getStart() + currentYear - 1950;
+        int end_ = 1950 - getEnd() + currentYear - 1950;
+        if (end_ > currentYear) {
+            end_ = currentYear;
+        }
+
         if (type.toLowerCase().contains("radiocarbon")) {
-//            int start_ = getStart();
-//            int end_ = getEnd();
-//            setStart(end_);
-//            setEnd(start_);
+            setStart(start_);
+            setEnd(end_);
 //            logger.debug("radiocarbon: {} - {}", start, end);
         }
         if (type.toLowerCase().contains("relative")) {
-            int currentYear = DateTime.now().getYear();
-            int start_ = getStart() + currentYear - 1950;
-            int end_ = getEnd() + currentYear - 1950;
-            if (end_ > currentYear) {
-                end_ = currentYear;
-            }
             setStart(end_);
             setEnd(start_);
 //            logger.debug("relative: {} - {}", getStart(), getEnd());

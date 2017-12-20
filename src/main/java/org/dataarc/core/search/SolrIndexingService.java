@@ -273,7 +273,7 @@ public class SolrIndexingService {
                     if (StringUtils.isNotBlank(prefix) && !StringUtils.equals(IndexFields.DATA, prefix)) {
                         properties.put(prefix, strip(prop, prefix));
                     } else {
-                        dat.add(strip(prop, prefix));
+                        properties.putAll(strip(prop, ""));
                     }
                 }
                 properties.put(IndexFields.DATA, dat);
@@ -297,7 +297,11 @@ public class SolrIndexingService {
     private HashMap<String, Object> strip(ExtraProperties prop, String prefix) {
         HashMap<String, Object> subp = new HashMap<String,Object>();
         for (String key : prop.getData().keySet()) {
-            subp.put(StringUtils.substringAfter(key, "."), prop.getData().get(key));
+            if (StringUtils.isNotBlank(prefix)) {
+                subp.put(StringUtils.substringAfter(key, "."), prop.getData().get(key));
+            } else {
+                subp.put(key, prop.getData().get(key));
+            }
         }
         return subp;
     }
