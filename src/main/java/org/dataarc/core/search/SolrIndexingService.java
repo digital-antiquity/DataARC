@@ -257,7 +257,10 @@ public class SolrIndexingService {
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
             // fixme, we really need either a "map" here or a different data object
-            String val = template.apply(doc.copyToFeature().getProperties());
+            Map<String, Object> properties = doc.copyToFeature().getProperties();
+            properties.putAll((Map<? extends String, ? extends Object>) properties.get("data"));
+            properties.put("data", doc.getData());
+            String val = template.apply(properties);
             doc.setTitle(val);
             logger.debug(val);
         } catch (IOException e) {

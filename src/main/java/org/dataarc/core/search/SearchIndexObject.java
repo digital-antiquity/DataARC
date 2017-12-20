@@ -178,7 +178,7 @@ public class SearchIndexObject {
 //            int end_ = getEnd();
 //            setStart(end_);
 //            setEnd(start_);
-            logger.debug("radiocarbon: {} - {}", start, end);
+//            logger.debug("radiocarbon: {} - {}", start, end);
         }
         if (type.toLowerCase().contains("relative")) {
             int currentYear = DateTime.now().getYear();
@@ -189,7 +189,7 @@ public class SearchIndexObject {
             }
             setStart(end_);
             setEnd(start_);
-            logger.debug("relative: {} - {}", getStart(), getEnd());
+//            logger.debug("relative: {} - {}", getStart(), getEnd());
         }
 
     }
