@@ -280,7 +280,7 @@ public class SolrIndexingService {
             }
             String val = template.apply(properties);
             doc.setTitle(val);
-            if (StringUtils.containsIgnoreCase(source.getName(), "saga") || StringUtils.containsIgnoreCase(source.getName(), "farm")) {
+            if (StringUtils.containsIgnoreCase(source.getName(), "saga") || StringUtils.containsIgnoreCase(source.getName(), "orkney")) {
                 logger.debug(source.getTitleTemplate());
                 logger.debug("{}", properties);
             }
