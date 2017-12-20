@@ -259,7 +259,12 @@ public class SolrIndexingService {
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
             // fixme, we really need either a "map" here or a different data object
-            properties.putAll((Map<? extends String, ? extends Object>) properties.get(IndexFields.DATA));
+            if (properties == null) {
+                properties = new HashMap<>();
+            }
+            if (properties.get(IndexFields.DATA) != null) {
+                properties.putAll((Map<? extends String, ? extends Object>) properties.get(IndexFields.DATA));
+            }
             List<ExtraProperties> data = doc.getData();
             if (data != null) {
                 List<Map<String,Object>> dat = new ArrayList<Map<String,Object>>();
