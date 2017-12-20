@@ -263,17 +263,25 @@ public class SolrIndexingService {
                 properties = new HashMap<>();
             }
 
+            Object data_ = properties.get("data");
+            if (data_ != null) {
+                Map<String, Object> dat = (Map<String, Object>)data_;
+                properties.putAll(dat);
+            }
+            
             List<ExtraProperties> data = doc.getData();
             if (data != null) {
                 List<Map<String, Object>> dat = new ArrayList<Map<String, Object>>();
                 for (ExtraProperties prop : data) {
                     String prefix = (String) prop.getData().get(IndexFields.PREFIX);
+                    // LIST
                     if (StringUtils.equals(IndexFields.DATA, prefix)) {
                         dat.add(strip(prop, prefix));
                     } else if (StringUtils.isNotBlank(prefix)) {
+                        // MAP
                         properties.put(prefix, strip(prop, prefix));
                     } else {
-                        logger.debug("rawdat: {}", prop.getData());
+                        // none
                         for (String key : prop.getData().keySet()) {
                             properties.put(key, prop.getData().get(key));
                         }
@@ -283,10 +291,10 @@ public class SolrIndexingService {
             }
             String val = template.apply(properties);
             doc.setTitle(val);
-            if (StringUtils.containsIgnoreCase(source.getName(), "saga") || StringUtils.containsIgnoreCase(source.getName(), "orkney")) {
-                logger.debug(source.getTitleTemplate());
-                logger.debug("{}", properties);
-            }
+//            if (StringUtils.containsIgnoreCase(source.getName(), "saga") || StringUtils.containsIgnoreCase(source.getName(), "orkney") || StringUtils.containsIgnoreCase(source.getName(), "farm")) {
+//                logger.debug(source.getTitleTemplate());
+//                logger.debug("{}", properties);
+//            }
             logger.debug("{}  ---- {}", val, source.getName());
         } catch (IOException e) {
             logger.debug("{}", properties);
