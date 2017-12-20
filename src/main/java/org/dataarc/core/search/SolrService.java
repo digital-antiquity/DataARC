@@ -124,12 +124,17 @@ public class SolrService {
         }
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
         logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
-        if (sqo.isIdOnly() || sqo.isIdAndMap()) {
+        if (sqo.isIdOnly() || sqo.isIdAndMap() || sqo.isResultPage()) {
             params.addField(IndexFields.ID);
             params.addField(IndexFields.SCHEMA_ID);
             params.addField(IndexFields.POINT);
             params.addField(IndexFields.SOURCE);
             params.addField(IndexFields.CATEGORY);
+            params.addField(IndexFields.TITLE);
+        }
+        
+        if (sqo.isResultPage()) {
+            params.addField(IndexFields.TITLE);
         }
         params.setStart(startRecord);
 
@@ -171,13 +176,7 @@ public class SolrService {
                     if (sqo.isIdAndMap()) {
                         com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
                         
-                        // NOTE: this is only really safe because we have so much control over the specific fields here
-                        String part = String.format(template, document.get(IndexFields.SCHEMA_ID), document.get(IndexFields.ID),
-                                document.get(IndexFields.SOURCE), document.get(IndexFields.CATEGORY), read.getX(), read.getY());
-                        if (i > 0) {
-                            sb.append(",");
-                        }
-                        sb.append(part);
+                        appendFastFeatureResult(sb, i, document, read);
                     } else {
                         appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
                     }
@@ -191,6 +190,24 @@ public class SolrService {
             ((PerfSearchResultObject) result).setResults(sb.toString());
         }
         return result;
+    }
+
+    /**
+     *  hack for performance, string building is much faster than using the object serialization
+     * 
+     * @param sb
+     * @param i
+     * @param document
+     * @param read
+     */
+    private void appendFastFeatureResult(StringBuilder sb, int i, SolrDocument document, com.vividsolutions.jts.geom.Point read) {
+        // NOTE: this is only really safe because we have so much control over the specific fields here
+        String part = String.format(template, document.get(IndexFields.SCHEMA_ID), document.get(IndexFields.ID),
+                document.get(IndexFields.SOURCE), document.get(IndexFields.CATEGORY), read.getX(), read.getY());
+        if (i > 0) {
+            sb.append(",");
+        }
+        sb.append(part);
     }
 
     private void appendFeatureResult(SolrDocument document, WKTReader reader, FeatureCollection fc, String point, boolean idMapOnly) {

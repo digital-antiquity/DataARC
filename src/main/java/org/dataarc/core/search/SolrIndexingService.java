@@ -251,10 +251,14 @@ public class SolrIndexingService {
         return null;
     }
 
+    /**
+     * For a given data object and source, we apply the title template to the object so that it can be indexed. This means that we can get a page or more at a
+     * time and it's 'FAST' at runtime
+     * 
+     * @param doc
+     * @param source
+     */
     private void applyTitle(SearchIndexObject doc, Schema source) {
-        // if (true) {
-        // return;
-        // }
         Handlebars handlebars = new Handlebars();
         Map<String, Object> properties = doc.copyToFeature().getProperties();
         try {
@@ -266,10 +270,10 @@ public class SolrIndexingService {
 
             Object data_ = properties.get(DATA);
             if (data_ != null) {
-                Map<String, Object> dat = (Map<String, Object>)data_;
+                Map<String, Object> dat = (Map<String, Object>) data_;
                 properties.putAll(dat);
             }
-            
+
             List<ExtraProperties> data = doc.getData();
             if (data != null) {
                 List<Map<String, Object>> dat = new ArrayList<Map<String, Object>>();
@@ -292,16 +296,16 @@ public class SolrIndexingService {
             }
             String val = template.apply(properties);
             doc.setTitle(val);
-//            if (StringUtils.containsIgnoreCase(source.getName(), "bone")) {
-//                logger.debug(source.getTitleTemplate());
-//                logger.debug("{}", properties.keySet());
-//            }
+            // if (StringUtils.containsIgnoreCase(source.getName(), "bone")) {
+            // logger.debug(source.getTitleTemplate());
+            // logger.debug("{}", properties.keySet());
+            // }
             logger.trace("{}  ---- {}", val, source.getName());
         } catch (IOException e) {
             logger.debug("{}", properties);
             logger.debug(source.getTitleTemplate());
             // TODO Auto-generated catch block
-            logger.error("{}", e,e);
+            logger.error("{}", e, e);
         }
 
     }

@@ -45,5 +45,6 @@ public interface UrlConstants {
     String GET_ID = "/api/getId";
     String ABOUT = "/about";
     String LIST_COVERAGE = "/a/coverage";
+    String SEARCH_RESULTS = "/api/searchResultPage";
 
 }
