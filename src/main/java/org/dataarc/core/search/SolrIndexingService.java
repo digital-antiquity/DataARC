@@ -43,6 +43,7 @@ import com.rollbar.Rollbar;
 @Service
 public class SolrIndexingService {
 
+    private static final String DATA = "data";
     private static final String PERC = "perc.";
     private static final String STRING = "string";
     private static final String LOCATION_RPT = "location_rpt";
@@ -263,7 +264,7 @@ public class SolrIndexingService {
                 properties = new HashMap<>();
             }
 
-            Object data_ = properties.get("data");
+            Object data_ = properties.get(DATA);
             if (data_ != null) {
                 Map<String, Object> dat = (Map<String, Object>)data_;
                 properties.putAll(dat);
@@ -275,7 +276,7 @@ public class SolrIndexingService {
                 for (ExtraProperties prop : data) {
                     String prefix = (String) prop.getData().get(IndexFields.PREFIX);
                     // LIST
-                    if (StringUtils.equals(IndexFields.DATA, prefix)) {
+                    if (StringUtils.equals(IndexFields.DATA, prefix) || StringUtils.equals(DATA, prefix)) {
                         dat.add(strip(prop, prefix));
                     } else if (StringUtils.isNotBlank(prefix)) {
                         // MAP
@@ -291,10 +292,10 @@ public class SolrIndexingService {
             }
             String val = template.apply(properties);
             doc.setTitle(val);
-//            if (StringUtils.containsIgnoreCase(source.getName(), "saga") || StringUtils.containsIgnoreCase(source.getName(), "orkney") || StringUtils.containsIgnoreCase(source.getName(), "farm")) {
-//                logger.debug(source.getTitleTemplate());
-//                logger.debug("{}", properties);
-//            }
+            if (StringUtils.containsIgnoreCase(source.getName(), "bone")) {
+                logger.debug(source.getTitleTemplate());
+                logger.debug("{}", properties);
+            }
             logger.debug("{}  ---- {}", val, source.getName());
         } catch (IOException e) {
             logger.debug("{}", properties);
