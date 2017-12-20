@@ -263,7 +263,10 @@ public class SolrIndexingService {
                 properties = new HashMap<>();
             }
             if (properties.get(IndexFields.DATA) != null) {
-                properties.putAll((Map<? extends String, ? extends Object>) properties.get(IndexFields.DATA));
+                Map<? extends String, ? extends Object> prop = (Map<? extends String, ? extends Object>) properties.get(IndexFields.DATA);
+                for (String key : prop.keySet()) {
+                    properties.put(key, prop.get(key));
+                }
             }
             List<ExtraProperties> data = doc.getData();
             if (data != null) {
@@ -273,7 +276,9 @@ public class SolrIndexingService {
                     if (StringUtils.isNotBlank(prefix) && !StringUtils.equals(IndexFields.DATA, prefix)) {
                         properties.put(prefix, strip(prop, prefix));
                     } else {
-                        properties.putAll(strip(prop, ""));
+                        for (String key : prop.getData().keySet()) {
+                            properties.put(key, prop.getData().get(key));
+                        }
                     }
                 }
                 properties.put(IndexFields.DATA, dat);
