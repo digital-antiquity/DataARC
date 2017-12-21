@@ -34,7 +34,7 @@
           <hr class="light">
           <p class="mb-3 mt-4">
             <a href="http://https://www.nsf.gov/awardsearch/showAward?AWD_ID=1637076">
-              <img width="166" height="167" src="/img/nsf_logo_shading.jpg" class="image wp-image-38  attachment-full size-full" alt="NSF Logo" style="max-width: 100%; height: auto;" sizes="(max-width: 166px) 100vw, 166px"></a>
+              <img width="166" height="167" src="/img/nsf_logo_shading.png" class="image wp-image-38  attachment-full size-full" alt="NSF Logo" style="max-width: 100%; height: auto;" sizes="(max-width: 166px) 100vw, 166px"></a>
           </p>
           <p class="text-faded mb-5">With support from the National Science Foundation, Grant Numbers 1637076 and 1439389. This project is led by <a href="https://nsidc.org">NSIDC</a>, with development led by the <a href="http://www.digitalantiquity.org">Center for Digital Antiquity</a> (Arizona State University), and user interface developed by the <a href="http://cast.uark.edu">Center for Advanced Spatial Technologies</a> (University of Arkansas).</p>
         </div>
