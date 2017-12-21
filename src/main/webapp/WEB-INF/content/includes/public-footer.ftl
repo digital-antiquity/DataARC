@@ -10,8 +10,8 @@
       </div>
     </div>
     <div class="container">
-      <div class="row">
       <form id="mc4wp-form-1" class="mc4wp-form mc4wp-form-71 mc4wp-form-basic" method="post" data-id="71" data-name="dataARC Newsletter">
+      <div class="row">
       
 
           <div class="col-md-3">
@@ -26,10 +26,11 @@
           <div class="col-md-2">
 			<label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off"></label><input type="hidden" name="_mc4wp_timestamp" value="1513871005">
 			<input type="hidden" name="_mc4wp_form_id" value="71"><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-1">
-			<div class="mc4wp-response"></div></form>
+			<div class="mc4wp-response"></div>
             <button type="submit" class="btn btn-info btn-block">Sign Up</button>
           </div>
       </div>
+      </form>
     </div>
   </section>
   <section id="funding-section" class="bg-dark">
