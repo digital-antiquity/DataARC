@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
@@ -29,13 +28,12 @@ import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
-import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.core.service.TemporalCoverageService;
 import org.dataarc.util.SchemaUtils;
-import org.dataarc.web.api.SearchResultObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,6 +96,7 @@ public class SolrIndexingService {
     }
 
     @Transactional(readOnly = true)
+    @Async
     public void reindexIndicatorsOnly(String source) {
         logger.debug("begin reindexing of indicators only {}", source);
         SolrInputDocument searchIndexObject = null;
@@ -164,6 +163,76 @@ public class SolrIndexingService {
             if (logger.isTraceEnabled()) {
                 logger.trace("{}", doc);
             }
+            client.add(DATA_ARC, doc);
+        } catch (Throwable e) {
+            logger.error("exception indexing: {}", doc, e);
+            if (rollbar != null) {
+                rollbar.error(e);
+            }
+            return doc;
+        }
+        return doc;
+
+    }
+    
+    
+
+    @Transactional(readOnly = true)
+    @Async
+    public void reindexTitlesOnly(Schema source) {
+        logger.debug("begin reindexing of indicators only {}", source);
+        SolrInputDocument searchIndexObject = null;
+        Map<String, Integer> totals = new HashMap<>();
+        try {
+            Iterable<DataEntry> entries = sourceDao.findBySource(source.getName());
+            int count = 0;
+            for (DataEntry entry : entries) {
+                String key = SchemaUtils.normalize(entry.getSource());
+
+                // FIME: move up into
+                if (!source.getName().equalsIgnoreCase(key) || !source.getName().equalsIgnoreCase(entry.getSource())) {
+                    continue;
+                }
+
+                Integer c = totals.getOrDefault(key, 0);
+                totals.put(key, c + 1);
+                searchIndexObject = partialIndexTitleRow(entry, source);
+                if (count % 500 == 0) {
+                    if (searchIndexObject != null) {
+                        logger.debug("{} - {}", searchIndexObject);
+                    } else {
+                        logger.debug("null object");
+                    }
+                    client.commit(DATA_ARC);
+                }
+                count++;
+            }
+
+            client.commit(DATA_ARC);
+        } catch (Exception ex) {
+            logger.error("exception indexing:", ex);
+            logger.error("{}", searchIndexObject);
+        }
+        logger.debug("done reindexing: {}", totals);
+        revalidateFindAllCache();
+    }
+
+    private SolrInputDocument partialIndexTitleRow(DataEntry entry, Schema schema) {
+
+        SolrInputDocument doc = new SolrInputDocument();
+
+        try {
+            doc.setField(IndexFields.ID, entry.getId());
+            Map<String, Object> map = new HashMap<>();
+            SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema, temporalCoverageService);
+            applyTitle(searchIndexObject, schema);
+
+                map.put(IndexFields.TITLE, searchIndexObject.getTitle());
+
+            // map.put(IndexFields.TOPIC_ID_2ND, );
+            // map.put(IndexFields.TOPIC_ID_3RD, );
+
+            replaceField(doc, map, IndexFields.TITLE);
             client.add(DATA_ARC, doc);
         } catch (Throwable e) {
             logger.error("exception indexing: {}", doc, e);

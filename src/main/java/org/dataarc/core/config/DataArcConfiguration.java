@@ -1,6 +1,7 @@
 package org.dataarc.core.config;
 
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
@@ -20,6 +21,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -28,6 +30,7 @@ import com.rollbar.Rollbar;
 
 @Configuration
 @EnableTransactionManagement
+@EnableAsync
 @ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, MongoProfile.ORG_DATAARC_MONGO, DataArcConfiguration.ORG_DATAARC_SOLR })
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:dataarc.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:crowd.properties")
@@ -117,6 +120,18 @@ public class DataArcConfiguration {
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+
+    @Bean
+    public Executor asyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("IndexAsync-");
+        executor.initialize();
+        return executor;
     }
 
 }
