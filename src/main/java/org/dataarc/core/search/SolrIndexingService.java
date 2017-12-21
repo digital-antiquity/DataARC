@@ -61,7 +61,7 @@ public class SolrIndexingService {
     @Autowired
     ImportDao sourceDao;
 
-    @Autowired
+    @Autowired(required=false)
     Rollbar rollbar;
 
     @Autowired
