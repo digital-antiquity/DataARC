@@ -337,6 +337,9 @@ public class SolrIndexingService {
     private void applyTitle(SearchIndexObject doc, Schema source) {
         Handlebars handlebars = new Handlebars();
         Map<String, Object> properties = doc.copyToFeature().getProperties();
+        if (StringUtils.isBlank(source.getTitleTemplate())) {
+            return;
+        }
         try {
             Template template = handlebars.compileInline(source.getTitleTemplate());
             // fixme, we really need either a "map" here or a different data object
