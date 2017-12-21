@@ -10,21 +10,22 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.framework.version>4.3.11.RELEASE</spring.framework.version>
-        <spring.security>4.2.3.RELEASE</spring.security>
+        <spring.security>5.0.0.RELEASE</spring.security>
+        <spring.framework.version>5.0.2.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.9.1</jackson.version>
+        <jackson.version>2.9.3</jackson.version>
         <geotools.version>12.1</geotools.version>
         <postgresql.jdbc.version>9.4.1212</postgresql.jdbc.version>
-        <solr.version>7.0.0</solr.version>
-        <hibernate.version>5.2.11.Final</hibernate.version>
+        <solr.version>7.2.0</solr.version>
+        <hibernate.version>5.2.12.Final</hibernate.version>
         <sitemesh.version>3.0.1</sitemesh.version>
         <liquibase.version>3.5.3</liquibase.version>
-        <mongo.version>3.5.0</mongo.version>
+        <mongo.version>3.6.1</mongo.version>
         <exec-maven-version>1.5.0</exec-maven-version>
         <servlet.api.version>3.1.0</servlet.api.version>
         <crowd.version>2.12.0</crowd.version>
         <handlebars-version>4.0.6</handlebars-version>
+        <log4j.version>2.10.0</log4j.version>
         
     </properties>
 
@@ -44,6 +45,18 @@
                 <type>bom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.jdbc.version}</version>
+                <!-- LICENSE: BSD -->
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.3.3</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.hibernate.ogm</groupId>
                 <artifactId>hibernate-ogm-bom</artifactId>
@@ -261,7 +274,7 @@
         <dependency>
           <groupId>org.freemarker</groupId>
           <artifactId>freemarker</artifactId>
-          <version>2.3.26-incubating</version>
+          <version>2.3.27-incubating</version>
           <!-- LICENSE: BSD -->
         </dependency>
 
@@ -329,7 +342,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
-            <version>1.10.2.RELEASE</version>
+            <version>2.0.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -387,13 +400,13 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.8.9</version>
+            <version>1.8.13</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.3.1</version>
+            <version>2.8.2</version>
         </dependency>
 
         <dependency>
@@ -485,12 +498,12 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.2</version>
+            <version>1.3.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>2.2.0.RELEASE</version>
+            <version>2.2.1.RELEASE</version>
         </dependency>
 <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
 <dependency>
@@ -624,7 +637,7 @@
         <dependency>
             <groupId>org.wololo</groupId>
             <artifactId>jts2geojson</artifactId>
-            <version>0.10.0</version>
+            <version>0.11.0</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
@@ -753,7 +766,7 @@
         <dependency>
             <groupId>com.github.davidmoten</groupId>
             <artifactId>geo</artifactId>
-            <version>0.7.1</version>
+            <version>0.7.6</version>
         </dependency>
         <dependency>
             <artifactId>solr-core</artifactId>
@@ -789,13 +802,13 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.7</version>
+            <version>${log4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-1.2-api</artifactId>
-            <version>2.7</version>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

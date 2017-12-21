@@ -136,6 +136,7 @@ public class SearchController extends AbstractRestController {
             logger.error("should have a schemaId");
             return null;
         }
+        query_.setIdAndMap(false);
         return performSearch(query_, page, size);
     }
 

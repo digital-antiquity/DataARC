@@ -39,7 +39,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.WriteResult;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.result.UpdateResult;
 import com.vividsolutions.jts.geom.Geometry;
 
 @Component
@@ -72,12 +73,11 @@ public class MongoDao implements ImportDao, QueryDao {
 
     @Transactional(readOnly = true)
     public Map<String, Long> getDistinctValues(String source, String fieldName) throws Exception {
-        @SuppressWarnings("unchecked")
-        List<String> result = template.getDb().getCollection(DATA_ENTRY).distinct(fieldName);
-        logger.trace("{}", result);
+        MongoCursor<String> result = template.getDb().getCollection(DATA_ENTRY).distinct(fieldName, String.class).iterator();
         // later on if we want to use something like variety.js, we could use this to provide counts
         Map<String, Long> map = new HashMap<>();
-        for (String r : result) {
+        while (result.hasNext()) {
+            String r = result.next();
             map.put(r, 1L);
         }
         return map;
@@ -253,7 +253,7 @@ public class MongoDao implements ImportDao, QueryDao {
     @Transactional(readOnly = false)
     public void resetRegions() {
         Query q = new Query();
-        WriteResult updateMulti = template.updateMulti(q, new Update().unset(DataEntry.DATA_ARC_REGION), DataEntry.class);
+        UpdateResult updateMulti = template.updateMulti(q, new Update().unset(DataEntry.DATA_ARC_REGION), DataEntry.class);
 
     }
 
@@ -265,7 +265,7 @@ public class MongoDao implements ImportDao, QueryDao {
         Criteria schemaCriteria = Criteria.where(IndexFields.SOURCE).is(schema.getName());
         q.addCriteria(schemaCriteria);
         Update unset = new Update().unset(DataEntry.INDICATORS).unset(DataEntry.TOPICS).unset(DataEntry.TOPIC_IDENTIFIERS);
-        WriteResult updateMulti = template.updateMulti(q, unset, DataEntry.class);
+        UpdateResult updateMulti = template.updateMulti(q, unset, DataEntry.class);
 
     }
 
@@ -289,9 +289,9 @@ public class MongoDao implements ImportDao, QueryDao {
         if (CollectionUtils.isNotEmpty(idents)) {
             push.pushAll(DataEntry.TOPIC_IDENTIFIERS, idents.toArray(new String[0]));
         }
-        WriteResult updateMulti = template.updateMulti(filterQuery, push, DataEntry.class);
-        if (updateMulti.getN() > 0) {
-            logger.debug("applying indicator {} to {} results", indicator.getId(), updateMulti.getN());
+        UpdateResult updateMulti = template.updateMulti(filterQuery, push, DataEntry.class);
+        if (updateMulti.getModifiedCount() > 0) {
+            logger.debug("applying indicator {} to {} results", indicator.getId(), updateMulti.getModifiedCount());
         }
     }
 
@@ -318,9 +318,9 @@ public class MongoDao implements ImportDao, QueryDao {
             Criteria group = new Criteria();
             group = group.orOperator(list.toArray(new Criteria[0]));
             q.addCriteria(group);
-            WriteResult updateMulti = template.updateMulti(q, new Update().addToSet(DataEntry.DATA_ARC_REGION, val), DataEntry.class);
-            if (updateMulti.getN() > 0) {
-                logger.debug("  applying template: {} :: {} updated", val, updateMulti.getN());
+            UpdateResult updateMulti = template.updateMulti(q, new Update().addToSet(DataEntry.DATA_ARC_REGION, val), DataEntry.class);
+            if (updateMulti.getModifiedCount() > 0) {
+                logger.debug("  applying template: {} :: {} updated", val, updateMulti.getModifiedCount());
             }
         } catch (Exception e) {
             logger.error("-------------- {} -------------", val);

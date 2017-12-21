@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.DataFileService;
 import org.dataarc.core.service.ImportDataService;
 import org.dataarc.core.service.SchemaService;
@@ -37,6 +38,9 @@ public class SchemaTemplateController extends AbstractController {
     DataFileService dataFileService;
 
     @Autowired
+    SolrIndexingService indexingService;
+
+    @Autowired
     ImportDataService importService;
 
     @ModelAttribute("categories")
@@ -63,11 +67,15 @@ public class SchemaTemplateController extends AbstractController {
             @RequestParam(value = LINK_TEMPLATE) String link) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view-template");
         Schema schema = schemaService.findById(id);
-        schemaService.updateSchemaTemplates(schema, title, result, link);
+        boolean titleChanged = schemaService.updateSchemaTemplates(schema, title, result, link);
         mav.addObject(SCHEMA, schema);
         mav.addObject(TITLE_TEMPLATE, title);
         mav.addObject(RESULT_TEMPLATE, result);
         mav.addObject(LINK_TEMPLATE, link);
+        if (titleChanged) {
+            indexingService.reindexTitlesOnly(schema);
+        }
+
         return mav;
     }
 

@@ -3,12 +3,14 @@ package org.dataarc.core.service;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dataarc.bean.schema.CategoryType;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.core.dao.FieldDao;
 import org.dataarc.core.dao.SchemaDao;
+import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
@@ -31,6 +33,7 @@ public class SchemaService {
     @Autowired
     IndicatorService indicatorService;
 
+    
     @Autowired
     FieldDao fieldDao;
 
@@ -169,12 +172,16 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public void updateSchemaTemplates(Schema schema, String title, String result, String link) {
+    public boolean updateSchemaTemplates(Schema schema, String title, String result, String link) {
+        boolean titleChanged = false;
+        if (!StringUtils.equals(schema.getTitleTemplate(), title)) {
+            titleChanged = true;
+        }
         schema.setTitleTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), title));
         schema.setLinkTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), link));
         schema.setResultTemplate(SchemaUtils.format(schema.getName(), schema.getFields(), result));
         schemaDao.save(schema);
-
+        return titleChanged;
     }
 
     public List<SchemaField> findAllFields() {

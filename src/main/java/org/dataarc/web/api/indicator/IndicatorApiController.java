@@ -6,6 +6,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.ActionType;
 import org.dataarc.bean.Indicator;
 import org.dataarc.bean.ObjectType;
+import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.ChangeLogService;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.core.service.UserService;
@@ -34,12 +35,17 @@ public class IndicatorApiController extends AbstractRestController {
     @Autowired
     private ChangeLogService changelogservice;
 
+    @Autowired
+    SolrIndexingService indexingService;
+
+    
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) IndicatorDataObject indicator) throws Exception {
         try {
             logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
             indicatorService.save(indicator, getUser());
             changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator.getName());
+                indexingService.reindexIndicatorsOnly(indicator.getQuery().getSchema());
 
         } catch (Throwable t) {
             logger.error("error saving indicator", t);

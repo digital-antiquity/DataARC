@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import org.apache.commons.lang.StringUtils;
+import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.ImportService;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.core.service.TopicMapService;
@@ -26,6 +27,9 @@ public class CmdLineDataLoader extends AbstractDataLoader {
 
     @Autowired
     IndicatorService indicatorService;
+    
+    @Autowired
+    private SolrIndexingService indexingService;
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
@@ -54,7 +58,8 @@ public class CmdLineDataLoader extends AbstractDataLoader {
             logger.error("{}", e, e);
         }
         logger.debug("applying indicators");
-        indicatorService.applyIndicators(true);
+        indicatorService.applyIndicators();
+        indexingService.reindex();
         logger.debug("done applying indicators");
     }
 

@@ -39,8 +39,8 @@ public class IndicatorService {
     @Autowired
     private TopicDao topicDao;
 
-    @Autowired
-    private SolrIndexingService indexingService;
+//    @Autowired
+//    private SolrIndexingService indexingService;
 
     @Autowired
     private SchemaDao schemoDao;
@@ -68,7 +68,7 @@ public class IndicatorService {
         }
         indicatorDao.save(indicator);
         try {
-            applyIndicators(schemaName,true);
+            applyIndicators(schemaName);
         } catch (Throwable t) {
             logger.error("{}", t, t);
         }
@@ -125,21 +125,18 @@ public class IndicatorService {
     }
 
     @Transactional(readOnly = false)
-    public void applyIndicators(String schemaName, boolean reindex) throws Exception {
+    public void applyIndicators(String schemaName) throws Exception {
         importDao.resetTopics(schemaName);
         for (Indicator indicator : findAllForSchema(schemaName)) {
             importDao.applyIndicator(indicator);
         }
-        if (reindex) {
-            indexingService.reindexIndicatorsOnly(schemaName);
-        }
     }
 
     @Transactional(readOnly = false)
-    public void applyIndicators(boolean reindex) {
+    public void applyIndicators() {
         schemoDao.findAllSchemaNames().forEach(name -> {
             try {
-                applyIndicators(name, reindex);
+                applyIndicators(name);
             } catch (Exception e) {
                 logger.error("{}", e, e);
             }

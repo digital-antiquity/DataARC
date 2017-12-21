@@ -125,6 +125,7 @@ public class SolrService {
         if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
             q = "*:*";
         }
+        
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
         logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
         if (sqo.isIdOnly() || sqo.isIdAndMap() || sqo.isResultPage()) {
@@ -133,7 +134,6 @@ public class SolrService {
             params.addField(IndexFields.POINT);
             params.addField(IndexFields.SOURCE);
             params.addField(IndexFields.CATEGORY);
-            params.addField(IndexFields.TITLE);
         }
         
         if (sqo.isResultPage()) {
@@ -146,6 +146,9 @@ public class SolrService {
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
 
+        result.setPage(limit);
+        result.setStart(startRecord);
+        result.setTotal(query.getResults().getNumFound());
         if (topDocs.isEmpty()) {
             return result;
         }
@@ -265,6 +268,7 @@ public class SolrService {
         feature.setProperty(IndexFields.SOURCE, schema.getName());
         addKeyValue(feature.getProperties(), IndexFields.CATEGORY, document.get(IndexFields.CATEGORY));
         if (!idMapOnly) {
+            addKeyValue(feature.getProperties(), IndexFields.TITLE, document.get(IndexFields.TITLE));
             String date = formateDate(document);
             addKeyValue(feature.getProperties(), IndexFields.DATE, date);
             addKeyValue(feature.getProperties(), IndexFields.TOPIC_ID, document.get(IndexFields.TOPIC_ID));

@@ -15,6 +15,7 @@ before_install:
     - jdk_switcher use oraclejdk8
     - env
     - cp src/test/resources/dataarc.properties src/main/resources/dataarc.properties
+    - cp ./src/main/resources/solr/configsets/basic_configs/conf/managed-schema ./src/main/resources/solr/configsets/dataArc/conf/managed-schema
 addons:
   hosts:
     - db
