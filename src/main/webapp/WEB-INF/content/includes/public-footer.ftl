@@ -11,6 +11,9 @@
     </div>
     <div class="container">
       <div class="row">
+      <form id="mc4wp-form-1" class="mc4wp-form mc4wp-form-71 mc4wp-form-basic" method="post" data-id="71" data-name="dataARC Newsletter">
+      
+
           <div class="col-md-3">
             <input type="text" name="FNAME" class="form-control" placeholder="First Name*" />
           </div>
@@ -21,6 +24,9 @@
             <input type="text" name="ENAME" class="form-control" placeholder="Email*" />
           </div>
           <div class="col-md-2">
+			<label style="display: none !important;">Leave this field empty if you're human: <input type="text" name="_mc4wp_honeypot" value="" tabindex="-1" autocomplete="off"></label><input type="hidden" name="_mc4wp_timestamp" value="1513871005">
+			<input type="hidden" name="_mc4wp_form_id" value="71"><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-1">
+			<div class="mc4wp-response"></div></form>
             <button type="submit" class="btn btn-info btn-block">Sign Up</button>
           </div>
       </div>
@@ -64,3 +70,12 @@
   <script src="vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
 
   <script src="vendor/chartjs/Chart.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var mc4wp_forms_config = [];
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.data-arc.org/wp-content/plugins/mailchimp-for-wp/assets/js/forms-api.min.js?ver=4.1.12"></script>
+<!--[if lte IE 9]>
+<script type='text/javascript' src='https://www.data-arc.org/wp-content/plugins/mailchimp-for-wp/assets/js/third-party/placeholders.min.js?ver=4.1.12'></script>
+<![endif]-->
