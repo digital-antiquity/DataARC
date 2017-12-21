@@ -25,4 +25,18 @@ public class Temporal implements Serializable {
         this.start = start;
     }
 
+    public void expandBy(Integer expandBy) {
+        int d = end - start;
+        start -= d*expandBy;
+        end += d*expandBy;
+        
+    }
+
+    public boolean isEmpty() {
+        if (getEnd() == getStart() && getStart() == null) {
+            return true;
+        }
+        return false;
+    }
+
 }

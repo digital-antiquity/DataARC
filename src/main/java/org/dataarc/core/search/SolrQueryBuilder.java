@@ -15,22 +15,28 @@ import org.slf4j.LoggerFactory;
 public class SolrQueryBuilder {
 
     private static final String TEMPORAL = "temporal";
-    private static final String VAL = "val";
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
 
     public StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
         StringBuilder bq = new StringBuilder();
-        if (!sqo.emptyTemporal()) {
+        if (!sqo.isEmptyTemporal()) {
             bq.append(createDateRangeQueryPart(sqo.getTemporal()));
         }
+        sqo.expand();
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
         appendKeywordSearch(sqo.getIds(), IndexFields.ID, bq);
         appendKeywordSearchNumeric(Arrays.asList(sqo.getSchemaId()), IndexFields.SCHEMA_ID, bq);
         appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
-        if (sqo.emptySpatial() == false) {
+        if (sqo.getExpandBy() != null && sqo.getExpandBy() == 2) {
+            appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_2ND, bq);
+        }
+        if (sqo.getExpandBy() != null && sqo.getExpandBy() == 3) {
+            appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_3RD, bq);
+        }
+        if (sqo.isEmptySpatial() == false) {
             appendSpatial(sqo, bq);
         }
         return bq;

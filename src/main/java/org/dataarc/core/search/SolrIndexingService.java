@@ -284,7 +284,7 @@ public class SolrIndexingService {
                 searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     if (searchIndexObject != null) {
-                        logger.debug("{} - {}", searchIndexObject.getId(), searchIndexObject.getTitle());
+                        logger.debug("{} - {} -- {}", searchIndexObject.getId(), searchIndexObject.getTitle(), key);
                         logger.debug(" {}", searchIndexObject.copyToFeature());
                     } else {
                         logger.debug("null object");

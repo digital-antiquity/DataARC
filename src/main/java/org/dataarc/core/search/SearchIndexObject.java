@@ -186,16 +186,24 @@ public class SearchIndexObject {
         if (end_ > currentYear) {
             end_ = currentYear;
         }
-
+        String id = "";
+        for (ExtraProperties ep : getData()) {
+            for (String key : ep.getData().keySet()) {
+                if (key.contains("sample_name")) {
+                    id = (String) ep.getData().get(key);
+                }
+            }
+        }
         if (type.toLowerCase().contains("radiocarbon")) {
+            logger.debug("radiocarbon: {}->{} - {}->{} [{}]", start, start_, end, end_,id );
             setStart(start_);
             setEnd(end_);
-//            logger.debug("radiocarbon: {} - {}", start, end);
         }
+        //FIXME: I don't work for relative dates that are negative
         if (type.toLowerCase().contains("relative")) {
+            logger.debug("relative: {}->{} - {}->{} [{}]", start, start_, end, end_,id );
             setStart(end_);
             setEnd(start_);
-//            logger.debug("relative: {} - {}", getStart(), getEnd());
         }
 
     }

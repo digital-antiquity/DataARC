@@ -15,6 +15,7 @@ public class SearchQueryObject {
     private boolean resultPage = false;
     private Integer size;
     private Integer page;
+    private Integer expandBy = 0;
     private Long schemaId;
     private List<String> keywords = new ArrayList<>();
     private List<Long> indicators = new ArrayList<>();
@@ -70,36 +71,18 @@ public class SearchQueryObject {
         this.temporal = temporal;
     }
 
-    public boolean emptySpatial() {
+    public boolean isEmptySpatial() {
         if (getSpatial() == null) {
             return true;
         }
-
-        if (StringUtils.isNotBlank(getSpatial().getRegion())) {
-            return false;
-        }
-
-        if (getSpatial().getBottomRight() == null ||
-                getSpatial().getBottomRight().length < 2) {
-            return true;
-        }
-
-        if (getSpatial().getTopLeft() == null ||
-                getSpatial().getTopLeft().length < 2) {
-            return true;
-        }
-
-        return false;
+        return getSpatial().isEmpty();
     }
 
-    public boolean emptyTemporal() {
+    public boolean isEmptyTemporal() {
         if (getTemporal() == null) {
             return true;
         }
-        if (getTemporal().getEnd() == getTemporal().getStart() && getTemporal().getStart() == null) {
-            return true;
-        }
-        return false;
+        return getTemporal().isEmpty();
     }
 
     public List<String> getIds() {
@@ -160,13 +143,33 @@ public class SearchQueryObject {
 
     public boolean isFindAll() {
         if (CollectionUtils.isNotEmpty(getIndicators()) || CollectionUtils.isNotEmpty(getIds()) || CollectionUtils.isNotEmpty(getSources())
-                || CollectionUtils.isNotEmpty(getTopicIds()) || !emptyTemporal() || CollectionUtils.isNotEmpty(keywords)) {
+                || CollectionUtils.isNotEmpty(getTopicIds()) || !isEmptyTemporal() || CollectionUtils.isNotEmpty(keywords)) {
             return false;
         }
         if (isIdOnly()) {
             return false;
         }
         return true;
+    }
+
+    public void expand() {
+        if (getExpandBy() == null || getExpandBy() < 2) {
+            return;
+        }
+        if (!isEmptySpatial()) {
+            spatial.expandBy(getExpandBy());
+        }
+        if (!isEmptyTemporal()) {
+            temporal.expandBy(getExpandBy());
+        }
+    }
+
+    public Integer getExpandBy() {
+        return expandBy;
+    }
+
+    public void setExpandBy(Integer expandBy) {
+        this.expandBy = expandBy;
     }
 
 }
