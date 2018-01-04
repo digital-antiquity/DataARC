@@ -174,8 +174,8 @@ public class SearchIndexObject {
             return;
         }
         int currentYear = DateTime.now().getYear();
-        int start_ = 1950 - getStart() + currentYear - 1950;
-        int end_ = 1950 - getEnd() + currentYear - 1950;
+        int start_ = 1950 - getStart();
+        int end_ = 1950 - getEnd();
         
         if (end > start) {
             int t = end_;
@@ -195,15 +195,15 @@ public class SearchIndexObject {
             }
         }
         if (type.toLowerCase().contains("radiocarbon")) {
-            logger.debug("radiocarbon: {}->{} - {}->{} [{}]", start, start_, end, end_,id );
+            logger.debug("radiocarbon: {} → {} - {} → {} [{}]", start, start_, end, end_,id );
             setStart(start_);
             setEnd(end_);
         }
-        //FIXME: I don't work for relative dates that are negative
+
         if (type.toLowerCase().contains("relative")) {
-            logger.debug("relative: {}->{} - {}->{} [{}]", start, start_, end, end_,id );
-            setStart(end_);
-            setEnd(start_);
+            logger.debug("relative: {} → {} - {} → {} [{}]", start, start_, end, end_,id );
+            setStart(start_);
+            setEnd(end_);
         }
 
     }
