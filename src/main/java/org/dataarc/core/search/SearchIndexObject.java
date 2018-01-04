@@ -153,7 +153,8 @@ public class SearchIndexObject {
 
     }
 
-    /** FIXME BRITTLE HACK
+    /**
+     * FIXME BRITTLE HACK
      * 1. only for SEAD
      * 2. assumes SEAD specific data structure (which can quickly change)
      * 3. non-standardized types
@@ -162,12 +163,12 @@ public class SearchIndexObject {
      * @param schema
      */
     private void cleanupSead(DataEntry entry, Schema schema) {
-        
+
         Object object = entry.getProperties().get("sampleData");
-//        logger.debug("keys: {}", entry.getProperties().keySet());
+        // logger.debug("keys: {}", entry.getProperties().keySet());
         String type = null;
         if (object != null && object instanceof Map) {
-            type = (String) ((Map)object).get("dating_type");
+            type = (String) ((Map) object).get("dating_type");
         }
 
         if ((type == null || getStart() == null || getEnd() == null) || !schema.getName().toLowerCase().contains("sead")) {
@@ -176,35 +177,30 @@ public class SearchIndexObject {
         int currentYear = DateTime.now().getYear();
         int start_ = 1950 - getStart();
         int end_ = 1950 - getEnd();
-        
+
         if (end > start) {
             int t = end_;
-            end_= start_;
+            end_ = start_;
             start_ = t;
         }
-        
+
         if (end_ > currentYear) {
             end_ = currentYear;
         }
-        String id = "";
-        for (ExtraProperties ep : getData()) {
-            for (String key : ep.getData().keySet()) {
-                if (key.contains("sample_name")) {
-                    id = (String) ep.getData().get(key);
+        if (logger.isTraceEnabled()) {
+            String id = "";
+            for (ExtraProperties ep : getData()) {
+                for (String key : ep.getData().keySet()) {
+                    if (key.contains("sample_name")) {
+                        id = (String) ep.getData().get(key);
+                    }
                 }
             }
-        }
-        if (type.toLowerCase().contains("radiocarbon")) {
-            logger.debug("radiocarbon: {} → {} - {} → {} [{}]", start, start_, end, end_,id );
-            setStart(start_);
-            setEnd(end_);
+            logger.trace("{}: {} → {} - {} → {} [{}]", type, start, start_, end, end_, id);
         }
 
-        if (type.toLowerCase().contains("relative")) {
-            logger.debug("relative: {} → {} - {} → {} [{}]", start, start_, end, end_,id );
-            setStart(start_);
-            setEnd(end_);
-        }
+        setStart(start_);
+        setEnd(end_);
 
     }
 
