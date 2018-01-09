@@ -67,7 +67,7 @@ public class UploadSourceDataController extends AbstractController {
         mav.addObject("schemaName", schemaName);
         if (!file.isEmpty()) {
             try {
-                importService.importAndLoad(file.getInputStream(), file.getOriginalFilename(), schemaName);
+                importService.importAndLoad(file.getInputStream(), file.getOriginalFilename(), schemaName, true);
                 changelogservice.save(ActionType.SAVE, ObjectType.DATA_SOURCE, getUser(), schemaName);
 
                 mav.setViewName(ADMIN_SOURCE_SUCCESS);

@@ -5,20 +5,29 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.dataarc.bean.Indicator;
 import org.dataarc.bean.file.DataFile;
 import org.dataarc.bean.file.JsonFile;
 import org.dataarc.bean.schema.Schema;
+import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.ImportDao;
+import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.file.DataFileDao;
 import org.dataarc.core.dao.file.JsonFileDao;
+import org.dataarc.core.query.QueryPart;
 import org.dataarc.core.search.IndexFields;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.ObjectTraversalUtil;
+import org.dataarc.util.PersistableUtils;
 import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.slf4j.Logger;
@@ -43,6 +52,8 @@ public class ImportDataService {
 
     @Autowired
     SchemaDao schemaDao;
+    @Autowired
+    IndicatorDao indicatorDao;
 
     @Autowired
     DataFileDao dataFileDao;
@@ -69,7 +80,7 @@ public class ImportDataService {
     }
 
     @Transactional(readOnly = false)
-    public void importAndLoad(InputStream inputStream, String originalFilename, String schemaName) throws Exception {
+    public void importAndLoad(InputStream inputStream, String originalFilename, String schemaName, boolean failOnRemoveErrors) throws Exception {
         Schema schema = schemaDao.findByName(schemaName);
         File imported = storeDataFile(inputStream, originalFilename, schemaName, schema);
 
@@ -87,7 +98,23 @@ public class ImportDataService {
             ObjectTraversalUtil.traverse(properties, collector);
             load(feature, properties);
         }
-        schemaDao.saveSchema(collector, rows);
+        Set<SchemaField> saveSchema = schemaDao.saveSchema(collector, rows);
+        if (CollectionUtils.isNotEmpty(saveSchema)) {
+        List<Long> ids = PersistableUtils.extractIds(saveSchema);
+        List<Indicator> inds = new ArrayList<>();
+            List<Indicator> indicators = indicatorDao.findAllForSchema(schema.getId());
+            for (Indicator ind : indicators) {
+                for (QueryPart queryPart : ind.getQuery().getConditions()) {
+                    if (ids.contains(queryPart.getFieldId())) {
+                        inds.add(ind);
+                        logger.error("field: {} is used in indicator: {}", queryPart.getFieldName(), ind);
+                    }
+                }
+            }
+            if (CollectionUtils.isNotEmpty(inds)) {
+                throw new SourceReplaceException(inds);
+            }
+        }
 
     }
 

@@ -78,7 +78,7 @@ public class SchemaDao {
                 .collect(Collectors.toSet());
     }
 
-    public void saveSchema(FieldDataCollector collector, int rows) {
+    public Set<SchemaField> saveSchema(FieldDataCollector collector, int rows) {
         String name = collector.getSchemaName();
         Schema schema = getSchemaByName(name);
         if (schema == null) {
@@ -112,6 +112,7 @@ public class SchemaDao {
         }
         schema.getFields().removeAll(toRemove);
         save(schema);
+        return toRemove;
 
     }
 
