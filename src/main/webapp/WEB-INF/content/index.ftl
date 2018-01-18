@@ -3,40 +3,48 @@
   <head>
   <title>DataARC - Linking Data from Archaeology, the Sagas, and Climate</title>
 
-    <#include "includes/public-header.ftl" />
-	<script>
+  <#include "includes/public-header.ftl" />
+
+	<!-- REPLACE "replaces/script_variables.ftl" -->
+  <script>
 	var testing = false;
 	// Global variables
 
 	    function getContextPath() {
         return "${contextPath}";
     }
-    
+
     var FIELDS = {
     <#list fields as field>"${field.name}": "${field.displayName}"<#sep>,
 </#sep></#list>
     };
     var SCHEMA = {<#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>,</#sep></#list>};
-    
+
    var geoJsonInputs =	[
    <#list files as file>
-     {id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep> 
+     {id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep>
    </#list>
    	];
-   	
-
-   
-      
-            
 	</script>
-	
+  <!-- /REPLACE -->
+
 	<style>
 	.homesubhead {font-size:140%;}
 	.service-box p {font-size:80% !important; font-weight:bold !Important}
-    .hidden {display:none;visibility:hidden}
-     </style>
-  </head>
+  .hidden {display:none;visibility:hidden}
+  </style>
+</head>
 <body id="page-top">
+  <div class="loading loading-pg pull-right">
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
@@ -62,7 +70,7 @@
             <a class="nav-link js-scroll-trigger" href="#concept-section">Concept</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-dark"><i class="fa fa-spinner text-white fa-spin"></i></span></a>
+            <a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-dark"></span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#why-section">Why</a>
@@ -157,7 +165,7 @@
             </div>
           </div>
           <button id="filter-timeline-apply" class="btn btn-primary"><i class="fa fa-clock-o text-white sr-icons"></i> Apply Filter</button>
-          <button id="filter-timeline-clear" class="btn btn-secondary"><i class="fa fa-clock-o text-white sr-icons"></i> Clear Filter</button>
+          <button id="filter-timeline-clear" class="btn btn-secondary"><i class="fa fa-times-rectangle text-white sr-icons"></i> Clear Filter</button>
         </div>
       </div>
     </div>
@@ -201,7 +209,7 @@
               <div id="topicSearch" class="input-group"></div>
             </div>
           <div id="conceptContainer" style="width:100%;">
-            
+
             <div id="topicmap"></div>
           </div>
         </div>
@@ -219,7 +227,7 @@
             <h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>
           </div>
         </div>
-        <button id="filter-save" class="btn btn-light"><i class="fa fa-bookmark sr-icons"></i> Save Results</button>
+        <button id="filter-save" class="btn btn-light"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
         <button id="filter-share" class="btn btn-light"><i class="fa fa-print sr-icons"></i> Print Results</button>
       </div>
     </div>
@@ -242,31 +250,34 @@
   <!-- Custom scripts -->
   <script src="js/global.js"></script>
   <script src="js/search.js"></script>
+  <script src="js/filter.js"></script>
   <script src="js/timeline.js"></script>
   <script src="js/geography.js"></script>
   <script src="js/concepts.js"></script>
   <script src="js/results.js"></script>
   <!-- Page Level Javascript Actions -->
   <script type="text/javascript">
-  
+
       Handlebars.registerHelper("fieldName", function(name) {
     if (name != undefined) {
         if (FIELDS[name.trim()] != undefined) {
             return FIELDS[name.trim()];
-        } 
+        }
         return name;
       }
       return "";
     });
 
 
-  
-  
+
+
   var config = {
     source: "/api/search",
     recordSource: "/api/getId",
     delay: 100, // delay before search checks in ms
     before: function() { // actions to run before search query begins
+      Loading.show();
+      Timeline.wait();
       Geography.wait();
       $('#results-count').html('<i class="fa fa-spinner text-white fa-spin"></i>');
     },
@@ -275,12 +286,14 @@
       Geography.refresh();
       Concepts.refresh();
       ResultsHandler = new Results('#results');
-      $('#results-count').text(Search.results.length);
+      $('#results-count').empty().text(Search.results.length);
+      Loading.hide();
     }
   };
 
   if (testing) {
     config.source = "search.php";
+    config.recordSource = "getId.php";
   }
 
   $(document).ready(function() {
@@ -299,10 +312,11 @@
 
    <!--  handlebar templates http://handlebarsjs.com
      -->
-  <#list schema as schemum>    
+  <!-- REPLACE "replaces/handlebar_templates.ftl" -->
+  <#list schema as schemum>
     <script id="title-template-${schemum.id?c}" type="text/x-handlebars-template">
 	  <div class="title">
-        <#if schemum.titleTemplate?has_content && schemum.titleTemplate != ''>
+      <#if schemum.titleTemplate?has_content && schemum.titleTemplate != ''>
 	  	${schemum.titleTemplate}
 	  	<#else>
 	  	{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}
@@ -320,9 +334,10 @@
 	</script>
   </#list>
   <div class="hidden">
-<#list schema as schemum>
- <div id="${schemum.name?replace(" ","_")}_bio">${schemum.description!"No description"}</div>
-</#list>
-</div>
+  <#list schema as schemum>
+    <div id="${schemum.name?replace(" ","_")}_bio">${schemum.description!"No description"}</div>
+  </#list>
+  </div>
+  <!-- /REPLACE -->
   </body>
 </html>

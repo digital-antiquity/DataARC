@@ -16,10 +16,18 @@ var TimelineObject = function(type, base) {
 
 TimelineObject.prototype = {
 
+  wait: function() {
+    $(this.settings.container).append(this.loader);
+  },
+
   refresh: function() {
     // Set container
     if (this.settings.type === 'millennium')
       $(this.settings.container).empty();
+
+    // configure the loader object
+    this.loader = $('<div>', { 'class': 'loader col-sm-12 text-center' });
+    this.loader.append('<h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>');
 
     // Set the catagories
     this.categories = [
@@ -174,7 +182,7 @@ TimelineObject.prototype = {
         _this.hover(d);
       })
       .on('mouseout', function(d) {
-        if(_this.hoverRect)
+        if (_this.hoverRect)
           _this.hoverRect.remove();
       })
       .on('click', function(d) {
@@ -203,11 +211,7 @@ TimelineObject.prototype = {
   },
 
   clearFilter: function() {
-    var filter = {
-      "start": null,
-      "end": null
-    };
-    Search.set('temporal', filter);
+    Search.set('temporal', null);
   },
 
   parseData: function() {
