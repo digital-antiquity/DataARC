@@ -343,11 +343,10 @@ public class MongoDao implements ImportDao, QueryDao {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<DataEntry> findBySourceWithLimit(String source, boolean b) {
+    public Iterable<DataEntry> findAllWithLimit() {
         Query q = new Query();
         Criteria group = new Criteria();
         List<Criteria> lst = new ArrayList<>();
-        lst.add(Criteria.where(IndexFields.SOURCE).is(source));
         //POLYGON((-59.4 74.5, 16.0 74.5, 16.0 50.0, -59.4 50.0, -59.4 74.5))
         GeoJsonPolygon p = new GeoJsonPolygon(new GeoJsonPoint(-59.4, 74.5), new GeoJsonPoint(16.0, 74.5),
                 new GeoJsonPoint(16.0, 50.0), new GeoJsonPoint( -59.4, 50.0),new GeoJsonPoint(-59.4, 74.5));  

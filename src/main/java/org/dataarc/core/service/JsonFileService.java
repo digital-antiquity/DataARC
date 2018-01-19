@@ -1,9 +1,12 @@
 package org.dataarc.core.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -64,7 +67,7 @@ public class JsonFileService {
     @Transactional(readOnly = true)
     public String findById(Long id) throws FileNotFoundException, IOException {
         JsonFile findById = jsonFileDao.findById(id);
-        return IOUtils.toString(new FileReader(new File(findById.getPath())));
+        return IOUtils.toString(new FileInputStream(new File(findById.getPath())), Charset.forName("UTF-8"));
     }
 
     @Transactional(readOnly = false)
