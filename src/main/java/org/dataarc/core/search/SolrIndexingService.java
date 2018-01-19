@@ -266,7 +266,7 @@ public class SolrIndexingService {
             client.commit(DATA_ARC);
             // client.
             setupSchema();
-            Iterable<DataEntry> entries = sourceDao.findAll();
+            Iterable<DataEntry> entries = sourceDao.findAllWithLimit();
             int count = 0;
             Set<String> findAll = schemaDao.findAllSchemaNames();
             for (DataEntry entry : entries) {

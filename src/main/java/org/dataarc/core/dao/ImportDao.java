@@ -44,4 +44,6 @@ public interface ImportDao {
 
     void applyIndicator(Indicator indicator) throws QueryException;
 
+    Iterable<DataEntry> findAllWithLimit();
+
 }

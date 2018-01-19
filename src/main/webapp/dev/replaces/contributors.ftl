@@ -88,7 +88,7 @@
 
                           <a href="http://www.tephrabase.org"><img class="img img-thumbnail pull-left" style="margin:0 15px 15px 0;" src=""></a>
                           <blockquote>
-                            Tephra (volcanic ash) layers are now an invaluable tool in palaeoenvironmental studies, as well a record of volcanic activity. The data produced by such research can be difficult to handle and disseminate. Tephrabase is a database of tephra layers found in Iceland, north-west and northern Europe, Russia and central Mexico. Details on the location, name, age and geochemistry of tephra layers are stored in the database, as well as information about relevant volcanoes and volcanic systems. A comprehensive reference database is also included.
+                            Tephra (volcanic ash) layers are now an invaluable tool in palaeoenvironmental studies, as well a record of volcanic activity. The data produced by such research can be difficult to handle and disseminate. Tephrabase is a database of tephra layers found in Iceland, north-west and northern Europe, Russia and central Mexico. Details on the location, name, age and geochemistry of tephra layers are stored in the database, as well as information about relevant volcanoes and volcanic s...(line truncated)...
                           </blockquote>
                         </div>
                       </div>
@@ -110,7 +110,7 @@
 
                           <a href="http://jardabok.com"><img class="img img-thumbnail pull-left" style="margin:0 15px 15px 0;" src=""></a>
                           <blockquote>
-                            The project aims to make available the most detailed historical documents describing the way land was used in late medieval to early modern Iceland, roughly 1500-1860. The central document is the early 18th century land census Jardabok Arna Magnussonar og Pals Vidalin, widely regarded as one of the most important documents ever produced about Icelandic agriculture. The data include information about every main farm (e.g., 'logbyli') recorded in the land census and contains a large amount of categorical and quantitative data. In addition, several networks of interaction show the interconnectedness of farms at the time. These connecting lines are sometimes reciprocal, sometimes a manifestation of material and political inequality, but all of them indicate the entangled character of Iceland's agricultural communities.
+                            The project aims to make available the most detailed historical documents describing the way land was used in late medieval to early modern Iceland, roughly 1500-1860. The central document is the early 18th century land census Jardabok Arna Magnussonar og Pals Vidalin, widely regarded as one of the most important documents ever produced about Icelandic agriculture. The data include information about every main farm (e.g., 'logbyli') recorded in the land census and contains a larg...(line truncated)...
                           </blockquote>
                         </div>
                       </div>

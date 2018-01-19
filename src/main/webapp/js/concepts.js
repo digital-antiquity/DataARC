@@ -8,7 +8,7 @@ var topicSettings = {
 }
 
 if (testing) {
-  topicSettings.dataUrl = 'api_topicmap.php';
+  topicSettings.dataUrl = 'dev/api_topicmap.php';
 }
 
 var TopicMap = function(settings) {
@@ -920,7 +920,7 @@ TopicMap.prototype = {
   refresh: function() {
     var _this = this;
     this.topics = [];
-    if (typeof Search.facets.T_id != 'undefined') {
+    if (typeof Search.facets.T_id != 'undefined' && _this.graph.nodes != undefined) {
       if (Object.keys(Search.facets.T_id).length > 0) {
         _.each(Search.facets.T_id, function(value, topic) {
           _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);

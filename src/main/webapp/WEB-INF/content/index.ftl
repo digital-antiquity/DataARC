@@ -309,9 +309,9 @@
   };
 
   if (testing) {
-    var type = 'cache'; // api or cache
-    config.source = type+"_search.php";
-    config.recordSource = type+"_getId.php";
+    var type = 'api'; // api or cache
+    config.source = 'dev/'+type+"_search.php";
+    config.recordSource = 'dev/'+type+"_getId.php";
   }
 
   $(document).ready(function() {

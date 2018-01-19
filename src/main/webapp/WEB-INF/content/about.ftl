@@ -112,19 +112,45 @@
               <div class="panel-group" id="accordion">
               
             <#list schema as scheme>
+            <#if true>
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h4 class="panel-title">
-                      <a class="panel-link active" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                        <i class="fa fa-plus"></i><i class="fa fa-minus"></i> ${scheme.displayName!scheme.name}</a>
+                      <a class="panel-link">
+                        ${scheme.displayName!scheme.name}</a>
                     </h4>
                   </div>
-                  <div id="collapse1" class="panel-collapse collapse in show">
+                  <div id="collapse${scheme_index}">
                     <div class="panel-body">
                       <div class="row">
                         <div class="col-sm-12">
-                        
+                        <#if (scheme.logoUrl?length > 0)>
                           <a href="${scheme.url}"><img class="img img-thumbnail pull-left" style="margin:0 15px 15px 0;" src="${scheme.logoUrl}"></a>
+                          </#if>
+                          <blockquote>
+                            ${scheme.description}
+                          </blockquote>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>            
+            <#else>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="panel-link <#if scheme_index == 0>active<#else>collapsed</#if>" data-toggle="collapse" data-parent="#accordion" href="#collapse${scheme_index}">
+                        <i class="fa fa-plus"></i><i class="fa fa-minus"></i> ${scheme.displayName!scheme.name}</a>
+                    </h4>
+                  </div>
+                  <div id="collapse${scheme_index}" class="panel-collapse <#if scheme_index == 0>collapse show<#else>collapsed</#if>">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-sm-12">
+                        <#if (scheme.logoUrl?length > 0)>
+                          <a href="${scheme.url}"><img class="img img-thumbnail pull-left" style="margin:0 15px 15px 0;" src="${scheme.logoUrl}"></a>
+                          </#if>
                           <blockquote>
                             ${scheme.description}
                           </blockquote>
@@ -134,6 +160,7 @@
                     </div>
                   </div>
                 </div>
+                </#if>
               </#list>
               </div>
             </div>
