@@ -16,7 +16,7 @@ public class IndexController extends AbstractController {
     @Autowired
     private SchemaService schemaService;
 
-    @RequestMapping("/")
+    @RequestMapping(path = "/", produces = { "text/html; charset=UTF-8" })
     public ModelAndView index() {
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("files", jsonFileService.findAll());

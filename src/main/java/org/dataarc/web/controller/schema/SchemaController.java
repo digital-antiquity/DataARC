@@ -16,6 +16,7 @@ import org.dataarc.util.View;
 import org.dataarc.web.AbstractController;
 import org.dataarc.web.UrlConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -48,7 +49,7 @@ public class SchemaController extends AbstractController {
         return Arrays.asList(CategoryType.values());
     }
 
-    @RequestMapping(path = UrlConstants.LIST_SCHEMA)
+    @RequestMapping(path = UrlConstants.LIST_SCHEMA, produces = { "text/html; charset=UTF-8" })
     @JsonView(View.Schema.class)
     public ModelAndView schema() {
         ModelAndView mav = new ModelAndView("schema/list");
@@ -56,7 +57,7 @@ public class SchemaController extends AbstractController {
         return mav;
     }
 
-    @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.GET)
+    @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.GET, produces = { "text/html; charset=UTF-8" })
     @JsonView(View.Schema.class)
     public ModelAndView getSchema(@PathVariable(value = "id", required = true) Long id) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
@@ -73,7 +74,7 @@ public class SchemaController extends AbstractController {
         mav.addObject("files", dataFileService.findBySchemaId(schema.getId()));
     }
 
-    @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.POST)
+    @RequestMapping(path = UrlConstants.VIEW_SCHEMA, method = RequestMethod.POST, produces = { "text/html; charset=UTF-8" })
     public ModelAndView saveSchema(@PathVariable(value = "id", required = true) Long id,
             @RequestParam(value = "description") String description,
             @RequestParam(value = "displayName") String displayName,
@@ -90,7 +91,7 @@ public class SchemaController extends AbstractController {
         return mav;
     }
 
-    @RequestMapping(path = UrlConstants.DELETE_SCHEMA, method = RequestMethod.POST)
+    @RequestMapping(path = UrlConstants.DELETE_SCHEMA, method = RequestMethod.POST, produces = { "text/html; charset=UTF-8" })
     public ModelAndView deleteSchema(@PathVariable(value = "id", required = true) Long id) throws Exception {
         ModelAndView mav = new ModelAndView("schema/view");
         Schema schema = schemaService.findById(id);
