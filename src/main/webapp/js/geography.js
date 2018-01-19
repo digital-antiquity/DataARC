@@ -137,7 +137,9 @@ pLayer.prototype = {
   },
   resetStyles: function() {
     this.selected = false;
-    this.layer.setStyle(this.normalStyle);
+    if (this.layer != undefined) {
+        this.layer.setStyle(this.normalStyle);
+    }
   },
 	handlePolyClick(e){
 		var popup = e.layer.getPopup();
