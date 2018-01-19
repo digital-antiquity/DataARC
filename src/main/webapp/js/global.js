@@ -1,5 +1,5 @@
 // Global variables
-var category_colors = ["#08519c", "#a50f15", "#006d2c", "#54278f", "#a63603"];
+var category_colors = ["#6177AA", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];
 
 
 // Page Level Javascript Actions
@@ -78,9 +78,9 @@ $(document).ready(function() {
   });
 
   // Update keywords on enter key
-  $('#keywords-field').keypress(function (e) {
+  $('#keywords-field').keypress(function(e) {
     var key = e.which;
-    if(key == 13) { // the enter key code
+    if (key == 13) { // the enter key code
       $('#keywords-btn').click();
       return false;
     }
@@ -92,3 +92,24 @@ $(document).ready(function() {
   // Filter concepts
   $('#filter-topicmap-clear').click(Concepts.clearFilter);
 });
+
+
+/* ******* */
+/* LOADING */
+/* ******* */
+var Loading = Loading || (function() {
+  return {
+    show: function(_callback) {
+      $('.loading-pg').fadeIn(_callback);
+    },
+    hide: function(_callback) {
+      $('.loading-pg').fadeOut(_callback);
+    },
+    showSmall: function(element) {
+      $(element).append('<div class="loading loading-sm pull-right"><ul><li></li><li></li><li></li><li></li><li></li><li></li></ul></div>');
+    },
+    hideSmall: function(element) {
+      $(element).child('.loading-sm').remove();
+    }
+  };
+})();

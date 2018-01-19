@@ -25,16 +25,13 @@ var Search = {
         "topLeft": [-75, 85],
         "bottomRight": [-0.1, 58]
       },
-      "temporal": {
-        "start": null,
-        "end": null
-      },
+      "temporal": null,
       "idOnly": true,
       "keywords": [],
       "topicIds": [],
       "sources": []
     };
-    this.values = $.extend({},this.defaults);
+    this.values = $.extend({}, this.defaults);
     this.all = {};
     this.results = {};
     this.facets = {};
@@ -80,9 +77,9 @@ var Search = {
 
     // If first run then get all data before loading results
     if (Object.keys(Search.all).length === 0 && Search.all.constructor === Object)
-      Search.query("POST", {"spatial":Search.defaults.spatial}, Search.analyzeFirst);
+      Search.query({ "spatial": Search.defaults.spatial }, Search.analyzeFirst);
     else
-      Search.query("POST", Search.values, Search.analyze);
+      Search.query(Search.values, Search.analyze);
   },
 
   analyzeFirst: function(error, data) {
@@ -104,8 +101,7 @@ var Search = {
       Search.results = [];
       Search.facets = {};
       console.log(error);
-    }
-    else {
+    } else {
       // Save the results
       Search.results = (data.idList ? data.idList : []);
       Search.facets = (data.facets ? data.facets : {});
@@ -115,18 +111,8 @@ var Search = {
     Search.options.after();
   },
 
-  query: function(type, filters, callback) {
-      console.log(Search.options.source, filters);
-    if (type === "GET")
-      d3.json(Search.options.source+'?'+$.param(filters)).header("Content-Type", "application/json;charset=UTF-8").get(callback);
-    if (type === "POST")
-      d3.json(Search.options.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
-  },
-
-  queryResultsPage: function(type, filters, callback) {
-      console.log(Search.options.source, filters);
-    if (type === "POST")
-      d3.json(Search.options.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
+  query: function(filters, callback) {
+    d3.json(Search.options.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
   },
 
   // ****************************************************
@@ -135,7 +121,7 @@ var Search = {
 
   // get detail information for a specific id
   getDetailsById: function(id, callback) {
-      d3.json(Search.options.recordSource+'?id='+ id).header("Content-Type", "application/json;charset=UTF-8").get(callback);
+    d3.json(Search.options.recordSource+'?id='+id).header("Content-Type", "application/json;charset=UTF-8").get(callback);
   },
 
   // get results by id or array of ids
@@ -145,7 +131,7 @@ var Search = {
     if (local)
       return Search.all.features.filter(feature => id.includes(feature.properties.id));
     else
-      Search.query("POST", {ids:ids}, callback);
+      Search.query({ ids: ids }, callback);
   },
 
   // get results by a source or sources
@@ -183,21 +169,11 @@ var Search = {
 
   // get results by region
   getResultsByPolygon: function(file_id, polygon_id) {
-    return Search.all.features.filter(feature => feature.region === file_id+'_____'+polygon_id);
+    return Search.all.features.filter(feature => feature.region === file_id + '_____' + polygon_id);
   },
 
   // get results within specific category
   getResultsByCategory: function(category) {
-    return Search.all.features.filter(feature => feature.properties.category.toLowerCase() == category.toLowerCase());
-    // returns random features
-    // var features = [];
-    // var i = 0;
-    // for (var p in Search.all.features) {
-    //   i = Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
-    //   if(i % 4 == 0){
-    //     features.push(Search.all.features[p]);
-    //   }
-    // }
-    // return features;
+    return Search.all.features.filter(feature => feature.properties.category.toLowerCase() == category.toLowerCase() && Search.results.indexOf(feature.properties.id) > -1);
   },
 };
