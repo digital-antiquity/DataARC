@@ -102,7 +102,7 @@ public class SolrIndexingService {
         SolrInputDocument searchIndexObject = null;
         Map<String, Integer> totals = new HashMap<>();
         try {
-            Iterable<DataEntry> entries = sourceDao.findBySource(source);
+            Iterable<DataEntry> entries = sourceDao.findBySourceWithLimit(source,true);
             int count = 0;
             Set<String> findAll = schemaDao.findAllSchemaNames();
             for (DataEntry entry : entries) {

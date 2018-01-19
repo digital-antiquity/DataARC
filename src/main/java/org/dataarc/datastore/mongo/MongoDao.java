@@ -32,6 +32,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJson;
 import org.springframework.data.mongodb.core.geo.GeoJsonMultiPolygon;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -337,6 +338,23 @@ public class MongoDao implements ImportDao, QueryDao {
     public Iterable<DataEntry> findBySource(String source) {
         Query q = new Query();
         q.addCriteria(Criteria.where(IndexFields.SOURCE).is(source));
+        return template.find(q, DataEntry.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<DataEntry> findBySourceWithLimit(String source, boolean b) {
+        Query q = new Query();
+        Criteria group = new Criteria();
+        List<Criteria> lst = new ArrayList<>();
+        lst.add(Criteria.where(IndexFields.SOURCE).is(source));
+        //POLYGON((-59.4 74.5, 16.0 74.5, 16.0 50.0, -59.4 50.0, -59.4 74.5))
+        GeoJsonPolygon p = new GeoJsonPolygon(new GeoJsonPoint(-59.4, 74.5), new GeoJsonPoint(16.0, 74.5),
+                new GeoJsonPoint(16.0, 50.0), new GeoJsonPoint( -59.4, 50.0),new GeoJsonPoint(-59.4, 74.5));  
+        lst.add(Criteria.where(DataEntry.POSITION).within(p));
+        group.andOperator(lst.toArray(new Criteria[0]));
+        
+        q.addCriteria(group);
         return template.find(q, DataEntry.class);
     }
 
