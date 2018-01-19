@@ -9,6 +9,6 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 //execute post and close the connection
 $result = curl_exec($ch);
 curl_close($ch);
-
+file_put_contents('cache/topicmap.json.gz', gzcompress($result));
 echo $result;
 ?>

@@ -4,5 +4,6 @@
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$result = curl_exec($ch);
 	curl_close($ch);
+	file_put_contents('cache/getId.json.gz', gzcompress($result));
 	echo $result;
 ?>

@@ -5,12 +5,12 @@
 
   <#include "includes/public-header.ftl" />
 
-	<!-- REPLACE "replaces/script_variables.ftl" -->
+  <!-- REPLACE "replaces/script_variables.ftl" -->
   <script>
-	var testing = false;
-	// Global variables
+  var testing = false;
+  // Global variables
 
-	    function getContextPath() {
+      function getContextPath() {
         return "${contextPath}";
     }
 
@@ -20,17 +20,17 @@
     };
     var SCHEMA = {<#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>,</#sep></#list>};
 
-   var geoJsonInputs =	[
+   var geoJsonInputs =  [
    <#list files as file>
      {id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep>
    </#list>
-   	];
-	</script>
+     ];
+  </script>
   <!-- /REPLACE -->
 
-	<style>
-	.homesubhead {font-size:140%;}
-	.service-box p {font-size:80% !important; font-weight:bold !Important}
+  <style>
+  .homesubhead {font-size:140%;}
+  .service-box p {font-size:80% !important; font-weight:bold !Important}
   .hidden {display:none;visibility:hidden}
   </style>
 </head>
@@ -209,7 +209,6 @@
               <div id="topicSearch" class="input-group"></div>
             </div>
           <div id="conceptContainer" style="width:100%;">
-
             <div id="topicmap"></div>
           </div>
         </div>
@@ -218,6 +217,29 @@
     </div>
   </section>
   <section id="results-section">
+    <div class="call-to-action bg-gray">
+      <div class="container text-center">
+        <h2>Filters</h2>
+        <hr class="primary">
+        <div id="filters" class="row">
+          <div class="col-sm">
+            <h5>Temporal</h5>
+            <div class="p-3 mb-2 filter-category-one text-white">1000-2000 AD <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="p-3 mb-2 filter-category-one text-white">Late Viking Age <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          </div>
+          <div class="col-sm">
+            <h5>Geographical</h5>
+            <div class="p-3 mb-2 filter-category-two text-white">Bounding Box [42.3, 34.5, 43.2, 33.2] <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          </div>
+          <div class="col-sm">
+            <h5>Conceptual</h5>
+            <div class="p-3 mb-2 filter-category-three text-white">Farms <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          </div>
+        </div>
+        <button id="filter-save" class="btn btn-light"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
+        <button id="filter-share" class="btn btn-light"><i class="fa fa-print sr-icons"></i> Share Search</button>
+      </div>
+    </div>
     <div class="call-to-action bg-dark">
       <div class="container text-center">
         <h2>Results</h2>
@@ -227,8 +249,7 @@
             <h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>
           </div>
         </div>
-        <button id="filter-save" class="btn btn-light"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
-        <button id="filter-share" class="btn btn-light"><i class="fa fa-print sr-icons"></i> Print Results</button>
+        <button id="results-print" class="btn btn-light"><i class="fa fa-print sr-icons"></i> Print Results</button>
       </div>
     </div>
   </section>
@@ -245,7 +266,7 @@
   </section>
   <!-- Vendor scripts -->
 
-    <#include "includes/public-footer.ftl">
+  <#include "includes/public-footer.ftl">
 
   <!-- Custom scripts -->
   <script src="js/global.js"></script>
@@ -257,19 +278,15 @@
   <script src="js/results.js"></script>
   <!-- Page Level Javascript Actions -->
   <script type="text/javascript">
-
-      Handlebars.registerHelper("fieldName", function(name) {
+  Handlebars.registerHelper("fieldName", function(name) {
     if (name != undefined) {
-        if (FIELDS[name.trim()] != undefined) {
-            return FIELDS[name.trim()];
-        }
-        return name;
+      if (FIELDS[name.trim()] != undefined) {
+          return FIELDS[name.trim()];
       }
-      return "";
-    });
-
-
-
+      return name;
+    }
+    return "";
+  });
 
   var config = {
     source: "/api/search",
@@ -292,46 +309,44 @@
   };
 
   if (testing) {
-    config.source = "search.php";
-    config.recordSource = "getId.php";
+    var type = 'cache'; // api or cache
+    config.source = type+"_search.php";
+    config.recordSource = type+"_getId.php";
   }
 
   $(document).ready(function() {
     Search.init(config);
   });
   </script>
-    <!-- everything below this is automatically generated -->
+  <!-- everything below this is automatically generated -->
 
-    <!-- Either leave this template here or incorporate into the ones that are autmoatically generated -->
-    <script id="title-template-polygon" type="text/x-handlebars-template">
-      <div class="title">
-        {{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}
-      </div>
-      <button class="btn btn-sm" onclick="Geography.regionFilter('{{this.region}}')">Filter by this polygon</button>
-    </script>
+  <!-- Either leave this template here or incorporate into the ones that are autmoatically generated -->
+  <script id="title-template-polygon" type="text/x-handlebars-template">
+    <div class="title">{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}</div>
+    <button class="btn btn-sm" onclick="Geography.regionFilter('{{this.region}}')">Filter by this polygon</button>
+  </script>
 
-   <!--  handlebar templates http://handlebarsjs.com
-     -->
+  <!-- handlebar templates http://handlebarsjs.com -->
   <!-- REPLACE "replaces/handlebar_templates.ftl" -->
   <#list schema as schemum>
-    <script id="title-template-${schemum.id?c}" type="text/x-handlebars-template">
-	  <div class="title">
+  <script id="title-template-${schemum.id?c}" type="text/x-handlebars-template">
+    <div class="title">
       <#if schemum.titleTemplate?has_content && schemum.titleTemplate != ''>
-	  	${schemum.titleTemplate}
-	  	<#else>
-	  	{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}
-	  	</#if>
-	  </div>
-	</script>
-    <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
-	  <div class="description">
-	  	<#if schemum.resultTemplate?has_content && schemum.resultTemplate != ''>
-	  	${schemum.resultTemplate}
-	  	<#else>
-	  	{{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}
-	  	</#if>
-	  </div>
-	</script>
+      ${schemum.titleTemplate}
+      <#else>
+      {{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}
+      </#if>
+    </div>
+  </script>
+  <script id="results-template-${schemum.id?c}" type="text/x-handlebars-template">
+    <div class="description">
+      <#if schemum.resultTemplate?has_content && schemum.resultTemplate != ''>
+      ${schemum.resultTemplate}
+      <#else>
+      {{#each this}}<b>{{fieldName @key}}</b>: {{this}}<br/>{{/each}}
+      </#if>
+    </div>
+  </script>
   </#list>
   <div class="hidden">
   <#list schema as schemum>
@@ -339,5 +354,6 @@
   </#list>
   </div>
   <!-- /REPLACE -->
-  </body>
+
+</body>
 </html>

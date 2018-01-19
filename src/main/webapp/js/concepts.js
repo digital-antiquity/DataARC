@@ -8,7 +8,7 @@ var topicSettings = {
 }
 
 if (testing) {
-  topicSettings.dataUrl = 'topics.php';
+  topicSettings.dataUrl = 'api_topicmap.php';
 }
 
 var TopicMap = function(settings) {

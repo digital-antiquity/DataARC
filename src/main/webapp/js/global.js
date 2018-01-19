@@ -1,7 +1,6 @@
 // Global variables
 var category_colors = ["#6177AA", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];
 
-
 // Page Level Javascript Actions
 $(document).ready(function() {
 
