@@ -260,8 +260,8 @@ var Geography = {
     var coords = layer.getLatLngs();
     if(coords[0].length == 4){
       var spatial = {
-        "topLeft":[coords[0][1].lng,coords[0][1].lat],
-        "bottomRight":[coords[0][3].lng,coords[0][3].lat]
+        "topLeft":[coords[0][1].lng,coords[0][3].lat],
+        "bottomRight":[coords[0][3].lng,coords[0][1].lat]
       };
       Search.set('spatial',spatial);
     }
