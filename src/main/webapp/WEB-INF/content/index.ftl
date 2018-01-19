@@ -1,30 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
   <title>DataARC - Linking Data from Archaeology, the Sagas, and Climate</title>
-
   <#include "includes/public-header.ftl" />
 
   <!-- REPLACE "replaces/script_variables.ftl" -->
   <script>
   var testing = false;
-  // Global variables
-
-      function getContextPath() {
-        return "${contextPath}";
-    }
-
-    var FIELDS = {
-    <#list fields as field>"${field.name}": "${field.displayName}"<#sep>,
-</#sep></#list>
-    };
-    var SCHEMA = {<#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>,</#sep></#list>};
-
-   var geoJsonInputs =  [
-   <#list files as file>
-     {id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep>
-   </#list>
-     ];
+  function getContextPath() {
+    return "${contextPath}";
+  }
+  var FIELDS = { <#list fields as field>"${field.name}": "${field.displayName}"<#sep>, </#sep></#list> };
+  var SCHEMA = { <#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>, </#sep></#list> };
+  var geoJsonInputs = [ <#list files as file>{id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep></#list> ];
   </script>
   <!-- /REPLACE -->
 
@@ -54,27 +42,13 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#page-top">Start</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#explore-section">Explore</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#timeline-section">Timeline</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#map-section">Map</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#concept-section">Concept</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-dark"></span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#why-section">Why</a>
-          </li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#page-top">Start</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#explore-section">Explore</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#timeline-section">Timeline</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#map-section">Map</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#concept-section">Concept</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-dark"></span></a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
         </ul>
       </div>
     </div>
@@ -91,8 +65,8 @@
               <div class="input-group">
                 <input id="keywords-field" type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
                 <span class="input-group-btn">
-                    <a id="keywords-btn" class="btn btn-primary btn-xl js-scroll-trigger" href="#explore-section">Explore!</a>
-                  </span>
+                  <a id="keywords-btn" class="btn btn-primary btn-xl js-scroll-trigger" href="#explore-section">Explore!</a>
+                </span>
               </div>
             </div>
           </div>
@@ -199,15 +173,15 @@
         </div>
         <div class="col-lg-12">
           <div id="topicControls" class="btn-toolbar justify-content-between">
-              <div class="btn-group">
-                <button title="zoom in" id="topicmapZoomIn" class="btn btn-secondary"><span class="fa fa-search-plus"></span></button>
-                <button title="zoom out" id="topicmapZoomOut" class="btn btn-secondary"><span class="fa fa-search-minus"></span></button>
-                <button title="reset" id="topicmapReset" class="btn btn-secondary"><span class="fa fa-repeat"></span></button>
-                <button title="pause" id="topicmapPause" class="btn btn-secondary"><span class="fa fa-pause"></span></button>
-                <button title="continue" id="topicmapProceed" class="btn btn-secondary"><span class="fa fa-play"></span></button>
-              </div>
-              <div id="topicSearch" class="input-group"></div>
+            <div class="btn-group">
+              <button title="zoom in" id="topicmapZoomIn" class="btn btn-secondary"><span class="fa fa-search-plus"></span></button>
+              <button title="zoom out" id="topicmapZoomOut" class="btn btn-secondary"><span class="fa fa-search-minus"></span></button>
+              <button title="reset" id="topicmapReset" class="btn btn-secondary"><span class="fa fa-repeat"></span></button>
+              <button title="pause" id="topicmapPause" class="btn btn-secondary"><span class="fa fa-pause"></span></button>
+              <button title="continue" id="topicmapProceed" class="btn btn-secondary"><span class="fa fa-play"></span></button>
             </div>
+            <div id="topicSearch" class="input-group"></div>
+          </div>
           <div id="conceptContainer" style="width:100%;">
             <div id="topicmap"></div>
           </div>
@@ -276,12 +250,13 @@
   <script src="js/geography.js"></script>
   <script src="js/concepts.js"></script>
   <script src="js/results.js"></script>
+
   <!-- Page Level Javascript Actions -->
   <script type="text/javascript">
   Handlebars.registerHelper("fieldName", function(name) {
     if (name != undefined) {
       if (FIELDS[name.trim()] != undefined) {
-          return FIELDS[name.trim()];
+        return FIELDS[name.trim()];
       }
       return name;
     }
