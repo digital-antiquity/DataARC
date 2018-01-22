@@ -117,6 +117,9 @@ public class SolrService {
         if (sqo.getPage() != null) {
             startRecord = sqo.getPage();
         }
+
+        cleanupDatesInSearchQueryObject(sqo);
+
         FeatureCollection fc = new FeatureCollection();
         Set<String> idList = new HashSet<>();
         SolrQueryBuilder queryBuilder = new SolrQueryBuilder();
@@ -125,7 +128,7 @@ public class SolrService {
         if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
             q = "*:*";
         }
-        
+
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
         logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
         if (sqo.isIdOnly() || sqo.isIdAndMap() || sqo.isResultPage()) {
@@ -135,7 +138,7 @@ public class SolrService {
             params.addField(IndexFields.SOURCE);
             params.addField(IndexFields.CATEGORY);
         }
-        
+
         if (sqo.isResultPage()) {
             params.addField(IndexFields.TITLE);
         }
@@ -181,7 +184,7 @@ public class SolrService {
 
                     if (sqo.isIdAndMap()) {
                         com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
-                        
+
                         appendFastFeatureResult(sb, i, document, read);
                     } else {
                         appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
@@ -198,8 +201,26 @@ public class SolrService {
         return result;
     }
 
+    private void cleanupDatesInSearchQueryObject(SearchQueryObject sqo) {
+        // for all dates, if term matches a temporal term, then
+        if (CollectionUtils.isNotEmpty(sqo.getKeywords())) {
+            List<String> toRemove = new ArrayList<>();
+            for (String kwd : sqo.getKeywords()) {
+                for (String term : Arrays.asList("")) {
+                    if (StringUtils.equalsAnyIgnoreCase(kwd, term)) {
+                        toRemove.add(kwd);
+                        // what if we already have a date
+//                        sqo.getTemporal().setEnd(end);
+//                        sqo.getTemporal().setStart(start);
+                    }
+                }
+            }
+            sqo.getKeywords().removeAll(toRemove);
+        }
+    }
+
     /**
-     *  hack for performance, string building is much faster than using the object serialization
+     * hack for performance, string building is much faster than using the object serialization
      * 
      * @param sb
      * @param i
@@ -330,7 +351,7 @@ public class SolrService {
             SearchQueryObject query = new SearchQueryObject();
             query.setIdAndMap(true);
             SearchResultObject search = search(query);
-            File file = new File(System.getProperty("java.io.tmpdir"),"temp-findall.bin");
+            File file = new File(System.getProperty("java.io.tmpdir"), "temp-findall.bin");
             ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(file));
             outStream.writeObject(search);
             outStream.close();
@@ -338,7 +359,7 @@ public class SolrService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
     }
 
 }
