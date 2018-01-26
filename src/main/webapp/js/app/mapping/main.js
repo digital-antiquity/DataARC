@@ -130,7 +130,7 @@ Vue.use(VueResource);
  Vue.component('spart', {
       template: "#spart-template",
       props: ['fields', "part","rowindex","parts","schema","operator"],
-      data() {
+      data: function() {
           return {
           }
       },
