@@ -562,16 +562,28 @@ fieldset[disabled] .btn-primary:hover {
   background-color: #a63603;
 }
 
-.filter-category-one {
-  background-color: #6f6f6f;
+#filters {
+  margin-bottom:40px;
 }
 
-.filter-category-two {
-  background-color: #3f3f3f;
+.filters-container h5:first-letter {
+  text-transform:capitalize;
 }
 
-.filter-category-three {
-  background-color: #9f9f9f;
+#filters-keywords div {
+  background-color: #777;
+}
+
+#filters-temporal div {
+  background-color: #555;
+}
+
+#filters-spatial div {
+  background-color: #444;
+}
+
+#filters-concepts div {
+  background-color: #666;
 }
 
 

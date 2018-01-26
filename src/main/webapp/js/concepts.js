@@ -792,8 +792,8 @@ TopicMap.prototype = {
 
   addToFilter: function(node) {
 
-    var topicIds = Search.values.topicIds.concat([node.identifier]);
-    Search.set('topicIds', topicIds);
+    // var topicIds = Search.values.topicIds.concat([node.identifier]);
+    Search.set('topicIds', node.identifier);
 
   },
 

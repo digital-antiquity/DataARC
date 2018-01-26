@@ -73,7 +73,7 @@ $(document).ready(function() {
 
   // Update keywords on button click
   $('#keywords-btn').click(function() {
-    Search.set("keywords", [$('#keywords-field').val()]);
+    Search.set("keywords", $('#keywords-field').val());
   });
 
   // Update keywords on enter key
@@ -87,9 +87,6 @@ $(document).ready(function() {
 
   // Filter the timeline
   $('#filter-timeline-apply').click(Timeline.applyFilter);
-  $('#filter-timeline-clear').click(Timeline.clearFilter);
-  // Filter concepts
-  $('#filter-topicmap-clear').click(Concepts.clearFilter);
 });
 
 

@@ -25,7 +25,7 @@ var Search = {
         "topLeft": [-75, 85],
         "bottomRight": [-0.1, 58]
       },
-      "temporal": null,
+      "temporal": {},
       "idOnly": true,
       "keywords": [],
       "topicIds": [],
@@ -53,16 +53,47 @@ var Search = {
   },
 
   set: function(key, value) {
+    // set the current value before overwriting it
     var previous_value = (this.values[key] ? this.values[key] : null);
-    this.values[key] = (value == null ? this.defaults[key] : value);
-    if (previous_value != this.values[key]) {
-      this.previous = this.revision;
-      this.revision = Date.now();
+
+    // set our new value
+    if (this.values[key] && value != null) {
+      if (Array.isArray(this.values[key])) {
+        this.values[key] = [...new Set([].concat(...[this.values[key], [value]]))];// _.union(this.values[key], [value]);
+      }
+      else {
+        this.values[key] = value;
+      }
+    }
+    else {
+      this.values[key] = this.defaults[key];
+    }
+
+    // check to see if anything changed
+    var changed = false;
+    if (Array.isArray(this.values[key]))
+      changed = (_.difference(this.values[key], previous_value).length > 0);
+    else
+      changed = (previous_value != this.values[key]);
+    if (changed)
+      this.changed();
+  },
+
+  unset: function(key, value) {
+    if (this.values[key] && value != null) {
+      if (Array.isArray(this.values[key])) {
+        _.pull(this.values[key], "" + value);
+        this.changed();
+      }
+    }
+    else {
+      this.set(key, null)
     }
   },
 
-  unset: function(key) {
-    delete this.values[key];
+  changed: function() {
+    this.previous = this.revision;
+    this.revision = Date.now();
   },
 
   refresh: function() {

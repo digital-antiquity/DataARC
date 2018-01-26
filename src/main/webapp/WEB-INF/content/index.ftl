@@ -139,7 +139,6 @@
             </div>
           </div>
           <button id="filter-timeline-apply" class="btn btn-primary"><i class="fa fa-clock-o text-white sr-icons"></i> Apply Filter</button>
-          <button id="filter-timeline-clear" class="btn btn-secondary"><i class="fa fa-times-rectangle text-white sr-icons"></i> Clear Filter</button>
         </div>
       </div>
     </div>
@@ -186,7 +185,6 @@
             <div id="topicmap"></div>
           </div>
         </div>
-        <div class="col-lg-12 text-center"><button id="filter-topicmap-clear" class="btn btn-secondary"><i class="fa fa-times-rectangle text-white sr-icons"></i> Clear Filter</button></div>
       </div>
     </div>
   </section>
@@ -195,21 +193,7 @@
       <div class="container text-center">
         <h2>Filters</h2>
         <hr class="primary">
-        <div id="filters" class="row">
-          <div class="col-sm">
-            <h5>Temporal</h5>
-            <div class="p-3 mb-2 filter-category-one text-white">1000-2000 AD <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-            <div class="p-3 mb-2 filter-category-one text-white">Late Viking Age <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          </div>
-          <div class="col-sm">
-            <h5>Geographical</h5>
-            <div class="p-3 mb-2 filter-category-two text-white">Bounding Box [42.3, 34.5, 43.2, 33.2] <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          </div>
-          <div class="col-sm">
-            <h5>Conceptual</h5>
-            <div class="p-3 mb-2 filter-category-three text-white">Farms <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          </div>
-        </div>
+        <div id="filters" class="row">&nbsp;</div>
         <button id="filter-save" class="btn btn-light"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
         <button id="filter-share" class="btn btn-light"><i class="fa fa-print sr-icons"></i> Share Search</button>
       </div>
@@ -271,12 +255,14 @@
       Loading.show();
       Timeline.wait();
       Geography.wait();
+      Filter.wait();
       $('#results-count').html('<i class="fa fa-spinner text-white fa-spin"></i>');
     },
     after: function() { // actions to run after search query is finished
       Timeline.refresh();
       Geography.refresh();
       Concepts.refresh();
+      Filter.refresh();
       ResultsHandler = new Results('#results');
       $('#results-count').empty().text(Search.results.length);
       Loading.hide();
@@ -284,7 +270,7 @@
   };
 
   if (testing) {
-    var type = 'api'; // api or cache
+    var type = 'cache'; // api or cache
     config.source = 'dev/'+type+"_search.php";
     config.recordSource = 'dev/'+type+"_getId.php";
   }
