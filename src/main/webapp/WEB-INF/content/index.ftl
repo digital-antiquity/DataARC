@@ -235,50 +235,6 @@
   <script src="js/concepts.js"></script>
   <script src="js/results.js"></script>
 
-  <!-- Page Level Javascript Actions -->
-  <script type="text/javascript">
-  Handlebars.registerHelper("fieldName", function(name) {
-    if (name != undefined) {
-      if (FIELDS[name.trim()] != undefined) {
-        return FIELDS[name.trim()];
-      }
-      return name;
-    }
-    return "";
-  });
-
-  var config = {
-    source: "/api/search",
-    recordSource: "/api/getId",
-    delay: 100, // delay before search checks in ms
-    before: function() { // actions to run before search query begins
-      Loading.show();
-      Timeline.wait();
-      Geography.wait();
-      Filter.wait();
-      $('#results-count').html('<i class="fa fa-spinner text-white fa-spin"></i>');
-    },
-    after: function() { // actions to run after search query is finished
-      Timeline.refresh();
-      Geography.refresh();
-      Concepts.refresh();
-      Filter.refresh();
-      ResultsHandler = new Results('#results');
-      $('#results-count').empty().text(Search.results.length);
-      Loading.hide();
-    }
-  };
-
-  if (testing) {
-    var type = 'api'; // api or cache
-    config.source = 'dev/'+type+"_search.php";
-    config.recordSource = 'dev/'+type+"_getId.php";
-  }
-
-  $(document).ready(function() {
-    Search.init(config);
-  });
-  </script>
   <!-- everything below this is automatically generated -->
 
   <!-- Either leave this template here or incorporate into the ones that are autmoatically generated -->

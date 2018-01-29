@@ -1,26 +1,27 @@
+// Requires ECMA6, Lodash, jQuery
 var timelineHistory = {};
 
-var TimelineObject = function(type, base) {
-  this.settings = {
-    width: 1000,
-    height: 200,
-    transition_duration: 1000,
-    labelHeight: 10,
-    rectWidth: 10,
-    rectHeight: 30,
-    container: '#timeline',
-    type: type,
-    base: base,
+class TimelineObject {
+
+  constructor(type, base) {
+    this.settings = {
+      width: 1000,
+      height: 200,
+      transition_duration: 1000,
+      labelHeight: 10,
+      rectWidth: 10,
+      rectHeight: 30,
+      container: '#timeline',
+      type: type,
+      base: base,
+    };
   }
-};
 
-TimelineObject.prototype = {
-
-  wait: function() {
+  wait() {
     $(this.settings.container).append(this.loader);
-  },
+  }
 
-  refresh: function() {
+  refresh(data) {
     // Set container
     if (this.settings.type === 'millennium')
       $(this.settings.container).empty();
@@ -40,7 +41,8 @@ TimelineObject.prototype = {
     this.ranges = { "millennium": 1000, "century": 100, "decade": 10 };
 
     // Set calendar data
-    this.data = Search.facets.temporal;
+    this.search_data = data;
+    this.timeline_data = [];
 
     // Set opacities
     this.opacities = [0.25, 0.5, 0.75, 1.0];
@@ -57,9 +59,9 @@ TimelineObject.prototype = {
 
     // Restore any selections
     this.restoreSelection();
-  },
+  }
 
-  createElements: function() {
+  createElements() {
     var _this = this;
     this.svg = d3.select(this.settings.container)
       .classed("timeline-container", true)
@@ -78,12 +80,12 @@ TimelineObject.prototype = {
       .attr("y", '7%')
       .style("text-anchor", "middle")
       .classed("label", true);
-  },
+  }
 
-  createChart: function() {
+  createChart() {
     var _this = this;
     var period = this.svg.append("g").selectAll(".period")
-      .data(this.data, function(d) { return d.category + ':' + d.period; });
+      .data(this.timeline_data, function(d) { return d.category + ':' + d.period; });
     var rect = period.enter().append("rect");
     rect
       .attr("class", function(d, i) { return "bordered"; })
@@ -108,14 +110,14 @@ TimelineObject.prototype = {
     rect
       .append("title").text(function(d) { return d.value; });
     period.exit().remove();
-  },
+  }
 
-  restoreSelection: function() {
+  restoreSelection() {
     if (timelineHistory[this.settings.type])
       this.shrink(timelineHistory[this.settings.type]);
-  },
+  }
 
-  hover: function(d) {
+  hover(d) {
     var _this = this;
     var _d = d;
     this.hoverRect = this.svg.append('rect');
@@ -125,16 +127,15 @@ TimelineObject.prototype = {
       .attr("width", function(d) { return _this.settings.rectWidth - 0.5 + '%'; })
       .attr("height", function(d) { return (_this.settings.rectHeight * 3) - 2 + '%'; })
       .classed("highlighted", true);
-  },
+  }
 
-  shrink: function(d) {
+  shrink(d) {
     var _this = this;
     var _d = d;
     timelineHistory[this.settings.type] = d;
     if (this.clickedRect)
       this.clickedRect.remove();
     this.clickedRect = this.svg.append('rect');
-    console.log(d);
     this.clickedRect
       .attr("x", function(d) { return ((_d.period - 1) * _this.settings.rectWidth) + 0.25 + '%'; })
       .attr("y", function(d) { return _this.settings.labelHeight + 1 + '%'; })
@@ -143,7 +144,7 @@ TimelineObject.prototype = {
       .classed("highlighted", true);
     if (_this.settings.type == 'millennium' || _this.settings.type == 'century') {
       _this.subTimeline = new TimelineObject(_this.settings.type == 'millennium' ? 'century' : 'decade', parseInt(d.label));
-      _this.subTimeline.refresh();
+      _this.subTimeline.refresh(this.search_data);
       this.labels.classed('hidden', true);
       this.svg.transition("shrink").duration(this.settings.transition_duration)
         .attr("viewBox", "0 0 " + this.settings.width + " " + (this.settings.height / 5));
@@ -168,10 +169,9 @@ TimelineObject.prototype = {
           }
         });
     }
-  },
+  }
 
-
-  expand: function() {
+  expand() {
     var _this = this;
     delete timelineHistory[this.settings.type];
     this.clickedRect.remove();
@@ -189,9 +189,9 @@ TimelineObject.prototype = {
       .on('click', function(d) {
         _this.shrink(d);
       });
-  },
+  }
 
-  applyFilter: function() {
+  applyFilter() {
     var filter = {
       "start": null,
       "end": null
@@ -209,16 +209,15 @@ TimelineObject.prototype = {
       filter['end'] = parseInt(timelineHistory['decade'].label) + 10;
     }
     Search.set('temporal', filter);
-  },
+  }
 
-  clearFilter: function() {
+  clearFilter() {
     timelineHistory = {};
     Search.set('temporal', null);
-  },
+  }
 
-  parseData: function() {
-    var raw_data = this.data ? this.data : {};
-    this.data = [];
+  parseData() {
+    this.timeline_data = [];
     this.label_data = [];
 
     this.categories.forEach(category => {
@@ -231,22 +230,20 @@ TimelineObject.prototype = {
         // Get the value
         var value = 0,
           values = [];
-        if (raw_data[category.key])
-          if (raw_data[category.key][this.settings.type]) {
-            values = Object.values(raw_data[category.key][this.settings.type]);
-            if (raw_data[category.key][this.settings.type][period])
-              value = raw_data[category.key][this.settings.type][period];
+        if (this.search_data[category.key])
+          if (this.search_data[category.key][this.settings.type]) {
+            values = Object.values(this.search_data[category.key][this.settings.type]);
+            if (this.search_data[category.key][this.settings.type][period])
+              value = this.search_data[category.key][this.settings.type][period];
           }
 
         // Break the values into quantiles and set the opacity according to the value
         var opacityQuantile = d3.scaleQuantile()
           .domain([0, this.buckets - 1, d3.max(values)])
           .range(this.opacities);
-        this.data.push({ category: category.id, period: id, value: value, label: period, opacity: (value ? opacityQuantile(value) : 0.05) });
+        this.timeline_data.push({ category: category.id, period: id, value: value, label: period, opacity: (value ? opacityQuantile(value) : 0.05) });
       }
     });
-  },
+  }
 
-};
-
-var Timeline = new TimelineObject("millennium", -7000);
+}

@@ -1,26 +1,26 @@
-// Requires search.js and concepts.js
+// Requires ECMA6, Lodash, jQuery
 
-var FilterObject = function() {
-  this.settings = {
-    container: '#filters',
-    types: ['keywords', 'temporal', 'spatial', 'concepts', 'sources'],
-    typemap: {
-      'keywords': 'keywords',
-      'temporal': 'temporal',
-      'spatial': 'spatial',
-      'concepts': 'topicIds',
-      'sources': 'sources',
-    },
+class FilterObject {
+
+  constructor() {
+    this.settings = {
+      container: '#filters',
+      types: ['keywords', 'temporal', 'spatial', 'concepts', 'sources'],
+      typemap: {
+        'keywords': 'keywords',
+        'temporal': 'temporal',
+        'spatial': 'spatial',
+        'concepts': 'topicIds',
+        'sources': 'sources',
+      }
+    }
   }
-};
 
-FilterObject.prototype = {
-
-  wait: function() {
+  wait() {
     $(this.settings.container).append(this.loader);
-  },
+  }
 
-  refresh: function() {
+  refresh(filters) {
     // Set container
     $(this.settings.container).empty();
 
@@ -29,7 +29,7 @@ FilterObject.prototype = {
     this.loader.append('<h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>');
 
     // get the search values
-    this.search_values = Search['values'];
+    this.filters = filters;
 
     // prepare the dom
     this.prepare();
@@ -42,9 +42,9 @@ FilterObject.prototype = {
 
     // click event
     $('.filters-remove').click(this.remove);
-  },
+  }
 
-  prepare: function(type) {
+  prepare(type) {
     // purge existing dom elements
     $(this.settings.container).empty();
 
@@ -54,20 +54,20 @@ FilterObject.prototype = {
       dom.append('<h5>' + type + '</h5>');
       $(this.settings.container).append(dom);
     });
-  },
+  }
 
-  update: function() {
+  update() {
     // add the keyword filters
-    if (!_.isEmpty(this.search_values[this.settings.typemap.keywords])) {
-      var keywords = this.search_values[this.settings.typemap.keywords];
+    if (!_.isEmpty(this.filters[this.settings.typemap.keywords])) {
+      var keywords = this.filters[this.settings.typemap.keywords];
       for (keyword of keywords) {
         this.append('keywords', keyword, keyword);
       }
     }
 
     // add the spatial filters
-    if (!_.isEmpty(this.search_values[this.settings.typemap.spatial])) {
-      var spatial = this.search_values[this.settings.typemap.spatial];
+    if (!_.isEmpty(this.filters[this.settings.typemap.spatial])) {
+      var spatial = this.filters[this.settings.typemap.spatial];
       if (spatial.region != null) {
         var [layerid, featureid] = spatial.region.split('_____');
         var feature = Geography.pLayers[layerid].selected.feature;
@@ -83,10 +83,10 @@ FilterObject.prototype = {
     }
 
     // add the timeline filters
-    if (!_.isEmpty(this.search_values[this.settings.typemap.temporal])) {
-      var temporal = this.search_values[this.settings.typemap.temporal];
-      if (spatial.region != null) {
-        this.append('temporal', null, temporal.region);
+    if (!_.isEmpty(this.filters[this.settings.typemap.temporal])) {
+      var temporal = this.filters[this.settings.typemap.temporal];
+      if (temporal.period != null) {
+        this.append('temporal', null, temporal.period);
       }
       if (temporal.start !== null && temporal.end !== null) {
         this.append('temporal', null, temporal.start +' - ' + temporal.end);
@@ -94,8 +94,8 @@ FilterObject.prototype = {
     }
 
     // add the concept filters
-    if (!_.isEmpty(this.search_values[this.settings.typemap.concepts])) {
-      var concepts = this.search_values[this.settings.typemap.concepts];
+    if (!_.isEmpty(this.filters[this.settings.typemap.concepts])) {
+      var concepts = this.filters[this.settings.typemap.concepts];
       for (id of concepts) {
         var concept = Concepts.graph.nodes.filter(x => x.identifier.indexOf(id) > -1);
         if (concept.length > 0) {
@@ -103,21 +103,21 @@ FilterObject.prototype = {
         }
       };
     }
-  },
+  }
 
-  append: function(type, key, value) {
+  append(type, key, value) {
     var dom = $('<div>', { 'class': 'p-3 mb-2 filter-' + type + ' text-white', 'data-type': type, 'data-key': key, 'data-value': value });
     dom.append(value + ' <button type="button" class="close filters-remove" aria-label="Remove"><span aria-hidden="true">&times;</span></button>');
     $(this.settings.container+'-'+type).append(dom);
-  },
+  }
 
-  cleanup: function() {
+  cleanup() {
     this.settings.types.forEach(type => {
       $(this.settings.container+'-'+type).not(':has(div)').remove();
     });
-  },
+  }
 
-  remove: function() {
+  remove() {
     var filter = $(this).parent();
     var type = filter.data('type');
     var key = filter.data('key');
@@ -141,6 +141,4 @@ FilterObject.prototype = {
     }
   }
 
-};
-
-var Filter = new FilterObject();
+}

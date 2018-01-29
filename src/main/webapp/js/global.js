@@ -1,8 +1,42 @@
 // Global variables
+var Search, Filter, Timeline;
 var category_colors = ["#6177AA", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];
 
 // Page Level Javascript Actions
 $(document).ready(function() {
+
+  // Setup and init the search object
+  var config = {
+    source: "/api/search",
+    recordSource: "/api/getId",
+    delay: 100, // delay before search checks in ms
+    before: function() { // actions to run before search query begins
+      Loading.show();
+      Timeline.wait();
+      Geography.wait();
+      Filter.wait();
+      $('#results-count').html('<i class="fa fa-spinner text-white fa-spin"></i>');
+    },
+    after: function() { // actions to run after search query is finished
+      Timeline.refresh(Search.facets.temporal);
+      Geography.refresh();
+      Concepts.refresh();
+      Filter.refresh(Search.values);
+      ResultsHandler = new Results('#results');
+      $('#results-count').empty().text(Search.results.length);
+      Loading.hide();
+    }
+  };
+  if (testing) {
+    var type = 'api'; // api or cache
+    config.source = 'dev/'+type+"_search.php";
+    config.recordSource = 'dev/'+type+"_getId.php";
+  }
+
+  // Define the objects
+  Search = new SearchObject(config);
+  Filter = new FilterObject();
+  Timeline = new TimelineObject("millennium", -7000);
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
@@ -46,20 +80,15 @@ $(document).ready(function() {
     distance: '0px'
   }, 300);
 
-  // Magnific popup calls
-  $('.popup-gallery').magnificPopup({
-    delegate: 'a',
-    type: 'image',
-    tLoading: 'Loading image #%curr%...',
-    mainClass: 'mfp-img-mobile',
-    gallery: {
-      enabled: true,
-      navigateByImgClick: true,
-      preload: [0, 1]
-    },
-    image: {
-      tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+  // Handlebars helper
+  Handlebars.registerHelper("fieldName", function(name) {
+    if (name != undefined) {
+      if (FIELDS[name.trim()] != undefined) {
+        return FIELDS[name.trim()];
+      }
+      return name;
     }
+    return "";
   });
 
   // Update keywords on button click

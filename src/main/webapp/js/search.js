@@ -1,5 +1,8 @@
-var Search = {
-  init: function(options) {
+// Requires ECMA6, Lodash, jQuery
+
+class SearchObject {
+
+  constructor(config) {
     this.defaults = {
       "keywords": [],
       "temporal": {
@@ -24,22 +27,25 @@ var Search = {
     this.facets = {};
     this.previous = null;
     this.revision = Date.now();
+    this.query_count = 0;
     this.errors = 0;
-    this.options = options;
+    this.config = config;
 
     // Set an interval to check on query changes
-    setInterval(function() { Search.refresh(); }, Search.options.delay);
-  },
+    setInterval(() => {
+      this.refresh();
+    }, this.config.delay);
+  }
 
-  get: function(key) {
+  get(key) {
     var value;
     if (this.values.hasOwnProperty(key)) {
       value = this.values[key];
     }
     return value;
-  },
+  }
 
-  set: function(key, value) {
+  set(key, value) {
     // set the current value before overwriting it
     var previous_value = (this.values[key] ? this.values[key] : null);
 
@@ -70,9 +76,9 @@ var Search = {
     if (changed) {
       this.changed();
     }
-  },
+  }
 
-  unset: function(key, value) {
+  unset(key, value) {
     if (this.values[key] && value != null) {
       if (Array.isArray(this.values[key])) {
         _.pull(this.values[key], "" + value);
@@ -82,122 +88,125 @@ var Search = {
     else {
       this.set(key, null)
     }
-  },
+  }
 
-  changed: function() {
+  changed() {
     this.previous = this.revision;
     this.revision = Date.now();
-  },
+  }
 
-  refresh: function() {
+  refresh() {
     // Exit if the search parameters have not been revised
     if (this.previous == this.revision) return;
 
     // Perform any before search actions
-    Search.options.before();
+    this.config.before();
 
     // Sync the revision information and run the search
     this.previous = this.revision;
 
     // If first run then get all data before loading results
-    if (Object.keys(Search.all).length === 0 && Search.all.constructor === Object)
-      Search.query({ "spatial": Search.defaults.spatial }, Search.analyzeFirst);
-    else
-      Search.query(Search.values, Search.analyze);
-  },
+    if (this.all.features == null) {
+      this.query({ "spatial": this.defaults.spatial, "idOnly": false }, (error, data) => { this.analyzeFirst(error, data); });
+    }
+    else {
+      this.query(this.values, (error, data) => { this.analyze(error, data); });
+    }
+  }
 
-  analyzeFirst: function(error, data) {
+  analyzeFirst(error, data) {
     if (error) throw error;
 
     // Save all the data
-    Search.all.features = data.results.features;
-    Search.all.facets = data.facets;
-    console.log('Loaded all ' + Search.all.features.length + ' features.');
+    this.all.features = data.results.features;
+    this.all.facets = data.facets;
+    console.log('Loaded all ' + this.all.features.length + ' features.');
 
     // Once all data is loaded, fire of the results query
-    Search.analyze(false, data);
-  },
+    this.analyze(false, data);
+  }
 
-  analyze: function(error, data) {
-    Search.error = (error);
-    if (Search.error) {
+  analyze(error, data) {
+    this.error = (error);
+    if (this.error) {
       // Set results empty
-      Search.results = [];
-      Search.facets = {};
+      this.results = [];
+      this.facets = {};
       console.log(error);
     } else {
       // Save the results
-      Search.results = (data.idList ? data.idList : []);
-      Search.facets = (data.facets ? data.facets : {});
-      console.log('Loaded results containing ' + Search.results.length + ' features.');
+      this.results = (data.idList ? data.idList : []);
+      this.facets = (data.facets ? data.facets : {});
+      console.log('Loaded results containing ' + this.results.length + ' features.');
     }
     // Proceed to format data as needed here
-    Search.options.after();
-  },
+    this.config.after();
+  }
 
-  query: function(filters, callback) {
-    d3.json(Search.options.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
-  },
+  query(filters, callback) {
+    this.query_count++;
+    d3.json(this.config.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
+  }
 
   // ****************************************************
   // Specific runctions to return a subset of results
   // ****************************************************
 
   // get detail information for a specific id
-  getDetailsById: function(id, callback) {
-    d3.json(Search.options.recordSource+'?id='+id).header("Content-Type", "application/json;charset=UTF-8").get(callback);
-  },
+  getDetailsById(id, callback) {
+    d3.json(this.config.recordSource+'?id='+id).header("Content-Type", "application/json;charset=UTF-8").get(callback);
+  }
 
   // get results by id or array of ids
-  getResultsById: function(ids, callback, local) {
+  getResultsById(ids, callback, local) {
     if (typeof ids === 'string')
       ids = [ids];
     if (local)
-      return Search.all.features.filter(feature => id.includes(feature.properties.id));
+      return this.all.features.filter(feature => id.includes(feature.properties.id));
     else
-      Search.query({ ids: ids }, callback);
-  },
+      this.query({ ids: ids }, callback);
+  }
 
   // get results by a source or sources
-  getResultsBySource: function(sources) {
+  getResultsBySource(sources) {
     if (typeof source === 'string')
       sources = [sources];
-    return Search.all.features.filter(feature => sources.includes(feature.properties.source));
-  },
+    return this.all.features.filter(feature => sources.includes(feature.properties.source));
+  }
 
   // get results by keyword
-  getResultsByKeyword: function(keyword) {
-    return Search.all.features.filter(feature => feature.properties.keywords.indexOf(keyword) > -1);
-  },
+  getResultsByKeyword(keyword) {
+    return this.all.features.filter(feature => feature.properties.keywords.indexOf(keyword) > -1);
+  }
 
   // get results by decade
-  getResultsByDecade: function(decade) {
-    return Search.all.features.filter(feature => feature.properties.decade.includes(decade));
-  },
+  getResultsByDecade(decade) {
+    return this.all.features.filter(feature => feature.properties.decade.includes(decade));
+  }
 
   // get results by millenium
-  getResultsByMillenium: function(millenium) {
-    return Search.all.features.filter(feature => feature.properties.millenium.includes(millenium));
-  },
+  getResultsByMillenium(millenium) {
+    return this.all.features.filter(feature => feature.properties.millenium.includes(millenium));
+  }
 
   // get results by century
-  getResultsByCentury: function(century) {
-    return Search.all.features.filter(feature => feature.properties.century.includes(century));
-  },
+  getResultsByCentury(century) {
+    return this.all.features.filter(feature => feature.properties.century.includes(century));
+  }
 
   // get results by bounding box a,b = lat,lng and c,d = lat,lng
-  getResultsByBounds: function(a, b, c, d) {
+  getResultsByBounds(a, b, c, d) {
     var bounds = L.latLngBounds(L.latLng(a, b), L.latLng(c, d));
-    return Search.all.features.filter(feature => bounds.contains(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0])));
-  },
+    return this.all.features.filter(feature => bounds.contains(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0])));
+  }
 
   // get results by region
-  getResultsByPolygon: function(file_id, polygon_id) {
-    return Search.all.features.filter(feature => feature.region === file_id + '_____' + polygon_id);
-  },
+  getResultsByPolygon(file_id, polygon_id) {
+    return this.all.features.filter(feature => feature.region === file_id + '_____' + polygon_id);
+  }
 
   // get results within specific category
-  getResultsByCategory: function(category) {
-    return Search.all.features.filter(feature => feature.properties.category.toLowerCase() == category.toLowerCase() && Search.results.indexOf(feature.properties.id) > -1);
-  },
-};
+  getResultsByCategory(category) {
+    return this.all.features.filter(feature => feature.properties.category.toLowerCase() == category.toLowerCase() && this.results.indexOf(feature.properties.id) > -1);
+  }
+}
