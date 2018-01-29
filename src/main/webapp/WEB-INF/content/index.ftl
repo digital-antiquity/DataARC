@@ -270,7 +270,7 @@
   };
 
   if (testing) {
-    var type = 'cache'; // api or cache
+    var type = 'api'; // api or cache
     config.source = 'dev/'+type+"_search.php";
     config.recordSource = 'dev/'+type+"_getId.php";
   }

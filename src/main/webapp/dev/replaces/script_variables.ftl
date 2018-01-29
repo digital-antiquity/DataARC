@@ -218,6 +218,6 @@
   var SCHEMA = { "nabone": "Nabone", "nabone_svk": "NABOne (Sveigakot)", "orkneyfauna": "Orkney Faunal Database", "iceland_farms": "Iceland Farm History Database", "sagas": "Icelandic Sagas Database", "sead": "SEAD" };
 
   var geoJsonInputs = [
-    { id: "1", name: "iceland.json-1505394469296.json", title: "untitled", url: "/geojson/1" }
+    { id: "1", name: "iceland.json-1505394469296.json", title: "untitled", url: "/dev/geojson/iceland.json-1505394469296.min.json" }
   ];
   </script>

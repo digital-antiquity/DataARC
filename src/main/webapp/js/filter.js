@@ -66,9 +66,19 @@ FilterObject.prototype = {
 
     // add the spatial filters
     if (!_.isEmpty(this.search_values[this.settings.typemap.spatial])) {
-      var top_left = [this.search_values[this.settings.typemap.spatial].topLeft[0].toFixed(2), this.search_values[this.settings.typemap.spatial].topLeft[1].toFixed(2)];
-      var bottom_right = [this.search_values[this.settings.typemap.spatial].bottomRight[0].toFixed(2), this.search_values[this.settings.typemap.spatial].bottomRight[1].toFixed(2)];
-      this.append('spatial', null, 'Bounding Box [' + top_left + '] [' + bottom_right + ']');
+      var spatial = this.search_values[this.settings.typemap.spatial];
+      if (_.has(spatial, 'region')) {
+        var [layerid, featureid] = spatial.region.split('_____');
+        var feature = Geography.pLayers[layerid].selected.feature;
+        if (featureid == feature.properties.id) {
+          this.append('spatial', null, 'Region [' + feature.properties.SVEITARFEL + ']');
+        }
+      }
+      if (_.has(spatial, 'topLeft')) {
+        var top_left = [spatial.topLeft[0].toFixed(2), spatial.topLeft[1].toFixed(2)];
+        var bottom_right = [spatial.bottomRight[0].toFixed(2), spatial.bottomRight[1].toFixed(2)];
+        this.append('spatial', null, 'Bounding Box [' + top_left + '] [' + bottom_right + ']');
+      }
     }
 
     // add the timeline filters
