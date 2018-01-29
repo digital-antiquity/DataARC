@@ -134,6 +134,7 @@ TimelineObject.prototype = {
     if (this.clickedRect)
       this.clickedRect.remove();
     this.clickedRect = this.svg.append('rect');
+    console.log(d);
     this.clickedRect
       .attr("x", function(d) { return ((_d.period - 1) * _this.settings.rectWidth) + 0.25 + '%'; })
       .attr("y", function(d) { return _this.settings.labelHeight + 1 + '%'; })
