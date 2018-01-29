@@ -30,3 +30,4 @@ ${filestore.path}
 docker/backups
 src/main/resources/dataarc.properties
 src/main/resources/solr/configsets/dataArc/conf/managed-schema
+src/main/webapp/dev/cache/

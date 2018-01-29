@@ -10,6 +10,7 @@
 	);
 	$result = curl_exec($ch);
 	curl_close($ch);
+	file_put_contents('cache/search.json', $result);
 	file_put_contents('cache/search.json.gz', gzcompress($result));
 	echo $result;
 ?>
