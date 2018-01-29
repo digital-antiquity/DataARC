@@ -10,5 +10,6 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 $result = curl_exec($ch);
 curl_close($ch);
 file_put_contents('cache/topicmap.json.gz', gzcompress($result));
+file_put_contents('cache/topicmap.json', $result);
 echo $result;
 ?>

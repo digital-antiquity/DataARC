@@ -5,5 +5,6 @@
 	$result = curl_exec($ch);
 	curl_close($ch);
 	file_put_contents('cache/getId.json.gz', gzcompress($result));
+	file_put_contents('cache/getId.json', $result);
 	echo $result;
 ?>
