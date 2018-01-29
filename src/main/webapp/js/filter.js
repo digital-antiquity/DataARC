@@ -59,7 +59,8 @@ FilterObject.prototype = {
   update: function() {
     // add the keyword filters
     if (!_.isEmpty(this.search_values[this.settings.typemap.keywords])) {
-      for (keyword of this.search_values[this.settings.typemap.keywords]) {
+      var keywords = this.search_values[this.settings.typemap.keywords];
+      for (keyword of keywords) {
         this.append('keywords', keyword, keyword);
       }
     }
@@ -67,14 +68,14 @@ FilterObject.prototype = {
     // add the spatial filters
     if (!_.isEmpty(this.search_values[this.settings.typemap.spatial])) {
       var spatial = this.search_values[this.settings.typemap.spatial];
-      if (_.has(spatial, 'region')) {
+      if (spatial.region != null) {
         var [layerid, featureid] = spatial.region.split('_____');
         var feature = Geography.pLayers[layerid].selected.feature;
         if (featureid == feature.properties.id) {
           this.append('spatial', null, 'Region [' + feature.properties.SVEITARFEL + ']');
         }
       }
-      if (_.has(spatial, 'topLeft')) {
+      if (spatial.topLeft != null && spatial.bottomRight != null) {
         var top_left = [spatial.topLeft[0].toFixed(2), spatial.topLeft[1].toFixed(2)];
         var bottom_right = [spatial.bottomRight[0].toFixed(2), spatial.bottomRight[1].toFixed(2)];
         this.append('spatial', null, 'Bounding Box [' + top_left + '] [' + bottom_right + ']');
@@ -83,12 +84,19 @@ FilterObject.prototype = {
 
     // add the timeline filters
     if (!_.isEmpty(this.search_values[this.settings.typemap.temporal])) {
-      this.append('temporal', null, this.search_values[this.settings.typemap.temporal].start +' - ' + this.search_values[this.settings.typemap.temporal].end);
+      var temporal = this.search_values[this.settings.typemap.temporal];
+      if (spatial.region != null) {
+        this.append('temporal', null, temporal.region);
+      }
+      if (temporal.start !== null && temporal.end !== null) {
+        this.append('temporal', null, temporal.start +' - ' + temporal.end);
+      }
     }
 
     // add the concept filters
     if (!_.isEmpty(this.search_values[this.settings.typemap.concepts])) {
-      for (id of this.search_values[this.settings.typemap.concepts]) {
+      var concepts = this.search_values[this.settings.typemap.concepts];
+      for (id of concepts) {
         var concept = Concepts.graph.nodes.filter(x => x.identifier.indexOf(id) > -1);
         if (concept.length > 0) {
           this.append('concepts', id, concept[0].name);
@@ -117,6 +125,20 @@ FilterObject.prototype = {
 
     // remove the filter
     Search.unset(Filter.settings.typemap[type], key);
+
+    // clear the filters
+    if (type === 'keywords') {
+      $('#keywords-field').val(null);
+    }
+    if (type === 'temporal') {
+      Timeline.clearFilter();
+    }
+    if (type === 'spatial') {
+      Geography.clearFilter();
+    }
+    if (type === 'concepts') {
+      Concepts.clearFilter();
+    }
   }
 
 };

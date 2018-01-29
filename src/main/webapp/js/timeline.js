@@ -211,6 +211,7 @@ TimelineObject.prototype = {
   },
 
   clearFilter: function() {
+    timelineHistory = {};
     Search.set('temporal', null);
   },
 

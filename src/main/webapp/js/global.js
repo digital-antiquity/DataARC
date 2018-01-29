@@ -74,6 +74,7 @@ $(document).ready(function() {
   // Update keywords on button click
   $('#keywords-btn').click(function() {
     Search.set("keywords", $('#keywords-field').val());
+    $('#keywords-field').val(null);
   });
 
   // Update keywords on enter key

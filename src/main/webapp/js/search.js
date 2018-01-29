@@ -1,35 +1,22 @@
-/*
-{
-  "spatial": {
-    "topLeft": null,
-    "bottomRight": null
-  },
-  "temporal": {
-    "start": null,
-    "end": null
-  },
-  "idOnly": false,
-  "idAndMap": false,
-  "keywords": [],
-  "topicIds": [],
-  "sources": [],
-  "ids": []
-}
- */
-
 var Search = {
-
   init: function(options) {
     this.defaults = {
+      "keywords": [],
+      "temporal": {
+        "start": null,
+        "end": null,
+        "period": null
+      },
       "spatial": {
         "topLeft": [-75, 85],
-        "bottomRight": [-0.1, 58]
+        "bottomRight": [-0.1, 58],
+        "region": null
       },
-      "temporal": {},
-      "idOnly": true,
-      "keywords": [],
       "topicIds": [],
-      "sources": []
+      "sources": [],
+      "ids": [],
+      "idOnly": true,
+      "idAndMap": false
     };
     this.values = $.extend({}, this.defaults);
     this.all = {};
@@ -56,27 +43,33 @@ var Search = {
     // set the current value before overwriting it
     var previous_value = (this.values[key] ? this.values[key] : null);
 
-    // set our new value
-    if (this.values[key] && value != null) {
+    // set our value
+    if (value == null) {
+      this.values[key] = this.defaults[key];
+    }
+    else {
       if (Array.isArray(this.values[key])) {
-        this.values[key] = [...new Set([].concat(...[this.values[key], [value]]))];// _.union(this.values[key], [value]);
+        this.values[key] = [...new Set([].concat(...[this.values[key], [value]]))]; // _.union(this.values[key], [value]);
       }
       else {
         this.values[key] = value;
       }
     }
-    else {
-      this.values[key] = this.defaults[key];
-    }
 
     // check to see if anything changed
     var changed = false;
-    if (Array.isArray(this.values[key]))
+    if (Array.isArray(this.values[key])) {
       changed = (_.difference(this.values[key], previous_value).length > 0);
-    else
+    }
+    else if (typeof this.values[key] === 'object') {
+      changed = !(_.isEqual(this.values[key], previous_value));
+    }
+    else {
       changed = (previous_value != this.values[key]);
-    if (changed)
+    }
+    if (changed) {
       this.changed();
+    }
   },
 
   unset: function(key, value) {
