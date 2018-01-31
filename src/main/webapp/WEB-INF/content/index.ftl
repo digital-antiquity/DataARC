@@ -13,7 +13,11 @@
   var FIELDS = { <#list fields as field>"${field.name}": "${field.displayName}"<#sep>, </#sep></#list> };
   var SCHEMA = { <#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>, </#sep></#list> };
   var geoJsonInputs = [ <#list files as file>{id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep></#list> ];
-  var coverage = [<#list coverage as c>{start:${c.startDate?c}, end:${c.endDate?c},term:"${c.term!''?json_string}",description:"${c.description!''?json_string}"</#list>];
+  var coverage = [<#list coverage as c><#sep>,</#sep>
+  	{ start:${c.startDate?c}, 
+  		end:${c.endDate?c},
+  	   term:"${c.term!''?json_string}",
+description:"${c.description!''?json_string}"}</#list>];
     </script>
   <!-- /REPLACE -->
 
