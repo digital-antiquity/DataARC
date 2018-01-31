@@ -228,12 +228,12 @@
   <#include "includes/public-footer.ftl">
 
   <!-- Custom scripts -->
+  <script src="js/concepts.js"></script>
   <script src="js/global.js"></script>
   <script src="js/search.js"></script>
   <script src="js/filter.js"></script>
   <script src="js/timeline.js"></script>
   <script src="js/geography.js"></script>
-  <script src="js/concepts.js"></script>
   <script src="js/results.js"></script>
 
   <!-- everything below this is automatically generated -->
