@@ -27,7 +27,7 @@ $(document).ready(function() {
       Loading.hide();
     }
   };
-  if (window['testing'] != undefined && testing) {
+  if (testing) {
     var type = 'api'; // api or cache
     config.source = 'dev/'+type+"_search.php";
     config.recordSource = 'dev/'+type+"_getId.php";
