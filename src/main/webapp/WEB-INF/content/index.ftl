@@ -13,7 +13,8 @@
   var FIELDS = { <#list fields as field>"${field.name}": "${field.displayName}"<#sep>, </#sep></#list> };
   var SCHEMA = { <#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>, </#sep></#list> };
   var geoJsonInputs = [ <#list files as file>{id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep></#list> ];
-  </script>
+  var coverage = [<#list coverage as c>{start:${c.start?c}, end:${c.end?c},term:"${c.term?json_string}"</#list>];
+    </script>
   <!-- /REPLACE -->
 
   <style>

@@ -1,5 +1,6 @@
 package org.dataarc.web.controller;
 
+import org.dataarc.core.service.CoverageService;
 import org.dataarc.core.service.JsonFileService;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.web.AbstractController;
@@ -15,6 +16,8 @@ public class IndexController extends AbstractController {
 
     @Autowired
     private SchemaService schemaService;
+    @Autowired
+    private CoverageService coverageService;
 
     @RequestMapping(path = "/", produces = { "text/html; charset=UTF-8" })
     public ModelAndView index() {
@@ -22,6 +25,7 @@ public class IndexController extends AbstractController {
         mv.addObject("files", jsonFileService.findAll());
         mv.addObject("schema", schemaService.findAll());
         mv.addObject("fields", schemaService.findAllFields());
+        mv.addObject("coverage", coverageService.findAll());
 
         return mv;
     }
