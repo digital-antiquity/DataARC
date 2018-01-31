@@ -17,7 +17,7 @@
   	{ start:${c.startDate?c}, 
   		end:${c.endDate?c},
   	   term:"${c.term!''?json_string}",
-description:"${c.description!''?json_string}"}</#list>];
+description:"${c.description!''?replace("\"","\\\"")?json_string}"}</#list>];
     </script>
   <!-- /REPLACE -->
 
