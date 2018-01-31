@@ -16,6 +16,8 @@ public class TemporalCoverage extends AbstractPersistable {
     private Integer endDate;
     @Column(length = 1024)
     private String term;
+    @Column(length = 1024)
+    private String description;
 
     public Integer getStartDate() {
         return startDate;
@@ -39,6 +41,14 @@ public class TemporalCoverage extends AbstractPersistable {
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
