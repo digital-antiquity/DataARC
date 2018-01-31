@@ -2,12 +2,15 @@ package org.dataarc.core.search.query;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Temporal implements Serializable {
 
     private static final long serialVersionUID = 8871743799330705618L;
 
     private Integer start;
     private Integer end;
+    private String period;
 
     public Integer getEnd() {
         return end;
@@ -33,10 +36,18 @@ public class Temporal implements Serializable {
     }
 
     public boolean isEmpty() {
-        if (getEnd() == getStart() && getStart() == null) {
+        if (getEnd() == getStart() && getStart() == null && StringUtils.isBlank(period)) {
             return true;
         }
         return false;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
     }
 
 }
