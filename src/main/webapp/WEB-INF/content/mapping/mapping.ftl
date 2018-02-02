@@ -216,11 +216,9 @@
                 </select>
                 <selectize v-bind:options="getFieldValues(part.fieldName)" v-model="part.value" size="1" style="width:250px" class="form-control"
          data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()" data-create="true" data-create-on-blur="true" data-persist="false"
-         data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'>
+         data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'></selectize>
 
-
-                
-                <span v-show="rowindex > 0">
+                <span v-show="rowindex > 0 || parts.length > 1">
                 <button type="button" class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
                 </span>
                 <span v-show="rowindex == parts.length -1">
