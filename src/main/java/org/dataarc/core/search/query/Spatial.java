@@ -44,14 +44,28 @@ public class Spatial implements Serializable {
     }
 
     public void expandBy(Integer expandBy) {
-        double d1 = (topLeft[0] - bottomRight[0]) * (double) expandBy;
-        ;
-        double d2 = (topLeft[1] - bottomRight[1]) * (double) expandBy;
-        ;
+        double multi = 1.0 + (double) expandBy  / 1.0;
+        double d1 = (topLeft[0] - bottomRight[0]) * multi;
+        double d2 = (topLeft[1] - bottomRight[1]) * multi;
         topLeft[0] -= d1;
         bottomRight[0] += d1;
         topLeft[1] -= d2;
         bottomRight[1] += d2;
+
+        if (topLeft[0] < -180) {
+            topLeft[0] = -180;
+        }
+        if (topLeft[1] < -90) {
+            topLeft[1] = -90;
+        }
+
+        if (bottomRight[0] > 180) {
+            bottomRight[0] = 180;
+        }
+        if (bottomRight[1] > 90) {
+            bottomRight[1] = 90;
+        }
+
 
     }
 
