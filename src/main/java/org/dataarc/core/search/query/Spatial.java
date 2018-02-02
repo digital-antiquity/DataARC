@@ -60,16 +60,16 @@ public class Spatial implements Serializable {
             bottomRight[0] -= d1;
         }
 
-        if (topLeft[1] < 0) {
+        if (topLeft[1] > 0) {
             topLeft[1] -= d2;
         } else {
             topLeft[1] += d2;
         }
         
         if (bottomRight[1] < 0) {
-            bottomRight[1] += d2;            
-        } else {
             bottomRight[1] -= d2;
+        } else {
+            bottomRight[1] += d2;            
         }
 
         if (topLeft[0] > 180) {
