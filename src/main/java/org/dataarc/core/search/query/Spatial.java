@@ -43,14 +43,29 @@ public class Spatial implements Serializable {
         this.region = region;
     }
 
-    public void expandBy(Integer expandBy) {
-        double multi = 1.0 + (double) expandBy  / 1.0;
-        double d1 = (topLeft[0] - bottomRight[0]) * multi;
-        double d2 = (topLeft[1] - bottomRight[1]) * multi;
+    public Spatial expandBy(Integer expandBy) {
+        double multi = (double) expandBy  * 0.1;
+        double d1 = Math.abs(topLeft[0] - bottomRight[0]) * multi / 2;
+        double d2 = Math.abs(topLeft[1] - bottomRight[1]) * multi / 2;
+//        System.out.println(d1 + " - " + d2 + " :" + multi);
         topLeft[0] -= d1;
         bottomRight[0] += d1;
-        topLeft[1] -= d2;
-        bottomRight[1] += d2;
+        topLeft[1] += d2;
+        bottomRight[1] -= d2;
+
+        if (topLeft[0] > 180) {
+            topLeft[0] = 180;
+        }
+        if (topLeft[1] > 90) {
+            topLeft[1] = 90;
+        }
+
+        if (bottomRight[0] < -180) {
+            bottomRight[0] = -180;
+        }
+        if (bottomRight[1] < -90) {
+            bottomRight[1] = -90;
+        }
 
         if (topLeft[0] < -180) {
             topLeft[0] = -180;
@@ -66,7 +81,7 @@ public class Spatial implements Serializable {
             bottomRight[1] = 90;
         }
 
-
+        return this;
     }
 
     public boolean isEmpty() {

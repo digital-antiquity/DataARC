@@ -19,4 +19,12 @@ public class SearchQueryObjectTest {
         sqo.expand();
         logger.debug("{} - {}", sqo.getSpatial().getTopLeft(), sqo.getSpatial().getBottomRight() );
     }
+
+    @Test
+    public void testSpatial() {
+        Spatial spatial = new Spatial(new double[] { -75, 85 }, new double[] { -0.1, 58 });
+        logger.debug("{} - {}", spatial.getTopLeft(), spatial.getBottomRight());
+        Spatial expandBy = spatial.expandBy(2);
+        logger.debug("{} - {}", expandBy.getTopLeft(), expandBy.getBottomRight());
+    }
 }
