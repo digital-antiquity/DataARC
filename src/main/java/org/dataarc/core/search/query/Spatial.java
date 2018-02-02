@@ -11,6 +11,14 @@ public class Spatial implements Serializable {
     private double[] bottomRight;
     private String region;
 
+    public Spatial() {
+    }
+
+    public Spatial(double[] i, double[] j) {
+        this.topLeft = i;
+        this.bottomRight = j;
+    }
+
     public double[] getBottomRight() {
         return bottomRight;
     }
