@@ -149,6 +149,7 @@ public class SolrService {
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
 
+        result.setQuery(sqo);
         result.setPage(limit);
         result.setStart(startRecord);
         result.setTotal(query.getResults().getNumFound());
