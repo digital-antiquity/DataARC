@@ -27,4 +27,12 @@ public class SearchQueryObjectTest {
         Spatial expandBy = spatial.expandBy(2);
         logger.debug("{} - {}", expandBy.getTopLeft(), expandBy.getBottomRight());
     }
+    
+    @Test
+    public void testSpatial2() {
+        Spatial spatial = new Spatial(new double[] { 23.14,64.63 }, new double[] {-19.40,66.16 });
+        logger.debug("{} - {}", spatial.getTopLeft(), spatial.getBottomRight());
+        Spatial expandBy = spatial.expandBy(2);
+        logger.debug("{} - {}", expandBy.getTopLeft(), expandBy.getBottomRight());
+    }
 }
