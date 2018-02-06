@@ -3,6 +3,8 @@ package org.dataarc.core.search.query;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Spatial implements Serializable {
 
@@ -10,7 +12,9 @@ public class Spatial implements Serializable {
     private double[] topLeft;
     private double[] bottomRight;
     private String region;
-
+    protected final transient Logger logger = LoggerFactory.getLogger(getClass());
+    
+    
     public Spatial() {
     }
 
@@ -47,24 +51,20 @@ public class Spatial implements Serializable {
         double multi = (double) expandBy * 0.1;
         double d1 = Math.abs(topLeft[0] - bottomRight[0]) * multi / 2;
         double d2 = Math.abs(topLeft[1] - bottomRight[1]) * multi / 2;
-        System.out.println(d1 + " - " + d2 + " :" + multi);
-        if (topLeft[0] < 0) {
-            topLeft[0] -= d1;
-        } else {
-            topLeft[0] += d1;
-        }
+        logger.debug(d1 + " - " + d2 + " :" + multi);
+        topLeft[0] += d1;
 
         if (bottomRight[0] < 0) {
-            bottomRight[0] += d1;
-        } else {
             bottomRight[0] -= d1;
+        } else {
+            bottomRight[0] += d1;
         }
 
-        if (topLeft[1] > 0) {
-            topLeft[1] -= d2;
-        } else {
-            topLeft[1] += d2;
-        }
+        topLeft[1] -= d2;
+//        if (topLeft[1] > 0) {
+//        } else {
+//            topLeft[1] += d2;
+//        }
         
         if (bottomRight[1] < 0) {
             bottomRight[1] -= d2;
