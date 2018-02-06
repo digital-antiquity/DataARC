@@ -20,10 +20,15 @@ public abstract class SearchResultObject implements Serializable {
     private Integer start;
     private Integer page;
 
+
     private Map<String, Map<String, Object>> facets = new HashMap<>();
 
     private SearchQueryObject query;
 
+    public SearchResultObject(SearchQueryObject query) {
+        this.query = query;
+    }
+    
     public Map<String, Map<String, Object>> getFacets() {
         return facets;
     }

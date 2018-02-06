@@ -2,6 +2,8 @@ package org.dataarc.web.api;
 
 import java.io.Serializable;
 
+import org.dataarc.core.search.query.SearchQueryObject;
+
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
 public class PerfSearchResultObject extends SearchResultObject implements Serializable {
@@ -10,6 +12,10 @@ public class PerfSearchResultObject extends SearchResultObject implements Serial
 
     @JsonRawValue
     private String results;
+
+    public PerfSearchResultObject(SearchQueryObject query) {
+        super(query);
+    }
 
     public String getResults() {
         return results;
