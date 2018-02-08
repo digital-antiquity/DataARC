@@ -1,13 +1,16 @@
 package org.dataarc.web.controller;
 
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 import org.dataarc.AbstractServiceTest;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.query.MatchType;
 import org.dataarc.core.query.QueryPart;
+import org.dataarc.core.search.query.SearchQueryObject;
+import org.dataarc.core.search.query.Spatial;
 import org.dataarc.web.UrlConstants;
+import org.dataarc.web.api.DefaultSearchResultObject;
+import org.dataarc.web.api.SearchResultObject;
 import org.dataarc.web.config.DataArcWebConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +24,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
@@ -36,13 +41,14 @@ public class ControllerTest extends AbstractServiceTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        logger.debug("~~~~~~~~~~~~~~~~~~~~~~~ DONE SETUP ~~~~~~~~~~~~~~~~~~~~~~~");
     }
 
     @Test
     public void testSchemaFields() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(UrlConstants.SCHEMA_LIST_FIELDS + "?schema=SEAD"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-//                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        // .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -52,22 +58,56 @@ public class ControllerTest extends AbstractServiceTest {
         query.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
         query.setSchema(schema);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(UrlConstants.QUERY_DATASTORE).with(user("user").password("password").roles("USER","ADMIN"))
+        mockMvc.perform(MockMvcRequestBuilders.post(UrlConstants.QUERY_DATASTORE).with(user("user").password("password").roles("USER", "ADMIN"))
                 .content(asJsonString(query)).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-//                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        // .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
-
 
     @Test
     public void legacyJson() throws Exception {
         String schema = "SEAD";
-        ResultActions andExpect = mockMvc.perform(MockMvcRequestBuilders.post("/json?source="+ schema).contentType(MediaType.APPLICATION_JSON_UTF8))
+        ResultActions andExpect = mockMvc.perform(MockMvcRequestBuilders.post("/json?source=" + schema).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         String asString = andExpect.andReturn().getResponse().getContentAsString();
         logger.debug(asString);
 
     }
+
+    @Test
+    public void searchJson() throws Exception {
+        SearchQueryObject sqo = new SearchQueryObject();
+        sqo.setSpatial(new Spatial(new double[] { -75, 85 }, new double[] { -0.1, 58 }));
+        sqo.setIdOnly(false);
+        ResultActions andExpect = mockMvc.perform(MockMvcRequestBuilders.post(UrlConstants.SEARCH).contentType(MediaType.APPLICATION_JSON_UTF8).content(asJsonString(sqo)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        String asString = andExpect.andReturn().getResponse().getContentAsString();
+        logger.debug(asString);
+
+    }
+
+
+    @Test
+    public void searchJsonExpandTooBig() throws Exception {
+        SearchQueryObject sqo = new SearchQueryObject();
+        sqo.setSpatial(new Spatial(new double[] { -75.0, 85.0 }, new double[] { -0.1, 58.0 }));
+        sqo.setIdOnly(true);
+        sqo.setExpandBy(2);
+        String json  =asJsonString(sqo);
+        logger.debug(json);
+        ResultActions andExpect = mockMvc.perform(MockMvcRequestBuilders.post(UrlConstants.SEARCH).contentType(MediaType.APPLICATION_JSON_UTF8).content(asJsonString(sqo)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        String asString = andExpect.andReturn().getResponse().getContentAsString();
+        ObjectMapper mapper = new ObjectMapper();
+        SearchResultObject readValue = mapper.readValue(asString, DefaultSearchResultObject.class);
+        // total:{sead=2405, sagas=106, nabone=8}
+
+        logger.debug("total:{}", readValue.getFacets().get("source"));
+    }
+    
+    
+    
+    
 
 }

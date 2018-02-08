@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.dataarc.core.search.query.SearchQueryObject;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -18,8 +20,15 @@ public abstract class SearchResultObject implements Serializable {
     private Integer start;
     private Integer page;
 
+
     private Map<String, Map<String, Object>> facets = new HashMap<>();
 
+    private SearchQueryObject query;
+
+    public SearchResultObject(SearchQueryObject query) {
+        this.query = query;
+    }
+    
     public Map<String, Map<String, Object>> getFacets() {
         return facets;
     }
@@ -54,6 +63,14 @@ public abstract class SearchResultObject implements Serializable {
 
     public void setTotal(Long total) {
         this.total = total;
+    }
+
+    public void setQuery(SearchQueryObject sqo) {
+        this.query = sqo;
+    }
+    
+    public SearchQueryObject getQuery() {
+        return this.query;
     }
 
 }

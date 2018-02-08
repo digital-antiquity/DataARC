@@ -122,15 +122,18 @@ public class MongoDao implements ImportDao, QueryDao {
             if (StringUtils.isBlank(part.getFieldName())) {
                 throw new QueryException(INVALID_QUERY_NO_FIELD_SPECIFIED);
             }
-            String name = "properties.";
-            for (SchemaField f : schema.getFields()) {
-                if (f.getId() == part.getFieldId()) {
-                    name += f.getMongoName();
-                }
-                if (Objects.equals(f.getName(), part.getFieldName())) {
-                    name += f.getMongoName();
-                }
+            // if we're a field-comparison type
+            String name = buildFieldName(schema, part.getFieldId(), part.getFieldName());
+            if (part.getFieldIdSecond() != null || StringUtils.isNotBlank(part.getFieldNameSecond())) {
+                String name2 = buildFieldName(schema, part.getFieldIdSecond(), part.getFieldNameSecond());
+                FieldComparisonCriteria crit = new FieldComparisonCriteria();
+                crit.setFromName(name);
+                crit.setToName(name2);
+                crit.setOper(part.getType());
+                criteria.add(crit);
+                continue;
             }
+
             if (part.getValue() == "") {
                 continue;
             }
@@ -172,6 +175,19 @@ public class MongoDao implements ImportDao, QueryDao {
         }
         logger.debug(" :: query :: {}", q);
         return q;
+    }
+
+    private String buildFieldName(Schema schema, Long fieldId, String fieldName) {
+        String name = "properties.";
+        for (SchemaField f : schema.getFields()) {
+            if (f.getId() == fieldId) {
+                name += f.getMongoName();
+            }
+            if (Objects.equals(f.getName(), fieldName)) {
+                name += f.getMongoName();
+            }
+        }
+        return name;
     }
 
     @Override
@@ -347,12 +363,12 @@ public class MongoDao implements ImportDao, QueryDao {
         Query q = new Query();
         Criteria group = new Criteria();
         List<Criteria> lst = new ArrayList<>();
-        //POLYGON((-59.4 74.5, 16.0 74.5, 16.0 50.0, -59.4 50.0, -59.4 74.5))
+        // POLYGON((-59.4 74.5, 16.0 74.5, 16.0 50.0, -59.4 50.0, -59.4 74.5))
         GeoJsonPolygon p = new GeoJsonPolygon(new GeoJsonPoint(-59.4, 74.5), new GeoJsonPoint(16.0, 74.5),
-                new GeoJsonPoint(16.0, 50.0), new GeoJsonPoint( -59.4, 50.0),new GeoJsonPoint(-59.4, 74.5));  
+                new GeoJsonPoint(16.0, 50.0), new GeoJsonPoint(-59.4, 50.0), new GeoJsonPoint(-59.4, 74.5));
         lst.add(Criteria.where(DataEntry.POSITION).within(p));
         group.andOperator(lst.toArray(new Criteria[0]));
-        
+
         q.addCriteria(group);
         return template.find(q, DataEntry.class);
     }

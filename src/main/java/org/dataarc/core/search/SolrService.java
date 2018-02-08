@@ -107,7 +107,7 @@ public class SolrService {
     @SuppressWarnings("unchecked")
     public SearchResultObject search(SearchQueryObject sqo)
             throws IOException, ParseException, SolrServerException {
-        SearchResultObject result = new DefaultSearchResultObject();
+        SearchResultObject result = new DefaultSearchResultObject(sqo);
 
         int limit = 1_000_000;
         if (sqo.getSize() != null) {
@@ -149,6 +149,7 @@ public class SolrService {
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
 
+        result.setQuery(sqo);
         result.setPage(limit);
         result.setStart(startRecord);
         result.setTotal(query.getResults().getNumFound());
@@ -158,7 +159,7 @@ public class SolrService {
         WKTReader reader = new WKTReader();
         SolrFacetBuilder builder = new SolrFacetBuilder(SUBGROUPS);
         if (sqo.isIdAndMap() || sqo.isIdAndMap()) {
-            result = new PerfSearchResultObject();
+            result = new PerfSearchResultObject(sqo);
         }
 
         builder.buildResultsFacets(result, query);

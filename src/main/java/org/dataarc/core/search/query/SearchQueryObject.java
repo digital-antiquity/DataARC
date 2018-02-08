@@ -1,12 +1,14 @@
 package org.dataarc.core.search.query;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
-public class SearchQueryObject {
+public class SearchQueryObject implements Serializable {
 
+    private static final long serialVersionUID = 6497930096346061149L;
     private Spatial spatial = new Spatial();
     private Temporal temporal = new Temporal();
     private boolean idOnly = false;

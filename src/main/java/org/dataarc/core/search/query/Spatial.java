@@ -3,6 +3,8 @@ package org.dataarc.core.search.query;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Spatial implements Serializable {
 
@@ -10,6 +12,16 @@ public class Spatial implements Serializable {
     private double[] topLeft;
     private double[] bottomRight;
     private String region;
+    protected final transient Logger logger = LoggerFactory.getLogger(getClass());
+    
+    
+    public Spatial() {
+    }
+
+    public Spatial(double[] i, double[] j) {
+        this.topLeft = i;
+        this.bottomRight = j;
+    }
 
     public double[] getBottomRight() {
         return bottomRight;
@@ -35,16 +47,66 @@ public class Spatial implements Serializable {
         this.region = region;
     }
 
-    public void expandBy(Integer expandBy) {
-        double d1 = (topLeft[0] - bottomRight[0]) * (double) expandBy;
-        ;
-        double d2 = (topLeft[1] - bottomRight[1]) * (double) expandBy;
-        ;
-        topLeft[0] -= d1;
-        bottomRight[0] += d1;
-        topLeft[1] -= d2;
-        bottomRight[1] += d2;
+    public Spatial expandBy(Integer expandBy) {
+        double multi = (double) expandBy * 0.1;
+        logger.debug("expand from: [{}-{}]", topLeft, bottomRight);
+        double d1 = Math.abs(topLeft[0] - bottomRight[0]) * multi / 2;
+        double d2 = Math.abs(topLeft[1] - bottomRight[1]) * multi / 2;
+        logger.debug(d1 + " - " + d2 + " :" + multi);
+        if (topLeft[0] > 0) {
+            topLeft[0] += d1;
+        } else {
+            topLeft[0] -= d1;
+        }
 
+        if (bottomRight[0] < 0) {
+            bottomRight[0] += d1;
+        } else {
+            bottomRight[0] += d1;
+        }
+
+        if (topLeft[1] > 0) {
+            topLeft[1] += d2;
+        } else {
+            topLeft[1] -= d2;
+        }
+        
+        if (bottomRight[1] < 0) {
+            bottomRight[1] += d2;
+        } else {
+            bottomRight[1] -= d2;            
+        }
+
+        if (topLeft[0] > 180) {
+            topLeft[0] = 180;
+        }
+        if (topLeft[1] > 90) {
+            topLeft[1] = 90;
+        }
+
+        if (bottomRight[0] < -180) {
+            bottomRight[0] = -180;
+        }
+        if (bottomRight[1] < -90) {
+            bottomRight[1] = -90;
+        }
+
+        if (topLeft[0] < -180) {
+            topLeft[0] = -180;
+        }
+        if (topLeft[1] < -90) {
+            topLeft[1] = -90;
+        }
+
+        if (bottomRight[0] > 180) {
+            bottomRight[0] = 180;
+        }
+        if (bottomRight[1] > 90) {
+            bottomRight[1] = 90;
+        }
+
+        logger.debug("expand   to: [{}-{}]", topLeft, bottomRight);
+        return this;
     }
 
     public boolean isEmpty() {

@@ -14,6 +14,10 @@ public class QueryPart implements Serializable {
     @JsonView(View.Indicator.class)
     private Long fieldId;
     @JsonView(View.Indicator.class)
+    private String fieldNameSecond;
+    @JsonView(View.Indicator.class)
+    private Long fieldIdSecond;
+    @JsonView(View.Indicator.class)
     private String value;
     @JsonView(View.Indicator.class)
     private MatchType type;
@@ -62,5 +66,21 @@ public class QueryPart implements Serializable {
 
     public void setFieldId(Long fieldId) {
         this.fieldId = fieldId;
+    }
+
+    public Long getFieldIdSecond() {
+        return fieldIdSecond;
+    }
+
+    public void setFieldIdSecond(Long fieldIdSecond) {
+        this.fieldIdSecond = fieldIdSecond;
+    }
+
+    public String getFieldNameSecond() {
+        return fieldNameSecond;
+    }
+
+    public void setFieldNameSecond(String fieldNameSecond) {
+        this.fieldNameSecond = fieldNameSecond;
     }
 }
