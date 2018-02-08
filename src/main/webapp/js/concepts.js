@@ -920,10 +920,12 @@ TopicMap.prototype = {
   refresh: function() {
     var _this = this;
     this.topics = [];
-    if (typeof Search.facets.T_id != 'undefined' && _this.graph.nodes != undefined) {
-      if (Object.keys(Search.facets.T_id).length > 0) {
-        _.each(Search.facets.T_id, function(value, topic) {
-          _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
+    if (typeof Search.results['matched'].facets.T_id != 'undefined' && _this.graph.nodes != undefined) {
+      if (Object.keys(Search.results['matched'].facets.T_id).length > 0) {
+        _.each(Search.results['matched'].facets.T_id, function(value, topic) {
+          if (!_.isEmpty(_this.graph.nodes.filter(node => node.identifier == topic)[0])) {
+            _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
+          }
         });
       }
     }

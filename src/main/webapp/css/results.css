@@ -134,3 +134,131 @@
 	padding-top: 0.25em;
 	text-align:right;
 }
+
+
+
+
+
+
+
+
+
+.results-container {
+	color: #999999;
+}
+
+.results-container .card {
+	background-color: inherit;
+	border: 0;
+}
+
+.results-category h4 {
+	color: #fefefe;
+	text-transform:capitalize;
+}
+
+.results-category h5 {
+	font-size: 1rem;
+	text-transform:capitalize;
+}
+
+.results-category hr {
+	border-color: #999;
+	max-width: 25%;
+	border-width: 1px;
+	opacity: 0.25;
+}
+
+.results-category hr:first-of-type {
+	max-width: 50%;
+	border-width: 2px;
+	opacity: 0.50;
+}
+
+.results-category .card-text {
+	font-size: 3rem;
+}
+
+.results-category .card-footer {
+	background: inherit;
+	border: 0;
+}
+
+.results-container .card-footer button {
+	width: 75%;
+	display: inline;
+	text-transform: none;
+	font-weight: normal;
+}
+
+.results-category .list-group {
+	border: 0;
+}
+
+.results-category .list-group-item {
+	background: inherit;
+	border: 0;
+	padding: .25rem;
+}
+
+#results-details .modal-dialog {
+	width: 98%;
+	max-width: 98%;
+	margin: 1% auto;
+}
+
+#results-details .modal-header {
+}
+
+#results-details .modal-title {
+	line-height: inherit;
+	text-transform: capitalize;
+}
+
+#results-details .modal-body {
+	margin-top: 10px;
+	padding: 0;
+}
+
+#results-details .modal-body .nav-tabs {
+	margin-top: 2px;
+}
+
+#results-details .modal-body .tab-content {
+	margin: 15px;
+}
+
+/* result type colors */
+#results-matched {
+	background-color: #202020 !important;
+}
+#results-related {
+	background-color: #262626 !important;
+}
+#results-contextual {
+	background-color: #2c2c2c !important;
+}
+
+/* category colors */
+.results-archaeological h4,
+.results-archaeological .card-text {
+	color: #6177aa;
+}
+.results-archaeological hr {
+	border-color: #6177aa;
+}
+.results-environmental h4,
+.results-environmental .card-text {
+	color: #fc8d62;
+}
+.results-environmental hr {
+	border-color: #fc8d62;
+}
+.results-textual h4,
+.results-textual .card-text {
+	color: #66c2a5;
+}
+.results-textual hr {
+	border-color: #66c2a5;
+}
+

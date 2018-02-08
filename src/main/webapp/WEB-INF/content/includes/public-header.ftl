@@ -17,9 +17,10 @@
   <!-- Custom styles for this template -->
   <link href="css/global.css" rel="stylesheet">
   <link href="css/timeline.css" rel="stylesheet">
-  <link href="css/results.css" rel="stylesheet">
-  <link href="css/concepts.css" rel="stylesheet">
   <link href="css/geography.css" rel="stylesheet">
+  <link href="css/concepts.css" rel="stylesheet">
+  <link href="css/filter.css" rel="stylesheet">
+  <link href="css/results.css" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107693214-1"></script>
 <script>
 <!-- Global Site Tag (gtag.js) - Google Analytics -->

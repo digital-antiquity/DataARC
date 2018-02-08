@@ -1,5 +1,4 @@
 // Requires ECMA6, Lodash, jQuery
-var timelineHistory = {};
 
 class TimelineObject {
 
@@ -21,7 +20,7 @@ class TimelineObject {
     $(this.settings.container).append(this.loader);
   }
 
-  refresh(data) {
+  refresh() {
     // Set container
     if (this.settings.type === 'millennium')
       $(this.settings.container).empty();
@@ -41,7 +40,7 @@ class TimelineObject {
     this.ranges = { "millennium": 1000, "century": 100, "decade": 10 };
 
     // Set calendar data
-    this.search_data = data;
+    this.search_data = _.isEmpty(Search.results['matched'].facets) ? {} : Search.results['matched'].facets.temporal;
     this.timeline_data = [];
 
     // Set opacities
@@ -144,7 +143,7 @@ class TimelineObject {
       .classed("highlighted", true);
     if (_this.settings.type == 'millennium' || _this.settings.type == 'century') {
       _this.subTimeline = new TimelineObject(_this.settings.type == 'millennium' ? 'century' : 'decade', parseInt(d.label));
-      _this.subTimeline.refresh(this.search_data);
+      _this.subTimeline.refresh();
       this.labels.classed('hidden', true);
       this.svg.transition("shrink").duration(this.settings.transition_duration)
         .attr("viewBox", "0 0 " + this.settings.width + " " + (this.settings.height / 5));
@@ -247,3 +246,5 @@ class TimelineObject {
   }
 
 }
+var timelineHistory = {};
+var Timeline = new TimelineObject("millennium", -7000);

@@ -24,16 +24,6 @@
   </style>
 </head>
 <body id="page-top">
-  <div class="loading loading-pg pull-right">
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  </div>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light navbar-shrink fixed-top" id="mainNav">
     <div class="container">
@@ -48,7 +38,8 @@
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#timeline-section">Timeline</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#map-section">Map</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#concept-section">Concept</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-dark"></span></a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-primary">0</span></a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-danger">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
         </ul>
       </div>
@@ -108,7 +99,7 @@
     </div>
   </header>
   <section id="explore-section" class="bg-primary">
-    <div class="container">
+    <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-8 mx-auto text-center">
           <h2 class="section-heading text-white">Explore the data!</h2>
@@ -122,7 +113,7 @@
     </div>
   </section>
   <section id="timeline-section">
-    <div class="container">
+    <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
           <h2 class="section-heading">Timeline</h2>
@@ -145,7 +136,7 @@
     </div>
   </section>
   <section id="map-section">
-    <div class="container">
+    <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
           <h2 class="section-heading">Map</h2>
@@ -165,7 +156,7 @@
     </div>
   </section>
   <section id="concept-section">
-    <div class="container">
+    <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
           <h2 class="section-heading">Concept</h2>
@@ -189,46 +180,55 @@
       </div>
     </div>
   </section>
-  <section id="results-section">
-    <div class="call-to-action bg-gray">
+  <section id="filters-section">
+    <div class="call-to-action">
       <div class="container text-center">
         <h2>Filters</h2>
         <hr class="primary">
         <div id="filters" class="row">&nbsp;</div>
-        <button id="filter-save" class="btn btn-light"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
-        <button id="filter-share" class="btn btn-light"><i class="fa fa-print sr-icons"></i> Share Search</button>
+        <button id="filter-save" class="btn btn-primary"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
+        <button id="filter-share" class="btn btn-primary"><i class="fa fa-print sr-icons"></i> Share Search</button>
       </div>
     </div>
+  </section>
+  <section id="results-section">
     <div class="call-to-action bg-dark">
       <div class="container text-center">
         <h2>Results</h2>
         <hr class="primary">
-        <div id="results">
-          <div class="result-loader col-sm-12 text-center">
-            <h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>
-          </div>
-        </div>
-        <button id="results-print" class="btn btn-light"><i class="fa fa-print sr-icons"></i> Print Results</button>
+        <p>&nbsp;</p>
       </div>
     </div>
   </section>
   <section id="why-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mx-auto text-center">
-          <h2 class="section-heading">Why</h2>
-          <hr class="primary">
-          <p>Why did you get these results? We will explain how the results were obtained in order to provide a level of confidence for how the data was processed to produce what you are seeing.</p>
+    <div class="call-to-action">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="section-heading">Why</h2>
+            <hr class="primary">
+            <p>Why did you get these results? We will explain how the results were obtained in order to provide a level of confidence for how the data was processed to produce what you are seeing.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- Vendor scripts -->
+
+  <!-- Details modal -->
+  <div class="modal fade" id="results-details" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-light bg-dark"></div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </div>
 
   <#include "includes/public-footer.ftl">
 
   <!-- Custom scripts -->
   <script src="js/global.js"></script>
+  <script src="js/loader.js"></script>
   <script src="js/search.js"></script>
   <script src="js/filter.js"></script>
   <script src="js/timeline.js"></script>

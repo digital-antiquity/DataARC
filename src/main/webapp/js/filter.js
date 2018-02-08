@@ -1,6 +1,12 @@
-// Requires ECMA6, Lodash, jQuery
+/**
+ * Filter handler class for data-arc
+ * Requires ECMA6, Lodash, jQuery
+ */
 
-class FilterObject {
+/**
+ * Filter handler
+ */
+class FilterHandler {
 
   constructor() {
     this.settings = {
@@ -14,22 +20,24 @@ class FilterObject {
         'sources': 'sources',
       }
     }
-  }
 
-  wait() {
-    $(this.settings.container).append(this.loader);
-  }
-
-  refresh(filters) {
-    // Set container
-    $(this.settings.container).empty();
+    // set the container
+    this.container = $(this.settings.container);
 
     // configure the loader object
     this.loader = $('<div>', { 'class': 'loader col-sm-12 text-center' });
     this.loader.append('<h1><i class="fa fa-cog fa-spin fa-2x"></i></h1>');
+  }
+
+  /**
+   * Refresh UI
+   * @return {void}
+   */
+  refresh() {
+    this.count = 0;
 
     // get the search values
-    this.filters = filters;
+    this.filters = Search.values;
 
     // prepare the dom
     this.prepare();
@@ -44,23 +52,27 @@ class FilterObject {
     $('.filters-remove').click(this.remove);
   }
 
-  prepare(type) {
+  wait() {
+    this.container.append(this.loader);
+  }
+
+  prepare() {
     // purge existing dom elements
-    $(this.settings.container).empty();
+    this.container.empty();
 
     // create new placeholders
-    this.settings.types.forEach(type => {
+    for (let type of this.settings.types) {
       var dom = $('<div>', {'class': 'col-sm filters-container', 'id': 'filters-' + type});
       dom.append('<h5>' + type + '</h5>');
-      $(this.settings.container).append(dom);
-    });
+      this.container.append(dom);
+    };
   }
 
   update() {
     // add the keyword filters
     if (!_.isEmpty(this.filters[this.settings.typemap.keywords])) {
       var keywords = this.filters[this.settings.typemap.keywords];
-      for (keyword of keywords) {
+      for (let keyword of keywords) {
         this.append('keywords', keyword, keyword);
       }
     }
@@ -96,7 +108,7 @@ class FilterObject {
     // add the concept filters
     if (!_.isEmpty(this.filters[this.settings.typemap.concepts])) {
       var concepts = this.filters[this.settings.typemap.concepts];
-      for (id of concepts) {
+      for (let id of concepts) {
         var concept = Concepts.graph.nodes.filter(x => x.identifier.indexOf(id) > -1);
         if (concept.length > 0) {
           this.append('concepts', id, concept[0].name);
@@ -106,15 +118,16 @@ class FilterObject {
   }
 
   append(type, key, value) {
+    this.count++;
     var dom = $('<div>', { 'class': 'p-3 mb-2 filter-' + type + ' text-white', 'data-type': type, 'data-key': key, 'data-value': value });
-    dom.append(value + ' <button type="button" class="close filters-remove" aria-label="Remove"><span aria-hidden="true">&times;</span></button>');
+    dom.append(value + ' <button type="button" class="close text-light" aria-label="Remove"><span aria-hidden="true">&times;</span></button>');
     $(this.settings.container+'-'+type).append(dom);
   }
 
   cleanup() {
-    this.settings.types.forEach(type => {
+    for (let type of this.settings.types) {
       $(this.settings.container+'-'+type).not(':has(div)').remove();
-    });
+    }
   }
 
   remove() {
@@ -124,7 +137,7 @@ class FilterObject {
     var value = filter.data('value');
 
     // remove the filter
-    Search.unset(Filter.settings.typemap[type], key);
+    Search.unset(Filters.settings.typemap[type], key);
 
     // clear the filters
     if (type === 'keywords') {
@@ -142,3 +155,4 @@ class FilterObject {
   }
 
 }
+var Filters = new FilterHandler();

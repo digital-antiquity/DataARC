@@ -1,0 +1,27 @@
+#filters-section {
+  background-color: #efefef !important;
+}
+
+#filters {
+  margin-bottom:40px;
+}
+
+#filters h5:first-letter {
+  text-transform:capitalize;
+}
+
+
+/* filter type colors */
+
+.filter-keywords {
+  background-color: #777;
+}
+.filter-temporal {
+  background-color: #555;
+}
+.filter-spatial {
+  background-color: #444;
+}
+.filter-concepts {
+  background-color: #666;
+}

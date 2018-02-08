@@ -1,30 +1,40 @@
 // Global variables
-var Search, Filter, Timeline;
-var category_colors = ["#6177AA", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];
+var Search;
+var category_colors = ["#6177aa", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];
 
 // Page Level Javascript Actions
 $(document).ready(function() {
-
-  // Setup and init the search object
+  // config for the objects
   var config = {
     source: "/api/search",
     recordSource: "/api/getId",
     delay: 100, // delay before search checks in ms
     before: function() { // actions to run before search query begins
-      Loading.show();
+      Loader.show();
       Timeline.wait();
       Geography.wait();
-      Filter.wait();
-      $('#results-count').html('<i class="fa fa-spinner text-white fa-spin"></i>');
+      Filters.wait();
+      Results.wait();
+      $('#filters-count').text(0);
+      $('#results-count').text(0);
+      console.log('Searching');
     },
     after: function() { // actions to run after search query is finished
-      Timeline.refresh(Search.facets.temporal);
+      console.log('Timeline');
+      Timeline.refresh();
+      console.log('Geography');
       Geography.refresh();
+      console.log('Concepts');
       Concepts.refresh();
-      Filter.refresh(Search.values);
-      ResultsHandler = new Results('#results');
-      $('#results-count').empty().text(Search.results.length);
-      Loading.hide();
+      console.log('Filters');
+      Filters.refresh();
+      console.log('Results');
+      Results.refresh();
+      console.log('Counts');
+      $('#filters-count').text(Filters.count.toLocaleString());
+      $('#results-count').text(Search.results['matched'].count.toLocaleString());
+      console.log('Done');
+      Loader.hide();
     }
   };
   if (testing) {
@@ -35,8 +45,6 @@ $(document).ready(function() {
 
   // Define the objects
   Search = new SearchObject(config);
-  Filter = new FilterObject();
-  Timeline = new TimelineObject("millennium", -7000);
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
@@ -109,24 +117,3 @@ $(document).ready(function() {
   // Filter the timeline
   $('#filter-timeline-apply').click(Timeline.applyFilter);
 });
-
-
-/* ******* */
-/* LOADING */
-/* ******* */
-var Loading = Loading || (function() {
-  return {
-    show: function(_callback) {
-      $('.loading-pg').fadeIn(_callback);
-    },
-    hide: function(_callback) {
-      $('.loading-pg').fadeOut(_callback);
-    },
-    showSmall: function(element) {
-      $(element).append('<div class="loading loading-sm pull-right"><ul><li></li><li></li><li></li><li></li><li></li><li></li></ul></div>');
-    },
-    hideSmall: function(element) {
-      $(element).child('.loading-sm').remove();
-    }
-  };
-})();
