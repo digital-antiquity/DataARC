@@ -193,7 +193,15 @@ Vue.use(VueResource);
               this.$parent.runQuery();
           },
           addPart: function() {
-              this.parts.push({type:'EQUALS',value:'',fieldName:''});
+              this.parts.push({type:'EQUALS',value:'',fieldName:'',secondaryFieldName:undefined,compare:false});
+          },
+          showCompare : function() {
+              this.parts[this.rowindex].compare = true;
+              this.parts[this.rowindex].value = '';
+          },
+          hideCompare : function() {
+              this.parts[this.rowindex].compare = false;
+              this.parts[this.rowindex].secondaryFieldName = undefined;
           },
           removePart: function(idx) {
             this.parts.splice(idx ,1);  
@@ -268,7 +276,7 @@ var Hack = new Vue({
       'currentIndicator' : function(val, oldVal) {
           if (val === "new") {
               console.log("setup new indicator");
-              var indicator = {name:'New Indicator',citation:'',description:'',query: {conditions:[{type:'EQUALS',value:''}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifiers:[{}]};
+              var indicator = {name:'New Indicator',citation:'',description:'',query: {conditions:[{type:'EQUALS',value:'',compare:false}], operator:'AND', schema: this.schema[this.currentSchema].name}, topicIdentifiers:[{}]};
               this.indicators.push(indicator);
               console.log(indicator);
               Vue.set(this,"currentIndicator", this.indicators.length -1);

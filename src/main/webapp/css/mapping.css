@@ -172,3 +172,7 @@ ul.options-list li.highlighted {
 .badge-inverse:hover {
   background-color: #1a1a1a;
 }
+
+.link {
+    color: #337ab7;
+}

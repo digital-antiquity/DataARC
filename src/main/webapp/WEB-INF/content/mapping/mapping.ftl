@@ -214,16 +214,24 @@
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-                <selectize v-bind:options="getFieldValues(part.fieldName)" v-model="part.value" size="1" style="width:250px" class="form-control"
-         data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()" data-create="true" data-create-on-blur="true" data-persist="false"
-         data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'></selectize>
-
+                <select  v-show="part.compare" name='fieldNameSecond' v-model="part.fieldNameSecond"  v-on:change="updateTest()" class="form-control">
+                    <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
+                </select>
+                <span v-show="part.compare == false">
+	                <selectize  v-bind:options="getFieldValues(part.fieldName)" v-model="part.value" size="1" style="width:250px" class="form-control"
+	         data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()" data-create="true" data-create-on-blur="true" data-persist="false"
+	         data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'></selectize>
+				</span>
+				
                 <span v-show="rowindex > 0 || parts.length > 1">
                 <button type="button" class="btn btn-xs btn-default" v-on:click="removePart(rowindex)">-</button>
                 </span>
                 <span v-show="rowindex == parts.length -1">
                 <button type="button" class="btn btn-xs btn-default" v-on:click="addPart()">+</button>
                 </span>
+                <br/>
+                <span class="link" v-show="part.compare == false" v-on:click="showCompare()">compare two fields?</span>
+                <span class="link" v-show="part.compare == true" v-on:click="hideCompare()">compare field and value?</span>
             </div>
         </template>
 
