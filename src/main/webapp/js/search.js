@@ -75,22 +75,6 @@ class SearchObject {
       var filters_matched = this.values;
       var filters_related = _.assign({}, this.values, { "expandBy": 2 });
       var filters_contextual = _.assign({}, this.values, { "expandBy": 3 });
-      // // run our matched query first
-      // $.when(this.fetch(filters_matched, this.config.source)).then((matched) => {
-      //   this.analyze('matched', matched, filters_matched);
-      //   this.config.after();
-      //   $.when(
-      //     this.fetch(filters_related, this.config.source),
-      //     this.fetch(filters_contextual, this.config.source)
-      //   ).then((matched, related, contextual) => {
-      //     this.analyze('related', related, filters_related);
-      //     this.analyze('contextual', contextual, filters_contextual);
-      //     this.config.after();
-      //   }).fail(function(xhr1, xhr2, xhr3) {
-      //     console.log('Failed', xhr1);
-      //     console.log('Failed', xhr2);
-      //   });
-      // });
       $.when(
         this.fetch(filters_matched, this.config.source),
         this.fetch(filters_related, this.config.source),
@@ -101,9 +85,9 @@ class SearchObject {
         this.analyze('contextual', contextual, filters_contextual);
         this.config.after();
       }).fail(function(xhr1, xhr2, xhr3) {
-        console.log('Failed', xhr1);
-        console.log('Failed', xhr2);
-        console.log('Failed', xhr3);
+        console.log('Matched Failed', xhr1);
+        console.log('Related Failed', xhr2);
+        console.log('Contextual Failed', xhr3);
       });
     }
   }

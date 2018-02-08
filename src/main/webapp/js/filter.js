@@ -120,7 +120,7 @@ class FilterHandler {
   append(type, key, value) {
     this.count++;
     var dom = $('<div>', { 'class': 'p-3 mb-2 filter-' + type + ' text-white', 'data-type': type, 'data-key': key, 'data-value': value });
-    dom.append(value + ' <button type="button" class="close text-light" aria-label="Remove"><span aria-hidden="true">&times;</span></button>');
+    dom.append(value + ' <button type="button" class="close text-light filters-remove" aria-label="Remove"><span aria-hidden="true">&times;</span></button>');
     $(this.settings.container+'-'+type).append(dom);
   }
 
