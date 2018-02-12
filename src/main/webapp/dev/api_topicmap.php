@@ -9,7 +9,7 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 //execute post and close the connection
 $result = curl_exec($ch);
 curl_close($ch);
+if (!file_exists('cache')) mkdir('cache', 0777, true);
 file_put_contents('cache/topicmap.json.gz', gzcompress($result));
-file_put_contents('cache/topicmap.json', $result);
 echo $result;
 ?>

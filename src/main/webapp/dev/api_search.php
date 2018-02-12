@@ -10,8 +10,8 @@
 	);
 	$result = curl_exec($ch);
 	curl_close($ch);
+	if (!file_exists('cache')) mkdir('cache', 0777, true);
 	file_put_contents('cache/search.json.gz', gzcompress($result));
-	file_put_contents('cache/search.json', $result);
 	echo $result;
 
 // $socket = fsockopen('beta.data-arc.org', 80, $errno, $errstr, 30);
