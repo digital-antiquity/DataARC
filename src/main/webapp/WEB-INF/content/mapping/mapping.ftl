@@ -30,7 +30,7 @@
 			<form>
             <div class="row">
                 <div class="col-sm-11">
-                    <label for="datasource" class="control-label col-sm-4"><span class="badge badge-info">1</span> Choose a Data Source:</label> 
+                    <label for="datasource" class="control-label col-sm-4"><span class="badge badge-info">1</span> Choose a Data Source*:</label> 
                     <select v-model="currentSchema" id="datasource" class="form-control" >
                         <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
                     </select>
@@ -41,7 +41,7 @@
             </div>
             <div class="row border" v-show="currentSchema != undefined">
                 <div class="col-sm-11">
-                        <label for="choose-indicator" class="control-label col-sm-4"><span class="badge badge-info">2</span> Create /  Select Combinator:</label> 
+                        <label for="choose-indicator" class="control-label col-sm-4"><span class="badge badge-info">2</span> Create /  Select Combinator*:</label> 
                         <select v-model="currentIndicator" id="choose-indicator" class="form-control">
                             <optgroup label="Existing Combinators" v-if="indicators.length > 0 ">
                                 <option v-for="(option, index) in indicators" v-bind:value="index"> {{ option.name }} </option>
@@ -57,7 +57,7 @@
 
 
             <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
-            <div class="col-sm-11"><label class="control-label col-sm-4"><span class="badge badge-info">3</span> Query: </label></div> 
+            <div class="col-sm-11"><label class="control-label col-sm-4"><span class="badge badge-info">3</span> Query*: </label></div> 
             <div class="col-sm-1">
                 <span class="glyphicon glyphicon-question-sign" v-popover:right="'#help_indicator_query'"></span>
                 </div>
@@ -92,7 +92,7 @@
 
                 <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-11">
-                        <label for="indicatorDescription" class="control-label col-sm-4 "><span class="badge badge-info">4</span> Description:</label>
+                        <label for="indicatorDescription" class="control-label col-sm-4 "><span class="badge badge-info">4</span> Description*:</label>
                         <textarea id="indicatorDescription" name="indicatorDescription" v-model="indicators[currentIndicator].description" class="col-sm-7">
                         </textarea>
                     </div>
@@ -105,7 +105,7 @@
 
             <div class="row border"  v-if="fields.length > 0 && currentIndicator === parseInt(currentIndicator)">
                 <div class="col-sm-11">
-                    <label for="chooseTopic" class="control-label col-sm-4"><span class="badge badge-info">5</span> Assign Topic:</label>
+                    <label for="chooseTopic" class="control-label col-sm-4"><span class="badge badge-info">5</span> Assign Topic*:</label>
                     <div class="col-sm-7">
                     <!-- fixme: was indicators[currentIndicator].topicIdentifiers[_idx]  -->
               
@@ -214,10 +214,11 @@
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-                <select  v-show="part.compare" name='fieldNameSecond' v-model="part.fieldNameSecond"  v-on:change="updateTest()" class="form-control">
+                <select  v-show="part.compare || part.compare == undefined && part.fieldNameSecond != undefined " name='fieldNameSecond' v-model="part.fieldNameSecond"  v-on:change="updateTest()" class="form-control">
                     <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
                 </select>
-                <span v-show="part.compare == false">
+
+                <span v-show="part.compare == false || part.compare == undefined && part.fieldNameSecond == undefined ">
 	                <selectize  v-bind:options="getFieldValues(part.fieldName)" v-model="part.value" size="1" style="width:250px" class="form-control"
 	         data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()" data-create="true" data-create-on-blur="true" data-persist="false"
 	         data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'></selectize>
