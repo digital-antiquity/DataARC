@@ -18,6 +18,7 @@ public class SearchQueryObject implements Serializable {
     private Integer page;
     private Integer expandBy = 0;
     private Long schemaId;
+    private boolean expandedFacets = true;
     private List<String> keywords = new ArrayList<>();
     private List<Long> indicators = new ArrayList<>();
     private List<String> topicIds = new ArrayList<>();
@@ -171,6 +172,14 @@ public class SearchQueryObject implements Serializable {
 
     public void setExpandBy(Integer expandBy) {
         this.expandBy = expandBy;
+    }
+
+    public boolean isExpandedFacets() {
+        return expandedFacets;
+    }
+
+    public void setExpandedFacets(boolean expandedFacets) {
+        this.expandedFacets = expandedFacets;
     }
 
 }

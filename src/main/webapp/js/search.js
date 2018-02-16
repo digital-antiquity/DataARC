@@ -73,8 +73,8 @@ class SearchObject {
     // run the search
     else {
       var filters_matched = this.values;
-      var filters_related = _.assign({}, this.values, { "expandBy": 2 });
-      var filters_contextual = _.assign({}, this.values, { "expandBy": 3 });
+      var filters_related = _.assign({}, this.values, { "expandBy": 2, "expandedFacets":false });
+      var filters_contextual = _.assign({}, this.values, { "expandBy": 3, "expandedFacets":false });
       $.when(
         this.fetch(filters_matched, this.config.source),
         this.fetch(filters_related, this.config.source),
