@@ -20,10 +20,10 @@ public class SolrQueryBuilder {
 
     public StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
         StringBuilder bq = new StringBuilder();
+        sqo.expand();
         if (!sqo.isEmptyTemporal()) {
             bq.append(createDateRangeQueryPart(sqo.getTemporal()));
         }
-        sqo.expand();
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
@@ -80,7 +80,9 @@ public class SolrQueryBuilder {
         params.setParam("json.facet", facet);
         params.setParam("rows", Integer.toString(limit));
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
-        params.setFields("*", "[child parentFilter=\"internalType:object\"]");
+        if (sqo.isShowAllFields()) {
+            params.setFields("*", "[child parentFilter=\"internalType:object\"]");
+        }
         params.setFacetMinCount(1);
         return params;
     }

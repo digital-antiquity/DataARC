@@ -3,10 +3,13 @@ package org.dataarc.core.search.query;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Temporal implements Serializable {
 
     private static final long serialVersionUID = 8871743799330705618L;
+    protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
     private Integer start;
     private Integer end;
@@ -29,10 +32,14 @@ public class Temporal implements Serializable {
     }
 
     public void expandBy(Integer expandBy) {
-        int d = end - start;
-        start -= d*expandBy;
-        end += d*expandBy;
-        
+        if (end != null && start != null) {
+            logger.debug("expanding from: {} - {}", start, end);
+            int d = Math.abs(end - start);
+            start -= d * (expandBy -1);
+            end += d * (expandBy -1);
+            logger.debug("expanding   to: {} - {}", start, end);
+        }
+
     }
 
     public boolean isEmpty() {

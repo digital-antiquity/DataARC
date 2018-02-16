@@ -1,14 +1,18 @@
 package org.dataarc.core.search.query;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SearchQueryObject implements Serializable {
 
     private static final long serialVersionUID = 6497930096346061149L;
+    protected final transient Logger logger = LoggerFactory.getLogger(getClass());
     private Spatial spatial = new Spatial();
     private Temporal temporal = new Temporal();
     private boolean idOnly = false;
@@ -94,6 +98,15 @@ public class SearchQueryObject implements Serializable {
     public void setIds(List<String> ids) {
         this.ids = ids;
     }
+    
+    @Transient
+    public boolean isShowAllFields() {
+        if (isIdAndMap() || isIdOnly()) {
+            return false;
+        }
+        return true;
+    }
+    
 
     public boolean isIdAndMap() {
         return idAndMap;
