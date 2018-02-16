@@ -14,7 +14,7 @@
   var SCHEMA = { <#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>, </#sep></#list> };
   var geoJsonInputs = [ <#list files as file>{id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep></#list> ];
   var coverage = [<#list coverage as c>
-  	{ start:${c.startDate?c}, 
+  	{ start:${c.startDate?c},
   		end:${c.endDate?c},
   	   term:"${c.term!''?json_string}",
 description:"${c.description!''?replace('"',"'")?json_string}"}<#sep>,</#sep></#list>];
@@ -147,14 +147,12 @@ description:"${c.description!''?replace('"',"'")?json_string}"}<#sep>,</#sep></#
           <hr class="primary">
           <div class="legend justify-content-md-center">
             <ul class="list-inline">
-              <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological Sources</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-two">&nbsp;&nbsp;</span> Textual Sources</li>
-              <li class="list-inline-item"><span class="legend-item legend-item-three">&nbsp;&nbsp;</span> Environmental Sources</li>
+              <li class="list-inline-item"><img src="img/icons/archaeological.png" class="mx-auto" alt="Archaeological Source Icon"> Archaeological Sources</li>
+              <li class="list-inline-item"><img src="img/icons/textual.png" class="mx-auto" alt="Textual Source Icon"> Textual Sources</li>
+              <li class="list-inline-item"><img src="img/icons/environmental.png" class="mx-auto" alt="Environmental Source Icon"> Environmental Sources</li>
             </ul>
           </div>
-          <div id="map">
-            <div id="mapSpinner"><span class="fa fa-spinner fa-spin"></span></div>
-          </div>
+          <div id="map"></div>
         </div>
       </div>
     </div>
@@ -231,7 +229,6 @@ description:"${c.description!''?replace('"',"'")?json_string}"}<#sep>,</#sep></#
   <#include "includes/public-footer.ftl">
 
   <!-- Custom scripts -->
-  <script src="js/global.js"></script>
   <script src="js/loader.js"></script>
   <script src="js/search.js"></script>
   <script src="js/filter.js"></script>
@@ -239,6 +236,7 @@ description:"${c.description!''?replace('"',"'")?json_string}"}<#sep>,</#sep></#
   <script src="js/geography.js"></script>
   <script src="js/concepts.js"></script>
   <script src="js/results.js"></script>
+  <script src="js/global.js"></script>
 
   <!-- everything below this is automatically generated -->
 

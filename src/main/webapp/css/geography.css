@@ -1,22 +1,99 @@
 #map-section {
   background-color: #f9f9f9;
 }
-#mapSpinner {
-  width:100%;
-  height: 100%;
-  background-color:rgba(220,220,220,0.7);
-  position:absolute;
-  top:0px;
-  left:0px;
-  z-index: 500;
-  display:none;
-  color:#fff;
-  padding-top: 23%;
-  text-align:center;
-}
-#mapSpinner .fa {
-  font-size:72px;
-}
 .leaflet-control-layers-list{
   text-align: left;
+}
+
+
+/* MARKER CLUSTERS */
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 50%;
+  color: #fff;
+  background-color: rgba(0, 137, 208, 0.5);
+  transition: all 0.3s ease 0s;
+}
+.marker-cluster span {
+  display: block;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  background-color: rgba(0, 137, 208, 0.9);
+  transition: all 0.3s ease 0s;
+}
+.marker-cluster div {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 9999;
+  transition: visibility 0s, opacity 0.3s linear;
+}
+.marker-cluster.empty {
+  background-color: rgba(165, 165, 165, 0.5) !important;
+}
+.marker-cluster.empty span,
+.marker-cluster div.empty span {
+  background-color: rgba(165, 165, 165, 0.9) !important;
+}
+.marker-cluster div.marker-cluster-archaeological {
+  top: -60%;
+  left: -90%;
+}
+.marker-cluster div.marker-cluster-archaeological span {
+  background-color: rgba(97, 119, 170, 0.9);
+}
+.marker-cluster div.marker-cluster-textual {
+  top: -110%;
+}
+.marker-cluster div.marker-cluster-textual span{
+  background-color: rgba(252, 141, 98, 0.9);
+}
+.marker-cluster div.marker-cluster-environmental {
+  top: -60%;
+  right: -90%;
+}
+.marker-cluster div.marker-cluster-environmental span {
+  background-color: rgba(102, 194, 165, 0.9);
+}
+.marker-cluster:hover {
+  background-color: rgba(220, 53, 69, 0.5);
+}
+.marker-cluster:hover span {
+  background-color: rgba(220, 53, 69, 0.8);
+}
+.marker-cluster:hover div {
+  visibility: visible;
+  opacity: 1.0;
+}
+
+
+/* MARKER CLUSTER SIZES */
+.marker-cluster-30 span {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  margin: 3px;
+  font-size: 11px;
+}
+.marker-cluster-40 span {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin: 4px;
+  font-size: 12px;
+}
+.marker-cluster-50 span {
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  margin: 4px;
+  font-size: 13px;
+}
+.marker-cluster-60 span {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  margin: 5px;
+  font-size: 14px;
 }

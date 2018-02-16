@@ -338,4 +338,3 @@ class ResultsHandler {
   // nabone() {}
 
 }
-var Results = new ResultsHandler();

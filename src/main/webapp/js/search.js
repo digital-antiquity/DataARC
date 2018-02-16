@@ -59,14 +59,15 @@ class SearchObject {
 
     // if first run then get all data before loading results
     if (initial) {
-      var filters_all = { "spatial": this.defaults.spatial, "idOnly": false };
+      var filters_all = { "idOnly": false };
       $.when(this.fetch(filters_all, this.config.source)).then((all) => {
         this.analyze('all', all, filters_all);
         this.analyze('matched', all, filters_all);
         this.config.after();
 
         // for testing purposes only
-        // console.log('Setting changed for query testing on load.');
+        console.log('Setting changed for query testing on load.');
+        this.set('topicIds', "topic134048.1509611325169");
         // this.set('spatial', {"topLeft": [-23.62, 66.02], "bottomRight": [-18.22, 64.19]});
       });
     }

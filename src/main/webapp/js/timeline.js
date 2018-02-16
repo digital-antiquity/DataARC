@@ -1,7 +1,6 @@
 // Requires ECMA6, Lodash, jQuery
-
+var timelineHistory = {};
 class TimelineObject {
-
   constructor(type, base) {
     this.settings = {
       width: 1000,
@@ -246,5 +245,3 @@ class TimelineObject {
   }
 
 }
-var timelineHistory = {};
-var Timeline = new TimelineObject("millennium", -7000);

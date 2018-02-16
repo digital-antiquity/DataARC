@@ -1,33 +1,33 @@
 // Global variables
-var Search;
+var Loader, Filters, Timeline, Geography, Concepts, Results, Search;
 var category_colors = ["#6177aa", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];
 
 // Page Level Javascript Actions
 $(document).ready(function() {
   // config for the objects
-  var config = {
+  var search_config = {
     source: "/api/search",
     recordSource: "/api/getId",
     delay: 100, // delay before search checks in ms
     before: function() { // actions to run before search query begins
       Loader.show();
+      Filters.wait();
       Timeline.wait();
       Geography.wait();
-      Filters.wait();
       Results.wait();
       $('#filters-count').text(0);
       $('#results-count').text(0);
       console.log('Searching');
     },
     after: function() { // actions to run after search query is finished
+      console.log('Filters');
+      Filters.refresh();
       console.log('Timeline');
       Timeline.refresh();
       console.log('Geography');
       Geography.refresh();
       console.log('Concepts');
       Concepts.refresh();
-      console.log('Filters');
-      Filters.refresh();
       console.log('Results');
       Results.refresh();
       console.log('Counts');
@@ -37,14 +37,31 @@ $(document).ready(function() {
       Loader.hide();
     }
   };
-  if (testing) {
-    var type = 'api'; // api or cache
-    config.source = 'dev/'+type+"_search.php";
-    config.recordSource = 'dev/'+type+"_getId.php";
+  var topic_config = {
+    container: 'topicmap',
+    dataUrl: '/api/topicmap/view',
+    gravity: -200,
+    minRadius: 5,
+    maxRadius: 15,
+    searchContainer: 'topicSearch'
   }
 
-  // Define the objects
-  Search = new SearchObject(config);
+  // set testing variables
+  if (testing) {
+    var type = 'api'; // api or cache
+    search_config.source = 'dev/' + type + '_search.php';
+    search_config.recordSource = 'dev/' + type + '_getId.php';
+    topic_config.dataUrl = 'dev/' + type + '_topicmap.php';
+  }
+
+  // Define the objects, loader first
+  Loader = new LoaderHandler();
+  Filters = new FilterHandler();
+  Timeline = new TimelineObject("millennium", -7000);
+  Geography = new GeographyHandler();
+  Concepts = new TopicMap(topic_config);
+  Results = new ResultsHandler();
+  Search = new SearchObject(search_config);
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
@@ -64,29 +81,6 @@ $(document).ready(function() {
   $('.js-scroll-trigger').click(function() {
     $('.navbar-collapse').collapse('hide');
   });
-
-  // Activate scrollspy to add active class to navbar items on scroll
-  $('body').scrollspy({
-    target: '#mainNav',
-    offset: 48
-  });
-
-  // Scroll reveal calls
-  window.sr = ScrollReveal();
-  sr.reveal('.sr-icons', {
-    duration: 600,
-    scale: 0.3,
-    distance: '0px'
-  }, 200);
-  sr.reveal('.sr-button', {
-    duration: 1000,
-    delay: 200
-  });
-  sr.reveal('.sr-contact', {
-    duration: 600,
-    scale: 0.3,
-    distance: '0px'
-  }, 300);
 
   // Handlebars helper
   Handlebars.registerHelper("fieldName", function(name) {

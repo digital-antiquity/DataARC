@@ -1,15 +1,3 @@
-var topicSettings = {
-  container: 'topicmap',
-  dataUrl: '/api/topicmap/view',
-  gravity: -200,
-  minRadius: 5,
-  maxRadius: 15,
-  searchContainer: 'topicSearch'
-}
-
-if (testing) {
-  topicSettings.dataUrl = 'dev/api_topicmap.php';
-}
 
 var TopicMap = function(settings) {
   this.settings = {}
@@ -1017,6 +1005,3 @@ TopicMap.prototype = {
 
 
 };
-
-
-var Concepts = new TopicMap(topicSettings);

@@ -496,11 +496,6 @@ fieldset[disabled] .btn-primary:hover {
   /*border: 1px solid #ddd;*/
 }
 
-.loader {
-  height: 100%;
-  margin: auto;
-}
-
 #filters-count,
 #results-count {
   font-size: 0.75rem;

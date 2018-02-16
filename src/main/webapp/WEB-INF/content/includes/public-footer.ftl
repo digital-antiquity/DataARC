@@ -52,19 +52,16 @@
 
 <!-- Vendor scripts -->
 <script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/popper/popper.min.js"></script>
+<script src="vendor/jquery.easing/jquery.easing.min.js"></script>
 <script src="vendor/lodash/lodash.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="vendor/d3/d3.v4.min.js"></script>
+<script src="vendor/d3/d3.min.js"></script>
 <script src="vendor/leaflet/leaflet.js"></script>
+<script src="vendor/leaflet.esri/esri-leaflet.js"></script>
+<script src="vendor/leaflet.markercluster/leaflet.markercluster.js"></script>
 <script src="vendor/leaflet.draw/leaflet.draw.js"></script>
 <script src="vendor/leaflet.easybutton/easy-button.js"></script>
-<script src="vendor/leaflet.esri/esri-leaflet.js"></script>
 <script src="vendor/handlebars/handlebars.js"></script>
-<script src="vendor/moment/moment.min.js"></script>
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-<script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 <script src="vendor/datatables/datatables.min.js"></script>
 <script src="vendor/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
 <script src="vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>

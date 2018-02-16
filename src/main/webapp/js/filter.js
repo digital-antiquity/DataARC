@@ -153,6 +153,4 @@ class FilterHandler {
       Concepts.clearFilter();
     }
   }
-
 }
-var Filters = new FilterHandler();
