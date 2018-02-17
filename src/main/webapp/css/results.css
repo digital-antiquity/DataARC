@@ -249,16 +249,16 @@
 }
 .results-environmental h4,
 .results-environmental .card-text {
-	color: #fc8d62;
+	color: #66c2a5;
 }
 .results-environmental hr {
-	border-color: #fc8d62;
+	border-color: #66c2a5;
 }
 .results-textual h4,
 .results-textual .card-text {
-	color: #66c2a5;
+	color: #fc8d62;
 }
 .results-textual hr {
-	border-color: #66c2a5;
+	border-color: #fc8d62;
 }
 
