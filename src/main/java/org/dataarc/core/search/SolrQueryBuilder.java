@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.dataarc.core.query.Operator;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.core.search.query.Temporal;
 import org.slf4j.Logger;
@@ -26,15 +27,25 @@ public class SolrQueryBuilder {
         }
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
-        appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
-        appendKeywordSearch(sqo.getIds(), IndexFields.ID, bq);
+        appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq, Operator.AND);
+        appendKeywordSearch(sqo.getIds(), IndexFields.ID, bq, Operator.AND);
         appendKeywordSearchNumeric(Arrays.asList(sqo.getSchemaId()), IndexFields.SCHEMA_ID, bq);
-        appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, bq);
-        if (sqo.getExpandBy() != null && sqo.getExpandBy() == 2) {
-            appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_2ND, bq);
-        }
-        if (sqo.getExpandBy() != null && sqo.getExpandBy() == 3) {
-            appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_3RD, bq);
+
+        if (CollectionUtils.isNotEmpty(sqo.getTopicIds())) {
+            if (bq.length() > 0) {
+                bq.append(" AND ");
+            } 
+            bq.append("(");
+            StringBuilder sub = new StringBuilder();
+            appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, sub, Operator.OR);
+            if (sqo.getExpandBy() != null && sqo.getExpandBy() > 1) {
+                appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_2ND, sub, Operator.OR);
+            }
+            if (sqo.getExpandBy() != null && sqo.getExpandBy() > 2) {
+                appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_3RD, sub, Operator.OR);
+            }
+            bq.append(sub.toString());
+            bq.append(")");
         }
         if (sqo.isEmptySpatial() == false) {
             appendSpatial(sqo, bq);
@@ -167,7 +178,7 @@ public class SolrQueryBuilder {
      * @param bq
      * @throws ParseException
      */
-    private void appendKeywordSearch(List<String> list, String field, StringBuilder bq) throws ParseException {
+    private void appendKeywordSearch(List<String> list, String field, StringBuilder bq, Operator op) throws ParseException {
         String q = "";
         for (String item : list) {
             String kwd = StringUtils.trim(item);
@@ -181,7 +192,7 @@ public class SolrQueryBuilder {
 
         if (StringUtils.isNotBlank(q)) {
             if (bq.length() > 0) {
-                bq.append(" AND ");
+                bq.append(" "+op.name()+" ");
             }
             bq.append("(").append(q).append(")");
         }

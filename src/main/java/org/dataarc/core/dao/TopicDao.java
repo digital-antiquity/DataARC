@@ -1,13 +1,21 @@
 package org.dataarc.core.dao;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.topic.CategoryAssociation;
 import org.dataarc.bean.topic.Topic;
+import org.dataarc.bean.topic.TopicMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -74,6 +82,27 @@ public class TopicDao {
 
     public List<CategoryAssociation> findAllCategoryAssociations() {
         return manager.createQuery("from CategoryAssociation", CategoryAssociation.class).getResultList();
+    }
+
+    public Collection<? extends String> findRelatedTopics(String tid) {
+        Set<String> assoc = new HashSet<>();
+        TopicMap map = manager.createQuery("from TopicMap", TopicMap.class).getSingleResult();
+
+        map.getAssociations().forEach(asc -> {
+            if (StringUtils.equals(asc.getFrom().getIdentifier(), tid)) {
+                assoc.add(asc.getTo().getIdentifier());
+                assoc.add(asc.getIdentifier());
+            }
+            if (StringUtils.equals(asc.getTo().getIdentifier(), tid)) {
+                assoc.add(asc.getFrom().getIdentifier());
+                assoc.add(asc.getIdentifier());
+            }
+            if (StringUtils.equals(asc.getIdentifier(), tid)) {
+                assoc.add(asc.getFrom().getIdentifier());
+                assoc.add(asc.getTo().getIdentifier());
+            }
+        });
+        return assoc;
     }
 
 }
