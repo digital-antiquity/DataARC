@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Spatial implements Serializable {
 
     private static final long serialVersionUID = 3608731620731620810L;
@@ -109,6 +111,7 @@ public class Spatial implements Serializable {
         return this;
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         if (StringUtils.isNotBlank(getRegion())) {
             return false;

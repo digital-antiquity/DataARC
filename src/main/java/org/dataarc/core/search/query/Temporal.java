@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Temporal implements Serializable {
 
     private static final long serialVersionUID = 8871743799330705618L;
@@ -42,6 +44,7 @@ public class Temporal implements Serializable {
 
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         if (getEnd() == getStart() && getStart() == null && StringUtils.isBlank(period)) {
             return true;
