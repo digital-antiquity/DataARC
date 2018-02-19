@@ -127,6 +127,27 @@ public class SolrService {
         String q = bq.toString();
         if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
             q = "*:*";
+        } else {
+            
+            if (sqo.getExpandBy() != null) {
+                if (sqo.getExpandBy() > 2) {
+                    SolrQueryBuilder queryBuilder2 = new SolrQueryBuilder();
+                    sqo.setExpandBy(2);
+                    StringBuilder bq2 = queryBuilder2.buildQuery(sqo);
+                    String q2 = bq2.toString();
+                    q += " NOT ( " + q2  + " ) ";
+                    sqo.setExpandBy(3);
+                } else if (sqo.getExpandBy() > 1) {
+                    SolrQueryBuilder queryBuilder2 = new SolrQueryBuilder();
+                    sqo.setExpandBy(1);
+                    StringBuilder bq2 = queryBuilder2.buildQuery(sqo);
+                    String q2 = bq2.toString();
+                    q += " NOT ( " + q2  + " ) ";
+                    sqo.setExpandBy(2);
+                }
+            }
+            
+            
         }
 
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q, sqo);

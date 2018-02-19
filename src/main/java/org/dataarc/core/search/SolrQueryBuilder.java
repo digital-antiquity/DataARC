@@ -37,12 +37,12 @@ public class SolrQueryBuilder {
             } 
             bq.append("(");
             StringBuilder sub = new StringBuilder();
-            appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, sub, Operator.OR);
             if (sqo.getExpandBy() != null && sqo.getExpandBy() > 1) {
                 appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_2ND, sub, Operator.OR);
-            }
-            if (sqo.getExpandBy() != null && sqo.getExpandBy() > 2) {
+            } else if (sqo.getExpandBy() != null && sqo.getExpandBy() > 2) {
                 appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID_3RD, sub, Operator.OR);
+            } else {
+                appendKeywordSearch(sqo.getTopicIds(), IndexFields.TOPIC_ID, sub, Operator.OR);
             }
             bq.append(sub.toString());
             bq.append(")");
