@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Filter handler class for data-arc
  * Requires ECMA6, Lodash, jQuery
@@ -147,7 +149,7 @@ class FilterHandler {
       Timeline.clearFilter();
     }
     if (type === 'spatial') {
-      Geography.clearFilter();
+      Geography.clearFilters();
     }
     if (type === 'concepts') {
       Concepts.clearFilter();

@@ -20,10 +20,10 @@ public class SolrQueryBuilder {
 
     public StringBuilder buildQuery(SearchQueryObject sqo) throws ParseException {
         StringBuilder bq = new StringBuilder();
+        sqo.expand();
         if (!sqo.isEmptyTemporal()) {
             bq.append(createDateRangeQueryPart(sqo.getTemporal()));
         }
-        sqo.expand();
         appendTypes(sqo.getSources(), bq);
         appendKeywordSearchNumeric(sqo.getIndicators(), IndexFields.INDICATOR, bq);
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq);
@@ -52,7 +52,7 @@ public class SolrQueryBuilder {
         return String.format(" %s: { type:terms, field:%s, %s , missing:true, facet: { %s } } ", name, key, LIMIT, internal);
     }
 
-    SolrQuery setupQueryWithFacetsAndFilters(int limit, List<String> facetFields, String q) {
+    SolrQuery setupQueryWithFacetsAndFilters(int limit, List<String> facetFields, String q, SearchQueryObject sqo) {
         SolrQuery params = new SolrQuery(q);
         String normal = "";
         for (int i = 0; i < facetFields.size(); i++) {
@@ -71,11 +71,18 @@ public class SolrQueryBuilder {
                         makeFacet(IndexFields.COUNTRY));
         facet += normal + "}";
 
+        
+        if (!sqo.isExpandedFacets()) {
+            facet = "{" + makeFacetGroup("category", IndexFields.CATEGORY, makeFacet(IndexFields.SOURCE)) + "}";
+        }
+        
         logger.debug(facet);
         params.setParam("json.facet", facet);
         params.setParam("rows", Integer.toString(limit));
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
-        params.setFields("*", "[child parentFilter=\"internalType:object\"]");
+        if (sqo.isShowAllFields()) {
+            params.setFields("*", "[child parentFilter=\"internalType:object\"]");
+        }
         params.setFacetMinCount(1);
         return params;
     }

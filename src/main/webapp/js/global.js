@@ -1,3 +1,5 @@
+'use strict';
+
 // Global variables
 var Loader, Filters, Timeline, Geography, Concepts, Results, Search;
 var category_colors = ["#6177aa", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];

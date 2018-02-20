@@ -129,7 +129,7 @@ public class SolrService {
             q = "*:*";
         }
 
-        SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q);
+        SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q, sqo);
         logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
         if (sqo.isIdOnly() || sqo.isIdAndMap() || sqo.isResultPage()) {
             params.addField(IndexFields.ID);
@@ -183,12 +183,12 @@ public class SolrService {
                 idList.add((String) document.get(IndexFields.ID));
                 if (!sqo.isIdOnly()) {
 
-                    if (sqo.isIdAndMap()) {
-                        com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
-
-                        appendFastFeatureResult(sb, i, document, read);
-                    } else {
+                    if (sqo.isShowAllFields()) {
                         appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
+                    } else {
+                        com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
+                        
+                        appendFastFeatureResult(sb, i, document, read);
                     }
                 }
             } catch (Throwable t) {

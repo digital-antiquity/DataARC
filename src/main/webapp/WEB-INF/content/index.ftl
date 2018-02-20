@@ -13,11 +13,15 @@
   var FIELDS = { <#list fields as field>"${field.name}": "${field.displayName}"<#sep>, </#sep></#list> };
   var SCHEMA = { <#list schema as schema>"${schema.name}": "${schema.displayName}"<#sep>, </#sep></#list> };
   var geoJsonInputs = [ <#list files as file>{id:"${file.id?c}", name:"${file.name}", title:"${file.title!'untitled'}", url:"/geojson/${file.id?c}"}<#sep>, </#sep></#list> ];
+<<<<<<< HEAD
   var coverage = [<#list coverage as c>
   	{ start:${c.startDate?c},
   		end:${c.endDate?c},
   	   term:"${c.term!''?json_string}",
 description:"${c.description!''?replace('"',"'")?json_string}"}<#sep>,</#sep></#list>];
+=======
+  var coverage = ${coverage!''};
+>>>>>>> refs/remotes/origin/master
     </script>
   <!-- /REPLACE -->
 
@@ -242,8 +246,8 @@ description:"${c.description!''?replace('"',"'")?json_string}"}<#sep>,</#sep></#
 
   <!-- Either leave this template here or incorporate into the ones that are autmoatically generated -->
   <script id="title-template-polygon" type="text/x-handlebars-template">
-    <div class="title">{{#each this}}<b>{{@key}}</b>: {{this}}<br/>{{/each}}</div>
-    <button class="btn btn-sm" onclick="Geography.regionFilter('{{this.region}}')">Filter by this polygon</button>
+    <ul class="list-unstyled">{{#each this}}<li><strong>{{@key}}</strong>: {{this}}</li>{{/each}}</ul>
+    <button class="btn btn-primary btn-sm" onclick="Geography.filterByRegion('{{this.region}}')">Filter by this polygon</button>
   </script>
 
   <!-- handlebar templates http://handlebarsjs.com -->

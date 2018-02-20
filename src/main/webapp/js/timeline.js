@@ -1,5 +1,9 @@
+'use strict';
+
 // Requires ECMA6, Lodash, jQuery
+
 var timelineHistory = {};
+
 class TimelineObject {
   constructor(type, base) {
     this.settings = {

@@ -1,3 +1,5 @@
+'use strict';
+
 // Requires ECMA6, Lodash, jQuery
 
 class SearchObject {
@@ -32,9 +34,10 @@ class SearchObject {
       "contextual": {},
       "details": {}
     };
+    this.applied = [];
+    this.count = 0;
     this.previous = null;
     this.revision = Date.now();
-    this.query_count = 0;
     this.errors = 0;
     this.config = config;
 
@@ -58,38 +61,48 @@ class SearchObject {
     this.config.before();
 
     // if first run then get all data before loading results
+    var filters_all = { "idOnly": false };
     if (initial) {
-      var filters_all = { "idOnly": false };
       $.when(this.fetch(filters_all, this.config.source)).then((all) => {
         this.analyze('all', all, filters_all);
         this.analyze('matched', all, filters_all);
         this.config.after();
 
         // for testing purposes only
-        console.log('Setting changed for query testing on load.');
-        this.set('topicIds', "topic134048.1509611325169");
+        // console.log('Setting changed for query testing on load.');
+        // this.set('topicIds', "topic134048.1509611325169");
         // this.set('spatial', {"topLeft": [-23.62, 66.02], "bottomRight": [-18.22, 64.19]});
       });
     }
-    // run the search
     else {
-      var filters_matched = this.values;
-      var filters_related = _.assign({}, this.values, { "expandBy": 2 });
-      var filters_contextual = _.assign({}, this.values, { "expandBy": 3 });
-      $.when(
-        this.fetch(filters_matched, this.config.source),
-        this.fetch(filters_related, this.config.source),
-        this.fetch(filters_contextual, this.config.source)
-      ).then((matched, related, contextual) => {
-        this.analyze('matched', matched, filters_matched);
-        this.analyze('related', related, filters_related);
-        this.analyze('contextual', contextual, filters_contextual);
+      // check to see if we have filters
+      if (this.count > 0) {
+        var filters_matched = this.values;
+        var filters_related = _.assign({}, this.values, { "expandBy": 2, "expandedFacets":false });
+        var filters_contextual = _.assign({}, this.values, { "expandBy": 3, "expandedFacets":false });
+        $.when(
+          this.fetch(filters_matched, this.config.source),
+          this.fetch(filters_related, this.config.source),
+          this.fetch(filters_contextual, this.config.source)
+        ).then((matched, related, contextual) => {
+          this.analyze('matched', matched, filters_matched);
+          this.analyze('related', related, filters_related);
+          this.analyze('contextual', contextual, filters_contextual);
+          this.config.after();
+        }).fail(function(xhr1, xhr2, xhr3) {
+          console.log('Matched Failed', xhr1);
+          console.log('Related Failed', xhr2);
+          console.log('Contextual Failed', xhr3);
+        });
+      }
+      // if we don't have filters, load values from the initial query
+      else {
+        this.results['matched'] = {};
+        this.results['related'] = {};
+        this.results['contextual'] = {};
+        this.analyze('matched', this.results['all'].data, filters_all);
         this.config.after();
-      }).fail(function(xhr1, xhr2, xhr3) {
-        console.log('Matched Failed', xhr1);
-        console.log('Related Failed', xhr2);
-        console.log('Contextual Failed', xhr3);
-      });
+      }
     }
   }
 
@@ -123,11 +136,6 @@ class SearchObject {
     this.results[type].facets = (data.facets ? data.facets : {});
     this.results[type].count = this.results[type].ids.length;
     console.log('Loaded ' + type + ' results containing ' + this.results[type].count + ' features.', this.results[type]);
-  }
-
-  query(filters, callback) {
-    this.query_count++;
-    d3.json(this.config.source).header("Content-Type", "application/json;charset=UTF-8").post(JSON.stringify(filters), callback);
   }
 
   // Generic function to make an AJAX call
@@ -165,14 +173,16 @@ class SearchObject {
     // set our value
     if (value == null) {
       this.values[key] = this.defaults[key];
+      this.track(key, false);
     }
     else {
       if (Array.isArray(this.values[key])) {
-        this.values[key] = [...new Set([].concat(...[this.values[key], [value]]))]; // _.union(this.values[key], [value]);
+        this.values[key] = [...new Set([].concat(...[this.values[key], [value]]))];
       }
       else {
         this.values[key] = value;
       }
+      this.track(key, true);
     }
 
     // check to see if anything changed
@@ -195,12 +205,20 @@ class SearchObject {
     if (this.values[key] && value != null) {
       if (Array.isArray(this.values[key])) {
         _.pull(this.values[key], "" + value);
+        this.track(key, false);
         this.changed();
       }
     }
     else {
       this.set(key, null)
     }
+  }
+
+  track(key, set) {
+    var index = this.applied.indexOf(key);
+    if (index !== -1) this.applied.splice(index, 1);
+    if (set) this.applied.push(key);
+    this.count = this.applied.length;
   }
 
   // ****************************************************

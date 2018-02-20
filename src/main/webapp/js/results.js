@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Results handler class for data-arc
  * Requires ECMA6, Lodash, jQuery
