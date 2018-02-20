@@ -35,11 +35,15 @@ public class Temporal implements Serializable {
 
     public void expandBy(Integer expandBy) {
         if (end != null && start != null) {
-            logger.debug("expanding from: {} - {}", start, end);
+            if (logger != null) {
+                logger.debug("expanding from: {} - {}", start, end);
+            }
             int d = Math.abs(end - start);
             start -= d * (expandBy -1);
             end += d * (expandBy -1);
-            logger.debug("expanding   to: {} - {}", start, end);
+            if (logger != null) {
+                logger.debug("expanding   to: {} - {}", start, end);
+            }
         }
 
     }
