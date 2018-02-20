@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.SerializationUtils;
 
 import com.vividsolutions.jts.io.WKTReader;
 
@@ -119,7 +121,8 @@ public class SolrService {
         }
 
         cleanupDatesInSearchQueryObject(sqo);
-
+        SearchQueryObject sqoClone2 = clone(sqo);
+        SearchQueryObject sqoClone3 = clone(sqo);
         FeatureCollection fc = new FeatureCollection();
         Set<String> idList = new HashSet<>();
         SolrQueryBuilder queryBuilder = new SolrQueryBuilder();
@@ -127,6 +130,25 @@ public class SolrService {
         String q = bq.toString();
         if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
             q = "*:*";
+        } else {
+            
+            if (sqo.getExpandBy() != null) {
+                if (sqo.getExpandBy() > 2) {
+                    SolrQueryBuilder queryBuilder2 = new SolrQueryBuilder();
+                    sqoClone2.setExpandBy(2);
+                    StringBuilder bq2 = queryBuilder2.buildQuery(sqoClone2);
+                    String q2 = bq2.toString();
+                    q += " NOT ( " + q2  + " ) ";
+                } else if (sqo.getExpandBy() > 1) {
+                    SolrQueryBuilder queryBuilder2 = new SolrQueryBuilder();
+                    sqoClone3.setExpandBy(1);
+                    StringBuilder bq2 = queryBuilder2.buildQuery(sqoClone3);
+                    String q2 = bq2.toString();
+                    q += " NOT ( " + q2  + " ) ";
+                }
+            }
+            
+            
         }
 
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q, sqo);
@@ -345,6 +367,11 @@ public class SolrService {
             }
         }
         return date;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends Serializable> T clone(T object) {
+         return (T) SerializationUtils.deserialize(SerializationUtils.serialize(object));
     }
 
     public void buildFindAllCache() {

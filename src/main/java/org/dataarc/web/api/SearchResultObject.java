@@ -25,6 +25,8 @@ public abstract class SearchResultObject implements Serializable {
 
     private SearchQueryObject query;
 
+    public SearchResultObject() {}
+    
     public SearchResultObject(SearchQueryObject query) {
         this.query = query;
     }

@@ -90,11 +90,11 @@ public class SearchIndexObject {
     private String internalType = "object";
 
     @Field(value = IndexFields.INDICATOR)
-    private Set<String> indicators;
+    private List<String> indicators;
     @Field(value = IndexFields.TOPIC_ID_2ND)
-    private Set<String> topic_2nd;
+    private List<String> topic_2nd;
     @Field(value = IndexFields.TOPIC_ID_3RD)
-    private Set<String> topic_3rd;
+    private List<String> topic_3rd;
     @Field(value = IndexFields.TOPIC)
     private Set<String> topics;
     @Field(value = IndexFields.TOPIC_ID)
@@ -317,7 +317,7 @@ public class SearchIndexObject {
 
     private void applyIndicators(DataEntry entry) {
         if (CollectionUtils.isNotEmpty(entry.getDataArcIndicators())) {
-            indicators = entry.getDataArcIndicators();
+            indicators = new ArrayList<>(entry.getDataArcIndicators());
             values.addAll(indicators);
         }
     }
@@ -362,11 +362,11 @@ public class SearchIndexObject {
         this.source = source;
     }
 
-    public Set<String> getIndicators() {
+    public List<String> getIndicators() {
         return indicators;
     }
 
-    public void setIndicators(Set<String> indicators) {
+    public void setIndicators(List<String> indicators) {
         this.indicators = indicators;
     }
 
@@ -413,6 +413,8 @@ public class SearchIndexObject {
         valMap.put(IndexFields.SOURCE, getSource());
         valMap.put(IndexFields.TOPIC, getTopics());
         valMap.put(IndexFields.TOPIC_ID, getTopicIdentifiers());
+        valMap.put(IndexFields.TOPIC_ID_2ND, getTopic_2nd());
+        valMap.put(IndexFields.TOPIC_ID_3RD, getTopic_3rd());
         valMap.put(IndexFields.INDICATOR, getIndicators());
         valMap.put(IndexFields.TITLE, getTitle());
         feature.setProperties(valMap);
@@ -455,11 +457,11 @@ public class SearchIndexObject {
         this.data = data;
     }
 
-    public Set<String> getTopic_2nd() {
+    public List<String> getTopic_2nd() {
         return topic_2nd;
     }
 
-    public void setTopic_2nd(Set<String> topic_2nd) {
+    public void setTopic_2nd(List<String> topic_2nd) {
         this.topic_2nd = topic_2nd;
     }
 
@@ -526,11 +528,11 @@ public class SearchIndexObject {
         this.region = region;
     }
 
-    public Set<String> getTopic_3rd() {
+    public List<String> getTopic_3rd() {
         return topic_3rd;
     }
 
-    public void setTopic_3rd(Set<String> topic_3rd) {
+    public void setTopic_3rd(List<String> topic_3rd) {
         this.topic_3rd = topic_3rd;
     }
 

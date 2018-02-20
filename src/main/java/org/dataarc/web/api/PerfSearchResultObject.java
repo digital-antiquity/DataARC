@@ -13,6 +13,8 @@ public class PerfSearchResultObject extends SearchResultObject implements Serial
     @JsonRawValue
     private String results;
 
+    public PerfSearchResultObject() {}
+    
     public PerfSearchResultObject(SearchQueryObject query) {
         super(query);
     }

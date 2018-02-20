@@ -149,16 +149,25 @@ public class SolrIndexingService {
             }
             if (CollectionUtils.isNotEmpty(entry.getDataArcTopicIdentifiers())) {
                 map.put(IndexFields.TOPIC_ID, entry.getDataArcTopicIdentifiers());
+                Set<String> nd2 = new HashSet<>(); 
+                Set<String> nd3 = new HashSet<>(); 
+                entry.getDataArcTopicIdentifiers().forEach(tid -> {
+                    nd2.addAll(topicDao.findRelatedTopics(tid));
+                });
+                nd2.forEach(tid -> {
+                    nd3.addAll(topicDao.findRelatedTopics(tid));
+                });
+                map.put(IndexFields.TOPIC_ID_2ND, nd2);
+                map.put(IndexFields.TOPIC_ID_3RD, nd3);
             }
             if (CollectionUtils.isNotEmpty(entry.getDataArcTopics())) {
                 map.put(IndexFields.TOPIC_NAMES, entry.getDataArcTopics());
             }
 
-            // map.put(IndexFields.TOPIC_ID_2ND, );
-            // map.put(IndexFields.TOPIC_ID_3RD, );
-
             replaceField(doc, map, IndexFields.INDICATOR);
             replaceField(doc, map, IndexFields.TOPIC_ID);
+            replaceField(doc, map, IndexFields.TOPIC_ID_2ND);
+            replaceField(doc, map, IndexFields.TOPIC_ID_3RD);
             replaceField(doc, map, IndexFields.TOPIC_NAMES);
             if (logger.isTraceEnabled()) {
                 logger.trace("{}", doc);
@@ -228,9 +237,6 @@ public class SolrIndexingService {
             applyTitle(searchIndexObject, schema);
 
                 map.put(IndexFields.TITLE, searchIndexObject.getTitle());
-
-            // map.put(IndexFields.TOPIC_ID_2ND, );
-            // map.put(IndexFields.TOPIC_ID_3RD, );
 
             replaceField(doc, map, IndexFields.TITLE);
             client.add(DATA_ARC, doc);
@@ -413,10 +419,31 @@ public class SolrIndexingService {
                 topics.add(topicId);
             }
         }
-        searchIndexObject.setTopicIdentifiers(topics);
-        for (String topic : topics) {
-            processTopic(searchIndexObject, topic);
+        if (CollectionUtils.isNotEmpty(topics)) {
+            Set<String> nd2 = new HashSet<>(); 
+            Set<String> nd3 = new HashSet<>(); 
+            topics.forEach(tid -> {
+                nd2.addAll(topicDao.findRelatedTopics(tid));
+            });
+            nd2.forEach(tid -> {
+                nd3.addAll(topicDao.findRelatedTopics(tid));
+            });
+            if (searchIndexObject.getTopic_2nd() == null) {
+                searchIndexObject.setTopic_2nd(new ArrayList<>());
+            }
+            if (searchIndexObject.getTopic_3rd() == null) {
+                searchIndexObject.setTopic_3rd(new ArrayList<>());
+            }
+            searchIndexObject.getTopic_2nd().addAll(nd2);
+            searchIndexObject.getTopic_3rd().addAll(nd3);
+            logger.trace("{} -> (1) {} ; (2) {} ; (3) {}", searchIndexObject.getId(), topics, nd2, nd3);
         }
+
+        
+        searchIndexObject.setTopicIdentifiers(topics);
+//        for (String topic : topics) {
+//            processTopic(searchIndexObject, topic);
+//        }
     }
 
     private void processTopic(SearchIndexObject searchIndexObject, String topicId) {
@@ -432,23 +459,23 @@ public class SolrIndexingService {
                 logger.error("topic is null");
                 return;
             }
-            Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
-            Set<Topic> grandChildren = new HashSet<>();
-            for (Topic child : children) {
-                grandChildren.addAll(associationDao.findRelatedTopics(child));
-            }
-            grandChildren.removeAll(children);
-            grandChildren.remove(topic);
-            searchIndexObject.setTopic_2nd(new HashSet<>());
-            searchIndexObject.setTopic_3rd(new HashSet<>());
-            for (Topic t : children) {
-                searchIndexObject.getTopic_2nd().add(t.getIdentifier());
-                searchIndexObject.getTopic_2nd().add(t.getName());
-            }
-            for (Topic t : grandChildren) {
-                searchIndexObject.getTopic_3rd().add(t.getIdentifier());
-                searchIndexObject.getTopic_3rd().add(t.getName());
-            }
+//            Set<Topic> children = new HashSet<>(associationDao.findRelatedTopics(topic));
+//            Set<Topic> grandChildren = new HashSet<>();
+//            for (Topic child : children) {
+//                grandChildren.addAll(associationDao.findRelatedTopics(child));
+//            }
+//            grandChildren.removeAll(children);
+//            grandChildren.remove(topic);
+//            searchIndexObject.setTopic_2nd(new HashSet<>());
+//            searchIndexObject.setTopic_3rd(new HashSet<>());
+//            for (Topic t : children) {
+//                searchIndexObject.getTopic_2nd().add(t.getIdentifier());
+//                searchIndexObject.getTopic_2nd().add(t.getName());
+//            }
+//            for (Topic t : grandChildren) {
+//                searchIndexObject.getTopic_3rd().add(t.getIdentifier());
+//                searchIndexObject.getTopic_3rd().add(t.getName());
+//            }
         }
     }
 

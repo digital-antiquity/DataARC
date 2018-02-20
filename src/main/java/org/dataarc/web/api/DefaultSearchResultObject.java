@@ -6,6 +6,7 @@ public class DefaultSearchResultObject extends SearchResultObject {
     private static final long serialVersionUID = 8853009519440766180L;
     private Object results;
     
+    public DefaultSearchResultObject() {}
     
     public DefaultSearchResultObject(SearchQueryObject sqo) {
         super(sqo);

@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Temporal implements Serializable {
 
     private static final long serialVersionUID = 8871743799330705618L;
@@ -33,15 +35,20 @@ public class Temporal implements Serializable {
 
     public void expandBy(Integer expandBy) {
         if (end != null && start != null) {
-            logger.debug("expanding from: {} - {}", start, end);
+            if (logger != null) {
+                logger.debug("expanding from: {} - {}", start, end);
+            }
             int d = Math.abs(end - start);
             start -= d * (expandBy -1);
             end += d * (expandBy -1);
-            logger.debug("expanding   to: {} - {}", start, end);
+            if (logger != null) {
+                logger.debug("expanding   to: {} - {}", start, end);
+            }
         }
 
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         if (getEnd() == getStart() && getStart() == null && StringUtils.isBlank(period)) {
             return true;

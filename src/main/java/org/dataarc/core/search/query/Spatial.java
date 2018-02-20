@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Spatial implements Serializable {
 
     private static final long serialVersionUID = 3608731620731620810L;
@@ -13,8 +15,7 @@ public class Spatial implements Serializable {
     private double[] bottomRight;
     private String region;
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
-    
-    
+
     public Spatial() {
     }
 
@@ -49,10 +50,16 @@ public class Spatial implements Serializable {
 
     public Spatial expandBy(Integer expandBy) {
         double multi = (double) expandBy * 0.1;
-        logger.debug("expand from: [{}-{}]", topLeft, bottomRight);
+        // silly, but the 'deep clone nulls the logger)
+        if (logger != null) {
+            logger.debug("expand from: [{}-{}]", topLeft, bottomRight);
+        }
         double d1 = Math.abs(topLeft[0] - bottomRight[0]) * multi / 2;
         double d2 = Math.abs(topLeft[1] - bottomRight[1]) * multi / 2;
-        logger.debug(d1 + " - " + d2 + " :" + multi);
+        // silly, but the 'deep clone nulls the logger)
+        if (logger != null) {
+            logger.debug(d1 + " - " + d2 + " :" + multi);
+        }
         if (topLeft[0] > 0) {
             topLeft[0] += d1;
         } else {
@@ -70,11 +77,11 @@ public class Spatial implements Serializable {
         } else {
             topLeft[1] -= d2;
         }
-        
+
         if (bottomRight[1] < 0) {
             bottomRight[1] += d2;
         } else {
-            bottomRight[1] -= d2;            
+            bottomRight[1] -= d2;
         }
 
         if (topLeft[0] > 180) {
@@ -105,10 +112,13 @@ public class Spatial implements Serializable {
             bottomRight[1] = 90;
         }
 
-        logger.debug("expand   to: [{}-{}]", topLeft, bottomRight);
+        if (logger != null) {
+            logger.debug("expand   to: [{}-{}]", topLeft, bottomRight);
+        }
         return this;
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         if (StringUtils.isNotBlank(getRegion())) {
             return false;

@@ -91,7 +91,7 @@ public class ControllerTest extends AbstractServiceTest {
     @Test
     public void searchJsonExpandTooBig() throws Exception {
         SearchQueryObject sqo = new SearchQueryObject();
-        sqo.setSpatial(new Spatial(new double[] { -75.0, 85.0 }, new double[] { -0.1, 58.0 }));
+        sqo.setSpatial(new Spatial(new double[] { -75.0, 58.0 }, new double[] { -0.1, 85.0 }));
         sqo.setIdOnly(true);
         sqo.setExpandBy(2);
         String json  =asJsonString(sqo);

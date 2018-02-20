@@ -9,6 +9,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class SearchQueryObject implements Serializable {
 
     private static final long serialVersionUID = 6497930096346061149L;
@@ -77,6 +79,8 @@ public class SearchQueryObject implements Serializable {
         this.temporal = temporal;
     }
 
+    @Transient
+    @JsonIgnore
     public boolean isEmptySpatial() {
         if (getSpatial() == null) {
             return true;
@@ -84,6 +88,8 @@ public class SearchQueryObject implements Serializable {
         return getSpatial().isEmpty();
     }
 
+    @Transient
+    @JsonIgnore
     public boolean isEmptyTemporal() {
         if (getTemporal() == null) {
             return true;
@@ -100,6 +106,7 @@ public class SearchQueryObject implements Serializable {
     }
     
     @Transient
+    @JsonIgnore
     public boolean isShowAllFields() {
         if (isIdAndMap() || isIdOnly()) {
             return false;
@@ -156,6 +163,7 @@ public class SearchQueryObject implements Serializable {
         this.resultPage = resultPage;
     }
 
+    @Transient
     public boolean isFindAll() {
         if (CollectionUtils.isNotEmpty(getIndicators()) || CollectionUtils.isNotEmpty(getIds()) || CollectionUtils.isNotEmpty(getSources())
                 || CollectionUtils.isNotEmpty(getTopicIds()) || !isEmptyTemporal() || CollectionUtils.isNotEmpty(keywords)) {
