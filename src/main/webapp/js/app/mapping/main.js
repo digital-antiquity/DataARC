@@ -434,8 +434,10 @@ var Hack = new Vue({
                           'Content-Type': 'application/json'
                       }})
                   .then(function (request) {
-                      console.log(JSON.stringify(request.body));
+                      console.log("indicator result: " + JSON.stringify(request.body));
                       indicatorId = request.body;
+                      indicator.id = indicatorId;
+                      Vue.set(this, "indicatorId", request.body);
                       Vue.set(this,"saveStatus","successful");
                       setTimeout(this.resetSave, 2000);
 

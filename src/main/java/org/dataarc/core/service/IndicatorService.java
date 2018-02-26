@@ -50,7 +50,7 @@ public class IndicatorService {
 
     @Transactional(readOnly = false)
     @PreAuthorize("hasPermission('Indicator', 'CREATE_EDIT')")
-    public void save(IndicatorDataObject _indicator, DataArcUser user) {
+    public Indicator save(IndicatorDataObject _indicator, DataArcUser user) {
         Indicator indicator = null;
         if (PersistableUtils.isNotNullOrTransient(_indicator.getId())) {
             indicator = indicatorDao.findById(_indicator.getId());
@@ -72,6 +72,7 @@ public class IndicatorService {
         } catch (Throwable t) {
             logger.error("{}", t, t);
         }
+        return indicator;
     }
 
     private void resolveTopics(IndicatorDataObject _indicator, Indicator indicator) {

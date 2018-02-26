@@ -40,18 +40,18 @@ public class IndicatorApiController extends AbstractRestController {
 
     
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
-    public Long save(@RequestBody(required = true) IndicatorDataObject indicator) throws Exception {
+    public Long save(@RequestBody(required = true) IndicatorDataObject indicator_) throws Exception {
+        Indicator indicator = null;
         try {
-            logger.debug("Saving indicator: {} :: {}", indicator, indicator.getTopicIdentifiers());
-            indicatorService.save(indicator, getUser());
-            changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator.getName());
-                indexingService.reindexIndicatorsOnly(indicator.getQuery().getSchema());
-
+            logger.debug("Saving indicator: {} :: {}", indicator_, indicator_.getTopicIdentifiers());
+            indicator = indicatorService.save(indicator_, getUser());
+            changelogservice.save(ActionType.SAVE, ObjectType.COMBINATOR, getUser(), indicator_.getName());
+                indexingService.reindexIndicatorsOnly(indicator_.getQuery().getSchema());
+                return indicator.getId();
         } catch (Throwable t) {
             logger.error("error saving indicator", t);
         }
-        return indicator.getId();
-
+        return null;
     }
 
     @RequestMapping(path = UrlConstants.UPDATE_INDICATOR, method = RequestMethod.PUT)
