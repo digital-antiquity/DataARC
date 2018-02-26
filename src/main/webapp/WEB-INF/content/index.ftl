@@ -41,6 +41,7 @@
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-primary">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-danger">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/about">About <i class="fa fa-info-circle"></i></a></li>
         </ul>
       </div>
     </div>
@@ -211,6 +212,22 @@
       </div>
     </div>
   </section>
+
+<!--   <div class="counts">
+    <ul class="list-unstyled">
+      <li class="icon"><a class="js-scroll-trigger" href="#filters-section">Filters<span id="filters-count" class="badge badge-primary">0</span></a></li>
+      <li class="icon"><a class="js-scroll-trigger" href="#results-section">Results<span id="results-count" class="badge badge-danger">0</span></a></li>
+    </ul>
+  </div> -->
+
+<!--   <div class="counts">
+    <div>
+      <i class="fa fa-filter"></i>
+      <span id="results-count" class="badge badge-danger">0</span>
+      <strong>results</strong>
+    </div>
+    <span id="filters-count" class="badge badge-primary">0</span>
+  </div> -->
 
   <!-- Details modal -->
   <div class="modal fade" id="results-details" tabindex="-1" role="dialog" aria-hidden="true">
