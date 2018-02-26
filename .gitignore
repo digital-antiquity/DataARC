@@ -19,7 +19,6 @@ map
 smal-indexes
 datadir
 skope.properties
-src/main/webapp/img
 src/main/resources/solr/dataArc/data
 managed-schema
 crowd.properties
