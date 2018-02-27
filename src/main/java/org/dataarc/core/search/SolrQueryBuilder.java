@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SolrQueryBuilder {
+    public static int SMALL_NUM_OF_FACETS = 5;
+    public static int LOTS_OF_FACETS = 10_000;
 
     private static final String TEMPORAL = "temporal";
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -53,14 +55,13 @@ public class SolrQueryBuilder {
         return bq;
     }
 
-    static final String LIMIT = "limit:5";
-
-    private String makeFacet(String key) {
-        return String.format("%s: {type:terms, missing:true, %s, field:'%s'}", key, LIMIT, key);
+    
+    private String makeFacet(String key, int limit) {
+        return String.format("%s: {type:terms, missing:true, limit:%s , field:'%s'}", key, limit, key);
     }
 
     private String makeFacetGroup(String name, String key, String internal) {
-        return String.format(" %s: { type:terms, field:%s, %s , missing:true, facet: { %s } } ", name, key, LIMIT, internal);
+        return String.format(" %s: { type:terms, field:%s, limit:%s , missing:true, facet: { %s } } ", name, key, SMALL_NUM_OF_FACETS, internal);
     }
 
     SolrQuery setupQueryWithFacetsAndFilters(int limit, List<String> facetFields, String q, SearchQueryObject sqo) {
@@ -68,23 +69,23 @@ public class SolrQueryBuilder {
         String normal = "";
         for (int i = 0; i < facetFields.size(); i++) {
             String fld = facetFields.get(i);
-            normal += ", " + makeFacet(fld);
+            normal += ", " + makeFacet(fld, SMALL_NUM_OF_FACETS);
         }
 
         String facet = "{" + makeFacetGroup(TEMPORAL, IndexFields.CATEGORY,
-                makeFacet(IndexFields.CENTURY) + ", "
-                        + makeFacet(IndexFields.MILLENIUM) + ","
-                        + makeFacet(IndexFields.DECADE));
+                        makeFacet(IndexFields.MILLENIUM, LOTS_OF_FACETS) + ","
+                        + makeFacet(IndexFields.CENTURY, LOTS_OF_FACETS) + ", "
+                        + makeFacet(IndexFields.DECADE, LOTS_OF_FACETS));
         facet += "," + makeFacetGroup("category", IndexFields.CATEGORY,
-                makeFacet(IndexFields.SOURCE));
+                makeFacet(IndexFields.SOURCE,LOTS_OF_FACETS));
         facet += "," + makeFacetGroup("spatial", IndexFields.CATEGORY,
-                makeFacet(IndexFields.REGION) + "," +
-                        makeFacet(IndexFields.COUNTRY));
+                makeFacet(IndexFields.REGION, SMALL_NUM_OF_FACETS) + "," +
+                        makeFacet(IndexFields.COUNTRY, SMALL_NUM_OF_FACETS));
         facet += normal + "}";
 
         
         if (!sqo.isExpandedFacets()) {
-            facet = "{" + makeFacetGroup("category", IndexFields.CATEGORY, makeFacet(IndexFields.SOURCE)) + "}";
+            facet = "{" + makeFacetGroup("category", IndexFields.CATEGORY, makeFacet(IndexFields.SOURCE, LOTS_OF_FACETS)) + "}";
         }
         
         logger.debug(facet);
