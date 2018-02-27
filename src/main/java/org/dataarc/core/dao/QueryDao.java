@@ -1,10 +1,10 @@
 package org.dataarc.core.dao;
 
-import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;
+import org.dataarc.datastore.mongo.FilterQueryResult;
 
 public interface QueryDao {
 
-    Iterable<DataEntry> getMatchingRows(FilterQuery fq, int num) throws Exception;
+    FilterQueryResult getMatchingRows(FilterQuery fq, int num) throws Exception;
 
 }
