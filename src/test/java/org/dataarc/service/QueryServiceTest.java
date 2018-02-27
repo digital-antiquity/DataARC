@@ -10,6 +10,7 @@ import org.dataarc.core.query.MatchType;
 import org.dataarc.core.query.QueryPart;
 import org.dataarc.core.service.QueryService;
 import org.dataarc.core.service.SchemaService;
+import org.dataarc.datastore.mongo.FilterQueryResult;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +49,8 @@ public class QueryServiceTest extends AbstractServiceTest {
         fq.setSchema("sead");
         fq.getConditions().add(new QueryPart("source", "sead", MatchType.EQUALS));
         fq.getConditions().add(new QueryPart("sites.SiteCode", "SITE000572", MatchType.CONTAINS));
-        Iterable<DataEntry> results = queryService.getMatchingRows(fq,100);
-        results.forEach(r -> {
+        FilterQueryResult results = queryService.getMatchingRows(fq,100);
+        results.getResults().forEach(r -> {
             logger.debug("{}", r);
         });
     }

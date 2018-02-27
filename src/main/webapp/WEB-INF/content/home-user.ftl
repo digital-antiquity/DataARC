@@ -10,6 +10,8 @@
     
     <@body.body>
 <h1> Welcome User!</h1>
-<a href="mailto:abrin@digitalantiquity.org">Request Contributor Access</a>
+We are processing your request to contribute combinators to dataARC. Please <a href="mailto:abrin@digitalantiquity.org">email us</a> if you do not get approval in the next day.
+<br/><br/>
+Thanks!
 </@body.body>
 </html>
