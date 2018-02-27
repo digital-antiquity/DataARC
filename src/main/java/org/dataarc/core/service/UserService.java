@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.dao.DataArcUserDao;
+import org.dataarc.core.dao.EmailDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class UserService {
     @Autowired
     DataArcUserDao userDao;
 
+    @Autowired
+    EmailDao emailDao;
+    
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Transactional(readOnly = true)
@@ -107,7 +111,14 @@ public class UserService {
             logger.trace("     userId: {}", userId);
             DataArcUser user = findByExternalId(userId);
             // authentication.set
+            boolean isNew = false;
+            if (user == null) {
+                isNew = true;
+            }
             saveOrUpdateUser(user, userEntity);
+            if (isNew) {
+                emailDao.sendWelcomeEmail(user, EDITOR_ROLE);
+            }
             return user;
         }
 
@@ -190,6 +201,7 @@ public class UserService {
         } else if (StringUtils.containsIgnoreCase(EDITOR_ROLE, role)) {
             user.setEditor(true);
             user.setAdmin(false);
+            emailDao.sendEmail(user, EDITOR_ROLE);
         } else {
             user.setAdmin(false);
             user.setEditor(false);

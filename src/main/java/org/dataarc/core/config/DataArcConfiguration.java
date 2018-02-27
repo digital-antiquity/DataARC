@@ -17,6 +17,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -75,6 +77,14 @@ public class DataArcConfiguration {
             rollbar.handleUncaughtErrors();
         }
         return rollbar;
+    }
+    
+    @Bean(name = "mailSender")
+    public JavaMailSender getJavaMailSender() {
+        String hostname = env.getProperty("mail.smtp.host", "localhost");
+        JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        sender.setHost(hostname);
+        return sender;
     }
 
     @Bean
