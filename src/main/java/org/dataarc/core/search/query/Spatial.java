@@ -54,6 +54,10 @@ public class Spatial implements Serializable {
         if (logger != null) {
             logger.debug("expand from: [{}-{}]", topLeft, bottomRight);
         }
+        
+        if (topLeft == null || bottomRight == null || topLeft.length < 2 || bottomRight.length < 2) {
+            return this;
+        }
         double d1 = Math.abs(topLeft[0] - bottomRight[0]) * multi / 2;
         double d2 = Math.abs(topLeft[1] - bottomRight[1]) * multi / 2;
         // silly, but the 'deep clone nulls the logger)
