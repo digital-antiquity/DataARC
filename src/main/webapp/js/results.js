@@ -169,6 +169,10 @@ class ResultsHandler {
       'aria-selected': active.toString()
     });
     link.append(data.name + ' <span class="badge badge-dark">' + data.count + '</span>');
+    link.on('click', (e) => {
+      var description = $('#' + data.id + '_bio').text();
+      $(e.target.hash + ' .source-description').text(description);
+    });
     parent.append(link);
   }
 
