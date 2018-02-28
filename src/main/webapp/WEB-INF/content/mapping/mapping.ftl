@@ -32,7 +32,7 @@
                 <div class="col-sm-11">
                     <label for="datasource" class="control-label col-sm-4"><span class="badge badge-info">1</span> Choose a Data Source*:</label> 
                     <select v-model="currentSchema" id="datasource" class="form-control" >
-                        <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.name }} </option>
+                        <option v-for="(option, index) in schema" v-bind:value="index"> {{ option.displayName }} </option>
                     </select>
                 </div>
                 <div class="col-sm-1">
@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-sm-1">
                     <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
-                    v-popover:right="'#help_choose_indicator'"></span>
+                    v-popover:right="'#help_descript_query'"></span>
                     </div>
                 </div>
 
@@ -210,13 +210,14 @@
         <template id="spart-template">
             <div >  
                 <select name='fieldName' v-model="part.fieldName"  v-on:change="updateTest()" class="form-control">
-                    <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
+                    <option v-for="(field, index) in fields  | orderBy 'name' "  v-bind:value="field.name"> {{ field.displayName }} </option>
                 </select>
                 <select name='type' v-model="part.type" class="form-control" v-on:change="onValidChange()" >
                     <option v-for="(limit, index) in getLimits()" v-bind:value="limit.value"> {{ limit.text }} </option>
                 </select>
-                <select  v-show="part.compare || part.compare == undefined && part.fieldNameSecond != undefined " name='fieldNameSecond' v-model="part.fieldNameSecond"  v-on:change="updateTest()" class="form-control">
-                    <option v-for="(field, index) in fields"  v-bind:value="field.name"> {{ field.displayName }} </option>
+                <select  v-show="part.compare || part.compare == undefined && part.fieldNameSecond != undefined " 
+                		name='fieldNameSecond' v-model="part.fieldNameSecond"  v-on:change="updateTest()" class="form-control">
+                    <option v-for="(field, index) in fields | orderBy 'name' "  v-bind:value="field.name"> {{ field.displayName }} </option>
                 </select>
 
                 <span v-show="part.compare == false || part.compare == undefined && part.fieldNameSecond == undefined ">
