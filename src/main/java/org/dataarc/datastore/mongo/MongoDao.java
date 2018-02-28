@@ -98,8 +98,8 @@ public class MongoDao implements ImportDao, QueryDao {
                 num = num_;
             }
             while (i < num ) {
-                i++;
                 result.getResults().add(list.get(i));
+                i++;
             }
             result.setTotal(list.size());
             return result;
