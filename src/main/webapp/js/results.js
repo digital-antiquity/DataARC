@@ -1,13 +1,14 @@
 'use strict';
 
 /**
- * Results handler class for data-arc
- * Requires ECMA6, Lodash, jQuery
+ * Results handler class for data-arc Requires ECMA6, Lodash, jQuery
  */
 
 /**
  * Result handler
- * @param {Object} settings
+ * 
+ * @param {Object}
+ *            settings
  */
 class ResultsHandler {
   constructor(settings) {
@@ -25,9 +26,10 @@ class ResultsHandler {
   }
 
   /**
-   * Refresh UI
-   * @return {void}
-   */
+     * Refresh UI
+     * 
+     * @return {void}
+     */
   refresh() {
     this.loader = Loader.large;
     this.filters = Search.values;
@@ -234,96 +236,96 @@ class ResultsHandler {
       var handlebarHandler = $("#results-template-" + feature.properties.schema_id).length ? $("#results-template-" + feature.properties.schema_id) : $("#results-template-generic");
       var template = Handlebars.compile(handlebarHandler.html());
       $('.source-description').empty().append(template(feature.properties));
-      // this.processTableType();
+// this.processTableType();
     });
   }
 
-  // processTableType() {
-  //   // check table type
-  //   var $chart = this.featureContainer.find('table.type-chart');
-  //   if( $chart.length ){
-  //     console.log("This has a chart type. Capturing data...");
-  //     function getRandomRgb(a) {
-  //         var num = Math.round(0xffffff * Math.random());
-  //         var r = num >> 16;
-  //         var g = num >> 8 & 255;
-  //         var b = num & 255;
-  //         return r + ', ' + g + ', ' + b;
-  //     }
-  //     var heading = this.featureContainer.find('h3').text();
-  //     var data = {
-  //       labels: [],
-  //       datasets: [
-  //         {
-  //           data: [],
-  //           backgroundColor: [],
-  //           borderColor: [],
-  //           borderWidth: 1
-  //         }
-  //       ],
-  //     }
-  //     var noData = [];
-  //     var i = 0;
-  //     $chart.find('tr').map(function() {
-  //         var label = $("td:eq(0)", this).map(function() {
-  //           return this.innerHTML.split('_').join(' ');
-  //         }).get()[0];
-  //         var val = $("td:eq(1)", this).map(function() {
-  //           // parse the numerical values
-  //           return parseFloat(this.innerHTML);
-  //         }).get()[0];
+  processTableType() {
+// check table type
+     var $chart = this.featureContainer.find('table.type-chart');
+     if( $chart.length ){
+       console.log("This has a chart type. Capturing data...");
+       function getRandomRgb(a) {
+           var num = Math.round(0xffffff * Math.random());
+           var r = num >> 16;
+           var g = num >> 8 & 255;
+           var b = num & 255;
+           return r + ', ' + g + ', ' + b;
+       }
+       var heading = this.featureContainer.find('h3').text();
+       var data = {
+         labels: [],
+         datasets: [
+           {
+             data: [],
+             backgroundColor: [],
+             borderColor: [],
+             borderWidth: 1
+           }
+         ],
+       }
+       var noData = [];
+       var i = 0;
+       $chart.find('tr').map(function() {
+           var label = $("td:eq(0)", this).map(function() {
+             return this.innerHTML.split('_').join(' ');
+           }).get()[0];
+           var val = $("td:eq(1)", this).map(function() {
+// parse the numerical values
+             return parseFloat(this.innerHTML);
+           }).get()[0];
 
-  //         if(val && val > 0) {
-  //           data.labels.push(label);
-  //           data.datasets[0].data.push(val);
-  //           var color = getRandomRgb();
-  //           data.datasets[0].backgroundColor.push('rgba('+color+', 0.2)');
-  //           data.datasets[0].borderColor.push('rgba('+color+', 1)');
-  //         } else {
-  //           noData.push(label);
-  //         }
-  //     });
-  //     console.log(data);
-  //     console.log(noData);
-  //     this.createChart(heading, data, noData);
-  //   }
-  //   this.featureContainer.show();
-  // }
+           if(val && val > 0) {
+             data.labels.push(label);
+             data.datasets[0].data.push(val);
+             var color = getRandomRgb();
+             data.datasets[0].backgroundColor.push('rgba('+color+', 0.2)');
+             data.datasets[0].borderColor.push('rgba('+color+', 1)');
+           } else {
+             noData.push(label);
+           }
+       });
+       console.log(data);
+       console.log(noData);
+       this.createChart(heading, data, noData);
+     }
+     this.featureContainer.show();
+   }
 
-  // createChart(title, data, noData) {
-  //   this.canvas = $('<canvas>', {id: "results-chart", width: Math.floor(this.featureContainer.width() * 0.5), height: Math.floor(this.featureContainer.height() * 0.5)});
-  //   this.featureContainer.empty();
-  //   this.featureContainer.append(this.canvas);
-  //   this.chart = new Chart(this.canvas, {
-  //     type: 'bar',
-  //     data: data,
-  //     options: {
-  //       title: {
-  //         display: true,
-  //         text: title,
-  //       },
-  //       scales: {
-  //         yAxes: [{
-  //           ticks: {
-  //             beginAtZero:true
-  //           }
-  //         }],
-  //         xAxes: [{
-  //           ticks: {
-  //             autoSkip: false
-  //           }
-  //         }],
-  //       },
-  //       legend: {
-  //         labels: {
-  //           generateLabels: {
+  createChart(title, data, noData) {
+      this.canvas = $('<canvas>', {id: "results-chart", width: Math.floor(this.featureContainer.width() * 0.5), height: Math.floor(this.featureContainer.height() * 0.5)});
+      this.featureContainer.empty();
+      this.featureContainer.append(this.canvas);
+      this.chart = new Chart(this.canvas, {
+        type: 'bar',
+        data: data,
+        options: {
+          title: {
+            display: true,
+            text: title,
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                autoSkip: false
+              }
+            }],
+          },
+          legend: {
+            labels: {
+              generateLabels: {
 
-  //           }
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
+              }
+            }
+          }
+        }
+      });
+    }
 
   // mortuary() {}
 
