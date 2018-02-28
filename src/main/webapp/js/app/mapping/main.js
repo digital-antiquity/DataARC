@@ -24,7 +24,7 @@ Vue.use(VueResource);
           // iterate through the pool of strings and for any string that
           // contains the substring `q`, add it to the `matches` array
           $.each(strs, function(i, str) {
-//              console.log(str.value);
+// console.log(str.value);
             if (substrRegex.test(str.value)) {
               matches.push(str);
             }
@@ -58,36 +58,36 @@ Vue.use(VueResource);
       var getContent = function(name,data) {
           var tmpl = $(name).html();
           var template = Handlebars.compile(tmpl);
-//          var val = template(data);
+// var val = template(data);
           return JSON.stringify(data);
       }
       
-    var setupTypeahead = function(el_, binding,parent) {
-        var field = $(el_);
-        var name = field.data('name');
-        if (name == binding.value.fieldName) {
-            return;
-        }
-        field.data('name',binding.value.fieldName);
-        $(el_).typeahead('destroy');
-        $(el_).typeahead({
-            hint: false,
-            highlight: true,
-            minLength: 0
-          },
-          {
-            limit:25,
-            name: 'states',
-            display: 'value',
-            source: substringMatcher(binding.value.values),
-            templates: {
-                suggestion: Handlebars.compile('<div><strong>{{value}}</strong>  ({{occurrence}})</div>')
-              }
-          });   
-        $(el_).bind('typeahead:select', function(ev, suggestion) {
-            parent.setValue(suggestion.value);
-        });
-      }
+//    var setupTypeahead = function(el_, binding,parent) {
+//        var field = $(el_);
+//        var name = field.data('name');
+//        if (name == binding.value.fieldName) {
+//            return;
+//        }
+//        field.data('name',binding.value.fieldName);
+//        $(el_).typeahead('destroy');
+//        $(el_).typeahead({
+//            hint: false,
+//            highlight: true,
+//            minLength: 0
+//          },
+//          {
+//            limit:25,
+//            name: 'states',
+//            display: 'value',
+//            source: substringMatcher(binding.value.values),
+//            templates: {
+//                suggestion: Handlebars.compile('<div><strong>{{value}}</strong>  ({{occurrence}})</div>')
+//              }
+//          });   
+//        $(el_).bind('typeahead:select', function(ev, suggestion) {
+//            parent.setValue(suggestion.value);
+//        });
+//      }
 
 
     Vue.component('selectize', {
@@ -105,22 +105,23 @@ Vue.use(VueResource);
                 vm.$emit('input', vm.sel.getValue());
               })[0].selectize;
           this.sel.setValue(this.value,true);
-          console.log("setValue mounted:", this.value);
+          this.sel.setTextboxValue(this.value);
+          console.trace("setValue mounted:", this.value);
         },
         watch: {
           value: function (value) {
               Vue.set(this,"value",value);
               this.sel.setValue(value,true);
               this.sel.setTextboxValue(value,true);
-              console.log("setValue value:", value);
+              console.trace("setValue value:", value);
           },
           options: function (options) {
-//              var val = this.sel.getValue();
+// var val = this.sel.getValue();
               this.sel.clearOptions();
               this.sel.addOption(options);
               this.sel.refreshOptions(false);
-//              this.sel.setValue(val, true);
-//              console.log("setValue options:", val);
+// this.sel.setValue(val, true);
+// console.log("setValue options:", val);
           }
         },
         destroyed: function () {
@@ -129,7 +130,7 @@ Vue.use(VueResource);
       })
 
 
-    /** https://jsfiddle.net/krn9v4vr/59/ **/
+    /** https://jsfiddle.net/krn9v4vr/59/ * */
 
     
  Vue.component('spart', {
@@ -138,8 +139,6 @@ Vue.use(VueResource);
       data: function() {
           return {
           }
-      },
-      computed: {
       },
       methods: {
           onValidChange : function() {
@@ -160,7 +159,7 @@ Vue.use(VueResource);
               if (name == undefined || name == '') {
                   return "text";
               }
-//              console.log(name, this.getFieldIndex(name));
+// console.log(name, this.getFieldIndex(name));
               var f = this.fields[this.getFieldIndex(name)];
               if (f == undefined) {
                   return undefined;
@@ -192,7 +191,7 @@ Vue.use(VueResource);
               return fld.values;
           },
           setValue: function(val) {
-//              console.log('setValue:' + val);
+// console.log('setValue:' + val);
               this.parts[this.rowindex].value = val;
               Vue.set(this,'part.value',val);
               this.$parent.runQuery();
@@ -212,11 +211,11 @@ Vue.use(VueResource);
             this.parts.splice(idx ,1);  
           },
           typechange: function() {
-//              console.log('catch typechange');
+// console.log('catch typechange');
           },
           updateTest: function() {
               // FIXME: hack, replace with component and proper binding?
-//              console.log('change!!');
+// console.log('change!!');
               this.$forceUpdate();
               this.$parent.runQuery();
           },
@@ -245,11 +244,11 @@ var Hack = new Vue({
       cannotSubmit: function() {
           if (this.currentIndicator != undefined) {
               var ind = this.indicators[this.currentIndicator];
-              //console.log(ind.name);
+              // console.log(ind.name);
               if (ind.name == '' || ind.name == undefined) {
                   return true;
               }
-//              console.log(JSON.stringify(this.selectedTopics));
+// console.log(JSON.stringify(this.selectedTopics));
               if (this.selectedTopics.length == 0) {
                   return true;
               }
@@ -323,7 +322,17 @@ var Hack = new Vue({
             console.log("fetch fields for "+ s.name);
             this.$http.get(getContextPath() + '/api/fields',{params: {'schema': s.name}})
               .then(function (request) {
-                Vue.set(this, 'fields', request.body);
+                  var fields = request.body;
+                  function compare(a,b) {
+                      if (a.displayName < b.displayName)
+                        return -1;
+                      if (a.displayName > b.displayName)
+                        return 1;
+                      return 0;
+                    }
+                  console.log(fields);
+                    fields.sort(compare);
+                    Vue.set(this, 'fields', fields);
               })
               .catch(function (err) {
                 Rollbar.error("error getting fields", err);
@@ -443,13 +452,11 @@ var Hack = new Vue({
                       indicatorId = request.body;
                       indicator.id = indicatorId;
                       Vue.set(this, "indicatorId", request.body);
-                      Vue.set(this,"saveStatus","successful");
-                      setTimeout(this.resetSave, 2000);
-
+                      Vue.set(this,"saveStatus", "successful ["+new Date()+"]");
                   })
                   .catch(function (err) {
                       Rollbar.error("error saving indicator: " + json, err);
-                      Vue.set(this,"saveStatus",err);
+                      Vue.set(this,"saveStatus",err  + " ["+new Date()+"]");
 
                       Rollbar.errors(err);
                   });
@@ -460,7 +467,7 @@ var Hack = new Vue({
                       }})
                   .then(function (request) {
                       console.log(JSON.stringify(request.body));
-                      Vue.set(this,"saveStatus","successful");
+                      Vue.set(this,"saveStatus", "successful ["+new Date()+"]");
                       Vue.set(this, "indicatorId", request.body);
                       indicator.id = request.body;
                   })
@@ -498,5 +505,5 @@ var Hack = new Vue({
         return this.conditions;
     }
   }
-//});
+// });
 });
