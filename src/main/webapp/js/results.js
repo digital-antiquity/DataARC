@@ -6,7 +6,7 @@
 
 /**
  * Result handler
- * 
+ *
  * @param {Object}
  *            settings
  */
@@ -27,7 +27,7 @@ class ResultsHandler {
 
   /**
      * Refresh UI
-     * 
+     *
      * @return {void}
      */
   refresh() {
@@ -105,7 +105,7 @@ class ResultsHandler {
 
   appendSource(type, parent, name, value) {
     var id = 'results-'+type+'-'+parent+'-'+name;
-    var dom = $('<li>', { 'class': 'list-group-item d-flex justify-content-between align-items-center results-source', 'id': id });
+    var dom = $('<li>', { 'class': 'list-group-item d-flex justify-content-between align-items-center text-left results-source', 'id': id });
     dom.append(name + '<span class="badge badge-dark">' + value + '</span>');
     $('#results-'+type+'-'+parent+' ul').append(dom);
   }
