@@ -62,33 +62,6 @@ Vue.use(VueResource);
           return JSON.stringify(data);
       }
       
-//    var setupTypeahead = function(el_, binding,parent) {
-//        var field = $(el_);
-//        var name = field.data('name');
-//        if (name == binding.value.fieldName) {
-//            return;
-//        }
-//        field.data('name',binding.value.fieldName);
-//        $(el_).typeahead('destroy');
-//        $(el_).typeahead({
-//            hint: false,
-//            highlight: true,
-//            minLength: 0
-//          },
-//          {
-//            limit:25,
-//            name: 'states',
-//            display: 'value',
-//            source: substringMatcher(binding.value.values),
-//            templates: {
-//                suggestion: Handlebars.compile('<div><strong>{{value}}</strong>  ({{occurrence}})</div>')
-//              }
-//          });   
-//        $(el_).bind('typeahead:select', function(ev, suggestion) {
-//            parent.setValue(suggestion.value);
-//        });
-//      }
-
 
     Vue.component('selectize', {
         props: ['options', 'value'],
@@ -155,7 +128,7 @@ Vue.use(VueResource);
               }
               return r;
           },
-          getHtmlFieldType(name){
+          getHtmlFieldType: function(name){
               if (name == undefined || name == '') {
                   return "text";
               }
@@ -293,7 +266,7 @@ var Hack = new Vue({
     this.$nextTick(function () {
       })},
   methods: {
-      onValidChange() {
+      onValidChange: function() {
           this.runQuery();
       },
       fetchSchema: function () {
@@ -374,10 +347,10 @@ var Hack = new Vue({
                 this.runQuery();
             }
         },
-        addTopic() {
+        addTopic: function() {
             this.selectedTopics.push({});
         },
-        removeTopic(idx) {
+        removeTopic: function(idx) {
             this.selectedTopics.splice(idx,1);
             if (this.selectedTopics.length == 0) {
                 this.selectedTopics.push({});
@@ -397,7 +370,7 @@ var Hack = new Vue({
                 }
                 return -1;
             },
-          selectFieldByName(name) {
+          selectFieldByName: function(name) {
                 var s = this.schema[this.currentSchema];
                 this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': s.name, "field":name}})
                 .then(function (request) {
@@ -408,7 +381,7 @@ var Hack = new Vue({
                     Rollbar.error("error getting unique field values", err);
                 });
           },
-          runQuery() {
+          runQuery: function() {
               var query = this.indicators[this.currentIndicator].query;
               var qs = JSON.stringify(query);
               if (this.query == qs) {
@@ -427,10 +400,10 @@ var Hack = new Vue({
                   Rollbar.error("error running mongo search", err);
               });
           },
-          resetSave() {
+          resetSave: function() {
               Vue.set(this,"saveStatus","");
           },
-          saveIndicator() {
+          saveIndicator: function() {
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
               indicator.topicIdentifiers = [];
@@ -479,7 +452,7 @@ var Hack = new Vue({
               }
 
           },
-          deleteIndicator() {
+          deleteIndicator: function() {
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
               if (indicator.id != -1 && indicator.id != undefined) {
