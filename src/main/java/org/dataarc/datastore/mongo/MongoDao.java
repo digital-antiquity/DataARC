@@ -86,10 +86,23 @@ public class MongoDao implements ImportDao, QueryDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<DataEntry> getMatchingRows(FilterQuery fq, int num) throws Exception {
+    public FilterQueryResult getMatchingRows(FilterQuery fq, int num_) throws Exception {
         try {
             Query q = getMongoFilterQuery(fq);
-            return template.find(q, DataEntry.class);
+            FilterQueryResult result = new FilterQueryResult();
+            result.setQuery(fq);
+            int i=0;
+            List<DataEntry> list = template.find(q, DataEntry.class);
+            int num = list.size();
+            if (num > num_) {
+                num = num_;
+            }
+            while (i < num ) {
+                i++;
+                result.getResults().add(list.get(i));
+            }
+            result.setTotal(list.size());
+            return result;
         } catch (QueryException e) {
             String msg = e.getMessage();
             if (INVALID_QUERY_NO_FIELD_SPECIFIED.equals(msg) || INVALID_QUERY_NO_TYPE.equals(msg)) {

@@ -43,23 +43,23 @@ Vue.use(VueResource);
       })
 
           Vue.directive('jsonpretty', function(el, binding,v){
-              $(el).popover({
-                  html:true,
-                  placement: 'left',
-                  delay: { "show": 1, "hide": 500 },
-                  trigger: 'hover',
-                  content: 'test'}).on("show.bs.popover",function(e) {
+              var $el = $(el);
+              $el.click(function() {
+                  var $next = $el.next();
+                  $next.toggleClass('hidden');
+                  if (!$next.hasClass('hidden')) {
                       var name = "#results-template-"+ v.context._self.schema[v.context._self.currentSchema].id;
                       var data = JSON.parse(JSON.stringify(binding.value));
-                      $(e.target).data('bs.popover').options.content = getContent(name, data);
-              });
+                      $next.html(getContent(name, data));
+                  }
+              })
       });
           
       var getContent = function(name,data) {
           var tmpl = $(name).html();
           var template = Handlebars.compile(tmpl);
-          var val = template(data);
-          return val;
+//          var val = template(data);
+          return JSON.stringify(data);
       }
       
     var setupTypeahead = function(el_, binding,parent) {
@@ -105,17 +105,22 @@ Vue.use(VueResource);
                 vm.$emit('input', vm.sel.getValue());
               })[0].selectize;
           this.sel.setValue(this.value,true);
+          console.log("setValue mounted:", this.value);
         },
         watch: {
           value: function (value) {
+              Vue.set(this,"value",value);
               this.sel.setValue(value,true);
+              this.sel.setTextboxValue(value,true);
+              console.log("setValue value:", value);
           },
           options: function (options) {
-                  var val = this.sel.getValue();
+//              var val = this.sel.getValue();
               this.sel.clearOptions();
               this.sel.addOption(options);
               this.sel.refreshOptions(false);
-              this.sel.setValue(val);
+//              this.sel.setValue(val, true);
+//              console.log("setValue options:", val);
           }
         },
         destroyed: function () {

@@ -8,6 +8,7 @@ import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.service.QueryService;
 import org.dataarc.core.service.UserService;
+import org.dataarc.datastore.mongo.FilterQueryResult;
 import org.dataarc.web.UrlConstants;
 import org.dataarc.web.api.AbstractRestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,19 @@ public class QueryDatastoreController extends AbstractRestController {
 
     @RequestMapping(path = UrlConstants.QUERY_DATASTORE, method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Iterable<DataEntry> queryDatastore(@RequestBody(required = true) FilterQuery fq) throws Exception {
+    public FilterQueryResult queryDatastore(@RequestBody(required = true) FilterQuery fq) throws Exception {
         logger.debug("Query: {} ", fq);
         if (fq == null) {
-            return new ArrayList<DataEntry>();
+            return new FilterQueryResult(fq);
         }
 
         if (CollectionUtils.isEmpty(fq.getConditions())) {
-            return new ArrayList<DataEntry>();
+            return new FilterQueryResult(fq);
         }
 
         // default query for blank from UI
         if (fq.getConditions().size() == 1 && fq.getConditions().get(0).getType() == null && StringUtils.isBlank(fq.getConditions().get(0).getFieldName())) {
-            return new ArrayList<DataEntry>();
+            return new FilterQueryResult(fq);
 
         }
 
