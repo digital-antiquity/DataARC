@@ -93,8 +93,6 @@ public class DataArcConfiguration {
         if (StringUtils.isNotBlank(username)) {
             sender.setUsername(username);
             sender.setUsername(password);
-            props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.auth", "true");
 
         }
         return sender;
