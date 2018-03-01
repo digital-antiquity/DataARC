@@ -1,11 +1,11 @@
-    <script id="title-template-14" type="text/x-handlebars-template">
-	  <div class="title">
-	  	{{data.0.site}}
-	  </div>
-	</script>
-    <script id="results-template-14" type="text/x-handlebars-template">
-	  <div class="description">
-	  	<b>Site:</b> {{data.0.site}}<br>
+  <script id="title-template-14" type="text/x-handlebars-template">
+    <div class="title">
+      {{data.0.site}}
+    </div>
+  </script>
+  <script id="results-template-14" type="text/x-handlebars-template">
+    <div class="description">
+      <b>Site:</b> {{data.0.site}}<br>
 <table class="table">
 <tr>
 <th>bone</th>
@@ -33,65 +33,67 @@
    </tr>
 {{/each}}
 </table>
-	  </div>
-	</script>
-    <script id="title-template-12" type="text/x-handlebars-template">
-	  <div class="title">
-	  	{{orkneyfauna_site}} ({{orkneyfauna_islandregion}})
-	  </div>
-	</script>
-    <script id="results-template-12" type="text/x-handlebars-template">
-	  <div class="description">
-	  	{{orkneyfauna_site}} ({{orkneyfauna_islandregion}})<br>
-{{orkneyfauna_source}}<br>
-Location: {{orkneyfauna_location}}<br>
-Period: {{orkneyfauna_period_code}} ({{orkneyfauna_period}})<br/>
+    </div>
+  </script>
+  <script id="title-template-12" type="text/x-handlebars-template">
+    <div class="title">
+      {{orkneyfauna_site}} ({{orkneyfauna_islandregion}})
+    </div>
+  </script>
+  <script id="results-template-12" type="text/x-handlebars-template">
+    <div class="description">
+      <b>{{orkneyfauna_site}} ({{orkneyfauna_island_or_region}})</b><br>
+{{orkneyfauna_source}}
+<br/>
 
-<table>
+<table class='table'>
 <thead>
-<tr>
-<th>Field</th>
-<th>Value</th>
-</tr>
 </thead>
-<tr><td>Pig</td><td>{{orkneyfauna_pig}}</td></tr>
-<tr><td>Sheep</td><td>{{orkneyfauna_sheep}}</td></tr>
-<tr><td>Cow</td><td>{{orkneyfauna_cow}}</td></tr>
-<tr><td>Marine Mammal</td><td>{{orkneyfauna_marine_mammal}}</td></tr>
-<tr><td>Terrestrial Mammal</td><td>{{orkneyfauna_terrestrial_mammal}}</td><?tr>
+<tr><td>Location:</td><td> {{orkneyfauna_location}}</td></tr>
+<tr><td>Period:</td><td> {{orkneyfauna_period_code}} ({{orkneyfauna_period}}) </td></tr>
+<tr><td>Date:</td><td> {{orkneyfauna_period_as_text}}</td></tr>
+
+
+<tr><td>% Pig</td><td>{{orkneyfauna_percent_pig}}</td></tr>
+<tr><td>% Sheep</td><td>{{orkneyfauna_percent_sheep}}</td></tr>
+<tr><td>% Cow</td><td>{{orkneyfauna_percent_cow}}</td></tr>
+<tr><td>% Marine Mammal</td><td>{{orkneyfauna_percent_marine_mammal}}</td></tr>
+<tr><td>% Terrestrial Mammal</td><td>{{orkneyfauna_percent_terrestrial_mammal}}</td><?tr>
 <tr><td></td><td>{{orkneyfauna_ab_sheepgoat_notes}}</td></tr>
-<tr><td>Pig To Bovids</td><td>{{orkneyfauna_pig_to_bovids}}</td></tr>
-<tr><td>Sheep Goat to Cow</td><td>{{orkneyfauna_sheepgoat_to_cow}}</td></tr>
+<tr><td>% Pig To Bovids</td><td>{{orkneyfauna_percent_pig_to_bovids}}</td></tr>
+<tr><td>% Sheep to Goat to Cow</td><td>{{ orkneyfauna_percent_sheep_to_goat_to_cow }}</td></tr>
 <tr><td>NISP</td><td>{{orkneyfauna_nisp}}</td></tr>
 
 
 </table>
-	  </div>
-	</script>
-    <script id="title-template-15" type="text/x-handlebars-template">
-	  <div class="title">
-	  	{{sagas_name}} ({{sagas_saganame}} - {{sagas_chapter}})
-	  </div>
-	</script>
-    <script id="results-template-15" type="text/x-handlebars-template">
-	  <div class="description">
-	  	<h3>{{sagas_name}}</h3>
+    </div>
+  </script>
+  <script id="title-template-15" type="text/x-handlebars-template">
+    <div class="title">
+      {{sagas_name}} ({{sagas_saganame}} - {{sagas_chapter}})
+    </div>
+  </script>
+  <script id="results-template-15" type="text/x-handlebars-template">
+    <div class="description">
+      <h3>{{sagas_name}}</h3>
 <b>Saga:</b>{{sagas_saganame}}<br/>
-<b>Chapter:</b>{{sagas_chapter}}<br/>
-<b>Chapter #:</b>{{sagas_chapternr}}<br/>
-<b>Type:</b>{{sagas_type}}<br/>
+<b>Chapter:</b> {{sagas_chapter}} (#{{sagas_chapternr}})<br/>
+<b>Place Type:</b> {{sagas_type}}<br/>
 
-	  </div>
-	</script>
-    <script id="title-template-16" type="text/x-handlebars-template">
-	  <div class="title">
-	  	{{teph_sitename}}
+<b>Date of saga action (dates from Complete Sagas of Icelanders):</b>{{sagas_action_start}}-{{sagas_action_end}}<br/>
+<b>Posited date of composition (dates from V&eacute;steinn &Oacute;lason article in Blackwell Companion)</b>:{{sagas_composition_start}}-{{sagas_composition_end}}<br/>
+<b>Oldest manuscript (according to Lethbridge 2014):</b> <a href="{{sagas_manuscript_link}}">{{sagas_oldest_manuscript}}</a> ({{sagas_oldest_manuscript_start}}-{{sagas_oldest_manuscript_end}})<br/>
+    </div>
+  </script>
+  <script id="title-template-16" type="text/x-handlebars-template">
+    <div class="title">
+      {{teph_sitename}}
 
-	  </div>
-	</script>
-    <script id="results-template-16" type="text/x-handlebars-template">
-	  <div class="description">
-	  	<b>Site:</b> {{teph_sitename}}<br>
+    </div>
+  </script>
+  <script id="results-template-16" type="text/x-handlebars-template">
+    <div class="description">
+      <b>Site:</b> {{teph_sitename}}<br>
 <b>Profile: </b>{{teph_profilename}} (#{{teph_profilenumber}})
 <br><br>
 <table class="table">
@@ -114,31 +116,30 @@ Period: {{orkneyfauna_period_code}} ({{orkneyfauna_period}})<br/>
 {{/each}}
 </tbody>
 </table>
-	  </div>
-	</script>
-    <script id="title-template-13" type="text/x-handlebars-template">
-	  <div class="title">
-	  	{{iceland_farms_farm_name}} ({{iceland_farms_farm_number}})
-	  </div>
-	</script>
-    <script id="results-template-13" type="text/x-handlebars-template">
-	  <div class="description">
-	  	<h4>{{iceland_farms_farm_name}}</h4>
-<b>Parish:</b>{{iceland_farms_parish_name}}<br/>
+    </div>
+  </script>
+  <script id="title-template-13" type="text/x-handlebars-template">
+    <div class="title">
+      {{iceland_farms_farm_name}} ({{iceland_farms_farm_number}})
+    </div>
+  </script>
+  <script id="results-template-13" type="text/x-handlebars-template">
+    <div class="description">
+      <h4>Farm Name: {{iceland_farms_farm_name}}</h4>
+<b>Parish:</b> {{iceland_farms_parish_name}}<br/>
 <b>Shire:</b> {{iceland_farms_shire_name}}<br/>
-<b>Valuation:</b>{{iceland_farms_valuation}}<br/>
-<b>1891 Adjusted:</b>{{iceland_farms_1861_adjusted_value}}<br/>
-{{iceland_farms_jardabok_full_text}}<br/>
-	  </div>
-	</script>
-    <script id="title-template-10" type="text/x-handlebars-template">
-	  <div class="title">
-	  	{{sampledata.site_name}} - {{sampledata.site_id}} ({{sampledata.sample_name}})
-	  </div>
-	</script>
-    <script id="results-template-10" type="text/x-handlebars-template">
-	  <div class="description">
-	  	<h3>{{sampledata.site_name}} - {{sampledata.sample_name}}</h3>
+<b>1861 Historic Value:</b>{{iceland_farms_historic_value_1861}}<br/>
+<b>1861 Adjusted:</b>{{iceland_farms_adjusted_value_1861}}<br/>
+    </div>
+  </script>
+  <script id="title-template-10" type="text/x-handlebars-template">
+    <div class="title">
+      {{sampledata.site_name}} - {{sampledata.site_id}} ({{sampledata.sample_name}})
+    </div>
+  </script>
+  <script id="results-template-10" type="text/x-handlebars-template">
+    <div class="description">
+      <h3>{{sampledata.site_name}} - {{sampledata.sample_name}}</h3>
 <p>
  {{#if sampledata}}
   <b>{{fieldName "country"}}:</b>{{country}}<br/>
@@ -171,16 +172,16 @@ Period: {{orkneyfauna_period_code}} ({{orkneyfauna_period}})<br/>
 <tr><td>{{fieldName "indicators.indicators_running_water"}}</td><td>{{indicators.indicators_running_water}}</td></tr>
 <tr><td>{{fieldName "indicators.mould_beetles"}}</td><td>{{indicators.mould_beetles}}</td></tr>
 </table>
-	  </div>
-	</script>
-    <script id="title-template-11" type="text/x-handlebars-template">
-	  <div class="title">
-	  	{{data.[0].site}}
-	  </div>
-	</script>
-    <script id="results-template-11" type="text/x-handlebars-template">
-	  <div class="description">
-	  	<table class="table">
+    </div>
+  </script>
+  <script id="title-template-11" type="text/x-handlebars-template">
+    <div class="title">
+      {{data.[0].site}}
+    </div>
+  </script>
+  <script id="results-template-11" type="text/x-handlebars-template">
+    <div class="description">
+      <table class="table">
 <thead>
 <tr>
  <th>site</th>
@@ -254,14 +255,30 @@ Period: {{orkneyfauna_period_code}} ({{orkneyfauna_period}})<br/>
 {{/each}}
 </tbody>
 </table>
-	  </div>
-	</script>
+    </div>
+  </script>
+  <script id="title-template-17" type="text/x-handlebars-template">
+    <div class="title">
+      {{viga_name}} ({{viga_saganame}})
+    </div>
+  </script>
+  <script id="results-template-17" type="text/x-handlebars-template">
+    <div class="description">
+      <p>
+<b>Saga:</b> {{viga_saganame}}<br>
+<b>Chapter:</b> {{viga_chapter}}<br>
+<b>Name:</b> {{viga_name}}<br>
+<b>Text:</b> {{viga_text}}<br>
+<b>Concept:</b> {{viga_concept}}<br>
+    </div>
+  </script>
   <div class="hidden">
- <div id="nabone_svk_bio">Test NABONE data from Sveigakot in Northern Iceland.</div>
- <div id="orkneyfauna_bio">Test archaeological faunal data from the Orkney Islands, Scotland.</div>
- <div id="sagas_bio">The Icelandic Saga Map is intended as a resource to guide specialists and non-specialists alike around the Islendingasogur from a spatial perspective. On it, places named in the sagas are hyperlinked to their occurrences in the saga texts. There are also links to images of places and to other sources of information concerning them (e.g., problems with respect to their identification in modern-day Icelandic landscapes, details about archaeological excavations).</div>
- <div id="teph_bio">Tephra (volcanic ash) layers are now an invaluable tool in palaeoenvironmental studies, as well a record of volcanic activity. The data produced by such research can be difficult to handle and disseminate. Tephrabase is a database of tephra layers found in Iceland, north-west and northern Europe, Russia and central Mexico. Details on the location, name, age and geochemistry of tephra layers are stored in the database, as well as information about relevant volcanoes and volcanic systems. ...(line truncated)...
- <div id="iceland_farms_bio">The project aims to make available the most detailed historical documents describing the way land was used in late medieval to early modern Iceland, roughly 1500-1860. The central document is the early 18th century land census Jardabok Arna Magnussonar og Pals Vidalin, widely regarded as one of the most important documents ever produced about Icelandic agriculture. The data include information about every main farm (e.g., 'logbyli') recorded in the land census and contains a lar...(line truncated)...
- <div id="sead_bio">The Strategic Environmental Archaeology Database (SEAD) is a research infrastructure for storing, manipulating and analyzing proxy data from archaeological and palaeoenvironmental investigations. The primary objectives of SEAD are to make environmental archaeology data available to the international research community and to provide online tools to assist in the analysis of these data.</div>
- <div id="nabone_bio">The NABONE dataset is a set of databases of archaeological fauna from sites across the North Atlantic, including Iceland, Greenland, and the Faroe Islands. The NABONE zooarchaeological analysis package has been under development since January 1997, when a group of 22 zooarchaeologists from Canada, US, UK, and Scandinavia specializing in North Atlantic collections met in New York as part of a US NSF-funded effort to improve data comparability and curation in this important area.</div>
-</div>
+    <div id="nabone_svk_bio">Test NABONE data from Sveigakot in Northern Iceland.</div>
+    <div id="orkneyfauna_bio">Test archaeological faunal data from the Orkney Islands, Scotland.</div>
+    <div id="sagas_bio">The Icelandic Saga Map is intended as a resource to guide specialists and non-specialists alike around the Islendingasogur from a spatial perspective. On it, places named in the sagas are hyperlinked to their occurrences in the saga texts. There are also links to images of places and to other sources of information concerning them (e.g., problems with respect to their identification in modern-day Icelandic landscapes, details about archaeological excavations).</div>
+    <div id="teph_bio">Tephra (volcanic ash) layers are now an invaluable tool in palaeoenvironmental studies, as well a record of volcanic activity. The data produced by such research can be difficult to handle and disseminate. Tephrabase is a database of tephra layers found in Iceland, north-west and northern Europe, Russia and central Mexico. Details on the location, name, age and geochemistry of tephra layers are stored in the database, as well as information about relevant volcanoes and volcanic systems. A comprehensive reference database is also included.</div>
+    <div id="iceland_farms_bio">The project aims to make available the most detailed historical documents describing the way land was used in late medieval to early modern Iceland, roughly 1500-1860. The central document is the early 18th century land census Jardabok Arna Magnussonar og Pals Vidalin, widely regarded as one of the most important documents ever produced about Icelandic agriculture. The data include information about every main farm (e.g., 'logbyli') recorded in the land census and contains a large amount of categorical and quantitative data. In addition, several networks of interaction show the interconnectedness of farms at the time. These connecting lines are sometimes reciprocal, sometimes a manifestation of material and political inequality, but all of them indicate the entangled character of Iceland's agricultural communities.</div>
+    <div id="sead_bio">The Strategic Environmental Archaeology Database (SEAD) is a research infrastructure for storing, manipulating and analyzing proxy data from archaeological and palaeoenvironmental investigations. The primary objectives of SEAD are to make environmental archaeology data available to the international research community and to provide online tools to assist in the analysis of these data.</div>
+    <div id="nabone_bio">The NABONE dataset is a set of databases of archaeological fauna from sites across the North Atlantic, including Iceland, Greenland, and the Faroe Islands. The NABONE zooarchaeological analysis package has been under development since January 1997, when a group of 22 zooarchaeologists from Canada, US, UK, and Scandinavia specializing in North Atlantic collections met in New York as part of a US NSF-funded effort to improve data comparability and curation in this important area.</div>
+    <div id="viga_bio">This is a test data-source which attempts to map concepts into the Viga Saga</div>
+  </div>
