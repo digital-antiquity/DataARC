@@ -84,8 +84,11 @@ class FilterHandler {
       var spatial = this.filters[this.settings.typemap.spatial];
       if (spatial.region != null) {
         var [layerid, featureid] = spatial.region.split('_____');
-        var feature = Geography.pLayers[layerid].selected.feature;
-        if (featureid == feature.properties.id) {
+        var feature = Geography.getGeojsonFeature(layerid, featureid);
+        if (feature.properties.name) {
+          this.append('spatial', null, 'Region [' + feature.properties.name + ']');
+        }
+        if (feature.properties.SVIETARFEL) {
           this.append('spatial', null, 'Region [' + feature.properties.SVEITARFEL + ']');
         }
       }

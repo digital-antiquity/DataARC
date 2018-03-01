@@ -63,7 +63,8 @@ class GeographyHandler {
       })
     };
 
-    // define the overlays and defer the requests
+    // define the geojson layers and defer the requests
+    this.geojson = {};
     this.overlays = {};
     var requests = [];
     for (let geojson of geoJsonInputs) {
@@ -76,6 +77,12 @@ class GeographyHandler {
               style: this.settings.styles.normal,
               // for each feature, bind the click
               onEachFeature: (feature, layer) => {
+                if (this.geojson[geojson.id] == null) {
+                  this.geojson[geojson.id] = geojson;
+                  this.geojson[geojson.id].data = data;
+                  this.geojson[geojson.id].features = {};
+                }
+                this.geojson[geojson.id].features[feature.properties.id] = feature;
                 layer.source = geojson;
                 layer.bindPopup(Loader.medium, {maxWidth: 600});
                 layer.on('click', (event) => { this.showPolygonInfo(event); });
@@ -86,7 +93,7 @@ class GeographyHandler {
             this.map.addLayer(this.overlays[geojson.title]);
           },
           error: (xhr) => {
-            console.log('error', xhr);
+            console.log('Cannot load external geojson file.', xhr);
           }
         })
       );
@@ -147,8 +154,8 @@ class GeographyHandler {
     // remove the loader
     $(this.settings.container + ' .loader').remove();
 
-    // define the overlays
-    this.overlays = {
+    // define the markers layer
+    this.markers = {
       'archaeological': L.layerGroup(),
       'textual': L.layerGroup(),
       'environmental': L.layerGroup()
@@ -157,14 +164,14 @@ class GeographyHandler {
     // loop through the features and create the markers
     for (var i = 0; i < this.features.length; i++) {
       var marker = this.createMarker(this.features[i]);
-      marker.addTo(this.overlays[marker.type]);
+      marker.addTo(this.markers[marker.type]);
     }
 
     // create the cluster
     if (this.cluster != null) this.cluster.clearLayers();
     this.cluster = this.createCluster();
     for (let type of this.settings.types) {
-      this.cluster.addLayers(this.overlays[type]);
+      this.cluster.addLayers(this.markers[type]);
     }
     this.map.addLayer(this.cluster);
   }
@@ -222,6 +229,10 @@ class GeographyHandler {
       polygon.setPopupContent(content);
       polygon.cached = true;
     }
+  }
+
+  getGeojsonFeature(layerid, featureid) {
+    return this.geojson[layerid].features[featureid];
   }
 
   createCluster() {

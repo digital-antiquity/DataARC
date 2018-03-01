@@ -10,7 +10,6 @@
 <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <!-- Plugin CSS -->
 <link href="vendor/leaflet/leaflet.css" rel="stylesheet">
-<link href="vendor/leaflet.markercluster/markercluster.css" rel="stylesheet">
 <link href="vendor/leaflet.draw/leaflet.draw.css" rel="stylesheet">
 <link href="vendor/leaflet.easybutton/easy-button.css" rel="stylesheet">
 <link href="vendor/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
