@@ -28,6 +28,7 @@
   <nav class="navbar navbar-expand-lg navbar-light navbar-shrink fixed-top" id="mainNav">
     <div class="container">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">DataARC</a>
+      <a class="navbar-about btn btn-sm btn-outline-dark" href="/about">About Our Data</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -41,7 +42,6 @@
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-primary">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-danger">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/about">About <i class="fa fa-info-circle"></i></a></li>
         </ul>
       </div>
     </div>
