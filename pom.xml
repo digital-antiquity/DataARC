@@ -10,8 +10,8 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.security>5.0.0.RELEASE</spring.security>
-        <spring.framework.version>5.0.2.RELEASE</spring.framework.version>
+        <spring.security>5.0.3.RELEASE</spring.security>
+        <spring.framework.version>5.0.4.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.9.3</jackson.version>
         <geotools.version>12.1</geotools.version>
@@ -708,6 +708,14 @@
             <artifactId>javax.el-api</artifactId>
             <version>2.2.4</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+<dependency>
+    <groupId>com.sun.mail</groupId>
+    <artifactId>javax.mail</artifactId>
+    <version>1.5.1</version>
+</dependency>
+
+        
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
