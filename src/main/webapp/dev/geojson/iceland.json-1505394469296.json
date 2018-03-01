@@ -5,7 +5,7 @@
             "type": "Feature",
             "properties": {
                 "id": 0,
-                "SVEITARFEL": "Reykjavíkurborg",
+                "name": "Reykjavíkurborg",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -647,7 +647,7 @@
             "type": "Feature",
             "properties": {
                 "id": 1100,
-                "SVEITARFEL": "Seltjarnarneshreppur",
+                "name": "Seltjarnarneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -1101,7 +1101,7 @@
             "type": "Feature",
             "properties": {
                 "id": 1603,
-                "SVEITARFEL": "Bessastaðahreppur",
+                "name": "Bessastaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -1335,7 +1335,7 @@
             "type": "Feature",
             "properties": {
                 "id": 1604,
-                "SVEITARFEL": "Mosfellshreppur",
+                "name": "Mosfellshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -1631,7 +1631,7 @@
             "type": "Feature",
             "properties": {
                 "id": 1605,
-                "SVEITARFEL": "Kjalarneshreppur",
+                "name": "Kjalarneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -2225,7 +2225,7 @@
             "type": "Feature",
             "properties": {
                 "id": 1606,
-                "SVEITARFEL": "Kjósarhreppur",
+                "name": "Kjósarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -2711,7 +2711,7 @@
             "type": "Feature",
             "properties": {
                 "id": 2400,
-                "SVEITARFEL": "Njarðvíkurhreppur",
+                "name": "Njarðvíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -2811,7 +2811,7 @@
             "type": "Feature",
             "properties": {
                 "id": 2300,
-                "SVEITARFEL": "Grindavíkurhreppur",
+                "name": "Grindavíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -3187,7 +3187,7 @@
             "type": "Feature",
             "properties": {
                 "id": 2502,
-                "SVEITARFEL": "Hafnahreppur",
+                "name": "Hafnahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -3379,7 +3379,7 @@
             "type": "Feature",
             "properties": {
                 "id": 2503,
-                "SVEITARFEL": "Miðneshreppur",
+                "name": "Miðneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -3527,7 +3527,7 @@
             "type": "Feature",
             "properties": {
                 "id": 2504,
-                "SVEITARFEL": "Rosmhvalaneshreppur",
+                "name": "Rosmhvalaneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -3671,7 +3671,7 @@
             "type": "Feature",
             "properties": {
                 "id": 2506,
-                "SVEITARFEL": "Vatnsleysustrandarhreppur",
+                "name": "Vatnsleysustrandarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -3879,7 +3879,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3000,
-                "SVEITARFEL": "Ytri-Akraneshreppur",
+                "name": "Ytri-Akraneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -4039,7 +4039,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3501,
-                "SVEITARFEL": "Hvalfjarðarstrandarhreppur",
+                "name": "Hvalfjarðarstrandarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -4483,7 +4483,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3502,
-                "SVEITARFEL": "Skilmannahreppur",
+                "name": "Skilmannahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -4687,7 +4687,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3503,
-                "SVEITARFEL": "Innri-Akraneshreppur",
+                "name": "Innri-Akraneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -4835,7 +4835,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3504,
-                "SVEITARFEL": "Leirár- og Melahreppur",
+                "name": "Leirár- og Melahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -5343,7 +5343,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3505,
-                "SVEITARFEL": "Andakílshreppur",
+                "name": "Andakílshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -5847,7 +5847,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3506,
-                "SVEITARFEL": "Skorradalshreppur",
+                "name": "Skorradalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -6239,7 +6239,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3507,
-                "SVEITARFEL": "Lundarreykjadalshreppur",
+                "name": "Lundarreykjadalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -6595,7 +6595,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3508,
-                "SVEITARFEL": "Reykholtsdalshreppur",
+                "name": "Reykholtsdalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -6955,7 +6955,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3509,
-                "SVEITARFEL": "Hálsahreppur",
+                "name": "Hálsahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -7355,7 +7355,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3601,
-                "SVEITARFEL": "Hvítarsíðuhreppur",
+                "name": "Hvítarsíðuhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -7943,7 +7943,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3602,
-                "SVEITARFEL": "Þverárhíðarhreppur",
+                "name": "Þverárhíðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -8387,7 +8387,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3603,
-                "SVEITARFEL": "Norðurárdalshreppur",
+                "name": "Norðurárdalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -8859,7 +8859,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3604,
-                "SVEITARFEL": "Stafholtstungnahreppur",
+                "name": "Stafholtstungnahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -9463,7 +9463,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3605,
-                "SVEITARFEL": "Borgarhreppur",
+                "name": "Borgarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -9963,7 +9963,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3607,
-                "SVEITARFEL": "Álftaneshreppur",
+                "name": "Álftaneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -11201,7 +11201,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3608,
-                "SVEITARFEL": "Hraunhreppur",
+                "name": "Hraunhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -12311,7 +12311,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3701,
-                "SVEITARFEL": "Kolbeinsstaðahreppur",
+                "name": "Kolbeinsstaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -13217,7 +13217,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3702,
-                "SVEITARFEL": "Eyjahreppur",
+                "name": "Eyjahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -13687,7 +13687,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3703,
-                "SVEITARFEL": "Miklaholtshreppur",
+                "name": "Miklaholtshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -14313,7 +14313,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3704,
-                "SVEITARFEL": "Staðarsveit",
+                "name": "Staðarsveit",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -14833,7 +14833,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3705,
-                "SVEITARFEL": "Breiðuvíkurhreppur",
+                "name": "Breiðuvíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -15301,7 +15301,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3706,
-                "SVEITARFEL": "Neshreppur innan Ennis",
+                "name": "Neshreppur innan Ennis",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -15681,7 +15681,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3709,
-                "SVEITARFEL": "Eyrarsveit",
+                "name": "Eyrarsveit",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -16437,7 +16437,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3710,
-                "SVEITARFEL": "Helgafellssveit",
+                "name": "Helgafellssveit",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -17499,7 +17499,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3711,
-                "SVEITARFEL": "Stykkishólmsbær",
+                "name": "Stykkishólmsbær",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -17877,7 +17877,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3712,
-                "SVEITARFEL": "Skógarstrandarhreppur",
+                "name": "Skógarstrandarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -19399,7 +19399,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3801,
-                "SVEITARFEL": "Hörðudalshreppur",
+                "name": "Hörðudalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -19857,7 +19857,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3802,
-                "SVEITARFEL": "Miðdalahreppur",
+                "name": "Miðdalahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -20233,7 +20233,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3803,
-                "SVEITARFEL": "Haukadalshreppur",
+                "name": "Haukadalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -20573,7 +20573,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3804,
-                "SVEITARFEL": "Laxárdalshreppur",
+                "name": "Laxárdalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -21033,7 +21033,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3805,
-                "SVEITARFEL": "Hvammshreppur",
+                "name": "Hvammshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -21429,7 +21429,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3806,
-                "SVEITARFEL": "Fellsstrandarhreppur",
+                "name": "Fellsstrandarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -21959,7 +21959,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3808,
-                "SVEITARFEL": "Skarðsstrandarhreppur",
+                "name": "Skarðsstrandarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -23645,7 +23645,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3809,
-                "SVEITARFEL": "Saurbæjarhreppur",
+                "name": "Saurbæjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -24025,7 +24025,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4501,
-                "SVEITARFEL": "Geiradalshreppur",
+                "name": "Geiradalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -24371,7 +24371,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4502,
-                "SVEITARFEL": "Reykhólahreppur",
+                "name": "Reykhólahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -25449,7 +25449,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4503,
-                "SVEITARFEL": "Gufudalshreppur",
+                "name": "Gufudalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -26103,7 +26103,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4504,
-                "SVEITARFEL": "Múlahreppur",
+                "name": "Múlahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -27069,7 +27069,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4505,
-                "SVEITARFEL": "Flateyjarhreppur",
+                "name": "Flateyjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -27575,7 +27575,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4601,
-                "SVEITARFEL": "Barðastrandarhreppur",
+                "name": "Barðastrandarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -28401,7 +28401,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4602,
-                "SVEITARFEL": "Rauðasandshreppur",
+                "name": "Rauðasandshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -29275,7 +29275,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4604,
-                "SVEITARFEL": "Tálknafjarðarhreppur",
+                "name": "Tálknafjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -29707,7 +29707,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4605,
-                "SVEITARFEL": "Ketildalahreppur",
+                "name": "Ketildalahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -30059,7 +30059,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4606,
-                "SVEITARFEL": "Suðurfjarðarhreppur",
+                "name": "Suðurfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -30775,7 +30775,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4701,
-                "SVEITARFEL": "Auðkúluhreppur",
+                "name": "Auðkúluhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -31419,7 +31419,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4702,
-                "SVEITARFEL": "Þingeyrarhreppur",
+                "name": "Þingeyrarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -31895,7 +31895,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4703,
-                "SVEITARFEL": "Mýrahreppur",
+                "name": "Mýrahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -32463,7 +32463,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4704,
-                "SVEITARFEL": "Mosvallahreppur",
+                "name": "Mosvallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -33059,7 +33059,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4706,
-                "SVEITARFEL": "Suðureyrarhreppur",
+                "name": "Suðureyrarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -33413,7 +33413,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4800,
-                "SVEITARFEL": "Ísafjarðarkaupstaður",
+                "name": "Ísafjarðarkaupstaður",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -33525,7 +33525,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4801,
-                "SVEITARFEL": "Hólshreppur",
+                "name": "Hólshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -33797,7 +33797,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4802,
-                "SVEITARFEL": "Eyrarhreppur",
+                "name": "Eyrarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -34157,7 +34157,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4803,
-                "SVEITARFEL": "Súðavíkurhreppur",
+                "name": "Súðavíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -34677,7 +34677,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4804,
-                "SVEITARFEL": "Ögurhreppur",
+                "name": "Ögurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -35323,7 +35323,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4805,
-                "SVEITARFEL": "Reykjafjarðarhreppur",
+                "name": "Reykjafjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -36113,7 +36113,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4806,
-                "SVEITARFEL": "Nauteyrarhreppur",
+                "name": "Nauteyrarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -37037,7 +37037,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4807,
-                "SVEITARFEL": "Snæfjallahreppur",
+                "name": "Snæfjallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -37467,7 +37467,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4808,
-                "SVEITARFEL": "Grunnavíkurhreppur",
+                "name": "Grunnavíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -38775,7 +38775,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4901,
-                "SVEITARFEL": "Árneshreppur",
+                "name": "Árneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -40103,7 +40103,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4902,
-                "SVEITARFEL": "Kaldrananeshreppur",
+                "name": "Kaldrananeshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -40853,7 +40853,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4903,
-                "SVEITARFEL": "Hrófbergshreppur",
+                "name": "Hrófbergshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -41425,7 +41425,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4904,
-                "SVEITARFEL": "Hólmavíkurhreppur",
+                "name": "Hólmavíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -41821,7 +41821,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4905,
-                "SVEITARFEL": "Kirkjubólshreppur",
+                "name": "Kirkjubólshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -42221,7 +42221,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4906,
-                "SVEITARFEL": "Fellshreppur",
+                "name": "Fellshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -42569,7 +42569,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4907,
-                "SVEITARFEL": "Óspakseyrarhreppur",
+                "name": "Óspakseyrarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -42909,7 +42909,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4908,
-                "SVEITARFEL": "Bæjarhreppur",
+                "name": "Bæjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -43569,7 +43569,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5000,
-                "SVEITARFEL": "Hvanneyrarhreppur",
+                "name": "Hvanneyrarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -43993,7 +43993,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5100,
-                "SVEITARFEL": "Sauðárhreppur",
+                "name": "Sauðárhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -44429,7 +44429,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5501,
-                "SVEITARFEL": "Staðarhreppur",
+                "name": "Staðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -44709,7 +44709,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5502,
-                "SVEITARFEL": "Fremri-Torfustaðahreppur",
+                "name": "Fremri-Torfustaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -45141,7 +45141,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5503,
-                "SVEITARFEL": "Ytri-Torfustaðahreppur",
+                "name": "Ytri-Torfustaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -45489,7 +45489,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5505,
-                "SVEITARFEL": "Kirkjuhvammshreppur",
+                "name": "Kirkjuhvammshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -45949,7 +45949,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5506,
-                "SVEITARFEL": "Þverárhreppur",
+                "name": "Þverárhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -46445,7 +46445,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5507,
-                "SVEITARFEL": "Þorkelshólshreppur",
+                "name": "Þorkelshólshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -47085,7 +47085,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5601,
-                "SVEITARFEL": "Áshreppur",
+                "name": "Áshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -47509,7 +47509,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5602,
-                "SVEITARFEL": "Sveinsstaðahreppur",
+                "name": "Sveinsstaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -47817,7 +47817,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5603,
-                "SVEITARFEL": "Torfalækjarhreppur",
+                "name": "Torfalækjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -48261,7 +48261,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5605,
-                "SVEITARFEL": "Svínavatnshreppur",
+                "name": "Svínavatnshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -49129,7 +49129,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5606,
-                "SVEITARFEL": "Bólstaðarhlíðarhreppur",
+                "name": "Bólstaðarhlíðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -50145,7 +50145,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5607,
-                "SVEITARFEL": "Engihliðarhreppur",
+                "name": "Engihliðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -50573,7 +50573,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5608,
-                "SVEITARFEL": "Vindhælishreppur",
+                "name": "Vindhælishreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -51197,7 +51197,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5701,
-                "SVEITARFEL": "Skefilsstaðahreppur",
+                "name": "Skefilsstaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -51855,7 +51855,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5703,
-                "SVEITARFEL": "Staðarhreppur",
+                "name": "Staðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -52239,7 +52239,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5704,
-                "SVEITARFEL": "Seyluhreppur",
+                "name": "Seyluhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -52619,7 +52619,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5705,
-                "SVEITARFEL": "Lýtingsstaðahreppur",
+                "name": "Lýtingsstaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -53415,7 +53415,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5706,
-                "SVEITARFEL": "Akrahreppur",
+                "name": "Akrahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -54631,7 +54631,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5707,
-                "SVEITARFEL": "Rípurhreppur",
+                "name": "Rípurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -54919,7 +54919,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5708,
-                "SVEITARFEL": "Viðvíkurhreppur",
+                "name": "Viðvíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -55219,7 +55219,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5709,
-                "SVEITARFEL": "Hólahreppur",
+                "name": "Hólahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -55855,7 +55855,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5710,
-                "SVEITARFEL": "Hofshreppur",
+                "name": "Hofshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -56329,7 +56329,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5712,
-                "SVEITARFEL": "Fellshreppur",
+                "name": "Fellshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -56653,7 +56653,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5713,
-                "SVEITARFEL": "Haganeshreppur",
+                "name": "Haganeshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -57045,7 +57045,7 @@
             "type": "Feature",
             "properties": {
                 "id": 5714,
-                "SVEITARFEL": "Holtshreppur",
+                "name": "Holtshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -57481,7 +57481,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6000,
-                "SVEITARFEL": "Akureyrarkaupstaður",
+                "name": "Akureyrarkaupstaður",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -57781,7 +57781,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6100,
-                "SVEITARFEL": "Húsavíkurhreppur",
+                "name": "Húsavíkurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -58253,7 +58253,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6200,
-                "SVEITARFEL": "Þóroddsstaðahreppur",
+                "name": "Þóroddsstaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -58721,7 +58721,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6501,
-                "SVEITARFEL": "Grímseyjarhreppur",
+                "name": "Grímseyjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -58821,7 +58821,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6502,
-                "SVEITARFEL": "Svarfaðardalshreppur",
+                "name": "Svarfaðardalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -59585,7 +59585,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6506,
-                "SVEITARFEL": "Arnarneshreppur",
+                "name": "Arnarneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -60143,7 +60143,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6507,
-                "SVEITARFEL": "Skriðuhreppur",
+                "name": "Skriðuhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -60951,7 +60951,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6509,
-                "SVEITARFEL": "Glæsibæjarhreppur",
+                "name": "Glæsibæjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -61367,7 +61367,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6510,
-                "SVEITARFEL": "Hrafnagilshreppur",
+                "name": "Hrafnagilshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -61623,7 +61623,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6511,
-                "SVEITARFEL": "Saurbæjarhreppur",
+                "name": "Saurbæjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -62303,7 +62303,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6512,
-                "SVEITARFEL": "Öngulstaðahreppur",
+                "name": "Öngulstaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -62623,7 +62623,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6601,
-                "SVEITARFEL": "Svalbarðsstrandarhreppur",
+                "name": "Svalbarðsstrandarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -62771,7 +62771,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6602,
-                "SVEITARFEL": "Grýtubakkahreppur",
+                "name": "Grýtubakkahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -63471,7 +63471,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6604,
-                "SVEITARFEL": "Hálshreppur",
+                "name": "Hálshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -64481,7 +64481,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6605,
-                "SVEITARFEL": "Ljósavatnshreppur",
+                "name": "Ljósavatnshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -65621,7 +65621,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6607,
-                "SVEITARFEL": "Skútustaðahreppur",
+                "name": "Skútustaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -66457,7 +66457,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6608,
-                "SVEITARFEL": "Reykdælahreppur",
+                "name": "Reykdælahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -66861,7 +66861,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6609,
-                "SVEITARFEL": "Aðaldælahreppur",
+                "name": "Aðaldælahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -67317,7 +67317,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6701,
-                "SVEITARFEL": "Kelduneshreppur",
+                "name": "Kelduneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -67777,7 +67777,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6702,
-                "SVEITARFEL": "Öxarfjarðarhreppur",
+                "name": "Öxarfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -68329,7 +68329,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6703,
-                "SVEITARFEL": "Fjallahreppur",
+                "name": "Fjallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -68741,7 +68741,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6704,
-                "SVEITARFEL": "Presthólahreppur",
+                "name": "Presthólahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -70135,7 +70135,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6706,
-                "SVEITARFEL": "Svalbarðshreppur",
+                "name": "Svalbarðshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -71183,7 +71183,7 @@
             "type": "Feature",
             "properties": {
                 "id": 6708,
-                "SVEITARFEL": "Sauðaneshreppur",
+                "name": "Sauðaneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -72175,7 +72175,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7000,
-                "SVEITARFEL": "Seyðisfjörður",
+                "name": "Seyðisfjörður",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -72599,7 +72599,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7501,
-                "SVEITARFEL": "Skeggjastaðahreppur",
+                "name": "Skeggjastaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -73147,7 +73147,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7502,
-                "SVEITARFEL": "Vopnafjarðarhreppur",
+                "name": "Vopnafjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -74221,7 +74221,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7503,
-                "SVEITARFEL": "Hlíðarhreppur",
+                "name": "Hlíðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -74793,7 +74793,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7504,
-                "SVEITARFEL": "Jökuldalshreppur",
+                "name": "Jökuldalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -75761,7 +75761,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7505,
-                "SVEITARFEL": "Fljótsdalshreppur",
+                "name": "Fljótsdalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -76253,7 +76253,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7506,
-                "SVEITARFEL": "Fellahreppur",
+                "name": "Fellahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -76593,7 +76593,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7507,
-                "SVEITARFEL": "Hróarstunguhreppur",
+                "name": "Hróarstunguhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -77161,7 +77161,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7508,
-                "SVEITARFEL": "Hjaltastaðahreppur",
+                "name": "Hjaltastaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -77777,7 +77777,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7509,
-                "SVEITARFEL": "Borgarfjarðarhreppur",
+                "name": "Borgarfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -78433,7 +78433,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7510,
-                "SVEITARFEL": "Loðmundarfjarðarhreppur",
+                "name": "Loðmundarfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -78837,7 +78837,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7511,
-                "SVEITARFEL": "Seyðisfjarðarhreppur",
+                "name": "Seyðisfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -79085,7 +79085,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7601,
-                "SVEITARFEL": "Skriðdalshreppur",
+                "name": "Skriðdalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -79485,7 +79485,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7602,
-                "SVEITARFEL": "Vallahreppur",
+                "name": "Vallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -79949,7 +79949,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7603,
-                "SVEITARFEL": "Egilsstaðahreppur",
+                "name": "Egilsstaðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -80109,7 +80109,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7604,
-                "SVEITARFEL": "Eiðahreppur",
+                "name": "Eiðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -80393,7 +80393,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7605,
-                "SVEITARFEL": "Mjóafjarðarhreppur",
+                "name": "Mjóafjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -80921,7 +80921,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7606,
-                "SVEITARFEL": "Norðfjarðarhreppur",
+                "name": "Norðfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -81529,7 +81529,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7609,
-                "SVEITARFEL": "Reyðarfjarðarhreppur",
+                "name": "Reyðarfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -82321,7 +82321,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7610,
-                "SVEITARFEL": "Fáskrúðsfjarðarhreppur",
+                "name": "Fáskrúðsfjarðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -82995,7 +82995,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7613,
-                "SVEITARFEL": "Breiðdalshreppur",
+                "name": "Breiðdalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -83791,7 +83791,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7614,
-                "SVEITARFEL": "Beruneshreppur",
+                "name": "Beruneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -84479,7 +84479,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7616,
-                "SVEITARFEL": "Geithellnahreppur",
+                "name": "Geithellnahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -85757,7 +85757,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7701,
-                "SVEITARFEL": "Bæjarhreppur",
+                "name": "Bæjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -86775,7 +86775,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7702,
-                "SVEITARFEL": "Nesjahreppur",
+                "name": "Nesjahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -87685,7 +87685,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7704,
-                "SVEITARFEL": "Mýrahreppur",
+                "name": "Mýrahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -88427,7 +88427,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7705,
-                "SVEITARFEL": "Borgarhafnarhreppur",
+                "name": "Borgarhafnarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -88751,7 +88751,7 @@
             "type": "Feature",
             "properties": {
                 "id": 7706,
-                "SVEITARFEL": "Hofshreppur",
+                "name": "Hofshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -89083,7 +89083,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8000,
-                "SVEITARFEL": "Vestmannaeyjabær",
+                "name": "Vestmannaeyjabær",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -89577,7 +89577,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8501,
-                "SVEITARFEL": "Hörgslandshreppur",
+                "name": "Hörgslandshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -90073,7 +90073,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8502,
-                "SVEITARFEL": "Kirkjubæjarhreppur",
+                "name": "Kirkjubæjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -90773,7 +90773,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8503,
-                "SVEITARFEL": "Skaftártunguhreppur",
+                "name": "Skaftártunguhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -91653,7 +91653,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8504,
-                "SVEITARFEL": "Leiðvallarhreppur",
+                "name": "Leiðvallarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -91785,7 +91785,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8505,
-                "SVEITARFEL": "Álftavershreppur",
+                "name": "Álftavershreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -92201,7 +92201,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8506,
-                "SVEITARFEL": "Hvammshreppur",
+                "name": "Hvammshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -92409,7 +92409,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8507,
-                "SVEITARFEL": "Dyrhólahreppur",
+                "name": "Dyrhólahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -92661,7 +92661,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8601,
-                "SVEITARFEL": "Austur-Eyjafjallahreppur",
+                "name": "Austur-Eyjafjallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -92833,7 +92833,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8602,
-                "SVEITARFEL": "Vestur-Eyjafjallahreppur",
+                "name": "Vestur-Eyjafjallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -93037,7 +93037,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8603,
-                "SVEITARFEL": "Austur-Landeyjahreppur",
+                "name": "Austur-Landeyjahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -93245,7 +93245,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8604,
-                "SVEITARFEL": "Vestur-Landeyjahreppur",
+                "name": "Vestur-Landeyjahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -93485,7 +93485,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8605,
-                "SVEITARFEL": "Fljótshliðarhreppur",
+                "name": "Fljótshliðarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -93845,7 +93845,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8606,
-                "SVEITARFEL": "Hvolhreppur",
+                "name": "Hvolhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -94335,7 +94335,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8607,
-                "SVEITARFEL": "Rangárvallahreppur",
+                "name": "Rangárvallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -95167,7 +95167,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8608,
-                "SVEITARFEL": "Landmannahreppur",
+                "name": "Landmannahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -96135,7 +96135,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8609,
-                "SVEITARFEL": "Holtahreppur",
+                "name": "Holtahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -96375,7 +96375,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8610,
-                "SVEITARFEL": "Ásahreppur",
+                "name": "Ásahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -97637,7 +97637,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8701,
-                "SVEITARFEL": "Gaulverjabæjarhreppur",
+                "name": "Gaulverjabæjarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -97833,7 +97833,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8702,
-                "SVEITARFEL": "Stokkseyrarhreppur",
+                "name": "Stokkseyrarhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -97985,7 +97985,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8703,
-                "SVEITARFEL": "Eyrarbakkahreppur",
+                "name": "Eyrarbakkahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -98077,7 +98077,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8704,
-                "SVEITARFEL": "Sandvikurhreppur",
+                "name": "Sandvikurhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -98257,7 +98257,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8706,
-                "SVEITARFEL": "Hraungerðishreppur",
+                "name": "Hraungerðishreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -98549,7 +98549,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8707,
-                "SVEITARFEL": "Villingaholtshreppur",
+                "name": "Villingaholtshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -98845,7 +98845,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8708,
-                "SVEITARFEL": "Skeiðahreppur",
+                "name": "Skeiðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -99707,7 +99707,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8709,
-                "SVEITARFEL": "Gnúpverjahreppur",
+                "name": "Gnúpverjahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -100947,7 +100947,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8710,
-                "SVEITARFEL": "Hrunamannahreppur",
+                "name": "Hrunamannahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -102035,7 +102035,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8711,
-                "SVEITARFEL": "Biskupstungnahreppur",
+                "name": "Biskupstungnahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -103047,7 +103047,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8712,
-                "SVEITARFEL": "Laugardalshreppur",
+                "name": "Laugardalshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -103747,7 +103747,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8714,
-                "SVEITARFEL": "Þingvallahreppur",
+                "name": "Þingvallahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -104055,7 +104055,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8715,
-                "SVEITARFEL": "Grafningshreppur",
+                "name": "Grafningshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -104311,7 +104311,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8717,
-                "SVEITARFEL": "Ölfushreppur",
+                "name": "Ölfushreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -104695,7 +104695,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8718,
-                "SVEITARFEL": "Selvogshreppur",
+                "name": "Selvogshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -104911,7 +104911,7 @@
             "type": "Feature",
             "properties": {
                 "id": 8713,
-                "SVEITARFEL": "Grímsneshreppur",
+                "name": "Grímsneshreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -105003,7 +105003,7 @@
             "type": "Feature",
             "properties": {
                 "id": 4809,
-                "SVEITARFEL": "Sléttuhreppur",
+                "name": "Sléttuhreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -105857,7 +105857,7 @@
             "type": "Feature",
             "properties": {
                 "id": 3706,
-                "SVEITARFEL": "Neshreppur utan Ennis",
+                "name": "Neshreppur utan Ennis",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
@@ -106053,7 +106053,7 @@
             "type": "Feature",
             "properties": {
                 "id": 1300,
-                "SVEITARFEL": "Garðahreppur",
+                "name": "Garðahreppur",
                 "VINNSLUFER": 4,
                 "NAKVAEMNIX": 50.0,
                 "GAGNAEIGAN": "LMÍ",
