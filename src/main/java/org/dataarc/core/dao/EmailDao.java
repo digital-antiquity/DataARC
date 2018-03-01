@@ -47,6 +47,7 @@ public class EmailDao {
             helper.setTo(user.getEmail());
             helper.setBcc(Arrays.asList("abrin@digitalantiquity.org", "rachel.opitz@gmail.com", "Colleen.Strawhacker@Colorado.EDU").toArray(new String[0]));
             helper.setSubject(subject);
+            helper.setFrom("info@data-arc.org");
             result = "success";
             mailSender.send(message);
         } catch (MessagingException e) {
