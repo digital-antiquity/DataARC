@@ -88,8 +88,8 @@ class FilterHandler {
         if (feature.properties.name) {
           this.append('spatial', null, 'Region [' + feature.properties.name + ']');
         }
-        if (feature.properties.SVIETARFEL) {
-          this.append('spatial', null, 'Region [' + feature.properties.SVEITARFEL + ']');
+        else {
+          this.append('spatial', null, 'Region [' + spatial.region + ']');
         }
       }
       if (spatial.topLeft != null && spatial.bottomRight != null) {
