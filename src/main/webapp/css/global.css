@@ -11,7 +11,6 @@ html {
 }
 
 body {
-  /*font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;*/
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -206,7 +205,7 @@ header.home-shore {
 header.masthead .header-content {
   position: relative;
   width: 100%;
-  padding: 150px 15px 100px;
+  padding: 100px 15px 100px;
   text-align: center;
 }
 
@@ -217,6 +216,9 @@ header.masthead .header-content .header-content-inner h1 {
   margin-bottom: 0;
   text-transform: uppercase;
 }
+header.masthead .header-content .header-content-inner h3 {
+  font-size: 1.25rem;
+}
 
 header.masthead .header-content .header-content-inner hr {
   margin: 30px auto;
@@ -225,7 +227,6 @@ header.masthead .header-content .header-content-inner hr {
 header.masthead .header-content .header-content-inner p {
   font-size: 16px;
   font-weight: 300;
-  margin-bottom: 50px;
 }
 
 header.home-shore {
@@ -241,9 +242,9 @@ header.home-shore {
     position: absolute;
     top: 60%;
     padding: 0 50px;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-60%);
+    -ms-transform: translateY(-60%);
+    transform: translateY(-60%);
   }
   header.masthead .header-content .header-content-inner {
     max-width: 1000px;
@@ -254,7 +255,6 @@ header.home-shore {
     font-size: 50px;
   }
   header.masthead .header-content .header-content-inner p {
-    font-size: 18px;
     max-width: 80%;
     margin-right: auto;
     margin-left: auto;
@@ -425,11 +425,6 @@ fieldset[disabled] .btn-primary:hover {
 }
 
 
-#map,
-#topicmap {
-  height: 600px;
-  /*border: 1px solid #ddd;*/
-}
 /*
 .counts {
   position: fixed;

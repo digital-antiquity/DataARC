@@ -620,7 +620,7 @@ TopicMap.prototype = {
       '<span class="topic-message-buttons">' +
       ' <a class="zoomToNode btn btn-sm btn-outline-secondary" title="Zoom to this concept" href="javascript:;"><span class="fa fa-search"></span></a>' +
       ' <a id="centerNode" class="btn btn-sm btn-outline-secondary" title="Center this concept in a concentric layout" href="javascript:;"><span class="fa fa-dot-circle-o"></span></a>' +
-      ' <a class="addNodeToFilter btn btn-sm btn-outline-secondary" title="Add this concept to your filters" href="javascript:;"><span class="fa fa-plus"></span></a>' +
+      ' <a class="addNodeToFilter btn btn-sm btn-outline-secondary" title="Add this concept to your filters" href="javascript:;"><span class="fa fa-filter"></span></a>' +
       '</span>' +
       '</td>';
     html += '</tr></table>';
@@ -652,7 +652,7 @@ TopicMap.prototype = {
       '<span class="topic-message-buttons">' +
       ' <a class="zoomToSourceNode btn btn-sm btn-outline-secondary" title="Zoom to this concept" href="javascript:;"><span class="fa fa-search"></span></a>' +
       ' <a class="centerSourceNode btn btn-sm btn-outline-secondary" title="Center this concept in a concentric layout" href="javascript:;"><span class="fa fa-dot-circle-o"></span></a>' +
-      ' <a class="addSourceNodeToFilter btn btn-sm btn-outline-secondary" title="Add this concept to your filters" href="javascript:;"><span class="fa fa-plus"></span></a>' +
+      ' <a class="addSourceNodeToFilter btn btn-sm btn-outline-secondary" title="Add this concept to your filters" href="javascript:;"><span class="fa fa-filter"></span></a>' +
       '</span>' +
       '</td>';
     html += '<td align="center" width="33%" class="node-name node-name-edge">' +
@@ -663,7 +663,7 @@ TopicMap.prototype = {
       '<span class="topic-message-buttons">' +
       ' <a class="zoomToTargetNode btn btn-sm btn-outline-secondary" title="Zoom to this concept" href="javascript:;"><span class="fa fa-search"></span></a>' +
       ' <a class="centerTargetNode btn btn-sm btn-outline-secondary" title="Center this concept in a concentric layout" href="javascript:;"><span class="fa fa-dot-circle-o"></span></a>' +
-      ' <a class="addTargetNodeToFilter btn btn-sm btn-outline-secondary" title="Add this concept to your filters" href="javascript:;"><span class="fa fa-plus"></span></a>' +
+      ' <a class="addTargetNodeToFilter btn btn-sm btn-outline-secondary" title="Add this concept to your filters" href="javascript:;"><span class="fa fa-filter"></span></a>' +
       '</span>' +
       '</td>';
     html += '</tr></table>';

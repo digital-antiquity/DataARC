@@ -34,9 +34,9 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#page-top">Start</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#keyword-section">Keyword</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#timeline-section">Timeline</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#map-section">Map</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#concept-section">Concept</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#temporal-section">Timeline</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#spatial-section">Map</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#concept-section">Concepts</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-primary">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-danger">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
@@ -50,44 +50,46 @@
         <h1 id="homeHeading">dataARC Search Tool</h1>
         <hr class="light">
         <h3>Find contextualized data from ecological, archaeological, and historical sources for the North Atlantic.</h3>
-        <p>&nbsp;</p>
-        <p><a href="/help" class="btn btn-sm btn-light">Not sure where to start?</a></p>
-        <p>
-          <div class="row">
-            <div class="col-lg-3 col-md-6 text-center">
-              <div class="service-box">
-                <i class="fa fa-4x fa-font text-primary sr-icons"></i>
-                <h4>Keyword</h4>
-                <p>Using the keyword example, you can see how a simple phrase in the keyword box will filter our results based on terms that you specify.</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-              <div class="service-box">
-                <i class="fa fa-4x fa-clock-o text-success sr-icons"></i>
-                <h4>Temporal</h4>
-                <p>This example uses our timeline to filter the result data.</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-              <div class="service-box">
-                <i class="fa fa-4x fa-compass text-danger sr-icons"></i>
-                <h4>Spatial</h4>
-                <p>Want to see results only with a specific bounding box?</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-              <div class="service-box">
-                <i class="fa fa-4x fa-sitemap text-warning sr-icons"></i>
-                <h4>Concept</h4>
-                <p>Looking for a way to view results that only relate to specific concepts? Filter results based on the concept map. Learn about <a href="https://www.data-arc.org/conceptmapping/">dataARC&apos;s concept map</a>.</p>
-              </div>
+        <p>You can search and filter by any combination of keyword, time, space and concept. Combine filters to narrow your search.</p>
+        <h6><a href="/help" class="btn btn-sm btn-outline-light">Not sure where to start?</a></h6>
+        <div class="row">
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box">
+              <a class="js-scroll-trigger text-light" href="#keyword-section"><h4>Keyword</h4></a>
+              <i class="fa fa-4x fa-font text-primary sr-icons"></i>
+              <a class="js-scroll-trigger text-light" href="#keyword-example"><h4>Example</h4></a>
+              <p>Using the keyword example, you can see how a simple phrase in the keyword box will filter our results based on terms that you specify.</p>
             </div>
           </div>
-        </p>
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box">
+              <a class="js-scroll-trigger text-light" href="#temporal-section"><h4>Temporal</h4></a>
+              <i class="fa fa-4x fa-clock-o text-success sr-icons"></i>
+              <a class="js-scroll-trigger text-light" href="#temporal-example"><h4>Example</h4></a>
+              <p>This example uses our timeline to filter the result data.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box">
+              <a class="js-scroll-trigger text-light" href="#spatial-section"><h4>Spatial</h4></a>
+              <i class="fa fa-4x fa-compass text-danger sr-icons"></i>
+              <a class="js-scroll-trigger text-light" href="#spatial-example"><h4>Example</h4></a>
+              <p>Want to see results only with a specific bounding box?</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box">
+              <a class="js-scroll-trigger text-light" href="#concept-section"><h4>Concept</h4></a>
+              <i class="fa fa-4x fa-sitemap text-warning sr-icons"></i>
+              <a class="js-scroll-trigger text-light" href="#concept-example"><h4>Example</h4></a>
+              <p>Looking for a way to view results that only relate to specific concepts? Filter results based on the concept map. Learn about <a href="https://www.data-arc.org/conceptmapping/">dataARC&apos;s concept map</a>.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
-  <section id="explore-section" class="bg-primary">
+<!--   <section id="explore-section" class="bg-primary">
     <div class="container call-to-action">
       <div class="row justify-content-center">
         <div class="col-lg-8 mx-auto text-center">
@@ -95,35 +97,37 @@
           <hr class="light">
           <p class="text-faded">You can search and filter by any combination of keyword, time, space and concept. Combine filters to narrow your search.</p>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#keyword-section"><i class="fa fa-search text-white sr-icons"></i> Keyword</a>
-          <a class="btn btn-dark btn-xl js-scroll-trigger" href="#timeline-section"><i class="fa fa-clock-o text-white sr-icons"></i> Timeline</a>
-          <a class="btn btn-dark btn-xl js-scroll-trigger" href="#map-section"><i class="fa fa-map-o text-white sr-icons"></i> Map</a>
+          <a class="btn btn-dark btn-xl js-scroll-trigger" href="#temporal-section"><i class="fa fa-clock-o text-white sr-icons"></i> Timeline</a>
+          <a class="btn btn-dark btn-xl js-scroll-trigger" href="#spatial-section"><i class="fa fa-map-o text-white sr-icons"></i> Map</a>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#concept-section"><i class="fa fa-sitemap text-white sr-icons"></i> Concept</a>
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <section id="keyword-section" class="bg-light">
     <div class="container call-to-action">
       <div class="row justify-content-center">
         <div class="col-lg-6 text-center">
           <h2 class="section-heading">Keyword</h2>
           <hr class="primary">
+          <p>Use a simple phrase to filter the results based on terms you specify.</p>
           <div class="input-group">
             <input id="keywords-field" type="text" class="form-control" placeholder="Filter by..." aria-label="Filter by...">
-            <span class="input-group-btn">
-              <a id="keywords-btn" class="btn btn-primary btn-xl js-scroll-trigger" href="#keyword-section">Filter</a>
-            </span>
+            <div class="input-group-append">
+              <button id="keywords-btn" class="btn btn-primary btn-xl">Filter</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <section id="timeline-section" class="bg-white">
+  <section id="temporal-section" class="bg-white">
     <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
           <h2 class="section-heading">Timeline<sup><a href="www.data-arc.org/time/" class="text-dark" target="_blank" data-toggle="tooltip" title="How dataarc thinks about time"><i class="fa fa-info-circle"></i></a></sup></h2>
           <hr class="primary">
+          <p>Use the timeline to examine how data is distributed temporally.</p>
           <div class="legend justify-content-md-center">
             <ul class="list-inline">
               <li class="list-inline-item"><span class="legend-item legend-item-one">&nbsp;&nbsp;</span> Archaeological Sources</li>
@@ -141,7 +145,7 @@
       </div>
     </div>
   </section>
-  <section id="map-section" class="bg-light">
+  <section id="spatial-section" class="bg-light">
     <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
@@ -184,11 +188,11 @@
       </div>
     </div>
   </section>
-  <section id="filters-section" class="bg-secondary">
+  <section id="filters-section" class="bg-secondary text-white">
     <div class="call-to-action">
       <div class="container text-center">
         <h2 class="section-heading">Filters</h2>
-        <hr class="primary">
+        <hr>
         <div id="filters" class="row">&nbsp;</div>
         <button id="filter-save" class="btn btn-primary"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
         <button id="filter-share" class="btn btn-primary"><i class="fa fa-print sr-icons"></i> Share Search</button>

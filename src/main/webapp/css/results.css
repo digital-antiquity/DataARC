@@ -79,6 +79,15 @@
 	margin: 15px;
 }
 
+/* remove padding from datatables */
+#results-details .dataTables_wrapper {
+	padding: 0;
+}
+#results-details .dataTables_wrapper .badge {
+	background: none;
+	font-weight: normal;
+}
+
 /* result type colors */
 #results-matched {
 	background-color: #202020 !important;
