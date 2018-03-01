@@ -5,7 +5,7 @@ var Loader, Filters, Timeline, Geography, Concepts, Results, Search;
 var category_colors = ["#6177aa", "#fc8d62", "#66c2a5", "#54278f", "#a63603"];
 
 // Page Level Javascript Actions
-$(document).ready(function() {
+$(function() {
   // config for the objects
   var search_config = {
     source: "/api/search",
@@ -78,6 +78,9 @@ $(document).ready(function() {
       }
     }
   });
+
+  // Enable tooltips
+  $('[data-toggle="tooltip"]').tooltip();
 
   // Closes responsive menu when a scroll trigger link is clicked
   $('.js-scroll-trigger').click(function() {
