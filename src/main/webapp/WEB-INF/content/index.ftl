@@ -125,7 +125,7 @@
     <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
-          <h2 class="section-heading">Timeline<sup><a href="www.data-arc.org/time/" class="text-dark" target="_blank" data-toggle="tooltip" title="How dataarc thinks about time"><i class="fa fa-info-circle"></i></a></sup></h2>
+          <h2 class="section-heading">Timeline<sup><a href="http://www.data-arc.org/time/" class="text-dark" target="_blank" data-toggle="tooltip" title="How dataarc thinks about time"><i class="fa fa-info-circle"></i></a></sup></h2>
           <hr class="primary">
           <p>Use the timeline to examine how data is distributed temporally.</p>
           <div class="legend justify-content-md-center">
@@ -149,7 +149,7 @@
     <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
-          <h2 class="section-heading">Map<sup><a href="www.data-arc.org/space/" class="text-dark" target="_blank" data-toggle="tooltip" title="How dataarc thinks about space and place"><i class="fa fa-info-circle"></i></a></sup></h2>
+          <h2 class="section-heading">Map<sup><a href="http://www.data-arc.org/space/" class="text-dark" target="_blank" data-toggle="tooltip" title="How dataarc thinks about space and place"><i class="fa fa-info-circle"></i></a></sup></h2>
           <hr class="primary">
           <div class="legend justify-content-md-center">
             <ul class="list-inline">
@@ -167,7 +167,7 @@
     <div class="container call-to-action">
       <div class="row">
         <div class="col-lg-12 text-center">
-          <h2 class="section-heading">Concepts<sup><a href="www.data-arc.org/conceptmapping/" class="text-dark" target="_blank" data-toggle="tooltip" title="How to use dataarc concepts in your search"><i class="fa fa-info-circle"></i></a></sup></h2>
+          <h2 class="section-heading">Concepts<sup><a href="http://www.data-arc.org/conceptmapping/" class="text-dark" target="_blank" data-toggle="tooltip" title="How to use dataarc concepts in your search"><i class="fa fa-info-circle"></i></a></sup></h2>
           <hr class="primary">
         </div>
         <div class="col-lg-12">
