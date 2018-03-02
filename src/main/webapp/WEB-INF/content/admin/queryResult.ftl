@@ -11,9 +11,9 @@
     <@body.body>
 
         <h1>Run Query</h1>
-            <form method="POST" action="queryResult" enctype="multipart/form-data">
-	<textarea name="query"></textarea>
-	<button name='submit' value='submit'>search</button>
+    <form method="POST" action="queryResult" enctype="multipart/form-data" class="form-control" rows=10>
+        	<textarea name="query"></textarea>
+        	<button name='submit' value='submit'>search</button>
     </form> 
     <ol>
     <#list results as result>

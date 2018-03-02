@@ -9,13 +9,12 @@
     </head>
     
     <@body.body>
-
-        <h1>Run Query</h1>
-            <form method="POST" action="queryResult" enctype="multipart/form-data">
-	<textarea class="form-control" rows=10 name="query"></textarea>
-	<br/>
+<h1> Edit Combinator: ${indicator.name!'no name?'}</h1>
+<form method="POST" action="/a/combinators/${indicator.id?c}" enctype="multipart/form-data">
+    <textarea name="combinator" class="form-control" rows=10>${combinator!''}</textarea>
+    <br/>
 <button name='submit' value='submit'>search</button>
     </form> 
-    
-    </@body.body>
+
+</@body.body>
 </html>

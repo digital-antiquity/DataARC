@@ -17,6 +17,7 @@ import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.TopicDao;
+import org.dataarc.core.query.FilterQuery;
 import org.dataarc.datastore.mongo.MongoDao;
 import org.dataarc.datastore.mongo.QueryException;
 import org.dataarc.util.PersistableUtils;
@@ -183,6 +184,13 @@ public class IndicatorService {
     @Transactional(readOnly=true)
     public void updateRaw(Indicator ind) throws QueryException {
         mongoDao.updateRaw(ind);
+        
+    }
+
+    @Transactional(readOnly=false)
+    public void updateIndicator(Indicator ind, FilterQuery query) {
+        ind.setQuery(query);
+        indicatorDao.save(ind);
         
     }
 
