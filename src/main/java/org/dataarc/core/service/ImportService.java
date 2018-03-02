@@ -49,6 +49,7 @@ public class ImportService {
                 importDataService.enhanceProperties(feature, properties);
                 FieldDataCollector collector = collectors.get(schema);
                 ObjectTraversalUtil.traverse(properties, collector);
+                logger.debug("fieldNames: {}", collector.getNames());
                 importDataService.load(feature, properties);
             }
         } catch (Exception e) {
