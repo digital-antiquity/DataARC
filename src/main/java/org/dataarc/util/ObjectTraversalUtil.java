@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
 public class ObjectTraversalUtil {
@@ -16,6 +15,7 @@ public class ObjectTraversalUtil {
         traverseMap(properties, newMap, collector, null, null);
     }
 
+    @SuppressWarnings("unchecked")
     public static void traverseMap(Map<String, Object> properties,Map<String,Object> newMap, final FieldDataCollector collect, final String _parent, String parentKey) {
         String __parent = _parent;
         if (__parent == null) {
@@ -29,11 +29,14 @@ public class ObjectTraversalUtil {
         properties.keySet().forEach(key -> {
             Object arg2 = properties.get(key);
             String normapName = collect.add(parent, key, arg2);
+            if (StringUtils.contains(normapName, ".")) {
+                normapName = StringUtils.substringAfterLast(normapName, ".");
+            }
             if (arg2 instanceof Collection) {
                 List<Object> childList = new ArrayList<>();
                 newMap.put(normapName, childList);
 
-                ((Collection) arg2).forEach(new Consumer() {
+                ((Collection<Object>) arg2).forEach(new Consumer<Object>() {
 
                     @Override
                     public void accept(Object t) {

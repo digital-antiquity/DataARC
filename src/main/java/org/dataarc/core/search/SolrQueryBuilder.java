@@ -69,7 +69,7 @@ public class SolrQueryBuilder {
         String normal = "";
         for (int i = 0; i < facetFields.size(); i++) {
             String fld = facetFields.get(i);
-            normal += ", " + makeFacet(fld, SMALL_NUM_OF_FACETS);
+            normal += ", " + makeFacet(fld, LOTS_OF_FACETS);
         }
 
         String facet = "{" + makeFacetGroup(TEMPORAL, IndexFields.CATEGORY,

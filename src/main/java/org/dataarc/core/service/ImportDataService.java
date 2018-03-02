@@ -88,15 +88,18 @@ public class ImportDataService {
         FieldDataCollector collector = new FieldDataCollector(schemaName);
         FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(imported), FeatureCollection.class);
         deleteBySource(schemaName);
+        Map<String, Object> properties = null;
+        Map<String,Object> cleaned = new HashMap<>();
+        try {
         int rows = 0;
         for (Iterator<Feature> iterator = featureCollection.getFeatures().iterator(); iterator.hasNext();) {
             rows++;
             Feature feature = iterator.next();
             logger.trace("feature: {}", feature);
-            Map<String, Object> properties = feature.getProperties();
+            properties = feature.getProperties();
             properties.put(IndexFields.SOURCE, schemaName);
             enhanceProperties(feature, properties);
-            Map<String,Object> cleaned = new HashMap<>();
+            cleaned = new HashMap<>();
             ObjectTraversalUtil.traverse(properties, cleaned, collector);
             load(feature, cleaned);
         }
@@ -116,6 +119,13 @@ public class ImportDataService {
             if (CollectionUtils.isNotEmpty(inds)) {
                 throw new SourceReplaceException(inds);
             }
+        }
+        } catch (Throwable t) {
+            logger.error("error loading data: {} ", t,t);
+            logger.error("orig: {}", properties);
+            logger.error("cleaned: {}", cleaned);
+            logger.error("fieldMap: {}", collector.getDisplayNameMap());
+            throw t;
         }
 
     }

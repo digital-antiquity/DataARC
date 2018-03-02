@@ -50,6 +50,7 @@ public class IndicatorController extends AbstractController {
         mav.addObject("indicators", findAll);
         SearchQueryObject sqo = new SearchQueryObject();
         sqo.setIdOnly(true);
+        sqo.setExpandedFacets(true);
         SearchResultObject search = searchService.search(sqo);
         Map facets = search.getFacets().get(IndexFields.INDICATOR);
         mav.addObject("facets", facets);
