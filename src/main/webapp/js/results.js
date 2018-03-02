@@ -197,7 +197,7 @@ class ResultsHandler {
     table.DataTable({
       'data': data.results,
       'lengthChange': false,
-      'dom': '<<"search"f>i<t>p>',
+      'dom': '<<"badge badge-light pull-left"i><"pull-right"f><t>p>',
       'language': {
         'paginate': {
           'previous': '',
@@ -206,7 +206,7 @@ class ResultsHandler {
         'search': '_INPUT_',
         'searchPlaceholder': 'Filter...',
         'infoEmpty': 'No features for this source',
-        'info': '(_START_-_END_)/_TOTAL_',
+        'info': '_START_ - _END_ of _TOTAL_',
         'lengthMenu': ''
       },
       'columns': [

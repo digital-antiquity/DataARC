@@ -1,7 +1,3 @@
-#filters-section {
-  background-color: #efefef !important;
-}
-
 #filters {
   margin-bottom:40px;
 }
@@ -12,7 +8,6 @@
 
 
 /* filter type colors */
-
 .filter-keywords {
   background-color: #777;
 }

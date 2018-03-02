@@ -1,10 +1,10 @@
 
 <footer>
-  <section id="footer-section" class="bg-primary" style="padding:50px 0 60px 0;">
+  <section id="footer-section" class="bg-primary text-white" style="padding:50px 0 60px 0;">
     <div class="container">
       <div class="row">
         <div class="col-md-12 text-center">
-          <h4 class="section-heading text-white">Sign Up for Updates</h4>
+          <h3 class="section-heading">Sign Up for Updates</h3>
           <hr class="light">
         </div>
       </div>
@@ -28,7 +28,7 @@
             </div>
               <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
             <div style="position: absolute; left: -5000px; display:none; visibility:hidden;" aria-hidden="true"><input type="text" name="b_ed0e25207927eeb57ac697962_d2e0b803d8" tabindex="-1" value=""></div>
-            <div class="clear"><button type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-info btn-block">Sign Up</button></div>
+            <div class="clear"><button type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-light btn-block">Sign Up</button></div>
           </div>
         </div>
       </form>
@@ -54,6 +54,8 @@
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/jquery.easing/jquery.easing.min.js"></script>
 <script src="vendor/lodash/lodash.min.js"></script>
+<script src="vendor/popper/popper.min.js"></script>
+<script src="vendor/tooltip/tooltip.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="vendor/d3/d3.min.js"></script>
 <script src="vendor/leaflet/leaflet.js"></script>
