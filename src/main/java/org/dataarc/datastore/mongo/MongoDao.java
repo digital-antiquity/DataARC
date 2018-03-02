@@ -245,7 +245,7 @@ public class MongoDao implements ImportDao, QueryDao {
 
         GeoJsonObject geometry = feature.getGeometry();
         // template.save(feature, "dataEntry");
-        entry.setProperties(props);
+        entry.setProperties(properties);
         if (geometry instanceof org.geojson.Point) {
             org.geojson.Point point_ = (org.geojson.Point) geometry;
             if (point_.getCoordinates() != null) {

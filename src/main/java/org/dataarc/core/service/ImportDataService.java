@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -95,13 +96,14 @@ public class ImportDataService {
             Map<String, Object> properties = feature.getProperties();
             properties.put(IndexFields.SOURCE, schemaName);
             enhanceProperties(feature, properties);
-            ObjectTraversalUtil.traverse(properties, collector);
-            load(feature, properties);
+            Map<String,Object> cleaned = new HashMap<>();
+            ObjectTraversalUtil.traverse(properties, cleaned, collector);
+            load(feature, cleaned);
         }
         Set<SchemaField> saveSchema = schemaDao.saveSchema(collector, rows);
         if (CollectionUtils.isNotEmpty(saveSchema)) {
-        List<Long> ids = PersistableUtils.extractIds(saveSchema);
-        List<Indicator> inds = new ArrayList<>();
+            List<Long> ids = PersistableUtils.extractIds(saveSchema);
+            List<Indicator> inds = new ArrayList<>();
             List<Indicator> indicators = indicatorDao.findAllForSchema(schema.getId());
             for (Indicator ind : indicators) {
                 for (QueryPart queryPart : ind.getQuery().getConditions()) {

@@ -48,9 +48,10 @@ public class ImportService {
                 collectors.putIfAbsent(schema, new FieldDataCollector(schema));
                 importDataService.enhanceProperties(feature, properties);
                 FieldDataCollector collector = collectors.get(schema);
-                ObjectTraversalUtil.traverse(properties, collector);
+                Map<String,Object> cleaned = new HashMap<>();
+                ObjectTraversalUtil.traverse(properties, cleaned, collector);
                 logger.debug("fieldNames: {}", collector.getNames());
-                importDataService.load(feature, properties);
+                importDataService.load(feature, cleaned);
             }
         } catch (Exception e) {
             logger.error("{}", e, e);

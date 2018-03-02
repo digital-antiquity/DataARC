@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -70,7 +71,9 @@ public class FieldDataCollectorTest {
             Feature feature = iterator.next();
             logger.trace("feature: {}", feature);
             Map<String, Object> properties = feature.getProperties();
-            ObjectTraversalUtil.traverse(properties, collector);
+            Map<String,Object> newProps = new HashMap<String, Object>();
+            ObjectTraversalUtil.traverse(properties, newProps, collector);
+            logger.debug("{}", newProps);
         }
         for (String name : collector.getNames()) {
             logger.debug(name);

@@ -17,7 +17,9 @@
     </form> 
     <ol>
     <#list results as result>
-    <li>id: <b>${result['_id']}</b> [${result['source']}] ${result?keys?join(",")}</li>
+    <li>id: <b>${result['_id']}</b> [${result['source']}] ${result?keys?join(",")},
+    ${result['properties']?keys?join(",")}
+    </li>
     </#list>
     </ol>
     
