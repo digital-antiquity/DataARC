@@ -240,11 +240,8 @@ header.home-shore {
   }
   header.masthead .header-content {
     position: absolute;
-    top: 60%;
+    top: 20%;
     padding: 0 50px;
-    -webkit-transform: translateY(-60%);
-    -ms-transform: translateY(-60%);
-    transform: translateY(-60%);
   }
   header.masthead .header-content .header-content-inner {
     max-width: 1000px;
