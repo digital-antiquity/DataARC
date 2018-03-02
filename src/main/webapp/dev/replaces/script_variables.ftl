@@ -1,5 +1,5 @@
   <script>
-  var testing = false;
+  var testing = true;
   function getContextPath() {
     return "";
   }
