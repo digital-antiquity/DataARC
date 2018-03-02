@@ -165,7 +165,7 @@ class ResultsHandler {
     link.append(data.name + ' <span class="badge badge-dark">' + data.count + '</span>');
     link.on('click', (e) => {
       var description = $('#' + data.id + '_bio').text();
-      $(e.target.hash + ' .source-description').text(description);
+      $(e.target.hash + ' .source-details').text(description);
     });
     parent.append(link);
   }
@@ -178,7 +178,7 @@ class ResultsHandler {
       'role': 'tabpanel',
       'aria-labelledby': data.id + '-tab'
     });
-    content.append('<div class="row"><div class="col-4 source-table"></div><div class="col-8 source-description"><p>' + description + '</p></div></div>');
+    content.append('<div class="row"><div class="col-4 source-table"></div><div class="col-8 source-details"><p>' + description + '</p></div></div>');
     this.appendDataTable(content.find('.source-table'), data);
     parent.append(content);
   }
@@ -231,11 +231,12 @@ class ResultsHandler {
   }
 
   showDetails(id) {
+    var details = $('.source-details');
+    details.html(this.loader);
     Search.getDetailsById(id, (data) => {
       var feature = data.results.features[0];
       var handlebarHandler = $("#results-template-" + feature.properties.schema_id).length ? $("#results-template-" + feature.properties.schema_id) : $("#results-template-generic");
       var template = Handlebars.compile(handlebarHandler.html());
-      var details = $('.source-description');
       details.html(template(feature.properties));
       this.analyzeDetails(details);
     });
@@ -244,6 +245,7 @@ class ResultsHandler {
   analyzeDetails(container) {
     var chart = container.find('table.type-chart');
     if (chart.length) {
+      container.html(this.loader);
       function getRandomRgb(a) {
         var num = Math.round(0xffffff * Math.random());
         var r = num >> 16;
