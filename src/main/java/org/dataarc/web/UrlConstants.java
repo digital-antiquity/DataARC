@@ -46,5 +46,8 @@ public interface UrlConstants {
     String ABOUT = "/about";
     String LIST_COVERAGE = "/a/coverage";
     String SEARCH_RESULTS = "/api/searchResultPage";
+    String ADMIN_QUERY = "/a/admin/query";
+    String ADMIN_QUERY_RESULT = "/a/admin/queryResult";
+    String EDIT_COMBINATORS = "/a/combinators/{id}";
 
 }

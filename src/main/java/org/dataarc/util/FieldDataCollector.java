@@ -30,12 +30,12 @@ public class FieldDataCollector {
         this.setDisplayName(schema);
     }
 
-    public void add(String parent, String key, Object value) {
+    public String add(String parent, String key, Object value) {
         if (value == null ||
                 value instanceof String && StringUtils.isBlank((CharSequence) value) ||
                 value instanceof Collection && CollectionUtils.isEmpty((Collection) value) ||
                 value instanceof Map && MapUtils.isEmpty((Map) value)) {
-            return;
+            return null;
         }
 
         FieldType type = FieldType.STRING;
@@ -81,7 +81,7 @@ public class FieldDataCollector {
 
         fieldTypes.put(normalizedName, type);
         if (value instanceof Collection || value instanceof Map) {
-            return;
+            return normalizedName;
         }
 
         if (value instanceof Date || value instanceof String || value instanceof Number) {
@@ -99,6 +99,7 @@ public class FieldDataCollector {
         } else {
             logger.error("value is unknown type!!! {} --> {}", value.getClass(), value);
         }
+        return normalizedName;
     }
 
     public Set<String> getNames() {
@@ -135,6 +136,14 @@ public class FieldDataCollector {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public Map<String, String> getDisplayNameMap() {
+        return displayNames;
+    }
+
+    public void setDisplayNameMap(Map<String, String> displayNames) {
+        this.displayNames = displayNames;
     }
 
 }

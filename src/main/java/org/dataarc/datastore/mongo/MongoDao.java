@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bson.BSONObject;
+import org.bson.BsonDocumentWriter;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
 import org.dataarc.bean.schema.Schema;
@@ -40,8 +44,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.DBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.UpdateResult;
+import com.mongodb.util.JSON;
 import com.vividsolutions.jts.geom.Geometry;
 
 @Component
@@ -82,6 +89,12 @@ public class MongoDao implements ImportDao, QueryDao {
             map.put(r, 1L);
         }
         return map;
+    }
+
+    @Transactional(readOnly = true)
+    public FindIterable<Document> runQuery(String query) throws Exception {
+        FindIterable<Document> find = template.getDb().getCollection(DATA_ENTRY).find(Document.parse(query));
+        return find;
     }
 
     @Override
@@ -232,7 +245,7 @@ public class MongoDao implements ImportDao, QueryDao {
 
         GeoJsonObject geometry = feature.getGeometry();
         // template.save(feature, "dataEntry");
-        entry.setProperties(props);
+        entry.setProperties(properties);
         if (geometry instanceof org.geojson.Point) {
             org.geojson.Point point_ = (org.geojson.Point) geometry;
             if (point_.getCoordinates() != null) {
@@ -384,6 +397,12 @@ public class MongoDao implements ImportDao, QueryDao {
 
         q.addCriteria(group);
         return template.find(q, DataEntry.class);
+    }
+
+    public void updateRaw(Indicator ind) throws QueryException {
+        Query query = getMongoFilterQuery(ind.getQuery());
+        ind.getQuery().setRaw(query.toString());
+        
     }
 
 }

@@ -33,7 +33,7 @@
         <td>${combinator.schema.name}</td>
         <td>${combinator.description!''}</td>
         <td>${combinator.citation!''}</td>
-        <td>${combinator.query}</td>
+        <td>${combinator.query.raw}</td>
         <td><#list combinator.topics as topic><span class="label label-primary">${topic.name}</span> <#sep>, </#sep></#list></td>
     </tr>
 </#list>

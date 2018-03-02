@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -81,9 +82,19 @@ public class DataArcConfiguration {
     
     @Bean(name = "mailSender")
     public JavaMailSender getJavaMailSender() {
-        String hostname = env.getProperty("mail.smtp.host", "localhost");
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
-        sender.setHost(hostname);
+        sender.setHost(env.getProperty("mail.smtp.host", "localhost"));
+        String username = env.getProperty("mail.smtp.username");
+        String password = env.getProperty("mail.smtp.password");
+        sender.setPort(env.getProperty("mail.smtp.port", Integer.class, 25));
+//        if (env.getProperty("mail.auth", Boolean.class, false)) {
+//            
+//        }
+        if (StringUtils.isNotBlank(username)) {
+            sender.setUsername(username);
+            sender.setUsername(password);
+
+        }
         return sender;
     }
 

@@ -17,7 +17,7 @@ public class SchemaUtils {
     private static final String HANDLEBAR_FIELD_NAME = "fieldName ";
     private static final Pattern PATTERN_NON_ASCII = Pattern.compile("[^\\p{ASCII}]");
     private static final Pattern PATTERN_NONWORD = Pattern.compile("[^\\w\\.\\s-]");
-    private static final Pattern PATTERN_WHITESPACE = Pattern.compile("[-\\s]+");
+    private static final Pattern PATTERN_WHITESPACE = Pattern.compile("[-\\s%<>!=]");
     private static final Pattern PATTERN_AFFIX_SLUG = Pattern.compile("(^-)|(-$)");
 
     protected static final transient Logger logger = LoggerFactory.getLogger(SchemaUtils.class);
@@ -51,7 +51,7 @@ public class SchemaUtils {
         input = replaceAll(input, PATTERN_NONWORD, "");
         input = replaceAll(input, PATTERN_WHITESPACE, "_");
         input = replaceAll(input, PATTERN_AFFIX_SLUG, "");
-        return input.toLowerCase();
+        return StringUtils.replaceAll(input.toLowerCase(), " ", "_");
     }
 
     private static final List<String> ignorePrefix = Arrays.asList(IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.TITLE);
