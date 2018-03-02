@@ -17,6 +17,8 @@ public class FilterQuery implements Serializable {
     @JsonView(View.Indicator.class)
     private Operator operator = Operator.AND;
 
+    private transient String raw;
+    
     @JsonView(View.Indicator.class)
     private String schema;
 
@@ -51,5 +53,13 @@ public class FilterQuery implements Serializable {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    public String getRaw() {
+        return raw;
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
     }
 }

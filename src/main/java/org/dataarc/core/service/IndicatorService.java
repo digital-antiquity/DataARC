@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.bson.Document;
 import org.dataarc.bean.DataArcUser;
+import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.Indicator;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
@@ -15,7 +17,8 @@ import org.dataarc.core.dao.ImportDao;
 import org.dataarc.core.dao.IndicatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.TopicDao;
-import org.dataarc.core.search.SolrIndexingService;
+import org.dataarc.datastore.mongo.MongoDao;
+import org.dataarc.datastore.mongo.QueryException;
 import org.dataarc.util.PersistableUtils;
 import org.dataarc.web.api.indicator.IndicatorDataObject;
 import org.slf4j.Logger;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Objects;
+import com.mongodb.client.FindIterable;
 
 @Service
 @Transactional
@@ -39,8 +43,8 @@ public class IndicatorService {
     @Autowired
     private TopicDao topicDao;
 
-//    @Autowired
-//    private SolrIndexingService indexingService;
+    @Autowired
+    private MongoDao mongoDao;
 
     @Autowired
     private SchemaDao schemoDao;
@@ -166,8 +170,20 @@ public class IndicatorService {
         }
     }
 
+    @Transactional(readOnly=true)
     public List<Indicator> findAll() {
         return indicatorDao.findAll();
+    }
+
+    @Transactional(readOnly=true)
+    public FindIterable<Document> search(String json) throws Exception {
+        return mongoDao.runQuery(json);
+    }
+
+    @Transactional(readOnly=true)
+    public void updateRaw(Indicator ind) throws QueryException {
+        mongoDao.updateRaw(ind);
+        
     }
 
 }

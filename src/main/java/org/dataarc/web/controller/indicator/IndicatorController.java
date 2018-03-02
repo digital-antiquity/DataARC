@@ -12,6 +12,7 @@ import org.dataarc.core.search.SolrService;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.dataarc.core.service.IndicatorService;
 import org.dataarc.core.service.UserService;
+import org.dataarc.datastore.mongo.QueryException;
 import org.dataarc.util.View;
 import org.dataarc.web.AbstractController;
 import org.dataarc.web.UrlConstants;
@@ -38,6 +39,14 @@ public class IndicatorController extends AbstractController {
     public ModelAndView schema() throws IOException, ParseException, SolrServerException {
         ModelAndView mav = new ModelAndView("combinators/list");
         List<Indicator> findAll = indicatorService.findAll();
+        findAll.forEach(ind -> {
+            try {
+                indicatorService.updateRaw(ind);
+            } catch (QueryException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
         mav.addObject("indicators", findAll);
         SearchQueryObject sqo = new SearchQueryObject();
         sqo.setIdOnly(true);
