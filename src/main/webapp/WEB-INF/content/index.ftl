@@ -37,7 +37,7 @@
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#temporal-section">Timeline</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#spatial-section">Map</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#concept-section">Concepts</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-primary">0</span></a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-success">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-danger">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
         </ul>
@@ -55,33 +55,41 @@
         <div class="row">
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box">
-              <a class="js-scroll-trigger text-light" href="#keyword-section"><h4>Keyword</h4></a>
-              <i class="fa fa-4x fa-font text-primary sr-icons"></i>
-              <a class="js-scroll-trigger text-light" href="#keyword-example"><h4>Example</h4></a>
+              <a class="js-scroll-trigger text-light" href="#keyword-section">
+                <i class="fa fa-4x fa-font text-primary sr-icons"></i>
+                <h4>Keyword</h4>
+              </a>
+              <a class="btn btn-sm btn-light js-scroll-trigger" href="#keyword-example">Run Example</a>
               <p>Using the keyword example, you can see how a simple phrase in the keyword box will filter our results based on terms that you specify.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box">
-              <a class="js-scroll-trigger text-light" href="#temporal-section"><h4>Temporal</h4></a>
-              <i class="fa fa-4x fa-clock-o text-success sr-icons"></i>
-              <a class="js-scroll-trigger text-light" href="#temporal-example"><h4>Example</h4></a>
+              <a class="js-scroll-trigger text-light" href="#temporal-section">
+                <i class="fa fa-4x fa-clock-o text-success sr-icons"></i>
+                <h4>Temporal</h4>
+              </a>
+              <a class="btn btn-sm btn-light js-scroll-trigger" href="#temporal-example">Run Example</a>
               <p>This example uses our timeline to filter the result data.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box">
-              <a class="js-scroll-trigger text-light" href="#spatial-section"><h4>Spatial</h4></a>
-              <i class="fa fa-4x fa-compass text-danger sr-icons"></i>
-              <a class="js-scroll-trigger text-light" href="#spatial-example"><h4>Example</h4></a>
+              <a class="js-scroll-trigger text-light" href="#spatial-section">
+                <i class="fa fa-4x fa-compass text-danger sr-icons"></i>
+                <h4>Spatial</h4>
+              </a>
+              <a class="btn btn-sm btn-light js-scroll-trigger" href="#spatial-example">Run Example</a>
               <p>Want to see results only with a specific bounding box?</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box">
-              <a class="js-scroll-trigger text-light" href="#concept-section"><h4>Concept</h4></a>
-              <i class="fa fa-4x fa-sitemap text-warning sr-icons"></i>
-              <a class="js-scroll-trigger text-light" href="#concept-example"><h4>Example</h4></a>
+              <a class="js-scroll-trigger text-light" href="#concept-section">
+                <i class="fa fa-4x fa-sitemap text-warning sr-icons"></i>
+                <h4>Concept</h4>
+              </a>
+              <a class="btn btn-sm btn-light js-scroll-trigger" href="#concept-example">Run Example</a>
               <p>Looking for a way to view results that only relate to specific concepts? Filter results based on the concept map. Learn about <a href="https://www.data-arc.org/conceptmapping/">dataARC&apos;s concept map</a>.</p>
             </div>
           </div>
@@ -221,22 +229,6 @@
       </div>
     </div>
   </section>
-
-<!--   <div class="counts">
-    <ul class="list-unstyled">
-      <li class="icon"><a class="js-scroll-trigger" href="#filters-section">Filters<span id="filters-count" class="badge badge-primary">0</span></a></li>
-      <li class="icon"><a class="js-scroll-trigger" href="#results-section">Results<span id="results-count" class="badge badge-danger">0</span></a></li>
-    </ul>
-  </div> -->
-
-<!--   <div class="counts">
-    <div>
-      <i class="fa fa-filter"></i>
-      <span id="results-count" class="badge badge-danger">0</span>
-      <strong>results</strong>
-    </div>
-    <span id="filters-count" class="badge badge-primary">0</span>
-  </div> -->
 
   <!-- Details modal -->
   <div class="modal fade" id="results-details" tabindex="-1" role="dialog" aria-hidden="true">
