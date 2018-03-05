@@ -206,12 +206,13 @@ public class MongoDao implements ImportDao, QueryDao {
     private String buildFieldName(Schema schema, Long fieldId, String fieldName) {
         String name = "properties.";
         for (SchemaField f : schema.getFields()) {
+            // these were 'mongoName' but, we shouldn't need that anymore
             if (f.getId() == fieldId) {
-                name += f.getMongoName();
+                name += f.getName();
             }
-            if (Objects.equals(f.getName(), fieldName)) {
-                name += f.getMongoName();
-            }
+//            if (Objects.equals(f.getName(), fieldName)) {
+//                name += f.getName();
+//            }
         }
         return name;
     }
