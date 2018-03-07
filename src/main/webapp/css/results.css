@@ -79,6 +79,10 @@
 	margin: 15px;
 }
 
+#results-details .source-details {
+	overflow: auto;
+}
+
 /* remove padding from datatables */
 #results-details .dataTables_wrapper {
 	padding: 0;
