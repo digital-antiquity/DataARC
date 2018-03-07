@@ -94,7 +94,7 @@ class ResultsHandler {
     $('#results-' + type + ' .results-container').append(card);
     var body = $('<div>', { 'class': 'card-body results-' + name });
     card.append(body);
-    body.append('<h4 class="card-title">' + name + '</h4><hr>');
+    body.append('<h4 class="card-title typetip">' + name + '</h4><hr>');
     body.append('<p class="card-text">' + value + '</p>');
     body.append('<h5>Sources</h5><hr>');
     body.append('<ul class="list-group"></ul>');

@@ -484,6 +484,17 @@ fieldset[disabled] .btn-primary:hover {
   border-left-color: #222;
 }
 
+/* typetip styles for hover of category types */
+mark.typetip {
+  background-color: transparent;
+}
+mark.typetip:hover {
+  background-color: rgba(255,235,185,0.4);
+}
+.typetip:hover {
+  cursor: pointer;
+}
+
 
 @-webkit-keyframes rota {
   from {}

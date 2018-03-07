@@ -36,6 +36,25 @@ $(function() {
       $('#filters-count').text(Filters.count.toLocaleString());
       $('#results-count').text(Search.results['matched'].count.toLocaleString());
       console.log('Done');
+
+      // Enable tooltips
+      $('[data-toggle="tooltip"]').tooltip();
+
+      // Enable category tooltip details
+      $('.typetip').hover((e) => {
+        var details = {
+          archaeological: 'Our archaeological data primarily include excavated and analyzed faunal data from across the North Atlantic. We plan to add other archaeological data sources in the future.',
+          environmental: 'Our environmental data include data from paleoenvironmental samples from the Strategic Environmental Archaeology Database and geological tephras from Tephrabase.',
+          textual: 'Our textual data include geolocated place names and places mentioned in the Icelandic sagas, and a variety of historic documents on Icelandic farms.'
+        };
+        var mark = $(e.target);
+        var type = mark.text().toLowerCase();
+        mark.tooltip({ title: details[type], trigger: 'manual' }).tooltip('show');
+      }, (e) => {
+        var mark = $(e.target);
+        mark.tooltip('hide');
+      });
+
       Loader.hide();
     }
   };
@@ -78,9 +97,6 @@ $(function() {
       }
     }
   });
-
-  // Enable tooltips
-  $('[data-toggle="tooltip"]').tooltip();
 
   // Closes responsive menu when a scroll trigger link is clicked
   $('.js-scroll-trigger').click(function() {
