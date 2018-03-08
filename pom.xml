@@ -14,13 +14,13 @@
         <spring.framework.version>5.0.4.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.9.3</jackson.version>
-        <geotools.version>12.1</geotools.version>
-        <postgresql.jdbc.version>9.4.1212</postgresql.jdbc.version>
+        <geotools.version>18.1</geotools.version>
+        <postgresql.jdbc.version>42.2.1</postgresql.jdbc.version>
         <solr.version>7.2.1</solr.version>
         <hibernate.version>5.2.12.Final</hibernate.version>
         <sitemesh.version>3.0.1</sitemesh.version>
         <liquibase.version>3.5.3</liquibase.version>
-        <mongo.version>3.6.1</mongo.version>
+        <mongo.version>3.6.3</mongo.version>
         <exec-maven-version>1.5.0</exec-maven-version>
         <servlet.api.version>3.1.0</servlet.api.version>
         <crowd.version>2.12.0</crowd.version>
@@ -342,7 +342,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
-            <version>2.0.2.RELEASE</version>
+            <version>2.0.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
