@@ -44,7 +44,6 @@ public class ObjectTraversalUtil {
                     if (StringUtils.isBlank(term)) {
                         term = normapName_;
                     }
-                    System.out.println(term + "  " + normapName_ + " " + normapName);
                     newMap.put(term, childList);
 
                     ((Collection<Object>) arg2).forEach(new Consumer<Object>() {

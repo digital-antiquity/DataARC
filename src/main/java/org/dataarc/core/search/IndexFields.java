@@ -52,4 +52,5 @@ public interface IndexFields {
     static final String SCHEMA_ID = "schema_id";
     static final String PREFIX = "_prefix";
     static final String TOPIC_NAMES = "topicName";
+    static final String ARRAYS = "arrays";
 }

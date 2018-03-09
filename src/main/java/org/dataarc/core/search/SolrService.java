@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -278,6 +279,12 @@ public class SolrService {
         // logger.debug("{}", document.getChildDocumentCount());
         if (!idMapOnly && CollectionUtils.isNotEmpty(document.getChildDocuments())) {
             // logger.debug("child docs: " + document.getChildDocuments());
+            Collection<Object> arrays = document.getFieldValues(IndexFields.ARRAYS);
+            if (CollectionUtils.isNotEmpty(arrays)) {
+                for (Object entry : arrays) {
+                    feature.setProperty((String)entry, new ArrayList<>());
+                }
+            }
             for (SolrDocument doc : document.getChildDocuments()) {
                 Map<String, Object> row = new HashMap<>();
 
