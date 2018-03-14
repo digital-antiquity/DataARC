@@ -210,9 +210,9 @@ public class MongoDao implements ImportDao, QueryDao {
             if (f.getId() == fieldId) {
                 name += f.getName();
             }
-//            if (Objects.equals(f.getName(), fieldName)) {
-//                name += f.getName();
-//            }
+            if (Objects.equals(f.getName(), fieldName)) {
+                name += f.getName();
+            }
         }
         return name;
     }

@@ -35,6 +35,7 @@ public class FieldDataCollector {
                 value instanceof String && StringUtils.isBlank((CharSequence) value) ||
                 value instanceof Collection && CollectionUtils.isEmpty((Collection) value) ||
                 value instanceof Map && MapUtils.isEmpty((Map) value)) {
+            logger.trace("returning null: (empty)");
             return null;
         }
 
@@ -65,6 +66,9 @@ public class FieldDataCollector {
             path = String.format("%s.%s", parent, key);
         }
         String normalizedName = SchemaUtils.normalize(path);
+        if (normalizedName == null) {
+            logger.error("NULL!! {}", path);
+        }
         getNames().add(normalizedName);
         displayNames.put(normalizedName, path);
 

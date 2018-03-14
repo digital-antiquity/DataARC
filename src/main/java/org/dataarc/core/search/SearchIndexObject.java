@@ -3,6 +3,7 @@ package org.dataarc.core.search;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -108,6 +109,9 @@ public class SearchIndexObject {
 
     private Geometry geometry;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+
+    @Field(value=IndexFields.ARRAYS)
+    private Set<String> arrays = new HashSet<>();
 
     @Field(value = IndexFields.CATEGORY)
     private CategoryType category;
@@ -273,15 +277,18 @@ public class SearchIndexObject {
                         setData(new ArrayList<>());
                     }
                     getData().add(new ExtraProperties(this, data_, schema));
-                    logger.trace("{}", data_);
+                    logger.trace("map: {}", data_);
                 } else if (v instanceof Collection) {
                     if (getData() == null) {
                         setData(new ArrayList<>());
                     }
                     List<Map<String, Object>> sites = (List<Map<String, Object>>) v;
-                    logger.trace("{}", sites);
+                    logger.trace("array: {}", sites);
+                    
                     sites.forEach(s -> {
-                        getData().add(new ExtraProperties(this, s, schema));
+                        ExtraProperties prop = new ExtraProperties(this, s, schema);
+                        getArrays().add((String) prop.getData().get(IndexFields.PREFIX));
+                        getData().add(prop);
                     });
                 } else if (v != null && field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
                     getProperties().put(SchemaUtils.formatForSolr(schema, field), v);
@@ -582,6 +589,14 @@ public class SearchIndexObject {
 
     public void setTopicNames(List<String> topicNames) {
         this.topicNames = topicNames;
+    }
+
+    public Set<String> getArrays() {
+        return arrays;
+    }
+
+    public void setArrays(Set<String> arrays) {
+        this.arrays = arrays;
     }
 
 }
