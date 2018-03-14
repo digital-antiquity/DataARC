@@ -178,7 +178,7 @@
                 </div>
               </div>
             </form>
-            <p class="text-muted small">* For B.C.E. dates, please use a negative number. Eg: -1000 = 1000 B.C.E.</p>
+            <p class="text-muted small">* A negative number is used to represent B.C.E. dates. E.g. -1000 = 1000 B.C.E.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
