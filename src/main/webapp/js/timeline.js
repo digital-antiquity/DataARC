@@ -17,6 +17,30 @@ class TimelineObject {
       type: type,
       base: base,
     };
+
+    // populate the time period drop down
+    if (coverage != null) {
+      for (let period of coverage) {
+        $('#timeline-period').append($('<option>', {
+          value: period.id,
+          text: period.term + ' [' + period.startDate + ' - ' + period.endDate + ']'
+        }));
+      }
+      $('#timeline-period').change((e) => {
+        var period = _.find(coverage, { 'id': parseInt(e.target.value) });
+        if (period != null) {
+          $('#timeline-startdate').val(period.startDate).prop('disabled', true);
+          $('#timeline-enddate').val(period.endDate).prop('disabled', true);
+        }
+        else {
+          $('#timeline-startdate').prop('disabled', false);
+          $('#timeline-enddate').prop('disabled', false);
+        }
+      });
+    }
+
+    // Filter the timeline
+    $('#timeline-filter .btn-primary').click(this.applyFilter);
   }
 
   wait() {
@@ -195,22 +219,12 @@ class TimelineObject {
 
   applyFilter() {
     var filter = {
-      "start": null,
-      "end": null
+      start: $('#timeline-startdate').val(),
+      end: $('#timeline-enddate').val()
     };
-    if (timelineHistory['millennium']) {
-      filter['start'] = parseInt(timelineHistory['millennium'].label);
-      filter['end'] = parseInt(timelineHistory['millennium'].label) + 1000;
-    }
-    if (timelineHistory['century']) {
-      filter['start'] = parseInt(timelineHistory['century'].label);
-      filter['end'] = parseInt(timelineHistory['century'].label) + 100;
-    }
-    if (timelineHistory['decade']) {
-      filter['start'] = parseInt(timelineHistory['decade'].label);
-      filter['end'] = parseInt(timelineHistory['decade'].label) + 10;
-    }
+    timelineHistory = {};
     Search.set('temporal', filter);
+    $('#timeline-filter').modal('hide');
   }
 
   clearFilter() {

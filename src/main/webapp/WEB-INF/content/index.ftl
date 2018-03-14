@@ -148,7 +148,42 @@
               <h1><span class="fa fa-cog fa-spin fa-2x"></span></h1>
             </div>
           </div>
-          <button id="filter-timeline-apply" class="btn btn-primary"><i class="fa fa-clock-o text-white sr-icons"></i> Apply Filter</button>
+          <button class="btn btn-primary" data-toggle="modal" data-target="#timeline-filter"><i class="fa fa-filter text-white sr-icons"></i> Temporal Filter</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="timeline-filter" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-light bg-dark">Temporal Filter</div>
+          <div class="modal-body">
+            <p>Select a pre-defined time period from the list or select "Custom" and enter your values below.</p>
+            <form>
+              <div class="form-row">
+                <div class="col mb-3">
+                  <label for="timeline-period">Time Period</label>
+                  <select class="custom-select mr-sm-2" id="timeline-period">
+                    <option selected>Custom</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col mb-3">
+                  <label for="timeline-startdate">Start Date *</label>
+                  <input id="timeline-startdate" type="text" class="form-control" placeholder="start">
+                </div>
+                <div class="col mb-3">
+                  <label for="timeline-enddate">End Date *</label>
+                  <input id="timeline-enddate" type="text" class="form-control" placeholder="end">
+                </div>
+              </div>
+            </form>
+            <p class="text-muted small">* For B.C.E. dates, please use a negative number. Eg: -1000 = 1000 B.C.E.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Apply Filter</button>
+          </div>
         </div>
       </div>
     </div>
@@ -257,7 +292,7 @@
   <!-- Either leave this template here or incorporate into the ones that are autmoatically generated -->
   <script id="title-template-polygon" type="text/x-handlebars-template">
     <ul class="list-unstyled">{{#each this}}<li><strong>{{@key}}</strong>: {{this}}</li>{{/each}}</ul>
-    <button class="btn btn-primary btn-sm" onclick="Geography.filterByRegion('{{this.region}}')">Filter by this polygon</button>
+    <button class="btn btn-primary btn-sm" onclick="Geography.filterByRegion('{{this.region}}')"><i class="fa fa-filter text-white sr-icons"></i> Filter by this polygon</button>
   </script>
 
   <!-- handlebar templates http://handlebarsjs.com -->

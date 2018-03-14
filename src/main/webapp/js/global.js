@@ -128,7 +128,4 @@ $(function() {
       return false;
     }
   });
-
-  // Filter the timeline
-  $('#filter-timeline-apply').click(Timeline.applyFilter);
 });
