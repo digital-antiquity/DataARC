@@ -10,8 +10,8 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.security>5.0.3.RELEASE</spring.security>
-        <spring.framework.version>5.0.4.RELEASE</spring.framework.version>
+        <spring.security>5.0.4.RELEASE</spring.security>
+        <spring.framework.version>5.0.5.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.9.3</jackson.version>
         <geotools.version>18.1</geotools.version>
