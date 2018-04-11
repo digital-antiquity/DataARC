@@ -1,5 +1,6 @@
 package org.dataarc.web.api.schema;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dataarc.bean.schema.Schema;
@@ -17,8 +18,12 @@ public class ListSchema extends AbstractRestController {
     private SchemaService schemaService;
 
     @RequestMapping(path = UrlConstants.SCHEMA_LIST, produces = { UrlConstants.JSON_UTF8 })
-    public List<Schema> listSchema() throws Exception {
-        return schemaService.findAll();
+    public List<SchemaShell> listSchema() throws Exception {
+        List<SchemaShell> schemas = new ArrayList<>();
+        for (Schema schema : schemaService.findAll()) {
+            schemas.add(new SchemaShell(schema));
+        }
+        return schemas;
     }
 
 }
