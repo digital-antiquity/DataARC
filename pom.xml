@@ -10,8 +10,8 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.security>5.0.4.RELEASE</spring.security>
-        <spring.framework.version>5.0.5.RELEASE</spring.framework.version>
+        <spring.security>5.0.5.RELEASE</spring.security>
+        <spring.framework.version>5.0.6.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.9.3</jackson.version>
         <geotools.version>18.1</geotools.version>
@@ -503,7 +503,7 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>2.2.1.RELEASE</version>
+            <version>2.3.3.RELEASE</version>
         </dependency>
 <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
 <dependency>
