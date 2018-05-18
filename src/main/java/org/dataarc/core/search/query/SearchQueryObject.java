@@ -31,6 +31,8 @@ public class SearchQueryObject implements Serializable {
     private List<String> sources = new ArrayList<>();
     private List<String> ids = new ArrayList<>();
 
+    public SearchQueryObject() {}
+    
     public List<String> getKeywords() {
         return keywords;
     }

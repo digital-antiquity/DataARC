@@ -463,5 +463,16 @@
             <column name="description" type="text" />
         </createTable>
     </changeSet>
+        <changeSet id="beta-3" author="abrin">
+        <addColumn tableName="state">
+            <column name="title" type="varchar(512)" />
+        </addColumn>
+        <addColumn tableName="state">
+            <column name="user_id" type="bigint">
+                <constraints referencedTableName="data_arc_user"
+                    foreignKeyName="saved_search_user" />
+            </column>
+        </addColumn>
+    </changeSet>
     
 </databaseChangeLog>

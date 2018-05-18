@@ -118,8 +118,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 web.addFilterAfter(new OAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                         .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
             }
-            web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", "")).antMatchers("/a/admin/**")
-                    .hasRole(UserService.ADMIN_ROLE.replace("ROLE", "")).and().formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME)
+            web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", ""))
+            .antMatchers("/").anonymous()
+            .antMatchers("/a/admin/**").hasRole(UserService.ADMIN_ROLE.replace("ROLE", ""))
+            .and().formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME)
                     .loginPage("/login").permitAll();
 
             web.logout().permitAll();

@@ -40,6 +40,11 @@
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-success">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-danger">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">Login</a></li>
+<!--          <#if false != (currentUserId?has_content && currentUserId != '')>
+          <#else>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#" onClick="saveSearchDialog()">Save</a></li>
+          </#if> -->
         </ul>
       </div>
     </div>
@@ -53,17 +58,7 @@
         <p>You can search and filter by any combination of keyword, time, space and concept. Combine filters to narrow your search.</p>
         <h6><a href="/help" class="btn btn-sm btn-outline-light">Not sure where to start?</a></h6>
         <div class="row">
-          <div class="col-lg-3 col-md-6 text-center">
-            <div class="service-box">
-              <a class="js-scroll-trigger text-light" href="#keyword-section">
-                <i class="fa fa-4x fa-font text-primary sr-icons"></i>
-                <h4>Keyword</h4>
-              </a>
-              <a class="btn btn-sm btn-light js-scroll-trigger" href="#keyword-example">Run Example</a>
-              <p>Using the keyword example, you can see how a simple phrase in the keyword box will filter our results based on terms that you specify.</p>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 text-center">
+          <div class="col-lg-4 col-md-6 text-center">
             <div class="service-box">
               <a class="js-scroll-trigger text-light" href="#temporal-section">
                 <i class="fa fa-4x fa-clock-o text-success sr-icons"></i>
@@ -73,7 +68,7 @@
               <p>This example uses our timeline to filter the result data.</p>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 text-center">
+          <div class="col-lg-4 col-md-6 text-center">
             <div class="service-box">
               <a class="js-scroll-trigger text-light" href="#spatial-section">
                 <i class="fa fa-4x fa-compass text-danger sr-icons"></i>
@@ -83,7 +78,7 @@
               <p>Want to see results only with a specific bounding box?</p>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 text-center">
+          <div class="col-lg-4 col-md-6 text-center">
             <div class="service-box">
               <a class="js-scroll-trigger text-light" href="#concept-section">
                 <i class="fa fa-4x fa-sitemap text-warning sr-icons"></i>
@@ -103,8 +98,6 @@
         <div class="col-lg-8 mx-auto text-center">
           <h2 class="section-heading text-white">Explore the data!</h2>
           <hr class="light">
-          <p class="text-faded">You can search and filter by any combination of keyword, time, space and concept. Combine filters to narrow your search.</p>
-          <a class="btn btn-dark btn-xl js-scroll-trigger" href="#keyword-section"><i class="fa fa-search text-white sr-icons"></i> Keyword</a>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#temporal-section"><i class="fa fa-clock-o text-white sr-icons"></i> Timeline</a>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#spatial-section"><i class="fa fa-map-o text-white sr-icons"></i> Map</a>
           <a class="btn btn-dark btn-xl js-scroll-trigger" href="#concept-section"><i class="fa fa-sitemap text-white sr-icons"></i> Concept</a>
@@ -112,7 +105,7 @@
       </div>
     </div>
   </section> -->
-  <section id="keyword-section" class="bg-light">
+<!--  <section id="keyword-section" class="bg-light">
     <div class="container call-to-action">
       <div class="row justify-content-center">
         <div class="col-lg-6 text-center">
@@ -128,7 +121,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <section id="temporal-section" class="bg-white">
     <div class="container call-to-action">
       <div class="row">
@@ -275,6 +268,35 @@
     </div>
   </div>
 
+  <!-- Save search modal -->
+  <div class="modal fade" id="save-search" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-light bg-dark">Save Search</div>
+        <div class="modal-body">
+        <form action="/searches/save" method="POST">
+         <div class="form-group">
+            <label for="title">Name your Search</label>
+            <input type="text" name="title" class="form-control" id="searchtitle" aria-describedby="searchtitlehelp" placeholder="Enter Serach Title">
+            <small id="searchtitlehelp" class="form-text text-muted">Choose something descriptive.</small>
+          </div>
+        <br/>
+        <textarea name="search" id="save-search-json">
+        </textarea>
+        <br/>
+        <button class="button btn btn-primary">Save</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+function saveSearchDialog() {
+    $("#save-search-json").val(JSON.stringify(Search.values));
+    $("#save-search").modal();
+}
+</script>
   <#include "includes/public-footer.ftl">
 
   <!-- Custom scripts -->
@@ -287,6 +309,9 @@
   <script src="js/results.js"></script>
   <script src="js/global.js"></script>
 
+<script id="savedSearchJson" type="application/json" data-search-title="${searchTitle}" data-search-id="${searchId!''}">
+${search}
+</script>
   <!-- everything below this is automatically generated -->
 
   <!-- Either leave this template here or incorporate into the ones that are autmoatically generated -->

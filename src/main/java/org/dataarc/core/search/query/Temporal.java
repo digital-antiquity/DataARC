@@ -13,6 +13,8 @@ public class Temporal implements Serializable {
     private static final long serialVersionUID = 8871743799330705618L;
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
+    public Temporal() {}
+
     private Integer start;
     private Integer end;
     private String period;

@@ -12,24 +12,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.dataarc.bean.SavedStateJsonObject;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-// https://github.com/thjanssen/HibernateJSONBSupport/blob/master/PostgresJSONB/src/main/java/org/thoughts/on/java/model/MyJsonType.java
-public class StateJsonType implements UserType {
+public abstract class AbstractJsonType implements UserType {
 
     @Override
     public int[] sqlTypes() {
         return new int[] { Types.JAVA_OBJECT };
-    }
-
-    @Override
-    public Class<SavedStateJsonObject> returnedClass() {
-        return SavedStateJsonObject.class;
     }
 
     @Override
