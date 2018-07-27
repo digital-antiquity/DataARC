@@ -10,8 +10,10 @@ import org.dataarc.core.service.CoverageService;
 import org.dataarc.core.service.JsonFileService;
 import org.dataarc.core.service.SavedSearchService;
 import org.dataarc.core.service.SchemaService;
+import org.dataarc.core.service.UserService;
 import org.dataarc.web.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+
+@Secured({UserService.ADMIN_ROLE,UserService.EDITOR_ROLE, UserService.USER_ROLE, UserService.ANONYMOUS_ROLE} )
 public class IndexController extends AbstractController {
     @Autowired
     private JsonFileService jsonFileService;

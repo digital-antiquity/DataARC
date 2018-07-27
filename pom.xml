@@ -10,8 +10,8 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.security>5.0.6.RELEASE</spring.security>
-        <spring.framework.version>5.0.7.RELEASE</spring.framework.version>
+        <spring.security>5.0.7.RELEASE</spring.security>
+        <spring.framework.version>5.0.8.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.9.3</jackson.version>
         <geotools.version>18.1</geotools.version>
@@ -121,7 +121,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-jwt</artifactId>
-                <version>1.0.8.RELEASE</version>
+                <!-- <version>1.0.8.RELEASE</version> -->
             </dependency>
             
             <dependency>

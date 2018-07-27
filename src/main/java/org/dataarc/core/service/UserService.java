@@ -28,6 +28,7 @@ public class UserService {
     public static final String ADMIN_ROLE = "ROLE_ADMIN";
     public static final String EDITOR_ROLE = "ROLE_EDITOR";
     public static final String USER_ROLE = "ROLE_USER";
+    public static final String ANONYMOUS_ROLE = "ROLE_ANONYMOUS";
 
     @Autowired
     DataArcUserDao userDao;
@@ -135,6 +136,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public void enhanceGroupMembership(DataArcUser user_, Collection<GrantedAuthority> collection) {
+        collection.add(new SimpleGrantedAuthority(ANONYMOUS_ROLE));
         collection.add(new SimpleGrantedAuthority(USER_ROLE));
         if (user_.isAdmin()) {
             collection.add(new SimpleGrantedAuthority(UserService.EDITOR_ROLE));

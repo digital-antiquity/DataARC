@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.core.service.UserService;
 import org.dataarc.web.UrlConstants;
-import org.dataarc.web.security.crowd.LocalCrowdAuthenticationProvider;
 import org.dataarc.web.security.openid.ClientResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +28,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AnonymousAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -36,6 +36,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -46,26 +47,20 @@ import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
-import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
-import com.atlassian.crowd.integration.http.CrowdHttpAuthenticatorImpl;
-import com.atlassian.crowd.integration.http.util.CrowdHttpTokenHelperImpl;
-import com.atlassian.crowd.integration.http.util.CrowdHttpValidationFactorExtractorImpl;
-import com.atlassian.crowd.integration.rest.service.factory.RestCrowdClientFactory;
-import com.atlassian.crowd.service.client.ClientPropertiesImpl;
-import com.atlassian.crowd.service.client.CrowdClient;
 
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Sso
 @EnableOAuth2Client
-// @RestController
-// @SpringBootApplication
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String ANON = "anon";
 
     private final class AuthenticationSuccessHandlerImplementation implements AuthenticationSuccessHandler {
         private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -99,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
         if (env.getProperty("security.enabled", Boolean.class, true)) {
-            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/", "/json", UrlConstants.TOPIC_MAP_VIEW,
+            web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/json", UrlConstants.TOPIC_MAP_VIEW,
                     UrlConstants.SEARCH,UrlConstants.SEARCH_RESULTS,
                     UrlConstants.GET_ID, UrlConstants.ABOUT,
                     "/login**", "/geojson/**", "/vendor/**", "/img/**");
@@ -118,9 +113,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 web.addFilterAfter(new OAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                         .addFilterAfter(myFilter(), OAuth2ClientContextFilter.class);
             }
-            web.authorizeRequests().antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", ""))
-            .antMatchers("/").anonymous()
-            .antMatchers("/a/admin/**").hasRole(UserService.ADMIN_ROLE.replace("ROLE", ""))
+            web.authorizeRequests().antMatchers("/").permitAll().anyRequest().hasAnyAuthority(UserService.ANONYMOUS_ROLE,UserService.ADMIN_ROLE).
+            antMatchers("/a/**").hasRole(UserService.EDITOR_ROLE.replace("ROLE", "")).
+            antMatchers("/a/admin/**").hasRole(UserService.ADMIN_ROLE.replace("ROLE", ""))
             .and().formLogin().successForwardUrl(A_HOME).defaultSuccessUrl(A_HOME)
                     .loginPage("/login").permitAll();
 
@@ -154,11 +149,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    @Bean("anonymousAuthFilter")
+    public AnonymousAuthenticationFilter anonymousAuthFilter() {
+        return new AnonymousAuthenticationFilter(ANON, new DataArcUser(), Arrays.asList(new SimpleGrantedAuthority(UserService.ANONYMOUS_ROLE)));
+    }
+    
+    @Bean("anonymousAuthenticationProvider")
+    public AnonymousAuthenticationProvider anonymousAuthProvider() {
+        return new AnonymousAuthenticationProvider(ANON);
+    }
+    
     @Bean
     public CompositeFilter myFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
-
         filters.add(ssoFilter(new ClientResources(googleOpenId(), googleResource()), "/google-login"));
         filters.add(ssoFilter(new ClientResources(facebookOpenId(), facebookResource()), "/facebook-login"));
 
@@ -166,37 +170,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-    public ClientPropertiesImpl clientProperties() {
-        Properties p = new Properties();
-        p.setProperty("application.name", env.getProperty("application.name", "application_name"));
-        p.setProperty("application.password", env.getProperty("application.password", "application_password"));
-        p.setProperty("crowd.server.url", env.getProperty("crowd.server.url", "http://localhost:8095/crowd"));
-        p.setProperty("session.validationInterval", env.getProperty("session.validationinterval", "0"));
-        logger.debug("crowd: {}", p);
-        return ClientPropertiesImpl.newInstanceFromProperties(p);
-    }
-
-    @Bean
-    public CrowdClient crowdClient() {
-        return new RestCrowdClientFactory().newInstance(clientProperties());
-    }
-
-    @Bean
-    public CrowdHttpAuthenticator crowdHttpAuthenticator() {
-        return new CrowdHttpAuthenticatorImpl(crowdClient(), clientProperties(),
-                CrowdHttpTokenHelperImpl.getInstance(CrowdHttpValidationFactorExtractorImpl.getInstance()));
-    }
-
-    @Bean
-    public LocalCrowdAuthenticationProvider crowdAuthenticationProvider() {
-        return new LocalCrowdAuthenticationProvider(crowdClient());
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        if (env.getProperty("security.ussOauth", Boolean.class, false)) {
-            auth.authenticationProvider(crowdAuthenticationProvider());
-        }
+        auth.authenticationProvider(anonymousAuthProvider());
     }
 
     @Bean

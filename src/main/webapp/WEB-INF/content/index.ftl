@@ -40,11 +40,11 @@
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#filters-section">Filters <span id="filters-count" class="badge badge-success">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#results-section">Results <span id="results-count" class="badge badge-danger">0</span></a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#why-section">Why</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">Login</a></li>
-<!--          <#if false != (currentUserId?has_content && currentUserId != '')>
+          <#if !authenticated >
+              <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">Login</a></li>
           <#else>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#" onClick="saveSearchDialog()">Save</a></li>
-          </#if> -->
+              <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#" onClick="saveSearchDialog()">Save</a></li>
+          </#if> 
         </ul>
       </div>
     </div>
