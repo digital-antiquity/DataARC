@@ -967,6 +967,25 @@ TopicMap.prototype = {
       .force(d3.forceCenter(_this.w / 2, _this.h / 2));
   },
 
+  reApplyFilter: function(concepts) {
+      var _this = this;
+      this.topics = concepts;
+      // select nodes
+      
+      if (_this.graph.nodes != undefined) {
+        if (concepts.length > 0) {
+          _.each(concepts, function(topic) {
+            if (!_.isEmpty(_this.graph.nodes.filter(node => node.identifier == topic)[0])) {
+                console.log()
+              _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
+            }
+          });
+        }
+      }
+      this.highlightTopics();
+      Filters.addConcepts(concepts,true);
+  },
+  
   initSearch: function() {
 
     var _this = this;

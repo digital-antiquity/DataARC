@@ -56,6 +56,7 @@ $(function() {
       });
 
       Loader.hide();
+      
     }
   };
   var topic_config = {

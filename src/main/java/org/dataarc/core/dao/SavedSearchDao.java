@@ -7,7 +7,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.dataarc.bean.SavedSearch;
-import org.dataarc.bean.schema.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,8 +28,8 @@ public class SavedSearchDao {
         manager.createQuery("delete from SavedSearch").executeUpdate();
     }
 
-    public List<Schema> findAll() {
-        return manager.createQuery("from SavedSearch", Schema.class).getResultList();
+    public List<SavedSearch> findAll() {
+        return manager.createQuery("from SavedSearch", SavedSearch.class).getResultList();
     }
 
     public SavedSearch findById(Long id) {

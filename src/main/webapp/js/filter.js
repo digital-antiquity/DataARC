@@ -70,7 +70,9 @@ class FilterHandler {
     };
   }
 
+ 
   update() {
+      console.trace("filterHandler:: update", this.filters);
     // add the keyword filters
     if (!_.isEmpty(this.filters[this.settings.typemap.keywords])) {
       var keywords = this.filters[this.settings.typemap.keywords];
@@ -133,6 +135,27 @@ class FilterHandler {
     for (let type of this.settings.types) {
       $(this.settings.container+'-'+type).not(':has(div)').remove();
     }
+  }
+
+  addSpatial(spatial, update_) {
+      this.filters[this.settings.typemap.spatial] = spatial;
+      if (update_ != undefined && update_) {
+          this.update();
+      }
+  }
+
+  addTemporal(temporal, update_) {
+      this.filters[this.settings.typemap.temporal] = temporal;
+      if (update_ != undefined && update_) {
+          this.update();
+      }
+  }
+
+  addConcept(concepts, update_) {
+      this.filters[this.settings.typemap.concepts] = concepts;
+      if (update_ != undefined && update_) {
+          this.update();
+      }
   }
 
   remove() {

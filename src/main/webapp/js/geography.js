@@ -143,6 +143,26 @@ class GeographyHandler {
   }
 
   /**
+   * called when you load from save
+   */
+  reApplyFilter(filter) {
+      console.log("geography:: reapply", filter);
+      this.drawnitems.clearLayers();
+      if (filter.region != undefined) {
+          //???
+      }
+      if (filter.topLeft != undefined) {
+          // fixme box in wrong place
+          var bounds = [[filter.bottomRight[0], filter.topLeft[1]], [filter.topLeft[0], filter.bottomRight[1]]];
+       // create an orange rectangle
+          console.log(bounds);
+       L.rectangle(bounds).addTo(this.drawnitems);
+//          this.drawnitems.addLayer();
+      }
+      Filters.addSpatial(filter,true);
+      
+  }
+  /**
    * Refresh UI
    * @return {void}
    */

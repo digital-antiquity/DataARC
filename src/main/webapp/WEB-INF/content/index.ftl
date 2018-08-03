@@ -53,6 +53,7 @@
     <div class="header-content">
       <div class="header-content-inner">
         <h1 id="homeHeading">dataARC Search Tool</h1>
+        <#if searchId?has_content><h2>${searchTitle} (${searchId})</h2></#if>
         <hr class="light">
         <h3>Find contextualized data from ecological, archaeological, and historical sources for the North Atlantic.</h3>
         <p>You can search and filter by any combination of keyword, time, space and concept. Combine filters to narrow your search.</p>

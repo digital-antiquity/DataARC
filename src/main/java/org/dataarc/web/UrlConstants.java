@@ -50,6 +50,6 @@ public interface UrlConstants {
     String ADMIN_QUERY_RESULT = "/a/admin/queryResult";
     String EDIT_COMBINATORS = "/a/combinators/{id}";
     String SAVE_SEARCH = "/searches/save";
-    String LOAD_SEARCH = "/searches/{id}";
+    String LIST_SEARCH = "/a/searches/list";
 
 }

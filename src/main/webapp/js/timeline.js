@@ -197,6 +197,14 @@ class TimelineObject {
     }
   }
 
+  reApplyFilter(temporal) {
+      
+      // apply boxes
+      // set start / end
+      Filters.addTemporal(temporal,true);
+
+  }
+  
   expand() {
     var _this = this;
     delete timelineHistory[this.settings.type];

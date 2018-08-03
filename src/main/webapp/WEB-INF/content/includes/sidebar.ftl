@@ -32,6 +32,7 @@
             <li><a href="/a/geojson">GeoJson Files</a></li> 
             <li><a href="/a/coverage">Temporal Coverage</a></li> 
             <li><a href="/a/users/list">Users</a></li> 
+            <li><a href="/a/searches/list">Searches</a></li> 
             <li><a href="/a/topics">Topics</a></li> 
         </ul></li>
         </#if>

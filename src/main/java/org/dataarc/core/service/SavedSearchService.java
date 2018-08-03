@@ -1,5 +1,7 @@
 package org.dataarc.core.service;
 
+import java.util.List;
+
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.bean.SavedSearch;
 import org.dataarc.core.dao.SavedSearchDao;
@@ -29,6 +31,10 @@ public class SavedSearchService {
     @Transactional(readOnly=true)
     public SavedSearch find(Long id) {
         return searchDao.findById(id);
+    }
+
+    public List<SavedSearch> findAll() {
+        return searchDao.findAll();
     }
 
 
