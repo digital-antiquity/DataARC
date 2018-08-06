@@ -82,10 +82,10 @@ $(function() {
   Timeline = new TimelineObject("millennium", -7000);
   Geography = new GeographyHandler();
   Concepts = new TopicMap(topic_config);
+  Results = new ResultsHandler();
 
   $(window).on('doneConceptInit', function(e) {
       console.log("conceptInit");
-      Results = new ResultsHandler();
       Search = new SearchObject(search_config);
   });
   

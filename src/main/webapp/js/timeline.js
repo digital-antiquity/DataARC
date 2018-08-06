@@ -89,7 +89,7 @@ class TimelineObject {
 
   createElements() {
     var _this = this;
-    this.svg = d3.select(this.settings.container)
+    this.svg = d3.select(this.settings.container).data(this.label_data)
       .classed("timeline-container", true)
       .append("svg")
       .attr("preserveAspectRatio", "xMinYMin meet")
@@ -162,6 +162,17 @@ class TimelineObject {
     if (this.clickedRect)
       this.clickedRect.remove();
     this.clickedRect = this.svg.append('rect');
+    var start = parseInt(d.label);
+  $('#timeline-startdate').val(start);
+    var  end = 1000 + start;
+    if (d.category == 2) {
+        end = 100 + start;
+      }
+    if (d.category == 1) {
+        end = 10 + start;
+      }
+  $('#timeline-enddate').val(end);
+    
     this.clickedRect
       .attr("x", function(d) { return ((_d.period - 1) * _this.settings.rectWidth) + 0.25 + '%'; })
       .attr("y", function(d) { return _this.settings.labelHeight + 1 + '%'; })

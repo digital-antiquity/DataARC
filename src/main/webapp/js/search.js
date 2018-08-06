@@ -12,10 +12,6 @@ class SearchObject {
         "end": null,
         "period": null
       },
-//       "spatial": {
-//         "topLeft": [-75, 85],
-//         "bottomRight": [-0.1, 58]
-//       },
       "spatial": {
         "topLeft": null,
         "bottomRight": null
@@ -32,15 +28,6 @@ class SearchObject {
     if ($saved.length > 0) {
         var json = JSON.parse($saved.text());
         console.log(json, this.values);
-//        if (json.spatial != undefined) {
-//            Geography.reApplyFilter(json.spatial);
-//        }
-//        if (json.topicIds != undefined) {
-//            Concepts.reApplyFilter(json.topicIds);
-//        }
-//        if (json.temporal != undefined) {
-//            Timeline.reApplyFilter(json.temporal);
-//        }
         
         this.values = json;
         this.count = 1;
@@ -92,6 +79,7 @@ class SearchObject {
 
         Concepts.reApplyFilter(this.values.topicIds);
         Geography.reApplyFilter(this.values.spatial);
+        Timeline.reApplyFilter(this.values.temporal);
         // for testing purposes only
         // console.log('Setting changed for query testing on load.');
         // this.set('topicIds', "topic134048.1509611325169");
