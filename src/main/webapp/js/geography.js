@@ -154,7 +154,7 @@ class GeographyHandler {
       }
       if (filter.topLeft != undefined) {
           // fixme box in wrong place
-          var bounds = [[filter.bottomRight[0], filter.topLeft[1]], [filter.topLeft[0], filter.bottomRight[1]]];
+          var bounds = [[filter.bottomRight[1], filter.topLeft[0]], [filter.topLeft[1], filter.bottomRight[0]]];
        // create an orange rectangle
           console.log(bounds);
        L.rectangle(bounds).addTo(this.drawnitems);
@@ -308,6 +308,7 @@ class GeographyHandler {
   filterByBounds(layer) {
     var coords = layer.getLatLngs();
     if(coords[0].length == 4){
+        console.log(coords[0]);
       var spatial = {
         'topLeft': [coords[0][1].lng, coords[0][1].lat],
         'bottomRight': [coords[0][3].lng, coords[0][3].lat]
