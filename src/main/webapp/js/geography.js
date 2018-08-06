@@ -137,6 +137,7 @@ class GeographyHandler {
       if (this.layerscontrol != null) this.layerscontrol.remove();
       this.layerscontrol = L.control.layers(this.basemaps, this.overlays);
       this.layerscontrol.addTo(this.map);
+      $(document.body).trigger('doneGeographyInit');
     }).fail(function(error) {
       console.log('requests failed', error);
     });

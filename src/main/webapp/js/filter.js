@@ -116,10 +116,12 @@ class FilterHandler {
     if (!_.isEmpty(this.filters[this.settings.typemap.concepts])) {
       var concepts = this.filters[this.settings.typemap.concepts];
       for (let id of concepts) {
-        var concept = Concepts.graph.nodes.filter(x => x.identifier.indexOf(id) > -1);
-        if (concept.length > 0) {
-          this.append('concepts', id, concept[0].name);
-        }
+//          if (Concepts.graph.nodes != undefined ) {
+            var concept = Concepts.graph.nodes.filter(x => x.identifier.indexOf(id) > -1);
+            if (concept.length > 0) {
+              this.append('concepts', id, concept[0].name);
+            }
+  //        }
       };
     }
   }

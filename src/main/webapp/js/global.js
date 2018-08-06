@@ -82,9 +82,13 @@ $(function() {
   Timeline = new TimelineObject("millennium", -7000);
   Geography = new GeographyHandler();
   Concepts = new TopicMap(topic_config);
-  Results = new ResultsHandler();
-  Search = new SearchObject(search_config);
 
+  $(window).on('doneConceptInit', function(e) {
+      console.log("conceptInit");
+      Results = new ResultsHandler();
+      Search = new SearchObject(search_config);
+  });
+  
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {

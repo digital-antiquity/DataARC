@@ -7,7 +7,7 @@
 <b>Search Id:</b>${search.id?c}
 </p>
 <p>
-<b>Share URL:<a href="http://beta.data-arc.org?id=${id?c}">http://beta.data-arc.org?id=${id?c}</a></b>
+<b>Share URL:<a href="http://beta.data-arc.org?id=${search.id?c}">http://beta.data-arc.org?id=${search.id?c}</a></b>
 </p>
 
 

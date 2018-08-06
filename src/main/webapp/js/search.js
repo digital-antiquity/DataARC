@@ -12,10 +12,10 @@ class SearchObject {
         "end": null,
         "period": null
       },
-      // "spatial": {
-      //   "topLeft": [-75, 85],
-      //   "bottomRight": [-0.1, 58]
-      // },
+//       "spatial": {
+//         "topLeft": [-75, 85],
+//         "bottomRight": [-0.1, 58]
+//       },
       "spatial": {
         "topLeft": null,
         "bottomRight": null
@@ -27,6 +27,27 @@ class SearchObject {
       // "idAndMap": false
     };
     this.values = $.extend({}, this.defaults);
+    
+    var $saved = $("#savedSearchJson");
+    if ($saved.length > 0) {
+        var json = JSON.parse($saved.text());
+        console.log(json, this.values);
+//        if (json.spatial != undefined) {
+//            Geography.reApplyFilter(json.spatial);
+//        }
+//        if (json.topicIds != undefined) {
+//            Concepts.reApplyFilter(json.topicIds);
+//        }
+//        if (json.temporal != undefined) {
+//            Timeline.reApplyFilter(json.temporal);
+//        }
+        
+        this.values = json;
+        this.count = 1;
+//        $('#filters-count').text(Filters.count.toLocaleString());
+
+    }
+
     this.results = {
       "all": {},
       "matched": {},
@@ -63,42 +84,24 @@ class SearchObject {
     // if first run then get all data before loading results
     var filters_all = { "idOnly": false };
     if (initial) {
+        var self = this;
       $.when(this.fetch(filters_all, this.config.source)).then((all) => {
         this.analyze('all', all, filters_all);
         this.analyze('matched', all, filters_all);
         this.config.after();
 
+        Concepts.reApplyFilter(this.values.topicIds);
+        Geography.reApplyFilter(this.values.spatial);
         // for testing purposes only
         // console.log('Setting changed for query testing on load.');
         // this.set('topicIds', "topic134048.1509611325169");
         // this.set('spatial', {"topLeft": [-23.62, 66.02], "bottomRight": [-18.22, 64.19]});
-        
-        
-
-        var $saved = $("#savedSearchJson");
-        if ($saved.length > 0) {
-            var json = JSON.parse($saved.text());
-            console.log(json);
-            Filters.prepare();
-            if (json.spatial != undefined) {
-                Geography.reApplyFilter(json.spatial);
-            }
-            if (json.topicIds != undefined) {
-                Concepts.reApplyFilter(json.topicIds);
-            }
-            if (json.temporal != undefined) {
-                Timeline.reApplyFilter(json.temporal);
-            }
-            
-            $('#filters-count').text(Filters.count.toLocaleString());
-
-        }
 
       });
-    }
-    else {
+    } else {
       // check to see if we have filters
       if (this.count > 0) {
+          console.log("trying to filter", this.values);
         var filters_matched = this.values;
         var filters_related = _.assign({}, this.values, { "expandBy": 2, "expandedFacets":false });
         var filters_contextual = _.assign({}, this.values, { "expandBy": 3, "expandedFacets":false });

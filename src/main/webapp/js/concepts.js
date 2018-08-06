@@ -10,6 +10,7 @@ var TopicMap = function(settings) {
 
   this.graph = {};
 
+  this.fetchData();
   this.container = $('#' + this.settings.container);
 
   this.messageContainer = $('<div>', { 'class': 'topic-message-container' });
@@ -42,7 +43,6 @@ var TopicMap = function(settings) {
   if (typeof settings.maxRadStep == 'undefined')
     this.settings.maxRadStep = 100;
 
-  this.fetchData();
 }
 
 TopicMap.prototype = {
@@ -79,7 +79,7 @@ TopicMap.prototype = {
     this.drawForceGraph();
 
     this.highlightTopics();
-
+    $(document.body).trigger('doneConceptInit');
   },
 
   fetchData: function() {
@@ -969,21 +969,23 @@ TopicMap.prototype = {
 
   reApplyFilter: function(concepts) {
       var _this = this;
-      this.topics = concepts;
+//      this.topics = concepts;
       // select nodes
       
-      if (_this.graph.nodes != undefined) {
-        if (concepts.length > 0) {
-          _.each(concepts, function(topic) {
-            if (!_.isEmpty(_this.graph.nodes.filter(node => node.identifier == topic)[0])) {
-                console.log()
-              _this.topics.push(_this.graph.nodes.filter(node => node.identifier == topic)[0].id);
-            }
-          });
-        }
+      var suggestion = undefined;
+      this.graph.nodes.forEach(function(node) {
+          concepts.forEach(function(topic){
+              if (node.identifier == topic) {
+                  suggestion = node;
+              }
+          }); 
+      });
+      if (suggestion != undefined) {
+          this.highlightTopics();
+//          this.nodeClicked(suggestion);
+          this.showNodeData(suggestion);
+          this.recenter(suggestion);
       }
-      this.highlightTopics();
-      Filters.addConcepts(concepts,true);
   },
   
   initSearch: function() {
