@@ -209,11 +209,13 @@ class TimelineObject {
   }
 
   reApplyFilter(temporal) {
-      
-      // apply boxes
-      // set start / end
-      Filters.addTemporal(temporal,true);
 
+      $('#timeline-startdate').val(temporal.start);
+      $('#timeline-enddate').val(temporal.end);
+      $('#timeline-period').val(temporal.period);
+      
+      this.applyFilter();
+      Filters.addTemporal(temporal,true);
   }
   
   expand() {

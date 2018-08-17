@@ -62,16 +62,11 @@ class FilterHandler {
     // purge existing dom elements
     this.container.empty();
 
-    // create new placeholders
-    for (let type of this.settings.types) {
-      var dom = $('<div>', {'class': 'col-sm filters-container', 'id': 'filters-' + type});
-      dom.append('<h5>' + type + '</h5>');
-      this.container.append(dom);
-    };
   }
 
  
   update() {
+      this.prepare();
       console.trace("filterHandler:: update", this.filters);
     // add the keyword filters
     if (!_.isEmpty(this.filters[this.settings.typemap.keywords])) {
@@ -128,9 +123,15 @@ class FilterHandler {
 
   append(type, key, value) {
     this.count++;
+    var $parent = $(this.settings.container+'-'+type);
+    if ($parent == undefined || $parent.length == 0) {
+        $parent = $('<div>', {'class': 'col-sm filters-container', 'id': 'filters-' + type});
+        $parent.append('<h5>' + type + '</h5>');
+        this.container.append($parent);
+    }
     var dom = $('<div>', { 'class': 'p-3 mb-2 filter-' + type + ' text-white', 'data-type': type, 'data-key': key, 'data-value': value });
     dom.append(value + ' <button type="button" class="close text-light filters-remove" aria-label="Remove"><span aria-hidden="true">&times;</span></button>');
-    $(this.settings.container+'-'+type).append(dom);
+    $parent.append(dom);
   }
 
   cleanup() {
