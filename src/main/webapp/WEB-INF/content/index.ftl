@@ -231,7 +231,12 @@
         <h2 class="section-heading">Filters</h2>
         <hr>
         <div id="filters" class="row">&nbsp;</div>
-        <button id="filter-save" class="btn btn-primary"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
+                  <#if !authenticated >
+            <button id="filter-save" class="btn btn-primary disabled" disabled><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
+          <#else>
+            <button id="filter-save" class="btn btn-primary" onClick="saveSearchDialog()"><i class="fa fa-bookmark sr-icons"></i> Save Search</button>
+          </#if> 
+
         <button id="filter-share" class="btn btn-primary"><i class="fa fa-print sr-icons"></i> Share Search</button>
       </div>
     </div>
@@ -278,11 +283,11 @@
         <form action="/searches/save" method="POST">
          <div class="form-group">
             <label for="title">Name your Search</label>
-            <input type="text" name="title" class="form-control" id="searchtitle" aria-describedby="searchtitlehelp" placeholder="Enter Serach Title">
+            <input type="text" name="title" class="form-control" id="searchtitle" aria-describedby="searchtitlehelp" placeholder="Enter Search Title">
             <small id="searchtitlehelp" class="form-text text-muted">Choose something descriptive.</small>
           </div>
         <br/>
-        <textarea name="search" id="save-search-json">
+        <textarea name="search" id="save-search-json" style="display:none">
         </textarea>
         <br/>
         <button class="button btn btn-primary">Save</button>
