@@ -20,7 +20,7 @@ import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.ImportDao;
-import org.dataarc.core.dao.IndicatorDao;
+import org.dataarc.core.dao.CombinatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.file.DataFileDao;
 import org.dataarc.core.dao.file.JsonFileDao;
@@ -39,6 +39,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * used for loading a Single GeoJSON file (for a schema) into MongoDB and Postgres
+ * 
+ * @author abrin
+ *
+ */
 @Service
 public class ImportDataService {
 
@@ -54,7 +60,7 @@ public class ImportDataService {
     @Autowired
     SchemaDao schemaDao;
     @Autowired
-    IndicatorDao indicatorDao;
+    CombinatorDao indicatorDao;
 
     @Autowired
     DataFileDao dataFileDao;
@@ -65,11 +71,24 @@ public class ImportDataService {
 
     }
 
+    /**
+     * save a feature into MongoDB
+     * 
+     * @param feature
+     * @param properties
+     * @throws Exception
+     */
     @Transactional(readOnly = false)
-    public void load(Feature feature, Map<String, Object> properties) throws Exception {
-        importDao.load(feature, properties);
+    public void save(Feature feature, Map<String, Object> properties) throws Exception {
+        importDao.save(feature, properties);
     }
 
+    /**
+     * Stub
+     * 
+     * @param feature
+     * @param properties
+     */
     @Transactional(readOnly = true)
     public void enhanceProperties(Feature feature, Map<String, Object> properties) {
         importDao.enhanceProperties(feature, properties);
@@ -80,48 +99,66 @@ public class ImportDataService {
         importDao.deleteBySource(name);
     }
 
+    /**
+     * Import a file and load it into MongoDB
+     * 
+     * @param inputStream
+     * @param originalFilename
+     * @param schemaName
+     * @param failOnRemoveErrors
+     * @throws Exception
+     */
     @Transactional(readOnly = false)
     public void importAndLoad(InputStream inputStream, String originalFilename, String schemaName, boolean failOnRemoveErrors) throws Exception {
+        // find the schema
         Schema schema = schemaDao.findByName(schemaName);
+        // write the data file into the filestore
         File imported = storeDataFile(inputStream, originalFilename, schemaName, schema);
 
+        // create a data colelctor
         FieldDataCollector collector = new FieldDataCollector(schemaName);
+        // load the data file
         FeatureCollection featureCollection = new ObjectMapper().readValue(new FileInputStream(imported), FeatureCollection.class);
+        // delete the mongo entries for the data source
         deleteBySource(schemaName);
         Map<String, Object> properties = null;
-        Map<String,Object> cleaned = new HashMap<>();
+        Map<String, Object> cleaned = new HashMap<>();
         try {
-        int rows = 0;
-        for (Iterator<Feature> iterator = featureCollection.getFeatures().iterator(); iterator.hasNext();) {
-            rows++;
-            Feature feature = iterator.next();
-            logger.trace("feature: {}", feature);
-            properties = feature.getProperties();
-            properties.put(IndexFields.SOURCE, schemaName);
-            enhanceProperties(feature, properties);
-            cleaned = new HashMap<>();
-            ObjectTraversalUtil.traverse(properties, cleaned, collector);
-            load(feature, cleaned);
-        }
-        Set<SchemaField> saveSchema = schemaDao.saveSchema(collector, rows);
-        if (CollectionUtils.isNotEmpty(saveSchema)) {
-            List<Long> ids = PersistableUtils.extractIds(saveSchema);
-            List<Indicator> inds = new ArrayList<>();
-            List<Indicator> indicators = indicatorDao.findAllForSchema(schema.getId());
-            for (Indicator ind : indicators) {
-                for (QueryPart queryPart : ind.getQuery().getConditions()) {
-                    if (ids.contains(queryPart.getFieldId())) {
-                        inds.add(ind);
-                        logger.error("field: {} is used in indicator: {}", queryPart.getFieldName(), ind);
+            int rows = 0;
+            // for each feature, load, clean, and save it
+            for (Iterator<Feature> iterator = featureCollection.getFeatures().iterator(); iterator.hasNext();) {
+                rows++;
+                Feature feature = iterator.next();
+                logger.trace("feature: {}", feature);
+                properties = feature.getProperties();
+                properties.put(IndexFields.SOURCE, schemaName);
+                enhanceProperties(feature, properties);
+                cleaned = new HashMap<>();
+                // collect fields and values
+                ObjectTraversalUtil.traverse(properties, cleaned, collector);
+                save(feature, cleaned);
+            }
+            // save the schema
+            Set<SchemaField> saveSchema = schemaDao.saveSchema(collector, rows);
+            if (CollectionUtils.isNotEmpty(saveSchema)) {
+                List<Long> ids = PersistableUtils.extractIds(saveSchema);
+                List<Indicator> inds = new ArrayList<>();
+                List<Indicator> indicators = indicatorDao.findAllForSchema(schema.getId());
+                for (Indicator ind : indicators) {
+                    for (QueryPart queryPart : ind.getQuery().getConditions()) {
+                        if (ids.contains(queryPart.getFieldId())) {
+                            inds.add(ind);
+                            logger.error("field: {} is used in indicator: {}", queryPart.getFieldName(), ind);
+                        }
                     }
                 }
+                // throw an exception if we have an indicator that maps to a field that's no longer mapepd... will rollback transaction and restore everything
+                if (CollectionUtils.isNotEmpty(inds)) {
+                    throw new SourceReplaceException(inds);
+                }
             }
-            if (CollectionUtils.isNotEmpty(inds)) {
-                throw new SourceReplaceException(inds);
-            }
-        }
         } catch (Throwable t) {
-            logger.error("error loading data: {} ", t,t);
+            logger.error("error loading data: {} ", t, t);
             logger.error("orig: {}", properties);
             logger.error("cleaned: {}", cleaned);
             logger.error("fieldMap: {}", collector.getDisplayNameMap());

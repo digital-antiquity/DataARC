@@ -4,6 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Models the textual temporal information such as "late middle ages" and maps it to a set of years. Also allows for a description as a citation
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 @Table(name = "temporal_coverage")
 public class TemporalCoverage extends AbstractPersistable {

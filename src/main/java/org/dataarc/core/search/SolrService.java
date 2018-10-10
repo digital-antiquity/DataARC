@@ -44,7 +44,7 @@ import org.springframework.util.SerializationUtils;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
- * used for searching the Lucene index.
+ * used for searching the SOLR index.
  * 
  * @author abrin
  *
@@ -113,25 +113,40 @@ public class SolrService {
         SearchResultObject result = new DefaultSearchResultObject(sqo);
 
         int limit = 1_000_000;
+        // set # of records to return
         if (sqo.getSize() != null) {
             limit = sqo.getSize();
         }
         Integer startRecord = 0;
+        // set start record/page
         if (sqo.getPage() != null) {
             startRecord = sqo.getPage();
         }
 
         cleanupDatesInSearchQueryObject(sqo);
+        
+        // clone the search query object so we can expand if we need to
         SearchQueryObject sqoClone2 = clone(sqo);
         SearchQueryObject sqoClone3 = clone(sqo);
+        
+        // create the feature collection used to return results
         FeatureCollection fc = new FeatureCollection();
+        // id list of results to return
         Set<String> idList = new HashSet<>();
+        // Create a Query Builder
         SolrQueryBuilder queryBuilder = new SolrQueryBuilder();
+        // Convert the SearchQueryObject into a SOLR query
         StringBuilder bq = queryBuilder.buildQuery(sqo);
+
+        // get the SOLR query a a string
         String q = bq.toString();
+        
+        // if we have no QUERY, set it to a "find all"
         if (StringUtils.isEmpty(StringUtils.trim(bq.toString()))) {
             q = "*:*";
-        } else {
+        } 
+        // otherwise, build out the Related and Contextual Results 
+        else {
             
             if (sqo.getExpandBy() != null) {
                 if (sqo.getExpandBy() > 2) {
@@ -148,12 +163,13 @@ public class SolrService {
                     q += " NOT ( " + q2  + " ) ";
                 }
             }
-            
-            
         }
 
+        // now that we haev the Query, build the fields we want in the results... the more fields the slower it takes
         SolrQuery params = queryBuilder.setupQueryWithFacetsAndFilters(limit, FACET_FIELDS, q, sqo);
         logger.debug("IdOnly: {}, idAndMap:{}", sqo.isIdOnly(), sqo.isIdAndMap());
+        
+        // if ID, Map Only, or Results Page, then put in some basic fields 
         if (sqo.isIdOnly() || sqo.isIdAndMap() || sqo.isResultPage()) {
             params.addField(IndexFields.ID);
             params.addField(IndexFields.SCHEMA_ID);
@@ -162,12 +178,14 @@ public class SolrService {
             params.addField(IndexFields.CATEGORY);
         }
 
+        // put the title if it's a results page
         if (sqo.isResultPage()) {
             params.addField(IndexFields.TITLE);
         }
         params.setStart(startRecord);
 
         logger.debug(String.format("query begin"));
+        // run the query
         QueryResponse query = solrClient.query(SolrIndexingService.DATA_ARC, params);
         SolrDocumentList topDocs = query.getResults();
         logger.debug(String.format("query: %s, total: %s", q, topDocs.getNumFound()));
@@ -179,20 +197,30 @@ public class SolrService {
         if (topDocs.isEmpty()) {
             return result;
         }
+        
         WKTReader reader = new WKTReader();
-        SolrFacetBuilder builder = new SolrFacetBuilder(SUBGROUPS);
+
+        
+        // Depending on the results type, we set the "result" to a different object type with more or fewer fields.  
         if (sqo.isIdAndMap() || sqo.isIdAndMap()) {
             result = new PerfSearchResultObject(sqo);
         }
 
+        // facets have been built, but we need to convert them back to Java Objects so they can be part of our Result  
+        SolrFacetBuilder builder = new SolrFacetBuilder(SUBGROUPS);
         builder.buildResultsFacets(result, query);
 
         // aggregate results in a map by point
         result.setIdList(idList);
+        
+        // if we're not ID only and not ID and Map only, then set the FeatureCollection on the map 
+        // (otherwise it's much faster to build it via a string builder)
         if (!sqo.isIdOnly() && !sqo.isIdAndMap()) {
             ((DefaultSearchResultObject) result).setResults(fc);
         }
+
         StringBuilder sb = new StringBuilder(featureCollectionTemplate);
+        // iterate over the results
         for (int i = 0; i < topDocs.size(); i++) {
             SolrDocument document = topDocs.get(i);
             // logger.debug("{}", document);
@@ -203,12 +231,15 @@ public class SolrService {
                     continue;
                 }
 
+                // add the id to the idlist
                 idList.add((String) document.get(IndexFields.ID));
                 if (!sqo.isIdOnly()) {
 
+                    // if we show all fields, add them (expensive in time cost)
                     if (sqo.isShowAllFields()) {
                         appendFeatureResult(document, reader, fc, point, sqo.isIdAndMap());
                     } else {
+                        // otherwise build the feature out in Strings...
                         com.vividsolutions.jts.geom.Point read = (com.vividsolutions.jts.geom.Point) reader.read(point);
                         
                         appendFastFeatureResult(sb, i, document, read);
@@ -225,17 +256,15 @@ public class SolrService {
         return result;
     }
 
+    // for all dates, if term matches a temporal term, then
     private void cleanupDatesInSearchQueryObject(SearchQueryObject sqo) {
-        // for all dates, if term matches a temporal term, then
         if (CollectionUtils.isNotEmpty(sqo.getKeywords())) {
             List<String> toRemove = new ArrayList<>();
             for (String kwd : sqo.getKeywords()) {
+                // this doesn't make sense...
                 for (String term : Arrays.asList("")) {
                     if (StringUtils.equalsAnyIgnoreCase(kwd, term)) {
                         toRemove.add(kwd);
-                        // what if we already have a date
-//                        sqo.getTemporal().setEnd(end);
-//                        sqo.getTemporal().setStart(start);
                     }
                 }
             }
@@ -252,7 +281,7 @@ public class SolrService {
      * @param read
      */
     private void appendFastFeatureResult(StringBuilder sb, int i, SolrDocument document, com.vividsolutions.jts.geom.Point read) {
-        // NOTE: this is only really safe because we have so much control over the specific fields here
+        // NOTE: this is only really safe because we have so much control over the specific fields here, otherwise we'd need to escape content
         String part = String.format(template, document.get(IndexFields.SCHEMA_ID), document.get(IndexFields.ID),
                 document.get(IndexFields.SOURCE), document.get(IndexFields.CATEGORY), read.getX(), read.getY());
         if (i > 0) {
@@ -271,20 +300,17 @@ public class SolrService {
             e.printStackTrace();
         }
 
-        // addKeyValue(feature.getProperties(), IndexFields.SOURCE, document);
-        // addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, document);
-        // addKeyValue(feature.getProperties(), IndexFields.COUNTRY, document);
-
-        // logger.debug("{}", document);
-        // logger.debug("{}", document.getChildDocumentCount());
         Collection<Object> arrays = document.getFieldValues(IndexFields.ARRAYS);
         if (!idMapOnly && CollectionUtils.isNotEmpty(document.getChildDocuments())) {
-            // logger.debug("child docs: " + document.getChildDocuments());
+
+            // for each of the Arrays entries, initialize the property as an array
             if (CollectionUtils.isNotEmpty(arrays)) {
                 for (Object entry : arrays) {
                     feature.setProperty((String)entry, new ArrayList<>());
                 }
             }
+            
+            // all of the ExtraProperties are "child documents", so we need to rehydrate them and then add them back 
             for (SolrDocument doc : document.getChildDocuments()) {
                 Map<String, Object> row = new HashMap<>();
 
@@ -312,6 +338,7 @@ public class SolrService {
             }
         }
 
+
         if (CollectionUtils.isNotEmpty(arrays)) {
             for (Object entry : arrays) {
                 List<Object> property = feature.getProperty((String)entry);
@@ -321,6 +348,7 @@ public class SolrService {
             }
         }
 
+        // add back all of our manually controlled fields
         addKeyValue(feature.getProperties(), IndexFields.ID, document.get(IndexFields.ID));
         Object id = document.get(IndexFields.SCHEMA_ID);
         addKeyValue(feature.getProperties(), IndexFields.SCHEMA_ID, id);
@@ -355,6 +383,7 @@ public class SolrService {
             return;
         }
 
+        // handle and remove the prefixing
         int idx = name.indexOf("_");
         idx = name.indexOf(".", idx);
         if (idx > 0) {
@@ -390,6 +419,9 @@ public class SolrService {
          return (T) SerializationUtils.deserialize(SerializationUtils.serialize(object));
     }
 
+    /**
+     * For faster loading, we "cache" the find-all result to disk so we don't have to do all the work
+     */
     public void buildFindAllCache() {
         try {
             SearchQueryObject query = new SearchQueryObject();

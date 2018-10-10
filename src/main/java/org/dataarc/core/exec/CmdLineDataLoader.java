@@ -6,13 +6,19 @@ import java.io.FileInputStream;
 import org.apache.commons.lang.StringUtils;
 import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.ImportService;
-import org.dataarc.core.service.IndicatorService;
+import org.dataarc.core.service.CombinatorService;
 import org.dataarc.core.service.TopicMapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+
+/**
+ * Mainly used in testing, but a commandline tool for loading GeoJSON data and topic map info
+ * @author abrin
+ *
+ */
 
 @Component
 public class CmdLineDataLoader extends AbstractDataLoader {
@@ -26,7 +32,7 @@ public class CmdLineDataLoader extends AbstractDataLoader {
     TopicMapService topicMapService;
 
     @Autowired
-    IndicatorService indicatorService;
+    CombinatorService indicatorService;
     
     @Autowired
     private SolrIndexingService indexingService;

@@ -19,6 +19,13 @@ import org.dataarc.util.View;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+/**
+ * Representation of a "field" in the database. It has both a display name, an internal (import name), and a mongo name as well as allowing it to identify as
+ * either a date field or other information
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 @Table(name = "schema_field")
 public class SchemaField extends AbstractPersistable {

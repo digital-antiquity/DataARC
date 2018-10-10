@@ -5,6 +5,11 @@ import java.sql.Types;
 import org.dataarc.core.search.query.SearchQueryObject;
 import org.hibernate.usertype.UserType;
 
+/**
+ * Save a serialized Search
+ * @author abrin
+ *
+ */
 // https://github.com/thjanssen/HibernateJSONBSupport/blob/master/PostgresJSONB/src/main/java/org/thoughts/on/java/model/MyJsonType.java
 public class SearchJsonType extends AbstractJsonType implements UserType {
 

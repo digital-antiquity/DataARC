@@ -88,6 +88,7 @@ public class TopicDao {
         Set<String> assoc = new HashSet<>();
         TopicMap map = manager.createQuery("from TopicMap", TopicMap.class).getSingleResult();
 
+        // find all relationships (from/to/identifier)
         map.getAssociations().forEach(asc -> {
             if (StringUtils.equals(asc.getFrom().getIdentifier(), tid)) {
                 assoc.add(asc.getTo().getIdentifier());

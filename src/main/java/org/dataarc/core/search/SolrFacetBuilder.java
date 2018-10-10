@@ -14,6 +14,11 @@ import org.dataarc.web.api.SearchResultObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Converts a SOLR Facet Result back into a seralizable value
+ * @author abrin
+ *
+ */
 public class SolrFacetBuilder {
 
     private static final String VAL = "val";
@@ -34,6 +39,7 @@ public class SolrFacetBuilder {
         @SuppressWarnings("rawtypes")
         SimpleOrderedMap facetMap = (SimpleOrderedMap) query.getResponse().get(FACETS);
 
+        // for each facet get the buckets and append them
         logger.debug("{}", facetMap);
         for (String field : (Set<String>) facetMap.asShallowMap().keySet()) {
             if (logger.isTraceEnabled()) {

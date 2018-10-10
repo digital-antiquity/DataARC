@@ -24,8 +24,12 @@ import org.springframework.util.ResourceUtils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 
+/**
+ * Basic Spring MongoDB configuration 
+ * @author abrin
+ *
+ */
 @Configuration
-// @EnableSolrRepositories(multicoreSupport = true, basePackages = DataArcConfiguration.ORG_DATAARC_SOLR)
 @EnableMongoRepositories(basePackages = { DataArcConfiguration.ORG_DATAARC_MONGO })
 @ComponentScan(basePackages = { DataArcConfiguration.ORG_DATAARC_CORE, DataArcConfiguration.ORG_DATAARC_MONGO, DataArcConfiguration.ORG_DATAARC_SOLR })
 @Profile("mongo")

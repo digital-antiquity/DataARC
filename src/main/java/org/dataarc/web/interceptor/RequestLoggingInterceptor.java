@@ -8,6 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+/**
+ * Helps to log requests
+ * @author abrin
+ *
+ */
 public class RequestLoggingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger logger = LoggerFactory

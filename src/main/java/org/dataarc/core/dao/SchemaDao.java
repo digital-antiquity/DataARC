@@ -78,9 +78,17 @@ public class SchemaDao {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Convert the FieldDataColector information into a schema, if the schema exists, then update it.
+     * @param collector
+     * @param rows
+     * @return
+     */
     public Set<SchemaField> saveSchema(FieldDataCollector collector, int rows) {
         String name = collector.getSchemaName();
         Schema schema = getSchemaByName(name);
+
+        // initialize schema if needed
         if (schema == null) {
             schema = new Schema();
             schema.setName(name);
@@ -88,6 +96,8 @@ public class SchemaDao {
         }
         schema.setRows(rows);
         Set<SchemaField> toRemove = new HashSet<>(schema.getFields());
+
+        // reconcile existing schema and incoming schema fields
         for (String fieldName : collector.getNames()) {
             SchemaField field = schema.getFieldByName(fieldName);
             if (field == null) {

@@ -34,7 +34,7 @@ public class FieldController extends AbstractController {
 
     ) throws Exception {
         try {
-            schemaService.updateFieldDisplayName(schemaId, fieldId, displayName, startField, endField);
+            schemaService.updateField(schemaId, fieldId, displayName, startField, endField);
         } catch (Exception e) {
             logger.error("{}", e, e);
         }

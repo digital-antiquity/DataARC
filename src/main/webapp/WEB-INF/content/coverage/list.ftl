@@ -23,8 +23,8 @@
 	<tr>
 		<td>${temp.id?c}</td>
 		<td>${temp.term}</td>
-		<td>${temp.start?c!''}</td>
-		<td>${temp.end?c!''}</td>
+		<td><#if temp.start?has_content>${temp.start?c!''}</#if></td>
+		<td><#if temp.end?has_content>${temp.end?c!''}</#if></td>
 	</tr>
 </#list>
 </table>

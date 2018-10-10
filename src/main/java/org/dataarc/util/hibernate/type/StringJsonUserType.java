@@ -11,6 +11,7 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 /**
+ * Convert the String in Hibernate/Postgres to a JSON Jackson Object
  * @author timfulmer
  */
 public class StringJsonUserType implements UserType {

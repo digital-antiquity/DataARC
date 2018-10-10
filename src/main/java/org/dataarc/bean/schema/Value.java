@@ -6,6 +6,12 @@ import javax.persistence.Table;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/**
+ * A tracking of the unique values of a field along with the # of occurrences.
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 @Table(name = "field_value")
 public class Value extends AbstractPersistable {

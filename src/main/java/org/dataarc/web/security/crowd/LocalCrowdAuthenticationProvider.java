@@ -19,6 +19,11 @@ import com.atlassian.crowd.model.group.Group;
 import com.atlassian.crowd.model.user.User;
 import com.atlassian.crowd.service.client.CrowdClient;
 
+/**
+ * Not used, but allows us to use tDAR's crowd database
+ * @author abrin
+ *
+ */
 public class LocalCrowdAuthenticationProvider implements AuthenticationProvider {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

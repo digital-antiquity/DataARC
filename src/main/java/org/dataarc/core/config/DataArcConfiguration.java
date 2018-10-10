@@ -31,6 +31,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.rollbar.Rollbar;
 
+/**
+ * Basic app configuration
+ * 
+ * @author abrin
+ *
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableAsync
@@ -87,9 +93,6 @@ public class DataArcConfiguration {
         String username = env.getProperty("mail.smtp.username");
         String password = env.getProperty("mail.smtp.password");
         sender.setPort(env.getProperty("mail.smtp.port", Integer.class, 25));
-//        if (env.getProperty("mail.auth", Boolean.class, false)) {
-//            
-//        }
         if (StringUtils.isNotBlank(username)) {
             sender.setUsername(username);
             sender.setUsername(password);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
-import org.dataarc.core.service.IndicatorService;
+import org.dataarc.core.service.CombinatorService;
 import org.dataarc.core.service.UserService;
 import org.dataarc.web.AbstractController;
 import org.dataarc.web.UrlConstants;
@@ -24,7 +24,7 @@ import com.mongodb.client.MongoCursor;
 public class AdminQueryController extends AbstractController {
 
     @Autowired
-    IndicatorService indicatorService;
+    CombinatorService indicatorService;
 
     @RequestMapping(UrlConstants.ADMIN_QUERY)
     public String index() {

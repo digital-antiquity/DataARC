@@ -5,6 +5,11 @@ import java.util.Set;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/**
+ * An internal representation of the topic map that's easier to serialize
+ * @author abrin
+ *
+ */
 public class InternalTopicMap extends AbstractPersistable {
 
     private String name;

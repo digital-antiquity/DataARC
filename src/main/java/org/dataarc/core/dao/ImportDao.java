@@ -13,7 +13,7 @@ public interface ImportDao {
 
     void deleteAll();
 
-    void load(Feature feature, Map<String, Object> properties) throws Exception;
+    void save(Feature feature, Map<String, Object> properties) throws Exception;
 
     void enhanceProperties(Feature feature, Map<String, Object> properties);
 

@@ -10,6 +10,12 @@ import javax.persistence.Table;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/**
+ * maps a topic to a category.
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 @Table(name = "topic_category_association")
 public class CategoryAssociation extends AbstractPersistable {

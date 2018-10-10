@@ -11,6 +11,11 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/**
+ * initializes the servlet
+ * @author abrin
+ *
+ */
 public class ServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
@@ -45,6 +50,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
     @Override
     protected WebApplicationContext createRootApplicationContext() {
         WebApplicationContext context = (WebApplicationContext) super.createRootApplicationContext();
+        //set the mongo profile
         ((ConfigurableEnvironment) context.getEnvironment()).setActiveProfiles("mongo");
         return context;
     }

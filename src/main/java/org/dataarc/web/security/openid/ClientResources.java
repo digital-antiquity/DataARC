@@ -4,6 +4,11 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceS
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 
+/**
+ * Mapping of our OpenID resources 
+ * @author abrin
+ *
+ */
 public class ClientResources {
 
     private OAuth2ProtectedResourceDetails client = new AuthorizationCodeResourceDetails();

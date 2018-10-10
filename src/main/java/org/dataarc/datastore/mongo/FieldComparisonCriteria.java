@@ -4,6 +4,11 @@ import org.bson.Document;
 import org.dataarc.core.query.MatchType;
 import org.springframework.data.mongodb.core.query.Criteria;
 
+/**
+ * A container for a field comparison query Field1 isLessThan Field2
+ * @author abrin
+ *
+ */
 public class FieldComparisonCriteria extends Criteria {
 
     private String fromName;

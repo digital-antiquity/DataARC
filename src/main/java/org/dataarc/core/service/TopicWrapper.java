@@ -4,6 +4,11 @@ import org.dataarc.bean.topic.Topic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
+/**
+ * Representation of the TopicMap for simple serialziation
+ * @author abrin
+ *
+ */
 @JsonAutoDetect
 public class TopicWrapper {
 

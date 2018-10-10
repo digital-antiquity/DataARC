@@ -15,6 +15,12 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * Represents a a MAP or LIST component on a SOLR Record.  
+ * 
+ * @author abrin
+ *
+ */
 @JsonInclude(Include.NON_EMPTY)
 public class ExtraProperties {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -27,11 +33,17 @@ public class ExtraProperties {
 
     public ExtraProperties(SearchIndexObject searchIndexObject, Map<String, Object> data2, Schema schema) {
         String prefix = null;
+
+        // for each entry in the object, find the field in the Schema and then store it. Because we're a child, we're going to prefix it with the parent object
+        // information
         for (Entry<String, Object> e : data2.entrySet()) {
+
+            // if we're a null or empty field, skip
             if (e.getValue() == null || e.getValue() instanceof String && StringUtils.isBlank((CharSequence) e.getValue())) {
                 continue;
             }
             String key = e.getKey();
+            // compute the field name and the prefix 
             org.dataarc.bean.schema.SchemaField fieldByName = schema.getFieldByName(key);
             if (fieldByName == null) {
                 for (org.dataarc.bean.schema.SchemaField fld : schema.getFields()) {
@@ -39,11 +51,11 @@ public class ExtraProperties {
                         break;
                     }
                     prefix = StringUtils.substringBefore(fld.getName(), ".");
-                    String dn = StringUtils.substringAfter(fld.getDisplayName(), ".");
-                    String n = StringUtils.substringAfter(fld.getName(), ".");
-                    logger.trace("{} -> {}/{}", key, dn, n);
+                    String displayName = StringUtils.substringAfter(fld.getDisplayName(), ".");
+                    String name = StringUtils.substringAfter(fld.getName(), ".");
+                    logger.trace("{} -> {}/{}", key, displayName, name);
                     String esc = SchemaUtils.normalize(key);
-                    if (StringUtils.equalsIgnoreCase(esc, dn) || StringUtils.equalsIgnoreCase(esc, n)) {
+                    if (StringUtils.equalsIgnoreCase(esc, displayName) || StringUtils.equalsIgnoreCase(esc, name)) {
                         fieldByName = fld;
                     }
                 }

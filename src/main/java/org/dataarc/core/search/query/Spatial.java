@@ -8,6 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Representation of a Spatial Query Part (SOLR)
+ * 
+ * @author abrin
+ *
+ */
 public class Spatial implements Serializable {
 
     private static final long serialVersionUID = 3608731620731620810L;
@@ -54,7 +60,7 @@ public class Spatial implements Serializable {
         if (logger != null) {
             logger.debug("expand from: [{}-{}]", topLeft, bottomRight);
         }
-        
+
         if (topLeft == null || bottomRight == null || topLeft.length < 2 || bottomRight.length < 2) {
             return this;
         }

@@ -36,6 +36,12 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
+/**
+ * This is the representation of a GeoJSON point in SOLR. It is indexed differently, so it has some different explicit fields
+ * 
+ * @author abrin
+ *
+ */
 @JsonInclude(Include.NON_EMPTY)
 public class SearchIndexObject {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -84,9 +90,11 @@ public class SearchIndexObject {
     @Field(value = "properties*")
     private Map<String, Object> properties;
 
+    // some of our JSON objects (SEAD, etc.) have complex JSON obejcts with parent-child relationships.
     @Field(child = true)
     private List<ExtraProperties> data;
 
+    // this lets us query the Object vs. the part which is mapped in the ExtraProperties and properties above
     @Field(value = IndexFields.INTERNAL_TYPE)
     private String internalType = "object";
 
@@ -110,7 +118,8 @@ public class SearchIndexObject {
     private Geometry geometry;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-    @Field(value=IndexFields.ARRAYS)
+    // bookkeeping list of ExtraProperties that are ARRAYs
+    @Field(value = IndexFields.ARRAYS)
     private Set<String> arrays = new HashSet<>();
 
     @Field(value = IndexFields.CATEGORY)
@@ -119,10 +128,19 @@ public class SearchIndexObject {
     public SearchIndexObject() {
     }
 
+    /**
+     * Intialize a SearchIndexObject from a MongoDB DataEntry and a Schema
+     * 
+     * @param entry
+     * @param schema
+     * @param temporal
+     */
     public SearchIndexObject(DataEntry entry, Schema schema, TemporalCoverageService temporal) {
         if (schema == null) {
             return;
         }
+
+        // different representation of a point
         if (entry.getX() != null && entry.getY() != null) {
             Coordinate coord = new Coordinate(entry.getX(), entry.getY());
             geometry = geometryFactory.createPoint(coord);
@@ -158,7 +176,8 @@ public class SearchIndexObject {
     }
 
     /**
-     * FIXME BRITTLE HACK
+     * FIXME BRITTLE HACK; SEAD has a different dating model whereby the dates may be of different types and relative starts. This tries to put the dates back
+     * into their correct formats
      * 1. only for SEAD
      * 2. assumes SEAD specific data structure (which can quickly change)
      * 3. non-standardized types
@@ -169,15 +188,16 @@ public class SearchIndexObject {
     private void cleanupSead(DataEntry entry, Schema schema) {
 
         Object object = entry.getProperties().get("sampleData");
-        // logger.debug("keys: {}", entry.getProperties().keySet());
         String type = null;
         if (object != null && object instanceof Map) {
             type = (String) ((Map) object).get("dating_type");
         }
 
+        // if we don't have a date, type, or are in SEAD, then skip
         if ((type == null || getStart() == null || getEnd() == null) || !schema.getName().toLowerCase().contains("sead")) {
             return;
         }
+        
         int currentYear = DateTime.now().getYear();
         int start_ = 1950 - getStart();
         int end_ = 1950 - getEnd();
@@ -191,6 +211,8 @@ public class SearchIndexObject {
         if (end_ > currentYear) {
             end_ = currentYear;
         }
+        
+        // log out info
         if (logger.isTraceEnabled()) {
             String id = "";
             for (ExtraProperties ep : getData()) {
@@ -208,6 +230,12 @@ public class SearchIndexObject {
 
     }
 
+    /**
+     * Apply the start and end dates based on the temporal coverage if needed
+     * @param entry
+     * @param schema
+     * @param coverageLookup
+     */
     private void applyStartEnd(DataEntry entry, Schema schema, TemporalCoverageService coverageLookup) {
         if (startFieldValue != null) {
             setStart(toInt(startFieldValue, coverageLookup, true));
@@ -232,6 +260,14 @@ public class SearchIndexObject {
     private transient Object endFieldValue;
     private transient Object textFieldValue;
 
+    /**
+     * get the start/end date. If the field value is a number, get the INT value. If it's a string, try and look it up and use the associated dates.
+     * 
+     * @param o
+     * @param coverageLookup
+     * @param start
+     * @return
+     */
     private Integer toInt(Object o, TemporalCoverageService coverageLookup, boolean start) {
         if (o == null) {
             return null;
@@ -257,40 +293,57 @@ public class SearchIndexObject {
         return null;
     }
 
+    /**
+     * Take the DateEntry GeoJSON "properties" and map them into a SOLR representation. This tries to represent the potentially complex GeoJSON Object into
+     * parent->child->* records that can be stored in SOLR which is comparatively flat
+     * 
+     * @param entry
+     * @param schema
+     */
     @SuppressWarnings("unchecked")
     private void applyProperties(DataEntry entry, Schema schema) {
         if (MapUtils.isNotEmpty(entry.getProperties())) {
             properties = new HashMap<>();
         }
 
+        // iterate over each of the properties on the Data Entry
         entry.getProperties().keySet().forEach(k -> {
             Object v = entry.getProperties().get(k);
+
             // make sure that the schema field exists, is not a null type (i.e. we inspected it) and has a value
             org.dataarc.bean.schema.SchemaField field = schema.getFieldByName(k);
-            // if (field == null) {
-            // logger.debug("{} -- null", k);
-            // }
+
+            // if the Field is a "Map" (i.e. a child class), then we need to create an ExtraProperties class to represent that object
             if (field != null) {
                 if (v instanceof Map) {
                     Map<String, Object> data_ = (Map<String, Object>) v;
                     if (getData() == null) {
                         setData(new ArrayList<>());
                     }
+                    
+                    // intialize an ExtraProperites class with the child data.
                     getData().add(new ExtraProperties(this, data_, schema));
                     logger.trace("map: {}", data_);
-                } else if (v instanceof Collection) {
+                } 
+                // if we're a collection, then we'll add all of the collection entries as ExtraProperties entriesm but set a prefix
+                else if (v instanceof Collection) {
                     if (getData() == null) {
                         setData(new ArrayList<>());
                     }
+                    
                     List<Map<String, Object>> sites = (List<Map<String, Object>>) v;
                     logger.trace("array: {}", sites);
-                    
+
+                    // for each of the Array entries, we add the site "prefix" field into the "arrays" object for bookkeeping (so we can restore it properly in
+                    // the future
                     sites.forEach(s -> {
                         ExtraProperties prop = new ExtraProperties(this, s, schema);
                         getArrays().add((String) prop.getData().get(IndexFields.PREFIX));
                         getData().add(prop);
                     });
-                } else if (v != null && field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
+                } 
+                // otherwise, we're just going to put the field in directly into the properties entry.
+                else if (v != null && field.getType() != null && !field.getName().equals(IndexFields.SOURCE)) {
                     getProperties().put(SchemaUtils.formatForSolr(schema, field), v);
                     applyTransientDateFields(field, v);
                 }

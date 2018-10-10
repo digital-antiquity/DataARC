@@ -2,6 +2,9 @@ package org.dataarc.core.service.topic;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/*
+ * AN internal representation of an associate that's easier to serialize
+ */
 public class InternalAssociation extends AbstractPersistable {
 
     public InternalTopic from;

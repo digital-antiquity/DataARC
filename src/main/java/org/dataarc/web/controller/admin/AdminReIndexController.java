@@ -2,7 +2,7 @@ package org.dataarc.web.controller.admin;
 
 import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.ImportService;
-import org.dataarc.core.service.IndicatorService;
+import org.dataarc.core.service.CombinatorService;
 import org.dataarc.core.service.JsonFileService;
 import org.dataarc.core.service.SchemaService;
 import org.dataarc.core.service.UserService;
@@ -23,7 +23,7 @@ public class AdminReIndexController extends AbstractRestController {
     private ThreadPoolTaskExecutor myExecutor;
 
     @Autowired
-    private IndicatorService indicatorService;
+    private CombinatorService indicatorService;
     @Autowired
     private JsonFileService jsonService;
     @Autowired

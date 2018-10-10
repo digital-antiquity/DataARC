@@ -6,6 +6,11 @@ import java.util.List;
 import org.dataarc.bean.AbstractPersistable;
 import org.dataarc.bean.topic.TopicCategory;
 
+/**
+ * An internal versio of a topic that's easier to serialize
+ * @author abrin
+ *
+ */
 public class InternalTopic extends AbstractPersistable {
 
     private static final long serialVersionUID = 6162221611058985539L;

@@ -7,6 +7,11 @@ import java.util.List;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.core.query.FilterQuery;
 
+/**
+ * A wrapper for the reults of a MongoDB Query with the original Query
+ * @author abrin
+ *
+ */
 public class FilterQueryResult implements Serializable {
 
     private static final long serialVersionUID = 6080680950106820437L;

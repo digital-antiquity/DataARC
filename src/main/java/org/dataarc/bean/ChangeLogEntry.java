@@ -15,6 +15,12 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
+/**
+ * A representation of changes in the system, manually logged.
+ *  
+ * @author abrin
+ *
+ */
 @Entity
 @Table(name = "change_log")
 public class ChangeLogEntry extends AbstractPersistable {

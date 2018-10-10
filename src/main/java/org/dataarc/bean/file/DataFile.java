@@ -13,6 +13,11 @@ import javax.persistence.TemporalType;
 import org.dataarc.bean.AbstractPersistable;
 import org.dataarc.bean.schema.Schema;
 
+/**
+ * Representation of the GeoJSON data files that are loaded as Schema
+ * @author abrin
+ *
+ */
 @Entity()
 @Table(name = "data_file")
 public class DataFile extends AbstractPersistable {

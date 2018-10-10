@@ -23,6 +23,13 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+/**
+ * Representation of a data source in DataARC, it includes some basic information such as category and name, as well as places for HandlebarJS templates and
+ * URLs for linking.
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 public class Schema extends AbstractPersistable {
 

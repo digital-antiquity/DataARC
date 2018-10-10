@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
@@ -68,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
                 throws IOException, ServletException {
+            // where to go when logged in
             redirectStrategy.sendRedirect(request, response, A_HOME);
         }
     }
@@ -81,7 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("user").password("password").roles(UserService.ADMIN_ROLE.replace("ROLE_", ""));
+        // try to setup an internal username/password; 
+//        auth.inMemoryAuthentication().withUser("user").password("password").roles(UserService.ADMIN_ROLE.replace("ROLE_", ""));
     }
 
     @Resource
@@ -93,12 +94,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
+        // if we have the username/pwd enabeld, allow all access to these paths
         if (env.getProperty("security.enabled", Boolean.class, true)) {
             web.ignoring().antMatchers("/js/**", "/css/**", "/components/**", "/images/**", "/data/**", "/json", UrlConstants.TOPIC_MAP_VIEW,
                     UrlConstants.SEARCH,UrlConstants.SEARCH_RESULTS,
                     UrlConstants.GET_ID, UrlConstants.ABOUT,
                     "/login**", "/geojson/**", "/vendor/**", "/img/**");
         } else {
+            //otherwise allow all
             web.ignoring().antMatchers("/**");
         }
     }
@@ -106,8 +109,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity web) throws Exception {
         super.configure(web);
+        // we'll configure these separately
         web.csrf().ignoringAntMatchers("/api/**", "/json/**").disable();
         web.cors().disable();
+        
+        // if we have the username/password checks enabled, then lock down anything in the /a/* area
         if (env.getProperty("security.enabled", Boolean.class, true)) {
             if (env.getProperty("security.ussOauth", Boolean.class, true)) {
                 web.addFilterAfter(new OAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
@@ -127,6 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
+    /** used for oauth **/
     private void setupDetails(AuthorizationCodeResourceDetails details) {
         details.setUseCurrentUri(true);
         // details.setPreEstablishedRedirectUri("http://"+env.getProperty("hostname","localhost:8280")+"/a/home");
@@ -135,6 +142,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         details.setClientAuthenticationScheme(AuthenticationScheme.form);
     }
 
+    /** apply the SingleSignOn filter */
     private Filter ssoFilter(ClientResources client, String path) {
         OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(path);
         OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), oauth2ClientContext);
@@ -163,6 +171,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CompositeFilter myFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
+        // create two filters, one for google and one for facebook
         filters.add(ssoFilter(new ClientResources(googleOpenId(), googleResource()), "/google-login"));
         filters.add(ssoFilter(new ClientResources(facebookOpenId(), facebookResource()), "/facebook-login"));
 
@@ -243,6 +252,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthoritiesExtractor authoritiesExtractor() {
+        // convert a Oauth2 Authority to a DataARC user
         return new AuthoritiesExtractor() {
 
             @Autowired

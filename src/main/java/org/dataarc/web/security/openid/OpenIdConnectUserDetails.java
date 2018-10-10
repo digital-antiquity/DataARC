@@ -9,6 +9,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
+/**
+ * The basic user details for an OpenID User
+ * @author abrin
+ *
+ */
 public class OpenIdConnectUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;

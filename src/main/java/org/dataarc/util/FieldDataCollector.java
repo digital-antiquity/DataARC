@@ -15,6 +15,12 @@ import org.dataarc.bean.schema.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * We need to keep statistics on each field so we can track and manage the fields across Solr, Mongo, and Postgres
+ * 
+ * @author abrin
+ *
+ */
 public class FieldDataCollector {
 
     private String schemaName;
@@ -30,7 +36,9 @@ public class FieldDataCollector {
         this.setDisplayName(schema);
     }
 
+    // Add a field / Value
     public String add(String parent, String key, Object value) {
+        // if we're null, skip
         if (value == null ||
                 value instanceof String && StringUtils.isBlank((CharSequence) value) ||
                 value instanceof Collection && CollectionUtils.isEmpty((Collection) value) ||
@@ -39,7 +47,77 @@ public class FieldDataCollector {
             return null;
         }
 
+        FieldType type = determineInitialFieldType(value);
+
+        String path = buildPath(parent, key);
+        
+        String normalizedName = SchemaUtils.normalize(path);
+        if (normalizedName == null) {
+            logger.error("NULL!! {}", path);
+        }
+        getNames().add(normalizedName);
+        displayNames.put(normalizedName, path);
+
+        type = reconcileExistingAndInitialFieldType(type, normalizedName);
+
+        fieldTypes.put(normalizedName, type);
+        if (value instanceof Collection || value instanceof Map) {
+            return normalizedName;
+        }
+
+        addUniqueValues(value, path, normalizedName);
+        return normalizedName;
+    }
+
+    /**
+     * Append the unique value to a counted map so we can use them in autocompletes and analysis
+     * @param value
+     * @param path
+     * @param normalizedName
+     */
+    private void addUniqueValues(Object value, String path, String normalizedName) {
+        if (value instanceof Date || value instanceof String || value instanceof Number) {
+            logger.trace("add:: {} {} ==> {}", path, normalizedName, value);
+            Map<Object, Long> set = uniqueValues.getOrDefault(normalizedName, new HashMap<>());
+            if (value instanceof String) {
+                String left = StringUtils.left((String) value, Value.VALUE_LENGTH - 1);
+                Long count = set.getOrDefault(left, 0L);
+                set.put(left, count + 1);
+            } else {
+                Long count = set.getOrDefault(value, 0L);
+                set.put(value, count + 1);
+            }
+            uniqueValues.put(normalizedName, set);
+        } else {
+            logger.error("value is unknown type!!! {} --> {}", value.getClass(), value);
+        }
+    }
+
+    private FieldType reconcileExistingAndInitialFieldType(FieldType type, String normalizedName) {
+        FieldType existingType = fieldTypes.getOrDefault(normalizedName, type);
+        // try to defer to more compelling type
+        if (existingType == FieldType.STRING) {
+            type = FieldType.STRING;
+        }
+
+        // if we've got a mix of INTs and FLOATs, use FLOAT to be more accurate
+        if ((existingType == FieldType.FLOAT) && type == FieldType.LONG) {
+            type = FieldType.FLOAT;
+        }
+        return type;
+    }
+
+    private String buildPath(String parent, String key) {
+        String path = key;
+        if (StringUtils.isNotBlank(parent)) {
+            path = String.format("%s.%s", parent, key);
+        }
+        return path;
+    }
+
+    private FieldType determineInitialFieldType(Object value) {
         FieldType type = FieldType.STRING;
+        // test the field type, if it's numeric, or string
         if (value instanceof Number || value instanceof String && ((String) (value)).matches("^[-+]?([0-9]*\\.[0-9]+|[0-9]+)$")) {
             if (value instanceof Float || value instanceof Double) {
                 type = FieldType.FLOAT;
@@ -60,50 +138,7 @@ public class FieldDataCollector {
         if (value instanceof Date) {
             type = FieldType.DATE;
         }
-
-        String path = key;
-        if (StringUtils.isNotBlank(parent)) {
-            path = String.format("%s.%s", parent, key);
-        }
-        String normalizedName = SchemaUtils.normalize(path);
-        if (normalizedName == null) {
-            logger.error("NULL!! {}", path);
-        }
-        getNames().add(normalizedName);
-        displayNames.put(normalizedName, path);
-
-        FieldType existingType = fieldTypes.getOrDefault(normalizedName, type);
-        // try to defer to more compelling type
-        if (existingType == FieldType.STRING) {
-            type = FieldType.STRING;
-        }
-
-        // if we've got a mix of INTs and FLOATs, use FLOAT to be more accurate
-        if ((existingType == FieldType.FLOAT) && type == FieldType.LONG) {
-            type = FieldType.FLOAT;
-        }
-
-        fieldTypes.put(normalizedName, type);
-        if (value instanceof Collection || value instanceof Map) {
-            return normalizedName;
-        }
-
-        if (value instanceof Date || value instanceof String || value instanceof Number) {
-            logger.trace("add:: {} {} ==> {}", path, normalizedName, value);
-            Map<Object, Long> set = uniqueValues.getOrDefault(normalizedName, new HashMap<>());
-            if (value instanceof String) {
-                String left = StringUtils.left((String) value, Value.VALUE_LENGTH - 1);
-                Long count = set.getOrDefault(left, 0L);
-                set.put(left, count + 1);
-            } else {
-                Long count = set.getOrDefault(value, 0L);
-                set.put(value, count + 1);
-            }
-            uniqueValues.put(normalizedName, set);
-        } else {
-            logger.error("value is unknown type!!! {} --> {}", value.getClass(), value);
-        }
-        return normalizedName;
+        return type;
     }
 
     public Set<String> getNames() {

@@ -23,6 +23,11 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Filter that allows us to map the OpenID request to a user
+ * @author abrin
+ *
+ */
 public class OpenIdConnectFilter extends AbstractAuthenticationProcessingFilter {
     public OAuth2RestOperations restTemplate;
 

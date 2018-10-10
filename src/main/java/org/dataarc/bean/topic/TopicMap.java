@@ -13,6 +13,11 @@ import javax.persistence.Table;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/**
+ * Representation of the Wandora/XTM Topic map in Hibernate.  It maintains all of the relationships we care about so we can map the topics to indicators.
+ * @author abrin
+ *
+ */
 @Entity()
 @Table(name = "topic_map")
 public class TopicMap extends AbstractPersistable {

@@ -28,7 +28,7 @@ public class StartupService implements ApplicationListener<ContextStartedEvent> 
     @Qualifier("bce.properties")
     private Properties myProperties = new Properties();
 
-    // get the spreadsheet id, and re-index on startup
+    // re-index on startup
     @Override
     public void onApplicationEvent(ContextStartedEvent arg0) {
         indexingService.reindex();

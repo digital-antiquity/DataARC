@@ -13,6 +13,12 @@ import org.dataarc.core.search.query.Temporal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Build a SOLR query from the SearchQueryObject
+ * 
+ * @author abrin
+ *
+ */
 public class SolrQueryBuilder {
     public static int SMALL_NUM_OF_FACETS = 5;
     public static int LOTS_OF_FACETS = 10_000;
@@ -32,7 +38,22 @@ public class SolrQueryBuilder {
         appendKeywordSearch(sqo.getKeywords(), IndexFields.KEYWORD, bq, Operator.AND);
         appendKeywordSearch(sqo.getIds(), IndexFields.ID, bq, Operator.AND);
         appendKeywordSearchNumeric(Arrays.asList(sqo.getSchemaId()), IndexFields.SCHEMA_ID, bq);
+        applyTopics(sqo, bq);
+        
+        if (sqo.isEmptySpatial() == false) {
+            appendSpatial(sqo, bq);
+        }
+        return bq;
+    }
 
+
+    /**
+     * If a topic is specified, then append them to the query
+     * @param sqo
+     * @param bq
+     * @throws ParseException
+     */
+    private void applyTopics(SearchQueryObject sqo, StringBuilder bq) throws ParseException {
         if (CollectionUtils.isNotEmpty(sqo.getTopicIds())) {
             if (bq.length() > 0) {
                 bq.append(" AND ");
@@ -49,29 +70,50 @@ public class SolrQueryBuilder {
             bq.append(sub.toString());
             bq.append(")");
         }
-        if (sqo.isEmptySpatial() == false) {
-            appendSpatial(sqo, bq);
-        }
-        return bq;
     }
 
     
+    /**
+     * Make a facet request for a field
+     * @param key
+     * @param limit
+     * @return
+     */
     private String makeFacet(String key, int limit) {
         return String.format("%s: {type:terms, missing:true, limit:%s , field:'%s'}", key, limit, key);
     }
 
+    /**
+     * Create a facet group request
+     * 
+     * @param name
+     * @param key
+     * @param internal
+     * @return
+     */
     private String makeFacetGroup(String name, String key, String internal) {
         return String.format(" %s: { type:terms, field:%s, limit:%s , missing:true, facet: { %s } } ", name, key, SMALL_NUM_OF_FACETS, internal);
     }
 
+    /**
+     * build out the entire JSON query with facets
+     * @param limit
+     * @param facetFields
+     * @param q
+     * @param sqo
+     * @return
+     */
     SolrQuery setupQueryWithFacetsAndFilters(int limit, List<String> facetFields, String q, SearchQueryObject sqo) {
         SolrQuery params = new SolrQuery(q);
         String normal = "";
+        
+        // create all of the facet requests
         for (int i = 0; i < facetFields.size(); i++) {
             String fld = facetFields.get(i);
             normal += ", " + makeFacet(fld, LOTS_OF_FACETS);
         }
 
+        // make all of the facet groups that are used in the general display.  We group the facets and then have sub-facets
         String facet = "{" + makeFacetGroup(TEMPORAL, IndexFields.CATEGORY,
                         makeFacet(IndexFields.MILLENIUM, LOTS_OF_FACETS) + ","
                         + makeFacet(IndexFields.CENTURY, LOTS_OF_FACETS) + ", "
@@ -83,7 +125,7 @@ public class SolrQueryBuilder {
                         makeFacet(IndexFields.COUNTRY, SMALL_NUM_OF_FACETS));
         facet += normal + "}";
 
-        
+
         if (!sqo.isExpandedFacets()) {
             facet = "{" + makeFacetGroup("category", IndexFields.CATEGORY, makeFacet(IndexFields.SOURCE, LOTS_OF_FACETS)) + "}";
         }
@@ -91,10 +133,13 @@ public class SolrQueryBuilder {
         logger.debug(facet);
         params.setParam("json.facet", facet);
         params.setParam("rows", Integer.toString(limit));
+        
+        // return either just the parent object, or the parent and children
         params.setFilterQueries(IndexFields.INTERNAL_TYPE + ":object");
         if (sqo.isShowAllFields()) {
             params.setFields("*", "[child parentFilter=\"internalType:object\"]");
         }
+        // don't return empty facets
         params.setFacetMinCount(1);
         return params;
     }
@@ -122,6 +167,11 @@ public class SolrQueryBuilder {
         return false;
     }
 
+    /**
+     * Build out a SPATIAL query from the Bounding box provided.... 
+     * @param sqo
+     * @param bq
+     */
     private void appendSpatial(SearchQueryObject sqo, StringBuilder bq) {
         double[] topLeft = sqo.getSpatial().getTopLeft();
         double[] bottomRight = sqo.getSpatial().getBottomRight();
@@ -135,6 +185,7 @@ public class SolrQueryBuilder {
             Double maxLat = bottomRight[1];
             Double minLat = topLeft[1];
             Double maxLong = bottomRight[0];
+            // if we cross the dateline, then we split into two bounding boxes, one on each side
             if (crossesDateline(minLong, maxLong) && !crossesPrimeMeridian(minLong, maxLong)) {
                 spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" OR"
                         + "  %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
@@ -142,10 +193,14 @@ public class SolrQueryBuilder {
                         IndexFields.POINT,
                         180d, minLong, maxLat, minLat));
 
-            } else if (crossesPrimeMeridian(minLong, maxLong)) {
+            }
+            // if we cross the prime meridian, just use a single box
+            else if (crossesPrimeMeridian(minLong, maxLong)) {
                 spatial.append(String.format(" %s:\"Intersects(ENVELOPE(%.9f,%.9f,%.9f,%.9f)) distErrPct=0.025\" ", IndexFields.POINT,
                         minLong, maxLong, maxLat, minLat));
-            } else {
+            } 
+            // otherwise a normal box
+            else {
                 if (minLat > maxLat) {
                     Double t = maxLat;
                     maxLat = minLat;
@@ -156,6 +211,7 @@ public class SolrQueryBuilder {
             }
         }
 
+        // if we have a region string (the GeoJSON ID) add that
         if (StringUtils.isNotBlank(region)) {
             if (spatial.length() > 0) {
                 spatial.append(" OR ");

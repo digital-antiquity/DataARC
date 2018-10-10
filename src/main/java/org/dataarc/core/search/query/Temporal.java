@@ -8,6 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Representation of a Temporal Query Part (SOLR)
+ * 
+ * @author abrin
+ *
+ */
 public class Temporal implements Serializable {
 
     private static final long serialVersionUID = 8871743799330705618L;

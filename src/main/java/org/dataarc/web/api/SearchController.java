@@ -24,22 +24,6 @@ public class SearchController extends AbstractRestController {
     @Autowired
     private SolrService luceneService;
 
-    // @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.GET, produces = { UrlConstants.JSON_UTF8 })
-    // public SearchResultObject search(
-    // @RequestParam(value = "page", required = false) Integer page,
-    // @RequestParam(value = "size", required = false) Integer size,
-    // @RequestParam(value = "id", required = false) String id) throws Exception {
-    //
-    // // if there have been no changes to the results and it's a find-all; then pull data out of cache
-    //
-    // SearchQueryObject query_ = new SearchQueryObject();
-    // if (StringUtils.isNotBlank(id)) {
-    // query_.setIds(Arrays.asList(id));
-    // }
-    //
-    // return performSearch(query_, page, size);
-    // }
-
     /**
      * Gets the full data for an ID of a record
      * 

@@ -14,6 +14,11 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+/**
+ * The DataEntry object is a representation of a "Point" in the GeoJSON file and gets translated and stored in MongoDB.
+ * @author abrin
+ *
+ */
 @Document
 public class DataEntry implements Serializable {
 

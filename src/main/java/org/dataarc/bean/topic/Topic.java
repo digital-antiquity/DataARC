@@ -20,6 +20,12 @@ import javax.validation.constraints.NotNull;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/**
+ * Representation of a topic in the topic map. 
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 public class Topic extends AbstractPersistable {
 

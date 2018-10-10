@@ -3,6 +3,11 @@ package org.dataarc.util.hibernate.type;
 import org.dataarc.core.query.FilterQuery;
 import org.hibernate.usertype.UserType;
 
+/**
+ * Save a MongoDB/Combinator
+ * @author abrin
+ *
+ */
 // https://github.com/thjanssen/HibernateJSONBSupport/blob/master/PostgresJSONB/src/main/java/org/thoughts/on/java/model/MyJsonType.java
 public class QueryJsonType extends AbstractJsonType implements UserType {
 

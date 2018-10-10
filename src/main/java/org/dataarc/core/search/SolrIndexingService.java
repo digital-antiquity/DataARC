@@ -24,7 +24,7 @@ import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.dao.AssociationDao;
 import org.dataarc.core.dao.ImportDao;
-import org.dataarc.core.dao.IndicatorDao;
+import org.dataarc.core.dao.CombinatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
@@ -41,6 +41,11 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.rollbar.Rollbar;
 
+/**
+ * used for Indexing / Reindexing SOLR
+ * @author abrin
+ *
+ */
 @Service
 public class SolrIndexingService {
 
@@ -67,7 +72,7 @@ public class SolrIndexingService {
     @Autowired
     SchemaDao schemaDao;
     @Autowired
-    IndicatorDao indicatorDao;
+    CombinatorDao indicatorDao;
     @Autowired
     TopicDao topicDao;
     @Autowired
@@ -95,6 +100,10 @@ public class SolrIndexingService {
         searchService.buildFindAllCache();
     }
 
+    /**
+     * Just reindex the indicator values... this uses SOLR's partial indexing to just update a value on a field
+     * @param source
+     */
     @Transactional(readOnly = true)
     @Async
     public void reindexIndicatorsOnly(String source) {
@@ -102,13 +111,14 @@ public class SolrIndexingService {
         SolrInputDocument searchIndexObject = null;
         Map<String, Integer> totals = new HashMap<>();
         try {
+            // find the source values
             Iterable<DataEntry> entries = sourceDao.findBySource(source);
             int count = 0;
             Set<String> findAll = schemaDao.findAllSchemaNames();
             for (DataEntry entry : entries) {
                 String key = SchemaUtils.normalize(entry.getSource());
 
-                // FIME: move up into
+                // skip unneede dobjects
                 if (!source.equalsIgnoreCase(key) || !source.equalsIgnoreCase(entry.getSource())) {
                     logger.debug("skipping: {} {}", entry.getSource(), findAll);
                     continue;
@@ -137,8 +147,14 @@ public class SolrIndexingService {
         revalidateFindAllCache();
     }
 
+    /**
+     * Partial index a row with indicator and topic information
+     * @param entry
+     * @return
+     */
     private SolrInputDocument partialIndexRow(DataEntry entry) {
 
+        // build a new solr document
         SolrInputDocument doc = new SolrInputDocument();
 
         try {
@@ -164,6 +180,7 @@ public class SolrIndexingService {
                 map.put(IndexFields.TOPIC_NAMES, entry.getDataArcTopics());
             }
 
+            // use the ReplaceField syntac to set the new values
             replaceField(doc, map, IndexFields.INDICATOR);
             replaceField(doc, map, IndexFields.TOPIC_ID);
             replaceField(doc, map, IndexFields.TOPIC_ID_2ND);
@@ -172,6 +189,7 @@ public class SolrIndexingService {
             if (logger.isTraceEnabled()) {
                 logger.trace("{}", doc);
             }
+            // add the document for reindexing
             client.add(DATA_ARC, doc);
         } catch (Throwable e) {
             logger.error("exception indexing: {}", doc, e);
@@ -185,7 +203,10 @@ public class SolrIndexingService {
     }
     
     
-
+    /**
+     * Partial reindexing of the stored TITLE values  for fast recovery
+     * @param source
+     */
     @Transactional(readOnly = true)
     @Async
     public void reindexTitlesOnly(Schema source) {
@@ -198,7 +219,6 @@ public class SolrIndexingService {
             for (DataEntry entry : entries) {
                 String key = SchemaUtils.normalize(entry.getSource());
 
-                // FIME: move up into
                 if (!source.getName().equalsIgnoreCase(key) || !source.getName().equalsIgnoreCase(entry.getSource())) {
                     continue;
                 }
@@ -226,6 +246,12 @@ public class SolrIndexingService {
         revalidateFindAllCache();
     }
 
+    /**
+     * Use SOLR's partial indexing (field replacement) to index the new title value
+     * @param entry
+     * @param schema
+     * @return
+     */
     private SolrInputDocument partialIndexTitleRow(DataEntry entry, Schema schema) {
 
         SolrInputDocument doc = new SolrInputDocument();
@@ -268,13 +294,13 @@ public class SolrIndexingService {
         SearchIndexObject searchIndexObject = null;
         Map<String, Integer> totals = new HashMap<>();
         try {
-            client.deleteByQuery(DATA_ARC, "*:*");
-            client.commit(DATA_ARC);
-            // client.
+            deleteAll();
             setupSchema();
             Iterable<DataEntry> entries = sourceDao.findAllWithLimit();
             int count = 0;
             Set<String> findAll = schemaDao.findAllSchemaNames();
+            
+            // for each schema, index
             for (DataEntry entry : entries) {
                 String key = SchemaUtils.normalize(entry.getSource());
                 if (!findAll.contains(key)) {
@@ -282,11 +308,14 @@ public class SolrIndexingService {
                     continue;
                 }
 
+                // can probably be removed, but had a bug with an old index not deleting
                 if (entry.getSource().equalsIgnoreCase("iceland-farms") || entry.getSource().equalsIgnoreCase("iceland-farm")) {
                     continue;
                 }
                 Integer c = totals.getOrDefault(key, 0);
                 totals.put(key, c + 1);
+                
+                // index each row
                 searchIndexObject = indexRow(entry);
                 if (count % 500 == 0) {
                     if (searchIndexObject != null) {
@@ -309,14 +338,29 @@ public class SolrIndexingService {
         revalidateFindAllCache();
     }
 
+    private void deleteAll() throws SolrServerException, IOException {
+        client.deleteByQuery(DATA_ARC, "*:*");
+        client.commit(DATA_ARC);
+    }
+
+    /**
+     * Index a row
+     * @param entry
+     * @return
+     */
     private SearchIndexObject indexRow(DataEntry entry) {
         SolrInputDocument doc = null;
         try {
             Schema schema = schemaDao.getSchemaByName(SchemaUtils.normalize(entry.getSource()));
+            // create a SearchIndexObject (SOLR representation of a DataEntry)
             SearchIndexObject searchIndexObject = new SearchIndexObject(entry, schema, temporalCoverageService);
-            applyFacets(searchIndexObject);
+            // apply our values to the facet
+            applyTemporalFacets(searchIndexObject);
+            // apply topics
             applyTopics(searchIndexObject);
+            // apply the title
             applyTitle(searchIndexObject, schema);
+            // create the SOLR document
             doc = new DocumentObjectBinder().toSolrInputDocument(searchIndexObject);
             if (logger.isTraceEnabled()) {
                 logger.trace("{}", doc);
@@ -353,38 +397,10 @@ public class SolrIndexingService {
                 properties = new HashMap<>();
             }
 
-            Object data_ = properties.get(DATA);
-            if (data_ != null) {
-                Map<String, Object> dat = (Map<String, Object>) data_;
-                properties.putAll(dat);
-            }
-
-            List<ExtraProperties> data = doc.getData();
-            if (data != null) {
-                List<Map<String, Object>> dat = new ArrayList<Map<String, Object>>();
-                for (ExtraProperties prop : data) {
-                    String prefix = (String) prop.getData().get(IndexFields.PREFIX);
-                    // LIST
-                    if (StringUtils.equals(IndexFields.DATA, prefix) || StringUtils.equals(DATA, prefix)) {
-                        dat.add(strip(prop, prefix));
-                    } else if (StringUtils.isNotBlank(prefix)) {
-                        // MAP
-                        properties.put(prefix, strip(prop, prefix));
-                    } else {
-                        // none
-                        for (String key : prop.getData().keySet()) {
-                            properties.put(key, prop.getData().get(key));
-                        }
-                    }
-                }
-                properties.put(DATA, dat);
-            }
+            buildPropertiesForTitle(doc, properties);
             String val = template.apply(properties);
             doc.setTitle(val);
-            // if (StringUtils.containsIgnoreCase(source.getName(), "bone")) {
-            // logger.debug(source.getTitleTemplate());
-            // logger.debug("{}", properties.keySet());
-            // }
+
             logger.trace("{}  ---- {}", val, source.getName());
         } catch (IOException e) {
             logger.debug("{}", properties);
@@ -395,6 +411,43 @@ public class SolrIndexingService {
 
     }
 
+    /**
+     * Unwind the ExtraProperties and Properties for proper mapping 
+     * @param doc
+     * @param properties
+     */
+    private void buildPropertiesForTitle(SearchIndexObject doc, Map<String, Object> properties) {
+        Object data_ = properties.get(DATA);
+        // dump all direct properties
+        if (data_ != null) {
+            Map<String, Object> dat = (Map<String, Object>) data_;
+            properties.putAll(dat);
+        }
+
+        // expand out all Extra Properties
+        List<ExtraProperties> data = doc.getData();
+        if (data != null) {
+            List<Map<String, Object>> dat = new ArrayList<Map<String, Object>>();
+            for (ExtraProperties prop : data) {
+                String prefix = (String) prop.getData().get(IndexFields.PREFIX);
+                // LIST
+                if (StringUtils.equals(IndexFields.DATA, prefix) || StringUtils.equals(DATA, prefix)) {
+                    dat.add(strip(prop, prefix));
+                } else if (StringUtils.isNotBlank(prefix)) {
+                    // MAP
+                    properties.put(prefix, strip(prop, prefix));
+                } else {
+                    // none
+                    for (String key : prop.getData().keySet()) {
+                        properties.put(key, prop.getData().get(key));
+                    }
+                }
+            }
+            properties.put(DATA, dat);
+        }
+    }
+
+    // strip the prefix
     private HashMap<String, Object> strip(ExtraProperties prop, String prefix) {
         HashMap<String, Object> subp = new HashMap<String, Object>();
         for (String key : prop.getData().keySet()) {
@@ -407,18 +460,26 @@ public class SolrIndexingService {
         return subp;
     }
 
+    /**
+     * Apply all Topic and Topic Identifier properties...
+     * @param searchIndexObject
+     */
     private void applyTopics(SearchIndexObject searchIndexObject) {
         if (CollectionUtils.isEmpty(searchIndexObject.getTopicIdentifiers())) {
             return;
         }
         Set<String> topics = new HashSet<>();
+        // get all of the topics...
         for (String topicId : searchIndexObject.getTopicIdentifiers()) {
+            // deal with a MongoDB bug...
             if (topicId.startsWith("[")) {
                 logger.error("We still have arrays, {}", topicId);
             } else {
                 topics.add(topicId);
             }
         }
+        
+        // for all topics, get the 1st / 2nd / 3rd degree relationships and append them 
         if (CollectionUtils.isNotEmpty(topics)) {
             Set<String> nd2 = new HashSet<>(); 
             Set<String> nd3 = new HashSet<>(); 
@@ -445,7 +506,12 @@ public class SolrIndexingService {
 //            processTopic(searchIndexObject, topic);
 //        }
     }
-
+    
+    /**
+     * Append topic names if needed
+     * @param searchIndexObject
+     * @param topicId
+     */
     private void processTopic(SearchIndexObject searchIndexObject, String topicId) {
         if (StringUtils.isNotBlank(topicId)) {
             Topic topic = null;
@@ -484,7 +550,7 @@ public class SolrIndexingService {
      * 
      * @param searchIndexObject
      */
-    private void applyFacets(SearchIndexObject searchIndexObject) {
+    private void applyTemporalFacets(SearchIndexObject searchIndexObject) {
         if (searchIndexObject == null) {
             return;
         }
@@ -504,9 +570,6 @@ public class SolrIndexingService {
         logger.trace("{} - {}", s, e);
         int startM = s - (s % 1_000);
         int endM = e - (e % 1_000);
-        // if (e % 1_000 != 0) {
-        // endM += 1_000;
-        // }
         for (int i = startM; i <= endM; i = i + 1_000) {
             searchIndexObject.getMillenium().add(i);
         }
@@ -515,10 +578,6 @@ public class SolrIndexingService {
             return;
         }
         indexCenturies(searchIndexObject, s, e);
-
-        // if (e - s > 200) {
-        // return;
-        // }
         indexDecades(searchIndexObject, s, e);
     }
 
@@ -544,12 +603,18 @@ public class SolrIndexingService {
         }
     }
 
+    /**
+     * We're using the dynamic field settings for SOLR and need to setup the schema each time we reindex because we may have new fields 
+     * @throws SolrServerException
+     * @throws IOException
+     */
     private void setupSchema() throws SolrServerException, IOException {
         SchemaRequest sr = new SchemaRequest();
         SchemaResponse response = sr.process(client, DATA_ARC);
         List<Map<String, Object>> solrFields = response.getSchemaRepresentation().getFields();
         logger.trace("fields: {}", solrFields);
         Map<String, String> schemaFields = new HashMap<>();
+        // add all "fixed" fields
         schemaFields.put(IndexFields.COUNTRY, TEXT_GENERAL);
         schemaFields.put(IndexFields.START, INT);
         schemaFields.put(IndexFields.END, INT);
@@ -578,6 +643,9 @@ public class SolrIndexingService {
 
         deleteCopyField("*", Arrays.asList(IndexFields.KEYWORD));
         addCopyField("*", Arrays.asList(IndexFields.KEYWORD));
+        
+        
+        // for every field, add or update it
         for (String field_ : schemaFields.keySet()) {
             String field = field_;
             boolean seen = false;
@@ -586,6 +654,7 @@ public class SolrIndexingService {
                 if (seen) {
                     continue;
                 }
+                // if we have the field, make sure that the important values match, otherwise delete it
                 if (field.equals(solrField.get(NAME))) {
                     logger.trace("{}: {}", field, solrField);
                     Boolean multi = (Boolean) solrField.get(MULTI_VALUED);
@@ -611,6 +680,7 @@ public class SolrIndexingService {
             }
         }
 
+        // For each of the Schema, add all of the fields for each schema
         schemaDao.findAllSchemaNames().forEach(name -> {
             Schema schema = schemaDao.getSchemaByName(name);
             schema.getFields().forEach(field -> {
@@ -649,6 +719,14 @@ public class SolrIndexingService {
         }
     }
 
+    /**
+     * send a REST request to SOLR to add the field
+     * @param field
+     * @param string
+     * @param b
+     * @throws SolrServerException
+     * @throws IOException
+     */
     private void addSchemaField(String field, String string, boolean b) throws SolrServerException, IOException {
         Map<String, Object> attr = new HashMap<>();
         attr.put(NAME, field);

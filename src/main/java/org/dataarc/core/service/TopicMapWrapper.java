@@ -6,6 +6,12 @@ import java.util.List;
 
 import org.dataarc.bean.topic.Topic;
 
+/**
+ * Wrapper for the topic map for serialization (only serialize what we need)
+ * 
+ * @author abrin
+ *
+ */
 public class TopicMapWrapper {
 
     private Topic root;

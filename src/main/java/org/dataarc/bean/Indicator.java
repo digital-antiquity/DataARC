@@ -29,6 +29,13 @@ import org.hibernate.annotations.TypeDefs;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+/**
+ * Models an combinator or Indicator in DataARC. This keeps all of the information about a combinator such as the name, date, query, and schema that it's
+ * related to. Also maintains mappings to the topics. 
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 @TypeDefs({ @TypeDef(name = "QueryJsonObject", typeClass = QueryJsonType.class) })
 public class Indicator extends AbstractPersistable {

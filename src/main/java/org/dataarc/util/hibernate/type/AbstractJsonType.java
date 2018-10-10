@@ -18,6 +18,11 @@ import org.hibernate.usertype.UserType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Convert the String/JSON Type to a JACKSON obejct
+ * @author abrin
+ *
+ */
 public abstract class AbstractJsonType implements UserType {
 
     @Override
@@ -35,7 +40,7 @@ public abstract class AbstractJsonType implements UserType {
             final ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(cellContent.getBytes("UTF-8"), returnedClass());
         } catch (final Exception ex) {
-            throw new RuntimeException("Failed to convert String to Invoice: " + ex.getMessage(), ex);
+            throw new RuntimeException("Failed to convert String: " + ex.getMessage(), ex);
         }
     }
 
@@ -52,7 +57,7 @@ public abstract class AbstractJsonType implements UserType {
             w.flush();
             ps.setObject(idx, w.toString(), Types.OTHER);
         } catch (final Exception ex) {
-            throw new RuntimeException("Failed to convert Invoice to String: " + ex.getMessage(), ex);
+            throw new RuntimeException("Failed to convert to String: " + ex.getMessage(), ex);
         }
     }
 

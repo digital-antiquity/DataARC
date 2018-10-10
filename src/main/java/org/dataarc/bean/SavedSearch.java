@@ -14,6 +14,13 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
+/**
+ * Models a saved search in the system. Stores the search as a JSON blob in the database. Also allows for parent/child relationship to map and track change
+ * histories.
+ * 
+ * @author abrin
+ *
+ */
 @Table(name = "state")
 @Entity
 @TypeDefs({ @TypeDef(name = "SearchQueryObject", typeClass = SearchJsonType.class) })
@@ -34,7 +41,7 @@ public class SavedSearch extends AbstractPersistable {
 
     @Column(length = 512)
     private String title;
-    
+
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private DataArcUser user;
@@ -42,8 +49,9 @@ public class SavedSearch extends AbstractPersistable {
     @Column()
     private Long views;
 
-    public SavedSearch() {}
-    
+    public SavedSearch() {
+    }
+
     public SavedSearch(String title, SearchQueryObject query_, DataArcUser user) {
         this.setTitle(title);
         this.data = query_;

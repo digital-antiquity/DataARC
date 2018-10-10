@@ -45,6 +45,7 @@ public class EmailDao {
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "utf-8");
             message.setContent(template, "text/html");
             helper.setTo(user.getEmail());
+            // FIXME: move to a config property
             helper.setBcc(Arrays.asList("abrin@digitalantiquity.org", "rachel.opitz@gmail.com", "Colleen.Strawhacker@Colorado.EDU").toArray(new String[0]));
             helper.setSubject(subject);
             helper.setFrom("info@data-arc.org");

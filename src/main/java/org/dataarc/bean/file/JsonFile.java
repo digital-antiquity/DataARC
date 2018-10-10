@@ -10,6 +10,11 @@ import javax.persistence.TemporalType;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/**
+ * Represents the GeoJSON files that are loaded into the system to represent layers on the map
+ * @author abrin
+ *
+ */
 @Entity()
 @Table(name = "json_file")
 public class JsonFile extends AbstractPersistable {

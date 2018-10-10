@@ -9,6 +9,11 @@ import java.util.function.Consumer;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * A tool to walk through an object and it's child properties and useful to collect unique field info and paths
+ * @author abrin
+ *
+ */
 public class ObjectTraversalUtil {
 
     public static void traverse(Map<String, Object> properties, Map<String, Object> newMap, FieldDataCollector collector) {
@@ -16,8 +21,18 @@ public class ObjectTraversalUtil {
     }
 
     @SuppressWarnings("unchecked")
+    
+    /**
+     * Traverse a field map
+     * @param properties
+     * @param newMap
+     * @param collect
+     * @param _parent
+     * @param parentKey
+     */
     public static void traverseMap(Map<String, Object> properties, Map<String, Object> newMap, final FieldDataCollector collect, final String _parent,
             String parentKey) {
+        // identify the parent so we can use it in building out the field path
         String __parent = _parent;
         if (__parent == null) {
             __parent = "";
@@ -26,15 +41,21 @@ public class ObjectTraversalUtil {
         } else {
             __parent += "." + parentKey;
         }
+        
+        
         final String parent = __parent;
         properties.keySet().forEach(key -> {
             Object arg2 = properties.get(key);
+            // get the normalized value name from the field data collector
             String normapName_ = collect.add(parent, key, arg2);
             if (normapName_ != null) {
+                // if we've seen it before, get the name
                 String normapName = new String(normapName_);
                 if (StringUtils.contains(normapName, ".")) {
                     normapName = StringUtils.substringAfterLast(normapName, ".");
                 }
+                // if we have children, then we need to traverse them
+                
                 if (arg2 instanceof Collection) {
                     List<Object> childList = new ArrayList<>();
                     String term = normapName;
@@ -44,6 +65,8 @@ public class ObjectTraversalUtil {
                     if (StringUtils.isBlank(term)) {
                         term = normapName_;
                     }
+                    
+                    // traverse children with new definition of parent
                     newMap.put(term, childList);
 
                     ((Collection<Object>) arg2).forEach(new Consumer<Object>() {

@@ -7,6 +7,12 @@ import javax.persistence.Table;
 
 import org.dataarc.bean.AbstractPersistable;
 
+/**
+ * the Triple representation of the relationship between topics.  Note, some are weirdly only doubles.
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 @Table(name = "association")
 public class Association extends AbstractPersistable {

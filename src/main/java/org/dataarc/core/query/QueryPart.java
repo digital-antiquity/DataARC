@@ -6,6 +6,11 @@ import org.dataarc.util.View;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+/**
+ * Represents a logical part of a MongoDB Combinator Query.  I.e. the basic component of a Boolean query.  e.g. Quantity  > 200.
+ * @author abrin
+ *
+ */
 public class QueryPart implements Serializable {
 
     private static final long serialVersionUID = -8597360418323132553L;

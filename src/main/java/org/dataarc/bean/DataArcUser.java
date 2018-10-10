@@ -6,6 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Represents a user in DataARC, used for managing logins and permissions as well as change logs
+ * 
+ * @author abrin
+ *
+ */
 @Entity
 @Table(name = "data_arc_user")
 public class DataArcUser extends AbstractPersistable {

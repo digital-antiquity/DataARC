@@ -7,6 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
+/**
+ * Evaluate whether someone can edit an indicator
+ * @author abrin
+ *
+ */
 public class IndicatorPermissionsEvaluator implements PermissionEvaluator {
 
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -18,6 +23,8 @@ public class IndicatorPermissionsEvaluator implements PermissionEvaluator {
 
         boolean hasPermission = true;
 
+        // FIXME: needs to evaluate
+        
         // https://github.com/pkainulainen/spring-data-solr-examples/blob/master/query-methods/src/main/java/net/petrikainulainen/spring/datasolr/security/authorization/TodoPermissionEvaluator.java
         // if (targetDomainObject.equals("Todo")) {
         // Object principal = authentication.getPrincipal();

@@ -24,7 +24,7 @@ import org.dataarc.bean.topic.TopicCategory;
 import org.dataarc.bean.topic.TopicMap;
 import org.dataarc.core.Filestore;
 import org.dataarc.core.dao.AssociationDao;
-import org.dataarc.core.dao.IndicatorDao;
+import org.dataarc.core.dao.CombinatorDao;
 import org.dataarc.core.dao.SerializationDao;
 import org.dataarc.core.dao.TopicDao;
 import org.dataarc.core.dao.TopicMapDao;
@@ -67,8 +67,14 @@ public class TopicMapService {
     AssociationDao assoicationDao;
 
     @Autowired
-    IndicatorDao indicatorDao;
+    CombinatorDao indicatorDao;
 
+    /**
+     * we don't want the complex representation because it would be too hard to visually represent... so we flatten it
+     * 
+     * @param schemaId
+     * @return
+     */
     @Transactional(readOnly = true)
     public List<Topic> findFlattenedTopicsForIndicators(Long schemaId) {
         List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();
@@ -86,6 +92,14 @@ public class TopicMapService {
         return findTopicsForIndicators;
     }
 
+    /**
+     * Load the Topic Map from XML and persist it
+     * 
+     * @param file
+     * @return
+     * @throws JAXBException
+     * @throws SAXException
+     */
     @Transactional(readOnly = false)
     public TopicMap load(String file) throws JAXBException, SAXException {
         List<String> mapped = deleteTopicMap();
@@ -94,6 +108,9 @@ public class TopicMapService {
         topicMap.setName(file);
         Map<String, Topic> internalMap = new HashMap<>();
         Set<Topic> topics = topicMap.getTopics();
+
+        // figure out if we have topics that are being deleted, but are mapped
+
         for (Topic topic : topics) {
             if (CollectionUtils.isEmpty(mapped)) {
                 continue;
@@ -108,6 +125,7 @@ public class TopicMapService {
             logger.debug("deleting mappings to indicators for topics that don't exist anymore: {}", mapped);
             indicatorDao.deleteByIdentifier(mapped);
         }
+
         Set<Association> associations = topicMap.getAssociations();
         loadTopic(topicMap_, internalMap, topics);
         loadAssociations(topicMap_, internalMap, associations);
@@ -116,7 +134,36 @@ public class TopicMapService {
         return topicMap;
     }
 
+    /**
+     * Load and save all associations
+     * 
+     * @param topicMap_
+     * @param internalMap
+     * @param associations
+     */
     private void loadAssociations(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, Set<Association> associations) {
+
+        // association.setIdentifier(association_.getItemIdentity().);
+        /*
+         * <association>
+         * <type>
+         * <topicRef href="interactions"/>
+         * </type>
+         * <role>
+         * <type>
+         * <topicRef href="#implies"/>
+         * </type>
+         * <topicRef href="#grain storage pest"/>
+         * </role>
+         * <role>
+         * <type>
+         * <topicRef href="#contains"/>
+         * </type>
+         * <topicRef href="#grain store"/>
+         * </role>
+         * </association>
+         */
+        // iterate over each association
         topicMap_.getTopicOrAssociation().forEach(item -> {
             if (item instanceof topicmap.v2_0.Association) {
 
@@ -124,26 +171,6 @@ public class TopicMapService {
                 Association associationFrom = new Association();
                 Association associationTo = null;
 
-                // association.setIdentifier(association_.getItemIdentity().);
-                /*
-                 * <association>
-                 * <type>
-                 * <topicRef href="interactions"/>
-                 * </type>
-                 * <role>
-                 * <type>
-                 * <topicRef href="#implies"/>
-                 * </type>
-                 * <topicRef href="#grain storage pest"/>
-                 * </role>
-                 * <role>
-                 * <type>
-                 * <topicRef href="#contains"/>
-                 * </type>
-                 * <topicRef href="#grain store"/>
-                 * </role>
-                 * </association>
-                 */
                 String associationType = association_.getType().getTopicRef().getHref();
                 logger.trace(" A:{} {} {} {} {}", association_.getReifier(), associationType, association_.getItemIdentity(),
                         association_.getScope());
@@ -153,11 +180,13 @@ public class TopicMapService {
                 String associTypeHref = association_.getType().getTopicRef().getHref();
                 String toTypeHref = null;
                 associationFrom.setType(get(internalMap, associTypeHref));
+                // reconcile the "From"
                 if (association_.getRole().size() > 0) {
                     Role from = association_.getRole().get(0);
                     fromHref = from.getTopicRef().getHref();
                     fromTypeHref = from.getType().getTopicRef().getHref();
                 }
+                // reconcile the "to"
                 if (association_.getRole().size() > 1) {
                     associationTo = new Association();
                     Role to = association_.getRole().get(1);
@@ -202,6 +231,13 @@ public class TopicMapService {
         });
     }
 
+    /**
+     * Load the topic
+     * 
+     * @param topicMap_
+     * @param internalMap
+     * @param topics
+     */
     private void loadTopic(topicmap.v2_0.TopicMap topicMap_, Map<String, Topic> internalMap, Set<Topic> topics) {
         Map<String, List<String>> parentRefMap = new HashMap<>();
         topicMap_.getTopicOrAssociation().forEach(item -> {
@@ -210,52 +246,26 @@ public class TopicMapService {
                 topicmap.v2_0.Topic topic_ = (topicmap.v2_0.Topic) item;
                 logger.trace(" T:{}", topic_.getId());
                 topic.setIdentifier(topic_.getId());
-                topic_.getNameOrOccurrence().forEach(noc -> {
-                    // topic_.setParent(topic.getInstanceOf().);
-                    if (topic_.getInstanceOf() != null) {
-                        parentRefMap.put(topic_.getId(), new ArrayList<>());
-                        topic_.getInstanceOf().getTopicRef().forEach(ref -> {
-                            parentRefMap.get(topic_.getId()).add(ref.getHref());
-                        });
-                    }
-                    if (noc instanceof Name) {
-                        Name name = (Name) noc;
-                        topic.setName(name.getValue());
-                        logger.trace("\tname: {} {} {}", name.getValue(), name.getItemIdentity());
 
-                        // we need to figure this out and it will increase complexity
-                        name.getVariant().forEach(varient -> {
-                            // topic_.getVarients().add()
-                            logger.trace("\tv: {} {} {} ", varient.getResourceData().getDatatype(), varient.getResourceData().getContent(),
-                                    varient.getItemIdentity());
-                            varient.getResourceData().getContent().forEach(var -> {
-                                topic.getVarients().add(var.toString());
-                            });
-                        });
-                    } else if (noc instanceof Occurrence) {
-                        Occurrence occurrence = (Occurrence) noc;
-                        logger.debug("\toccur: {} {} {}", occurrence.getItemIdentity(), occurrence.getResourceData(), occurrence.getResourceRef());
-                    }
-                });
-                if (StringUtils.isBlank(topic.getName())) {
-                    topic_.getItemIdentityOrSubjectLocatorOrSubjectIdentifier().forEach(itm -> {
-                        if (itm instanceof SubjectIdentifier) {
-                            String href = ((SubjectIdentifier) itm).getHref();
-                            if (StringUtils.isNotBlank(href)) {
-                                href = StringUtils.removeEnd(href, "/");
-                                href = StringUtils.substringAfterLast(href, "/");
-                                topic.setName(href);
-                            }
-
-                        }
-                    });
-                }
+                // get all names
+                buildNames(parentRefMap, topic, topic_);
+                buildIdentifiers(topic, topic_);
                 internalMap.put("#" + topic_.getId(), topic);
                 topicDao.save(topic);
                 logger.debug("{} - {}", topic, topic.getIdentifier());
                 topics.add(topic);
             }
         });
+        buildParentReferences(internalMap, parentRefMap);
+    }
+
+    /**
+     * Once we have the internal map and the parent map, we set the parents on the topics
+     * 
+     * @param internalMap
+     * @param parentRefMap
+     */
+    private void buildParentReferences(Map<String, Topic> internalMap, Map<String, List<String>> parentRefMap) {
         parentRefMap.entrySet().forEach(entry -> {
             Topic topic_ = get(internalMap, "#" + entry.getKey());
             entry.getValue().forEach(ref -> {
@@ -266,6 +276,65 @@ public class TopicMapService {
                 topic_.getParents().add(e);
             });
             topicDao.save(topic_);
+        });
+    }
+
+    /**
+     * Pull out the identifiers from the topics
+     * 
+     * @param topic
+     * @param topic_
+     */
+    private void buildIdentifiers(Topic topic, topicmap.v2_0.Topic topic_) {
+        if (StringUtils.isBlank(topic.getName())) {
+            topic_.getItemIdentityOrSubjectLocatorOrSubjectIdentifier().forEach(itm -> {
+                if (itm instanceof SubjectIdentifier) {
+                    String href = ((SubjectIdentifier) itm).getHref();
+                    if (StringUtils.isNotBlank(href)) {
+                        href = StringUtils.removeEnd(href, "/");
+                        href = StringUtils.substringAfterLast(href, "/");
+                        topic.setName(href);
+                    }
+
+                }
+            });
+        }
+    }
+
+    /**
+     * build out the names and the name variants
+     * 
+     * @param parentRefMap
+     * @param topic
+     * @param topic_
+     */
+    private void buildNames(Map<String, List<String>> parentRefMap, Topic topic, topicmap.v2_0.Topic topic_) {
+        topic_.getNameOrOccurrence().forEach(noc -> {
+            // topic_.setParent(topic.getInstanceOf().);
+            if (topic_.getInstanceOf() != null) {
+                parentRefMap.put(topic_.getId(), new ArrayList<>());
+                topic_.getInstanceOf().getTopicRef().forEach(ref -> {
+                    parentRefMap.get(topic_.getId()).add(ref.getHref());
+                });
+            }
+            if (noc instanceof Name) {
+                Name name = (Name) noc;
+                topic.setName(name.getValue());
+                logger.trace("\tname: {} {} {}", name.getValue(), name.getItemIdentity());
+
+                // we need to figure this out and it will increase complexity
+                name.getVariant().forEach(varient -> {
+                    // topic_.getVarients().add()
+                    logger.trace("\tv: {} {} {} ", varient.getResourceData().getDatatype(), varient.getResourceData().getContent(),
+                            varient.getItemIdentity());
+                    varient.getResourceData().getContent().forEach(var -> {
+                        topic.getVarients().add(var.toString());
+                    });
+                });
+            } else if (noc instanceof Occurrence) {
+                Occurrence occurrence = (Occurrence) noc;
+                logger.debug("\toccur: {} {} {}", occurrence.getItemIdentity(), occurrence.getResourceData(), occurrence.getResourceRef());
+            }
         });
     }
 
@@ -282,6 +351,12 @@ public class TopicMapService {
         return topicMapDao.findAll().get(0);
     }
 
+    /**
+     * Convert the topic map to a simpler internal one for seralization
+     * 
+     * @param find
+     * @return
+     */
     @Transactional(readOnly = true)
     public InternalTopicMap convert(TopicMap find) {
         InternalTopicMap itm = new InternalTopicMap();
@@ -360,6 +435,10 @@ public class TopicMapService {
         return topicDao.findAllCategoryAssociations();
     }
 
+    /**
+     * Group the TopicMaps by their parent child relationships
+     * @return
+     */
     @Transactional(readOnly = true)
     public TopicMapWrapper listHierarchicalTopics() {
         List<Topic> findTopicsForIndicators = topicDao.findTopicsForIndicators();

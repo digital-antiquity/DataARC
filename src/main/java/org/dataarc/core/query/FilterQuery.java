@@ -9,6 +9,13 @@ import org.dataarc.util.View;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+/**
+ * This is the basic component of a MongoDB / Combinator query. It contains a set of query parts that are ANDed or ORed with each other. This gets stored in the
+ * PostgreSQL database for future applications as JSON, and applied to MongoDB
+ * 
+ * @author abrin
+ *
+ */
 public class FilterQuery implements Serializable {
 
     private static final long serialVersionUID = -4632150696396799879L;
@@ -18,7 +25,7 @@ public class FilterQuery implements Serializable {
     private Operator operator = Operator.AND;
 
     private transient String raw;
-    
+
     @JsonView(View.Indicator.class)
     private String schema;
 

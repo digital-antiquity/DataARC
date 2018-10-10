@@ -22,9 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.atlassian.crowd.integration.rest.entity.UserEntity;
 
+/**
+ * handles major interactions between users and the database
+ * 
+ * @author abrin
+ *
+ */
 @Service
 public class UserService {
 
+    private static final String FIRST_NAME = "first_name";
+    private static final String LAST_NAME = "last_name";
+    private static final String FAMILY_NAME = "family_name";
+    private static final String GIVEN_NAME = "given_name";
     public static final String ADMIN_ROLE = "ROLE_ADMIN";
     public static final String EDITOR_ROLE = "ROLE_EDITOR";
     public static final String USER_ROLE = "ROLE_USER";
@@ -65,6 +75,11 @@ public class UserService {
 
     }
 
+    /**
+     * Save or update a user from Oauth2
+     * @param user_
+     * @param userEntity
+     */
     @Transactional(readOnly = false)
     public void saveOrUpdateUser(DataArcUser user_, OAuth2Authentication userEntity) {
         DataArcUser user = user_;
@@ -76,15 +91,16 @@ public class UserService {
             LinkedHashMap<String, Object> details = (LinkedHashMap<String, Object>) userEntity.getUserAuthentication().getDetails();
             user.setEmail((String) details.get("email"));
             user.setUsername((String) details.get("name"));
-            user.setFirstName((String) details.get("given_name"));
+            user.setFirstName((String) details.get(GIVEN_NAME));
             // google
-            user.setLastName((String) details.get("family_name"));
-            // facebook
-            if (details.get("last_name") != null && StringUtils.isNotBlank((String) details.get("last_name"))) {
-                user.setLastName((String) details.get("last_name"));
+            user.setLastName((String) details.get(FAMILY_NAME));
+
+            // facebook and google have different concepts of users 
+            if (details.get(LAST_NAME) != null && StringUtils.isNotBlank((String) details.get(LAST_NAME))) {
+                user.setLastName((String) details.get(LAST_NAME));
             }
-            if (details.get("first_name") != null && StringUtils.isNotBlank((String) details.get("first_name"))) {
-                user.setFirstName((String) details.get("first_name"));
+            if (details.get(FIRST_NAME) != null && StringUtils.isNotBlank((String) details.get(FIRST_NAME))) {
+                user.setFirstName((String) details.get(FIRST_NAME));
             }
 
         }
@@ -93,6 +109,12 @@ public class UserService {
 
     }
 
+    /**
+     * Figure out what to do with a user when we get passed it from the controller... because of Oauth2, we may have work to do, like creating the user
+     * 
+     * @param authentication
+     * @return
+     */
     @Transactional(readOnly = false)
     public DataArcUser reconcileUser(Authentication authentication) {
         logger.trace("{}", authentication);
@@ -160,8 +182,8 @@ public class UserService {
 
         user.setEmail((String) map.get("email"));
         user.setUsername((String) map.get("name"));
-        user.setFirstName((String) map.get("given_name"));
-        user.setLastName((String) map.get("family_name"));
+        user.setFirstName((String) map.get(GIVEN_NAME));
+        user.setLastName((String) map.get(FAMILY_NAME));
         user.setLastLogin(new Date());
         save(user);
 

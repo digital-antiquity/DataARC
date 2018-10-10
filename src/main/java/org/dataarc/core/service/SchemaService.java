@@ -10,7 +10,6 @@ import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.bean.schema.Value;
 import org.dataarc.core.dao.FieldDao;
 import org.dataarc.core.dao.SchemaDao;
-import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.util.FieldDataCollector;
 import org.dataarc.util.SchemaUtils;
 import org.slf4j.Logger;
@@ -21,6 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Objects;
 
+/**
+ * Basic service methods for a Schema
+ * @author abrin
+ *
+ */
 @Service
 @Transactional
 public class SchemaService {
@@ -31,7 +35,7 @@ public class SchemaService {
     SchemaDao schemaDao;
 
     @Autowired
-    IndicatorService indicatorService;
+    CombinatorService indicatorService;
 
     
     @Autowired
@@ -83,7 +87,7 @@ public class SchemaService {
     }
 
     @Transactional(readOnly = false)
-    public SchemaField updateFieldDisplayName(Long schemaId, Long fieldId, String displayName, Boolean startField, Boolean endField) {
+    public SchemaField updateField(Long schemaId, Long fieldId, String displayName, Boolean startField, Boolean endField) {
         Schema schema = schemaDao.findById(schemaId);
         for (SchemaField field : schema.getFields()) {
             if (Objects.equal(field.getId(), fieldId)) {

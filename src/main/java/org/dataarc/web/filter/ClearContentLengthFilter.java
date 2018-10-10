@@ -12,6 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * Clears the content length help get around a Sitemesh bug
+ * @author abrin
+ *
+ */
 public class ClearContentLengthFilter extends OncePerRequestFilter {
 
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());

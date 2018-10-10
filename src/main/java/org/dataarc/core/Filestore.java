@@ -14,6 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * Representation of the "filestore" to track all files that are managed by DataARC... things get put here so we can always get back to a backup
+ * 
+ * @author abrin
+ *
+ */
 @Service
 public class Filestore {
     protected Logger logger = LoggerFactory.getLogger(getClass());

@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This was/is the old v1 / prototype search interface
+ * @author abrin
+ *
+ */
 @RestController
 public class LegacyJsonController extends AbstractController {
 

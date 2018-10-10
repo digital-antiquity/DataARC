@@ -14,7 +14,7 @@ import org.dataarc.bean.Indicator;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.dao.ImportDao;
-import org.dataarc.core.dao.IndicatorDao;
+import org.dataarc.core.dao.CombinatorDao;
 import org.dataarc.core.dao.SchemaDao;
 import org.dataarc.core.dao.TopicDao;
 import org.dataarc.core.query.FilterQuery;
@@ -32,14 +32,19 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Objects;
 import com.mongodb.client.FindIterable;
 
+/**
+ * Basic functions for an Indicator/Combinator
+ * @author abrin
+ *
+ */
 @Service
 @Transactional
-public class IndicatorService {
+public class CombinatorService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private IndicatorDao indicatorDao;
+    private CombinatorDao indicatorDao;
 
     @Autowired
     private TopicDao topicDao;
@@ -53,9 +58,16 @@ public class IndicatorService {
     @Autowired
     private ImportDao importDao;
 
+    /**
+     * If the user has the rights to edit the combinator/indicator, then allow them to save it
+     * @param _indicator
+     * @param user
+     * @return
+     */
     @Transactional(readOnly = false)
     @PreAuthorize("hasPermission('Indicator', 'CREATE_EDIT')")
     public Indicator save(IndicatorDataObject _indicator, DataArcUser user) {
+        // if it exists, try and pull it from the database
         Indicator indicator = null;
         if (PersistableUtils.isNotNullOrTransient(_indicator.getId())) {
             indicator = indicatorDao.findById(_indicator.getId());
@@ -63,6 +75,7 @@ public class IndicatorService {
             indicator = new Indicator();
         }
 
+        // update the internal values from the DTO
         indicator.updateFrom(_indicator);
         indicator.setUser(user);
         resolveTopics(_indicator, indicator);
@@ -80,6 +93,11 @@ public class IndicatorService {
         return indicator;
     }
 
+    /**
+     * For each of the incoming topics, reconcile them with the persisted ones and save
+     * @param _indicator
+     * @param indicator
+     */
     private void resolveTopics(IndicatorDataObject _indicator, Indicator indicator) {
         Set<String> incomingIdentifiers = _indicator.getTopicIdentifiers();
         logger.debug("{}", incomingIdentifiers);
@@ -87,10 +105,13 @@ public class IndicatorService {
         List<Topic> topics = new ArrayList<>();
         Set<String> existingIdentifiers = new HashSet<>();
         Set<Long> ids = new HashSet<>();
+        // get all of the existing ids/identifiers 
         indicator.getTopics().forEach(t -> {
             existingIdentifiers.add(t.getIdentifier());
             ids.add(t.getId());
         });
+        
+        // process adds
         for (String ident : incomingIdentifiers) {
             Topic topic = topicDao.findTopicByIdentifier(ident);
             topics.add(topic);
@@ -100,8 +121,8 @@ public class IndicatorService {
             }
             existingIdentifiers.remove(ident);
         }
-        ;
 
+        // process removes 
         for (String id : existingIdentifiers) {
             Iterator<Topic> iterator = indicator.getTopics().iterator();
             while (iterator.hasNext()) {

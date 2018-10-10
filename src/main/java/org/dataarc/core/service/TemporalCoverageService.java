@@ -45,6 +45,7 @@ public class TemporalCoverageService {
             for (SchemaField field : schema.getFields()) {
                 if (field.isEndField() || field.isStartField() || field.isTextDateField()) {
                     for (Value val : field.getValues()) {
+                        // if we're not numeric add
                         if (!val.getValue().matches("^\\-?(\\d|\\.|\\,|\\s)+$")) {
                             _vals.add(val);
                         }

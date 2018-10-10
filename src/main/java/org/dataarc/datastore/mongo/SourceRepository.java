@@ -7,6 +7,11 @@ import org.springframework.data.mongodb.core.geo.GeoJson;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Spring Data Repository object for querying and managing Mongo
+ * @author abrin
+ *
+ */
 @Repository
 public interface SourceRepository extends MongoRepository<DataEntry, String> {
 

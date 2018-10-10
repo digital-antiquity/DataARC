@@ -13,6 +13,12 @@ import org.dataarc.core.search.IndexFields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Simple utilities for work with a schema
+ * 
+ * @author abrin
+ *
+ */
 public class SchemaUtils {
     private static final String HANDLEBAR_FIELD_NAME = "fieldName ";
     private static final Pattern PATTERN_NON_ASCII = Pattern.compile("[^\\p{ASCII}]");
@@ -56,6 +62,12 @@ public class SchemaUtils {
 
     private static final List<String> ignorePrefix = Arrays.asList(IndexFields.SOURCE, IndexFields.START, IndexFields.END, IndexFields.TITLE);
 
+    /**
+     * Reformat a field name
+     * @param schema
+     * @param field
+     * @return
+     */
     public static String formatForSolr(Schema schema, org.dataarc.bean.schema.SchemaField field) {
         if (field == null) {
             return null;
@@ -71,6 +83,13 @@ public class SchemaUtils {
         return String.format("%s", id2.intValue());
     }
 
+    /**
+     * Hooks to un-format a schema name/field
+     * @param name
+     * @param fields
+     * @param titleTemplate_
+     * @return
+     */
     public static String unFormat(String name, Set<SchemaField> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         return titleTemplate;
@@ -87,6 +106,13 @@ public class SchemaUtils {
          */
     }
 
+    /**
+     * Hooks to format a schema name/field 
+     * @param name
+     * @param fields
+     * @param titleTemplate_
+     * @return
+     */
     public static String format(String name, Set<SchemaField> fields, String titleTemplate_) {
         String titleTemplate = titleTemplate_;
         return titleTemplate;

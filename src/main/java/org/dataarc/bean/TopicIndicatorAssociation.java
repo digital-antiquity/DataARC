@@ -8,6 +8,13 @@ import javax.persistence.ManyToOne;
 
 import org.dataarc.bean.topic.Topic;
 
+/**
+ * Create a relationship between topics and indicators and allows us to model confidence if we need it. Could be replaced with a @ManyToMany if we don't use the
+ * confidence metric
+ * 
+ * @author abrin
+ *
+ */
 @Entity(name = "topic_indicator")
 public class TopicIndicatorAssociation extends AbstractPersistable {
 

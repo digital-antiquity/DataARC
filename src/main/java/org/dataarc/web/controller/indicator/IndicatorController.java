@@ -10,7 +10,7 @@ import org.dataarc.bean.Indicator;
 import org.dataarc.core.search.IndexFields;
 import org.dataarc.core.search.SolrService;
 import org.dataarc.core.search.query.SearchQueryObject;
-import org.dataarc.core.service.IndicatorService;
+import org.dataarc.core.service.CombinatorService;
 import org.dataarc.core.service.UserService;
 import org.dataarc.datastore.mongo.QueryException;
 import org.dataarc.util.View;
@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class IndicatorController extends AbstractController {
 
     @Autowired
-    IndicatorService indicatorService;
+    CombinatorService indicatorService;
     @Autowired
     SolrService searchService;
 

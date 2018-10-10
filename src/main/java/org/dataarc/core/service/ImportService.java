@@ -17,6 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * handle the importing of a LargeGeoJSON data dump into MongoDB
+ * @author abrin
+ *
+ */
 @Service
 @Transactional
 public class ImportService {
@@ -31,6 +36,10 @@ public class ImportService {
 
     Map<String, FieldDataCollector> collectors = new HashMap<>();
 
+    /**
+     * Load a file into MongoDB 
+     * @param filename
+     */
     @Transactional(readOnly = false)
     public void loadData(String filename) {
         deleteAll();
@@ -51,7 +60,7 @@ public class ImportService {
                 Map<String,Object> cleaned = new HashMap<>();
                 ObjectTraversalUtil.traverse(properties, cleaned, collector);
                 logger.debug("fieldNames: {}", collector.getNames());
-                importDataService.load(feature, cleaned);
+                importDataService.save(feature, cleaned);
             }
         } catch (Exception e) {
             logger.error("{}", e, e);

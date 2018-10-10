@@ -8,7 +8,7 @@ import org.dataarc.bean.Indicator;
 import org.dataarc.bean.ObjectType;
 import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.ChangeLogService;
-import org.dataarc.core.service.IndicatorService;
+import org.dataarc.core.service.CombinatorService;
 import org.dataarc.core.service.UserService;
 import org.dataarc.util.PersistableUtils;
 import org.dataarc.util.View;
@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class IndicatorApiController extends AbstractRestController {
 
     @Autowired
-    private IndicatorService indicatorService;
+    private CombinatorService indicatorService;
 
     @Autowired
     private ChangeLogService changelogservice;

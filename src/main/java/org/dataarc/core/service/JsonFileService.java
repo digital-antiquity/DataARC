@@ -25,6 +25,11 @@ import org.wololo.jts2geojson.GeoJSONReader;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * Basic methods for dealing with a GeoJSON File (used on the map)
+ * @author abrin
+ *
+ */
 @Service
 @Transactional
 public class JsonFileService {
@@ -36,9 +41,14 @@ public class JsonFileService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * For each file, apply the IDs to matching MongoDB entries
+     */
     @Transactional(readOnly = false)
     public void applyGeoJsonFiles() {
+        // for each file
         List<JsonFile> files = jsonFileDao.findAll();
+        // clear all region entries
         sourceDao.resetRegions();
         for (JsonFile file : files) {
             try {
@@ -47,10 +57,15 @@ public class JsonFileService {
                     continue;
                 }
                 logger.debug("applying file: {}", file_);
+                // read each feature collection from the file
                 FeatureCollection featureCollection = (FeatureCollection) GeoJSONFactory.create(IOUtils.toString(new FileReader(file_)));
+
+                // for each feature...
                 for (Feature feature : featureCollection.getFeatures()) {
                     GeoJSONReader reader = new GeoJSONReader();
+                    // get the geometry and the id
                     Geometry geometry = reader.read(feature.getGeometry());
+                    // apply it to the MongoDB Entry
                     sourceDao.updateRegionFromGeometry(geometry, file.getId() + "_____" + feature.getProperties().get("id"));
                 }
             } catch (IOException e) {
