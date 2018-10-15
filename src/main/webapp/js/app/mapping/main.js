@@ -116,7 +116,7 @@ Vue.use(VueResource);
       methods: {
           onValidChange : function() {
             window.console.log("ON VALID CHANGE");
-            this.$parent.runQuery();
+            this.$emit("run-query");
           },
           getLimits :  function() {
               var r = [{'text':'Equals', 'value': 'EQUALS'},{'text':'Does not Equal', 'value': 'DOES_NOT_EQUAL'}];
@@ -167,7 +167,8 @@ Vue.use(VueResource);
 // console.log('setValue:' + val);
               this.parts[this.rowindex].value = val;
               Vue.set(this,'part.value',val);
-              this.$parent.runQuery();
+              this.$emit("run-query");
+//              this.$parent.runQuery();
           },
           addPart: function() {
               this.parts.push({type:'EQUALS',value:'',fieldName:'',secondaryFieldName:undefined,compare:false});
@@ -181,16 +182,17 @@ Vue.use(VueResource);
               this.parts[this.rowindex].secondaryFieldName = undefined;
           },
           removePart: function(idx) {
-            this.parts.splice(idx ,1);  
+            this.parts.splice(idx ,1);
+            this.$emit("run-query");
           },
           typechange: function() {
 // console.log('catch typechange');
           },
-          updateTest: function() {
-              // FIXME: hack, replace with component and proper binding?
-// console.log('change!!');
+          updateTest: function(v) {
+              this.parts[this.rowindex].value = v;
               this.$forceUpdate();
-              this.$parent.runQuery();
+              this.$emit("run-query");
+//              this.$parent.runQuery();
           },
       }
   });
@@ -272,18 +274,19 @@ var Hack = new Vue({
       fetchSchema: function () {
           var events = [];
           console.log("fetch schema");
-          this.$http.get(getContextPath() + '/api/schema')
+          var self = this;
+          axios.get(getContextPath() + '/api/schema')
             .then(function (schema) {
                 var list = new Array();
-                schema.body.forEach(function(s) {
+                schema.data.forEach(function(s) {
                     list.push(s);
                 });
                 console.log(list);
-              Vue.set(this, 'schema', list);
+              Vue.set(self, 'schema', list);
             })
             .catch(function (err) {
                 console.log(err);
-                Rollbar.error(err);
+                //Rollbar.error(err);
             });
         },
         selectSchema: function () {
@@ -293,9 +296,10 @@ var Hack = new Vue({
             Vue.set(this,"fields",[]);
             Vue.set(this,"results",undefined);
             console.log("fetch fields for "+ s.name);
-            this.$http.get(getContextPath() + '/api/fields',{params: {'schema': s.name}})
+            var self = this;
+            axios.get(getContextPath() + '/api/fields',{params: {schema: s.name}})
               .then(function (request) {
-                  var fields = request.body;
+                  var fields = request.data;
                   function compare(a,b) {
                       if (a.displayName < b.displayName)
                         return -1;
@@ -303,18 +307,22 @@ var Hack = new Vue({
                         return 1;
                       return 0;
                     }
-                  console.log(fields);
+//                  console.log(fields);
                     fields.sort(compare);
-                    Vue.set(this, 'fields', fields);
+                    Vue.set(self, 'fields', fields);
+                    
+                    
+
               })
               .catch(function (err) {
                 Rollbar.error("error getting fields", err);
               });
 
-            this.$http.get(getContextPath() + '/api/indicator',{params: {'schema': s.name}})
+            axios.get(getContextPath() + '/api/indicator',{params: {schema: s.name}})
             .then(function (request) {
-                console.log(JSON.stringify(request.body));
-              Vue.set(this, 'indicators', request.body);
+//                console.log(JSON.stringify(request.data));
+                console.log("indicators:", request);
+                Vue.set(self, 'indicators', request.data);
             })
             .catch(function (err) {
                 Rollbar.error("error getting indicators", err);
@@ -325,7 +333,7 @@ var Hack = new Vue({
         },
         fetchTopics: function() {
             var s = this.schema[this.currentSchema];
-            this.$http.get(getContextPath() +"/api/topicmap/indicators", {params: {'schemaId': s.id}})
+            axios.get(getContextPath() +"/api/topicmap/indicators", {params: {schemaId: s.id}})
             .then(function(request){
                 Vue.set(this,"topics",request.body);
             })
@@ -372,7 +380,7 @@ var Hack = new Vue({
             },
           selectFieldByName: function(name) {
                 var s = this.schema[this.currentSchema];
-                this.$http.get(getContextPath() + '/api/listDistinctValues',{params: {'schema': s.name, "field":name}})
+                axios.get(getContextPath() + '/api/listDistinctValues',{params: {schema: s.name, field:name}})
                 .then(function (request) {
                     console.log(JSON.stringify(request.body));
                   Vue.set(this, 'uniqueValues', request.body);
@@ -384,20 +392,30 @@ var Hack = new Vue({
           runQuery: function() {
               var query = this.indicators[this.currentIndicator].query;
               var qs = JSON.stringify(query);
+              console.log(query, qs);
               if (this.query == qs) {
                   return;
               }
               this.query = qs;
               window.console.log("RunQuery-->", qs);
-              this.$http.post(getContextPath() + '/api/query/datastore' , qs, {emulateJSON:true,
-                  headers: {
-                      'Content-Type': 'application/json'
-                  }})
-              .then(function (request) {
-                  Vue.set(this,"results",request.body);
-              })
-              .catch(function (err) {
-                  Rollbar.error("error running mongo search", err);
+              
+              var self = this;
+              if (self.cancelToken != undefined) {
+                  self.cancelToken.cancel();
+              }
+              var token = axios.CancelToken.source();
+              Vue.set(self, "cancelToken" ,token);
+              
+              axios.post(getContextPath() + '/api/query/datastore', qs,{ headers: {'Content-Type':"application/json"},cancelToken: token.token }).then(function(res) {
+                  console.log(res);
+                  Vue.set(self, 'results',res.data);
+
+              }).catch(function(thrown) {
+                  if (!axios.isCancel(thrown)) {
+                      console.error(thrown);
+                  } else {
+                      Rollbar.error("error running mongo search", err);
+                  }
               });
           },
           resetSave: function() {
@@ -416,10 +434,7 @@ var Hack = new Vue({
               Vue.set(this,"saveStatus","saving...");
               var json = JSON.stringify(indicator);
               if (indicator.id == -1 || indicator.id == undefined) {
-                  this.$http.post(getContextPath() + '/api/indicator/save' , json, {emulateJSON:true,
-                      headers: {
-                          'Content-Type': 'application/json'
-                      }})
+                  axios.post(getContextPath() + '/api/indicator/save' , json, {headers: {'Content-Type':"application/json"}})
                   .then(function (request) {
                       console.log("indicator result: " + JSON.stringify(request.body));
                       indicatorId = request.body;
@@ -434,10 +449,7 @@ var Hack = new Vue({
                       Rollbar.errors(err);
                   });
               } else {
-                  this.$http.put(getContextPath() + '/api/indicator/' + indicator.id , json, {emulateJSON:true,
-                      headers: {
-                          'Content-Type': 'application/json'
-                      }})
+                  axios.put(getContextPath() + '/api/indicator/' + indicator.id , json, { headers: {'Content-Type':"application/json"} })
                   .then(function (request) {
                       console.log(JSON.stringify(request.body));
                       Vue.set(this,"saveStatus", "successful ["+new Date()+"]");
@@ -456,10 +468,7 @@ var Hack = new Vue({
               var indicator = this.indicators[this.currentIndicator];
               console.log(indicator);
               if (indicator.id != -1 && indicator.id != undefined) {
-                  this.$http.delete(getContextPath() + '/api/indicator/' + indicator.id , JSON.stringify(indicator), {emulateJSON:true,
-                      headers: {
-                          'Content-Type': 'application/json'
-                      }})
+                  axios.delete(getContextPath() + '/api/indicator/' + indicator.id , indicator,{ headers: {'Content-Type':"application/json"} })
                   .then(function (request) {
                       console.log(JSON.stringify(request.body));
                   })

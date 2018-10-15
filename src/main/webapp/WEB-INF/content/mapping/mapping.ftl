@@ -6,13 +6,41 @@
         <title>
             Connect your data to DataARC's core shared concepts 
         </title>
-    <#include "/includes/header.ftl"/>
+<script>
+window.TDAR = {vuejs: {}};
 
+</script>
+
+<style>
+.autocomplete input[type=text] {
+ border:0px solid #fff;
+ }
+</style>
+    <#include "/includes/header.ftl"/>
         <script data-main="/js/app/mapping/main" src="${contextPath}/components/requirejs/require.js"></script>
     <#import "/macros/body.ftl" as body />
     </head>
     <@body.body>
         <h1 class="page-header">Connect your data to DataARC's core shared concepts</h1>
+<script type="text/x-template" id="autocomplete">
+  <div class="autocomplete form-control" ref="autocompleteroot" @mouseover="addFocus('mouse')" @mouseout="removeFocus('mouse')">
+    <input type="hidden" v-model="id"  :name="idname" v-if="idname != undefined" />
+    <input type="text" @input="onChange" v-model="search" @keyup.down="onArrowDown" @keyup.up="onArrowUp" v-on:keyup.enter.self.stop="onEnter"
+        @keydown.delete="deleteKey" @keyup.enter="enterKey" @keyup="anyKey" autocomplete="off" :disabled="disabled" 
+         ref="searchfield" :class="span" :name="fieldname" @focus="addFocus('cursor')" @blur="removeFocus('cursor')"/>
+    <ul id="autocomplete-results" v-show="isOpen" class="autocomplete-results"  :style="getStyleTop()" ref="autoresults">
+      <li v-if="!isLoading" v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" :class="{ 'is-active': i === arrowCounter }" :style="getStyleWidth()">
+          <span v-html="render(result)" v-if="isCustomRender()"></span>
+          <span v-if="!isCustomRender()">{{ getDisplay(result) }}  ({{ result.occurrence}})</span>
+      </li>
+      <li class="status text-center center" :style="getStyleWidth()">
+        <span v-if="isLoading">Loading results...</span>
+        <span v-if="!isLoading"> Showing 1-{{recordsPerPage}} of {{totalRecords}} </span>
+      </li>
+    </ul>
+
+  </div>
+</script>
         <div class="container-fluid form-inline" id="schema">
 			<div class="row">
 				<div class="col-sm-12">
@@ -65,7 +93,7 @@
             <div class="col-sm-11 col-sm-offset-1">
                     <ul class="list-group" v-for="(part, rowNum) in indicators[currentIndicator].query.conditions">
                         <spart :rowindex="rowNum" :schema="schemaName" :fields="fields" :part="indicators[currentIndicator].query.conditions[rowNum]" :parts="indicators[currentIndicator].query.conditions"
-                        @select="onValidChange"
+                        @select="onValidChange" @run-query="runQuery()"
                         ></spart>
                     </ul>
                     <div v-if="indicators[currentIndicator].query.conditions.length > 1">
@@ -221,9 +249,8 @@
                 </select>
 
                 <span v-show="part.compare == false || part.compare == undefined && part.fieldNameSecond == undefined ">
-	                <selectize  v-bind:options="getFieldValues(part.fieldName)" v-model="part.value" size="1" style="width:250px" class="form-control"
-	         data-max-options="100"  v-on:change="updateTest()" @input="onValidChange()" data-create="true" data-create-on-blur="true" data-persist="false"
-	         data-value-field='value' data-label-field='value' data-search-field= 'value' data-sort-field= 'value'></selectize>
+        <autocomplete :items="getFieldValues(part.fieldName)" :is-async="false"  @autocompletevalueset="updateTest" ref="input"
+        fieldname="title" :allowCreate="true" idname="value" valuename="value"  :initial_id="part.value" :initial_value="part.value" />
 				</span>
 				
                 <span v-show="rowindex > 0 || parts.length > 1">
@@ -291,5 +318,8 @@
     </script>
   </#list>
 
+<script>
+TDAR.vuejs.autocomplete.init();
+</script>
         </@body.body>
 </html>
