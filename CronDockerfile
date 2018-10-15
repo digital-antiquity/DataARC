@@ -10,10 +10,8 @@ ENV POSTGRES_HOST db
 
 RUN adduser -g "App User" -D $APP_USER
 
-RUN apk add --update  --no-cache \
-    postgresql  \
-    mongodb-tools \
-  && rm -rf /var/cache/apk/*
+RUN apk add --update  --no-cache postgresql tar gzip mongodb-tools \
+    && rm -rf /var/cache/apk/*
 
 
 ADD . /app
