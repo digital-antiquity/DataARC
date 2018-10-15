@@ -77,7 +77,9 @@ public class CombinatorService {
 
         // update the internal values from the DTO
         indicator.updateFrom(_indicator);
-        indicator.setUser(user);
+        if (indicator.getUser() == null) {
+            indicator.setUser(user);
+        }
         resolveTopics(_indicator, indicator);
         String schemaName = _indicator.getQuery().getSchema();
         if (indicator.getSchema() == null) {
