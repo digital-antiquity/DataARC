@@ -32,11 +32,9 @@ window.TDAR = {vuejs: {}};
 <link href="${contextPath}/components/tdar-autocomplete/css/tdar-autocomplete.css" rel="stylesheet" media="screen">
 <link href="${contextPath}/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="${contextPath}/css/mapping.css" rel="stylesheet" media="screen">
-<link href="${contextPath}/components/selectize/dist/css/selectize.bootstrap3.css" rel="stylesheet" media="screen">
 <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
 <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script> 
-<script src="${contextPath}/components/selectize/dist/js/standalone/selectize.js"></script>
-<script src="${contextPath}/components/handlebars/handlebars.js"></script>
+<script <script src="${contextPath}/components/handlebars/handlebars.js"></script>
 <link href="${contextPath}/css/typeahead.css" rel="stylesheet" media="screen">
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
