@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -38,48 +39,49 @@ import com.fasterxml.jackson.annotation.JsonView;
  */
 @Entity
 @TypeDefs({ @TypeDef(name = "QueryJsonObject", typeClass = QueryJsonType.class) })
-public class Indicator extends AbstractPersistable {
+@Table(name="indicator")
+public class Combinator extends AbstractPersistable {
 
     private static final long serialVersionUID = 4928837828590131513L;
 
     @Column(length = 100)
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private String name;
 
     @Column(name = "date_created", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private Date dateCreated;
 
     @ManyToOne
     @JoinColumn(name = "schema_id")
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private Schema schema;
 
     @Column()
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private String citation;
 
     @Column()
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private String description;
 
     @Transient
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private Set<String> topicIdentifiers = new HashSet<>();
 
     @Column
     @Type(type = "QueryJsonObject")
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private FilterQuery query;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private DataArcUser user;
 
     @ManyToMany

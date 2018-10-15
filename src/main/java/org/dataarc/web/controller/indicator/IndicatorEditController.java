@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.core.query.FilterQuery;
 import org.dataarc.core.search.IndexFields;
 import org.dataarc.core.search.SolrService;
@@ -40,7 +40,7 @@ public class IndicatorEditController extends AbstractController {
 
     @RequestMapping(path = UrlConstants.EDIT_COMBINATORS, method=RequestMethod.GET)
     public ModelAndView indicator(@PathVariable("id") Long id) throws IOException, ParseException, SolrServerException {
-        Indicator ind = indicatorService.findById(id);
+        Combinator ind = indicatorService.findById(id);
         ModelAndView mav = new ModelAndView("combinators/edit");
         mav.addObject("indicator", ind);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -50,7 +50,7 @@ public class IndicatorEditController extends AbstractController {
 
     @RequestMapping(path = UrlConstants.EDIT_COMBINATORS, method=RequestMethod.POST)
     public ModelAndView saveIndicator(@PathVariable("id") Long id, @RequestParam("combinator") String combinator) throws IOException, ParseException, SolrServerException {
-        Indicator ind = indicatorService.findById(id);
+        Combinator ind = indicatorService.findById(id);
         ObjectMapper objectMapper = new ObjectMapper();
         FilterQuery query = objectMapper.readValue(combinator, FilterQuery.class);
         ModelAndView mav = new ModelAndView("combinators/edit");

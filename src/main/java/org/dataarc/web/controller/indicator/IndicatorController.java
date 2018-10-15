@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.core.search.IndexFields;
 import org.dataarc.core.search.SolrService;
 import org.dataarc.core.search.query.SearchQueryObject;
@@ -38,7 +38,7 @@ public class IndicatorController extends AbstractController {
     @JsonView(View.Schema.class)
     public ModelAndView schema() throws IOException, ParseException, SolrServerException {
         ModelAndView mav = new ModelAndView("combinators/list");
-        List<Indicator> findAll = indicatorService.findAll();
+        List<Combinator> findAll = indicatorService.findAll();
         findAll.forEach(ind -> {
             try {
                 indicatorService.updateRaw(ind);

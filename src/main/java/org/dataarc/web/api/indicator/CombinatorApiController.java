@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.dataarc.bean.ActionType;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.bean.ObjectType;
 import org.dataarc.core.search.SolrIndexingService;
 import org.dataarc.core.service.ChangeLogService;
@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @Secured(UserService.EDITOR_ROLE)
-public class IndicatorApiController extends AbstractRestController {
+public class CombinatorApiController extends AbstractRestController {
 
     @Autowired
     private CombinatorService indicatorService;
@@ -41,7 +41,7 @@ public class IndicatorApiController extends AbstractRestController {
     
     @RequestMapping(path = UrlConstants.SAVE_INDICATOR, method = RequestMethod.POST)
     public Long save(@RequestBody(required = true) IndicatorDataObject indicator_) throws Exception {
-        Indicator indicator = null;
+        Combinator indicator = null;
         try {
             logger.debug("Saving indicator: {} :: {}", indicator_, indicator_.getTopicIdentifiers());
             indicator = indicatorService.save(indicator_, getUser());
@@ -66,14 +66,14 @@ public class IndicatorApiController extends AbstractRestController {
     }
 
     @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.GET)
-    @JsonView(View.Indicator.class)
-    public Indicator getIndicatorById(@PathVariable(value = "id", required = true) Long id) {
-        Indicator findById = indicatorService.view(id);
+    @JsonView(View.Combinator.class)
+    public Combinator getIndicatorById(@PathVariable(value = "id", required = true) Long id) {
+        Combinator findById = indicatorService.view(id);
         setTopics(findById);
         return findById;
     }
 
-    private void setTopics(Indicator findById) {
+    private void setTopics(Combinator findById) {
         if (CollectionUtils.isNotEmpty(findById.getTopics())) {
             findById.getTopics().forEach(topic -> {
                 findById.getTopicIdentifiers().add(topic.getIdentifier());
@@ -83,14 +83,14 @@ public class IndicatorApiController extends AbstractRestController {
 
     @RequestMapping(path = UrlConstants.VIEW_INDICATOR, method = RequestMethod.DELETE)
     public void getDeleteId(@PathVariable(value = "id", required = true) Long id) {
-        Indicator findById = indicatorService.findById(id);
+        Combinator findById = indicatorService.findById(id);
         indicatorService.delete(findById, getUser());
     }
 
     @RequestMapping(path = UrlConstants.LIST_INDICATORS, method = RequestMethod.GET)
-    @JsonView(View.Indicator.class)
-    public List<Indicator> list(@RequestParam(value = "schema", required = true) String schemaName) {
-        List<Indicator> indicators = indicatorService.findAllForSchema(schemaName);
+    @JsonView(View.Combinator.class)
+    public List<Combinator> list(@RequestParam(value = "schema", required = true) String schemaName) {
+        List<Combinator> indicators = indicatorService.findAllForSchema(schemaName);
         indicators.forEach(findById -> {
             setTopics(findById);
         });

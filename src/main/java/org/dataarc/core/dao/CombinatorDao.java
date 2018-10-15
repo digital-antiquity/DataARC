@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.util.PersistableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,60 +23,60 @@ public class CombinatorDao {
     @PersistenceContext
     private EntityManager manager;
 
-    public void save(Indicator indicator) {
+    public void save(Combinator indicator) {
         manager.persist(indicator);
     }
 
     public void deleteAll() {
-        manager.createQuery("delete from Indicator").executeUpdate();
+        manager.createQuery("delete from Combinator").executeUpdate();
     }
 
-    public List<Indicator> findAll() {
-        return manager.createQuery("from Indicator", Indicator.class).getResultList();
+    public List<Combinator> findAll() {
+        return manager.createQuery("from Combinator", Combinator.class).getResultList();
     }
 
     public Set<String> findAllNames() {
-        return manager.createQuery("from Indicator", Indicator.class).getResultList().stream()
+        return manager.createQuery("from Combinator", Combinator.class).getResultList().stream()
                 .map(schema -> schema.getName())
                 .collect(Collectors.toSet());
     }
 
-    public Indicator findById(Long id) {
-        Query query = manager.createQuery("from Indicator where id=:id", Indicator.class);
+    public Combinator findById(Long id) {
+        Query query = manager.createQuery("from Combinator where id=:id", Combinator.class);
         query.setParameter("id", id);
-        return (Indicator) query.getSingleResult();
+        return (Combinator) query.getSingleResult();
     }
 
-    public List<Indicator> findAllForSchema(String schemaName) {
+    public List<Combinator> findAllForSchema(String schemaName) {
         // FIXME: SQL-inject
-        Query query = manager.createQuery("from Indicator i where i.schema.name=:name ", Indicator.class);
+        Query query = manager.createQuery("from Combinator i where i.schema.name=:name ", Combinator.class);
         query.setParameter("name", schemaName);
         return query.getResultList();
     }
 
-    public Indicator merge(Indicator indicator) {
+    public Combinator merge(Combinator indicator) {
         return manager.merge(indicator);
 
     }
 
-    public void delete(Indicator findById) {
+    public void delete(Combinator findById) {
         manager.remove(findById);
 
     }
 
     public void deleteByIdentifier(List<String> mapped) {
-        Query query = manager.createQuery(" from Indicator i left join i.topics t where t.identifier in :mapped");
+        Query query = manager.createQuery(" from Combinator i left join i.topics t where t.identifier in :mapped");
         query.setParameter("mapped", mapped);
-        List<Indicator> resultList = query.getResultList();
+        List<Combinator> resultList = query.getResultList();
         if (CollectionUtils.isNotEmpty(resultList)) {
-            Query delete = manager.createQuery("delete from Indicator i where i.id in :indicators");
+            Query delete = manager.createQuery("delete from Combinator i where i.id in :indicators");
             delete.setParameter("indicators", PersistableUtils.extractIds(resultList));
             delete.executeUpdate();
         }
     }
 
-    public List<Indicator> findAllForSchema(Long schemaId) {
-        Query query = manager.createQuery("from Indicator i where i.schema.id=:id ", Indicator.class);
+    public List<Combinator> findAllForSchema(Long schemaId) {
+        Query query = manager.createQuery("from Combinator i where i.schema.id=:id ", Combinator.class);
         query.setParameter("id", schemaId);
         return query.getResultList();
 

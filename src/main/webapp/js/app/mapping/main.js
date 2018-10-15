@@ -168,7 +168,6 @@ Vue.use(VueResource);
               this.parts[this.rowindex].value = val;
               Vue.set(this,'part.value',val);
               this.$emit("run-query");
-//              this.$parent.runQuery();
           },
           addPart: function() {
               this.parts.push({type:'EQUALS',value:'',fieldName:'',secondaryFieldName:undefined,compare:false});
@@ -192,7 +191,6 @@ Vue.use(VueResource);
               this.parts[this.rowindex].value = v;
               this.$forceUpdate();
               this.$emit("run-query");
-//              this.$parent.runQuery();
           },
       }
   });

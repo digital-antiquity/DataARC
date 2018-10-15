@@ -14,23 +14,23 @@ public class IndicatorDataObject {
 
     private static final long serialVersionUID = 4928837828590131513L;
 
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private Long id;
 
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private String name;
 
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private String citation;
 
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private String description;
 
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private Set<String> topicIdentifiers = new HashSet<>();
 
     @Column
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private FilterQuery query;
 
     public String getName() {

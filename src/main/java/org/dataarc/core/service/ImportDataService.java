@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.bean.file.DataFile;
 import org.dataarc.bean.file.JsonFile;
 import org.dataarc.bean.schema.Schema;
@@ -142,9 +142,9 @@ public class ImportDataService {
             Set<SchemaField> saveSchema = schemaDao.saveSchema(collector, rows);
             if (CollectionUtils.isNotEmpty(saveSchema)) {
                 List<Long> ids = PersistableUtils.extractIds(saveSchema);
-                List<Indicator> inds = new ArrayList<>();
-                List<Indicator> indicators = indicatorDao.findAllForSchema(schema.getId());
-                for (Indicator ind : indicators) {
+                List<Combinator> inds = new ArrayList<>();
+                List<Combinator> indicators = indicatorDao.findAllForSchema(schema.getId());
+                for (Combinator ind : indicators) {
                     for (QueryPart queryPart : ind.getQuery().getConditions()) {
                         if (ids.contains(queryPart.getFieldId())) {
                             inds.add(ind);

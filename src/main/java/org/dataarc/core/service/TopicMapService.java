@@ -16,7 +16,7 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.bean.topic.Association;
 import org.dataarc.bean.topic.CategoryAssociation;
 import org.dataarc.bean.topic.Topic;
@@ -83,8 +83,8 @@ public class TopicMapService {
             topic.getParents().clear();
             topic.getChildren().clear();
         });
-        List<Indicator> list = indicatorDao.findAllForSchema(schemaId);
-        for (Indicator i : list) {
+        List<Combinator> list = indicatorDao.findAllForSchema(schemaId);
+        for (Combinator i : list) {
             i.getTopics().forEach(t -> {
                 t.incrementIndicatorCount();
             });

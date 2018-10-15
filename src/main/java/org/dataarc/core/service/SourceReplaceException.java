@@ -2,13 +2,13 @@ package org.dataarc.core.service;
 
 import java.util.List;
 
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 
 public class SourceReplaceException extends Exception {
 
-    private List<Indicator> inds;
+    private List<Combinator> inds;
 
-    public SourceReplaceException(List<Indicator> inds) {
+    public SourceReplaceException(List<Combinator> inds) {
         this.inds = inds;
     }
 

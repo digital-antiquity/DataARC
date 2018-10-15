@@ -19,14 +19,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class FilterQuery implements Serializable {
 
     private static final long serialVersionUID = -4632150696396799879L;
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private List<QueryPart> conditions = new ArrayList<>();
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private Operator operator = Operator.AND;
 
     private transient String raw;
 
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private String schema;
 
     public List<QueryPart> getConditions() {

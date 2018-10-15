@@ -51,5 +51,6 @@ public interface UrlConstants {
     String EDIT_COMBINATORS = "/a/combinators/{id}";
     String SAVE_SEARCH = "/searches/save";
     String LIST_SEARCH = "/a/searches/list";
+    String LIST_COMBINATORS_PUBLIC = "/combinators";
 
 }

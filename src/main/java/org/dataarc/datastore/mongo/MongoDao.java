@@ -16,7 +16,7 @@ import org.bson.BsonDocumentWriter;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.dataarc.bean.DataEntry;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.schema.SchemaField;
 import org.dataarc.core.dao.ImportDao;
@@ -369,7 +369,7 @@ public class MongoDao implements ImportDao, QueryDao {
     /**
      * Apply Indicators to the MongoDB database
      */
-    public void applyIndicator(Indicator indicator) throws QueryException {
+    public void applyIndicator(Combinator indicator) throws QueryException {
         if (CollectionUtils.isEmpty(indicator.getTopics())) {
             return;
         }
@@ -473,7 +473,7 @@ public class MongoDao implements ImportDao, QueryDao {
         return template.find(q, DataEntry.class);
     }
 
-    public void updateRaw(Indicator ind) throws QueryException {
+    public void updateRaw(Combinator ind) throws QueryException {
         Query query = getMongoFilterQuery(ind.getQuery());
         ind.getQuery().setRaw(query.toString());
         

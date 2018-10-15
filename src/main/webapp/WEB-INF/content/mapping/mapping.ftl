@@ -6,10 +6,6 @@
         <title>
             Connect your data to DataARC's core shared concepts 
         </title>
-<script>
-window.TDAR = {vuejs: {}};
-
-</script>
 
 <style>
 .autocomplete input[type=text] {

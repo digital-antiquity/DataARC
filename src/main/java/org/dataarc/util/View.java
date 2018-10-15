@@ -9,6 +9,6 @@ public class View {
     public interface Schema {
     }
 
-    public interface Indicator {
+    public interface Combinator {
     }
 }

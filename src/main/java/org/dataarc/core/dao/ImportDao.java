@@ -3,7 +3,7 @@ package org.dataarc.core.dao;
 import java.util.Map;
 
 import org.dataarc.bean.DataEntry;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.datastore.mongo.QueryException;
 import org.geojson.Feature;
 
@@ -42,7 +42,7 @@ public interface ImportDao {
 
     void resetTopics(String schemaName);
 
-    void applyIndicator(Indicator indicator) throws QueryException;
+    void applyIndicator(Combinator indicator) throws QueryException;
 
     Iterable<DataEntry> findAllWithLimit();
 

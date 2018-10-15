@@ -39,7 +39,7 @@ public abstract class AbstractPersistable implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(View.Indicator.class)
+    @JsonView(View.Combinator.class)
     private Long id = -1L;
 
     @XmlAttribute(name = "id")

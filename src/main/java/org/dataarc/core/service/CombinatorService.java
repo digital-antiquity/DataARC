@@ -10,7 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.bson.Document;
 import org.dataarc.bean.DataArcUser;
 import org.dataarc.bean.DataEntry;
-import org.dataarc.bean.Indicator;
+import org.dataarc.bean.Combinator;
 import org.dataarc.bean.schema.Schema;
 import org.dataarc.bean.topic.Topic;
 import org.dataarc.core.dao.ImportDao;
@@ -66,13 +66,13 @@ public class CombinatorService {
      */
     @Transactional(readOnly = false)
     @PreAuthorize("hasPermission('Indicator', 'CREATE_EDIT')")
-    public Indicator save(IndicatorDataObject _indicator, DataArcUser user) {
+    public Combinator save(IndicatorDataObject _indicator, DataArcUser user) {
         // if it exists, try and pull it from the database
-        Indicator indicator = null;
+        Combinator indicator = null;
         if (PersistableUtils.isNotNullOrTransient(_indicator.getId())) {
             indicator = indicatorDao.findById(_indicator.getId());
         } else {
-            indicator = new Indicator();
+            indicator = new Combinator();
         }
 
         // update the internal values from the DTO
@@ -98,7 +98,7 @@ public class CombinatorService {
      * @param _indicator
      * @param indicator
      */
-    private void resolveTopics(IndicatorDataObject _indicator, Indicator indicator) {
+    private void resolveTopics(IndicatorDataObject _indicator, Combinator indicator) {
         Set<String> incomingIdentifiers = _indicator.getTopicIdentifiers();
         logger.debug("{}", incomingIdentifiers);
 
@@ -136,17 +136,17 @@ public class CombinatorService {
     }
 
     @Transactional(readOnly = true)
-    public Indicator findById(Long id) {
+    public Combinator findById(Long id) {
         return indicatorDao.findById(id);
     }
 
     @Transactional(readOnly = true)
-    public List<Indicator> findAllForSchema(String schemaName) {
+    public List<Combinator> findAllForSchema(String schemaName) {
         return indicatorDao.findAllForSchema(schemaName);
     }
 
     @Transactional(readOnly = false)
-    public Indicator merge(Indicator indicator) {
+    public Combinator merge(Combinator indicator) {
         return indicatorDao.merge(indicator);
 
     }
@@ -154,7 +154,7 @@ public class CombinatorService {
     @Transactional(readOnly = false)
     public void applyIndicators(String schemaName) throws Exception {
         importDao.resetTopics(schemaName);
-        for (Indicator indicator : findAllForSchema(schemaName)) {
+        for (Combinator indicator : findAllForSchema(schemaName)) {
             importDao.applyIndicator(indicator);
         }
     }
@@ -171,20 +171,20 @@ public class CombinatorService {
     }
 
     @Transactional(readOnly = false)
-    public void delete(Indicator findById, DataArcUser dataArcUser) {
+    public void delete(Combinator findById, DataArcUser dataArcUser) {
         indicatorDao.delete(findById);
 
     }
 
     @Transactional(readOnly = true)
     @PreAuthorize("hasPermission(#id, 'VIEW')")
-    public Indicator view(Long id) {
+    public Combinator view(Long id) {
         return findById(id);
     }
 
     @Transactional(readOnly = false)
     public void deleteAllForSchema(Schema schema) {
-        List<Indicator> findAllForSchema = findAllForSchema(schema.getName());
+        List<Combinator> findAllForSchema = findAllForSchema(schema.getName());
         if (CollectionUtils.isNotEmpty(findAllForSchema)) {
             findAllForSchema.forEach(ind -> {
                 indicatorDao.delete(ind);
@@ -193,7 +193,7 @@ public class CombinatorService {
     }
 
     @Transactional(readOnly=true)
-    public List<Indicator> findAll() {
+    public List<Combinator> findAll() {
         return indicatorDao.findAll();
     }
 
@@ -203,13 +203,13 @@ public class CombinatorService {
     }
 
     @Transactional(readOnly=true)
-    public void updateRaw(Indicator ind) throws QueryException {
+    public void updateRaw(Combinator ind) throws QueryException {
         mongoDao.updateRaw(ind);
         
     }
 
     @Transactional(readOnly=false)
-    public void updateIndicator(Indicator ind, FilterQuery query) {
+    public void updateIndicator(Combinator ind, FilterQuery query) {
         ind.setQuery(query);
         indicatorDao.save(ind);
         

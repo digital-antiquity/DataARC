@@ -24,7 +24,7 @@ public class TopicIndicatorAssociation extends AbstractPersistable {
     private Topic topic;
 
     @ManyToOne
-    private Indicator indicator;
+    private Combinator indicator;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 255)
@@ -38,11 +38,11 @@ public class TopicIndicatorAssociation extends AbstractPersistable {
         this.topic = topic;
     }
 
-    public Indicator getIndicator() {
+    public Combinator getIndicator() {
         return indicator;
     }
 
-    public void setIndicator(Indicator indicator) {
+    public void setIndicator(Combinator indicator) {
         this.indicator = indicator;
     }
 
