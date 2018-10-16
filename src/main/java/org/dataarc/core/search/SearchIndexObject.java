@@ -187,14 +187,27 @@ public class SearchIndexObject {
      */
     private void cleanupSead(DataEntry entry, Schema schema) {
 
+        if (!schema.getName().toLowerCase().contains("sead")) {
+            return;
+        }
+
         Object object = entry.getProperties().get("sampleData");
+        String matchingkey = "";
+        for (String key : entry.getProperties().keySet()) {
+            if (key.equalsIgnoreCase("sampledata")) {
+                object = entry.getProperties().get(key);
+                matchingkey = key;
+            }
+        }
+        
         String type = null;
         if (object != null && object instanceof Map) {
             type = (String) ((Map) object).get("dating_type");
         }
 
+        logger.debug("key: {}; type: {} ; start: {}; end: {}; obj: {}", matchingkey,type, getStart(), getEnd(), object);
         // if we don't have a date, type, or are in SEAD, then skip
-        if ((type == null || getStart() == null || getEnd() == null) || !schema.getName().toLowerCase().contains("sead")) {
+        if ((type == null || getStart() == null || getEnd() == null)) {
             return;
         }
         
