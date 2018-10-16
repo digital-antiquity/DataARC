@@ -133,9 +133,10 @@
                     <div class="col-sm-7">
                     <!-- fixme: was indicators[currentIndicator].topicIdentifiers[_idx]  -->
               
-					<ul class="list-unstyled">
-                        <li v-for="(ident, _idx) in selectedTopics"  >
-                                <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control col-sm-6">
+					<ul class="list-unstyled row">
+                        <li v-for="(ident, _idx) in selectedTopics"  class="col-12" >
+                            <div class="row">
+                                <select id="chooseTopic" name='topic' v-model="selectedTopics[_idx]"  class="form-control col-10">
                                     <#list topicCategories as cat>
                                     <optgroup label="${cat}">
                                         <#list topics?sort_by('name') as topic>
@@ -146,12 +147,11 @@
                                     </optgroup>
                                     </#list>
                                 </select>
+                    <div class="btn-group col-2" role="group" aria-label="add/remove buttons">
                             <button type="button" class="btn btn-xs btn-default" v-on:click="removeTopic(_idx)">-</button>
-
-                        <span v-show="_idx == selectedTopics.length -1">
-                            <button type="button" class="btn btn-xs btn-default" v-on:click="addTopic()">+</button>
-                        </span>
-
+                            <button v-show="_idx == selectedTopics.length -1" type="button" class="btn btn-xs btn-default" v-on:click="addTopic()">+</button>
+                    </div>
+</div>
                         </li>
                     </ul>
                     </div>
