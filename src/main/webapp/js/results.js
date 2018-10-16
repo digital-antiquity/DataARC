@@ -243,7 +243,7 @@ class ResultsHandler {
   }
 
   analyzeDetails(container) {
-    var chart = container.find('table.type-chart');
+    var chart = $('.modal-content table.type-chart:visible');
     if (chart.length) {
       container.html(this.loader);
       function getRandomRgb(a) {
@@ -253,6 +253,7 @@ class ResultsHandler {
         var b = num & 255;
         return r + ', ' + g + ', ' + b;
       }
+
       var title = container.find('h3').text();
       var data = {
         labels: [],
@@ -264,10 +265,14 @@ class ResultsHandler {
         }],
       }
       var noData = [];
-      var i = 0;
-      chart.find('tbody tr').map((i, e) => {
-        var label = $("td:eq(0)", e).text().split('_').join(' ');
-        var val = parseFloat($("td:eq(1)", e).text());
+//      var i = 0;
+      var found = $('tbody tr', chart);
+      found.each(function(i, row) {
+        var $cols = $("td", row);
+        if ($cols.length == 2) {
+            
+        var label = $cols[0].innerText.split('_').join(' ');
+        var val = parseFloat($cols[1].innerText);
         if (val && val > 0) {
           data.labels.push(label);
           data.datasets[0].data.push(val);
@@ -278,7 +283,10 @@ class ResultsHandler {
         else {
           noData.push(label);
         }
+        }
       });
+      console.trace("data", data);
+      console.trace("no-data", noData);
       this.createChart(container, title, data, noData);
     }
   }
