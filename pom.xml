@@ -10,7 +10,7 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.security>5.0.8.RELEASE</spring.security>
+        <spring.security>5.0.9.RELEASE</spring.security>
         <spring.framework.version>5.0.9.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.9.3</jackson.version>
@@ -503,7 +503,7 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>2.3.3.RELEASE</version>
+            <version>2.3.4.RELEASE</version>
         </dependency>
 <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
 <dependency>
