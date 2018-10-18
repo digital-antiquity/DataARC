@@ -161,23 +161,28 @@ public class SolrIndexingService {
             doc.setField(IndexFields.ID, entry.getId());
             Map<String, Object> map = new HashMap<>();
             if (CollectionUtils.isNotEmpty(entry.getDataArcIndicators())) {
-                map.put(IndexFields.INDICATOR, entry.getDataArcIndicators());
+                map.put(IndexFields.INDICATOR, new ArrayList<>(entry.getDataArcIndicators()));
             }
-            if (CollectionUtils.isNotEmpty(entry.getDataArcTopicIdentifiers())) {
-                map.put(IndexFields.TOPIC_ID, entry.getDataArcTopicIdentifiers());
+            Set<String> topics = entry.getDataArcTopicIdentifiers();
+            if (CollectionUtils.isNotEmpty(topics)) {
+                map.put(IndexFields.TOPIC_ID, topics);
+                
+                
                 Set<String> nd2 = new HashSet<>(); 
                 Set<String> nd3 = new HashSet<>(); 
-                entry.getDataArcTopicIdentifiers().forEach(tid -> {
+                
+                topics.forEach(tid -> {
                     nd2.addAll(topicDao.findRelatedTopics(tid));
                 });
                 nd2.forEach(tid -> {
                     nd3.addAll(topicDao.findRelatedTopics(tid));
                 });
+
                 map.put(IndexFields.TOPIC_ID_2ND, nd2);
                 map.put(IndexFields.TOPIC_ID_3RD, nd3);
             }
             if (CollectionUtils.isNotEmpty(entry.getDataArcTopics())) {
-                map.put(IndexFields.TOPIC_NAMES, entry.getDataArcTopics());
+                map.put(IndexFields.TOPIC_NAMES, new ArrayList<>(entry.getDataArcTopics()));
             }
 
             // use the ReplaceField syntac to set the new values
