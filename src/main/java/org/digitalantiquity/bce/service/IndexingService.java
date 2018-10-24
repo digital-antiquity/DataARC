@@ -44,7 +44,7 @@ import com.spatial4j.core.shape.Point;
 @Service
 public class IndexingService {
 
-    public static final String INDEX_DIR = "indexes/";
+    public static final String INDEX_DIR = "indexes-prototype/";
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

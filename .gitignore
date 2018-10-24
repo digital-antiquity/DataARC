@@ -13,7 +13,7 @@ node
 node_modules
 bin
 /lib/
-src/main/webapp/components
+# src/main/webapp/components
 prism.sql.gz
 indexes
 map
@@ -21,3 +21,9 @@ smal-indexes
 datadir
 skope.properties
 src/main/webapp/img
+logs/
+docker/
+${filestore.path}
+indexes-prototype
+dataarc.properties
+managed-schema

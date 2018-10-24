@@ -11,7 +11,7 @@
 
     <properties>
         <spring.framework.version>4.1.4.RELEASE</spring.framework.version>
-        <struts2.version>2.3.20</struts2.version>
+        <struts2.version>2.3.36</struts2.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.4.4</jackson.version>
         <geotools.version>12.1</geotools.version>
@@ -402,6 +402,7 @@
                         </goals>
                         <configuration>
                             <arguments>install</arguments>
+                            <skip>true</skip>
                         </configuration>
                     </execution>
 
