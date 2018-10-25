@@ -32,8 +32,10 @@ public class TopicController extends AbstractController {
 
     private void setup(ModelAndView mav, TopicMap topicMap) {
         mav.addObject("topicMap", topicMap);
-        mav.addObject("flattened", topicMapService.findAllTopic(topicMap.getId()));
-        mav.addObject("categories", TopicCategory.values());
+        if (topicMap != null) {
+            mav.addObject("flattened", topicMapService.findAllTopic(topicMap.getId()));
+            mav.addObject("categories", TopicCategory.values());
+        }
         mav.addObject("categoryAssociations", topicMapService.findAllCategoryAssociations());
     }
 

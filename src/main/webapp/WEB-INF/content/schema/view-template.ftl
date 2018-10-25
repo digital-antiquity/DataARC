@@ -85,7 +85,7 @@
  </script>
 
  	 	<#list schema.fields as field>
- 	<span class="label label-default schemalabel" title="${schema.name}_${field.name}">${schema.name}_${field.name}</span>
+ 	<span class="label label-default schemalabel" title="${field.name}">${field.name}</span>
 	</#list>
 	<br/>
 	<a href="http://handlebarsjs.com">Handlebars documentation</a><br/>

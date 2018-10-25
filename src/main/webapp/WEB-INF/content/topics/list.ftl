@@ -32,9 +32,9 @@
 </#macro>
     <@body.body>
 <h1> Topics</h1>
-<p><b>Currently using Map:</b> ${topicMap.name}</p>
+<p><b>Currently using Map:</b> <#if topicMap?has_content> ${topicMap.name!"None"}<#else>None</#if></p>
 <form method="POST" action="/a/topics">
-<h3>Apply categories</h3>
+<#-- <h3>Apply categories</h3>
 <p>for each category selected, for all children apply the selected category... if multiple parents, the closest parent's category will win. <b>Note:</b> this saves, but doesn't currently apply.</p> 
 	<#assign cnt = 0>
 	<#list categoryAssociations as assoc>
@@ -49,7 +49,8 @@
 	<br/>
     <input type="submit" value="Save" class="button btn btn-primary">
 
-</form>
+</form> -->
+
 <h3>Update Topic Map</h3>
     <p>Upload a XML Topic Map file (.xtm) file</p>
    <form method="POST" action="${contextPath}/a/admin/topicUploadFile" enctype="multipart/form-data">
@@ -78,6 +79,7 @@
             <th>identifier</th>
             </tr>
             </thead>
+            <#if flattend?has_content>
             <#list flattened as topic>
             <tr>
                 <td>${topic.id?c}</td>
@@ -88,6 +90,7 @@
                 <td>${topic.identifier}</td>
             </tr>
             </#list>
+            </#if>
             </table>
 
         </div>
@@ -103,6 +106,7 @@
             <th>to</th>
             </tr>
             </thead>
+            <#if topicMap?has_content && topicMap.associations?has_content>
             <#list topicMap.associations as assoc>
             <tr>
                 <td>${assoc.id?c}</td>
@@ -113,6 +117,7 @@
                 <td>${assoc.to.name}</td>
             </tr>
             </#list>
+            </#if>
             </table>
         </div>
     </div>

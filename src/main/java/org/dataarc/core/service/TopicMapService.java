@@ -348,7 +348,11 @@ public class TopicMapService {
 
     @Transactional(readOnly = true)
     public TopicMap find() {
-        return topicMapDao.findAll().get(0);
+        List<TopicMap> findAll = topicMapDao.findAll();
+        if (CollectionUtils.isNotEmpty(findAll)) {
+            return findAll.get(0);
+        }
+        return null;
     }
 
     /**
@@ -437,6 +441,7 @@ public class TopicMapService {
 
     /**
      * Group the TopicMaps by their parent child relationships
+     * 
      * @return
      */
     @Transactional(readOnly = true)
