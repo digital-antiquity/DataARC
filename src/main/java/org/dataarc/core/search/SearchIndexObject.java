@@ -123,7 +123,7 @@ public class SearchIndexObject {
     private Set<String> arrays = new HashSet<>();
 
     @Field(value = IndexFields.CATEGORY)
-    private CategoryType category;
+    private String category;
 
     public SearchIndexObject() {
     }
@@ -150,7 +150,7 @@ public class SearchIndexObject {
         start = entry.getStart();
         end = entry.getEnd();
         source = entry.getSource();
-        setCategory(schema.getCategory());
+        setCategory(schema.getCategory().name());
         setSchemaId(schema.getId());
 
         applyIndicators(entry);
@@ -633,11 +633,11 @@ public class SearchIndexObject {
         return geometry;
     }
 
-    public CategoryType getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(CategoryType category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

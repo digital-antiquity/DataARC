@@ -17,6 +17,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
+import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrInputDocument;
 import org.dataarc.bean.DataEntry;
 import org.dataarc.bean.schema.FieldType;
@@ -754,13 +755,21 @@ public class SolrIndexingService {
     }
 
     private void deleteCopyField(String source, List<String> dest) throws SolrServerException, IOException {
-        SchemaRequest.DeleteCopyField addFieldUpdateSchemaRequest_ = new SchemaRequest.DeleteCopyField(source, dest);
-        addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
+        try {
+            SchemaRequest.DeleteCopyField addFieldUpdateSchemaRequest_ = new SchemaRequest.DeleteCopyField(source, dest);
+            addFieldUpdateSchemaRequest_.process(client, DATA_ARC);
+        } catch (SolrException e) {
+            logger.error("{}", e);
+        }
     }
 
     private void deleteField(String field) throws SolrServerException, IOException {
+        try {
         SchemaRequest.DeleteField addFieldUpdateSchemaRequest = new SchemaRequest.DeleteField(field);
         addFieldUpdateSchemaRequest.process(client, DATA_ARC);
+        } catch (SolrException e) {
+            logger.error("{}", e);
+        }
     }
 
 }

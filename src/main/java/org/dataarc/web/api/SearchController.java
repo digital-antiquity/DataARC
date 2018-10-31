@@ -74,7 +74,7 @@ public class SearchController extends AbstractRestController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(path = UrlConstants.SEARCH, method = RequestMethod.POST, produces = { UrlConstants.JSON_UTF8 },
+    @RequestMapping(path = UrlConstants.SEARCH, method = {RequestMethod.GET, RequestMethod.POST }, produces = { UrlConstants.JSON_UTF8 },
             consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     public SearchResultObject searchPost(@RequestBody(required = true) SearchQueryObject query_,
             @RequestParam(value = "page", required = false) Integer page,
@@ -108,8 +108,8 @@ public class SearchController extends AbstractRestController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(path = UrlConstants.SEARCH_RESULTS, method = RequestMethod.POST, produces = { UrlConstants.JSON_UTF8 },
-            consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
+    @RequestMapping(path = UrlConstants.SEARCH_RESULTS, method = {RequestMethod.GET, RequestMethod.POST }, produces = { UrlConstants.JSON_UTF8 },
+            consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE, MediaType.ALL_VALUE })
     public SearchResultObject searchResultsPage(@RequestBody(required = true) SearchQueryObject query_,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size
