@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y  --no-install-recommends software-prope
 
   ##### MAVEN
 
-ARG MAVEN_VERSION=3.5.2
+ARG MAVEN_VERSION=3.5.4
 ARG USER_HOME_DIR="/root"
 # ARG SHA1=a677b8398313325d6c266279cb8d385bbc9d435d
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
