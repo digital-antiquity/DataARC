@@ -46,7 +46,7 @@ public class EmailDao {
             message.setContent(template, "text/html");
             helper.setTo(user.getEmail());
             // FIXME: move to a config property
-            helper.setBcc(Arrays.asList("abrin@digitalantiquity.org", "rachel.opitz@gmail.com", "Colleen.Strawhacker@Colorado.EDU").toArray(new String[0]));
+            helper.setBcc("info@data-arc.org");
             helper.setSubject(subject);
             helper.setFrom("info@data-arc.org");
             result = "success";
