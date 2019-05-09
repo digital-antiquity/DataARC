@@ -115,7 +115,6 @@ Vue.use(VueResource);
       },
       methods: {
           onValidChange : function() {
-            window.console.log("ON VALID CHANGE");
             this.$emit("run-query");
           },
           getLimits :  function() {
@@ -164,9 +163,10 @@ Vue.use(VueResource);
               return fld.values;
           },
           setValue: function(val) {
-// console.log('setValue:' + val);
+              // console.log('setValue:' + val);
+              val = (val && val.id) ? val.value : val;
               this.parts[this.rowindex].value = val;
-              Vue.set(this,'part.value',val);
+              Vue.set(this,'part.value', val);
               this.$emit("run-query");
           },
           addPart: function() {
@@ -187,8 +187,8 @@ Vue.use(VueResource);
           typechange: function() {
 // console.log('catch typechange');
           },
-          updateTest: function(v) {
-              this.parts[this.rowindex].value = v;
+          updateTest: function(val) {
+              this.parts[this.rowindex].value = (val && val.value) ? val.value : val;
               this.$forceUpdate();
               this.$emit("run-query");
           },
