@@ -115,7 +115,8 @@ Vue.use(VueResource);
       },
       methods: {
           onValidChange : function() {
-            this.$emit("run-query");
+              console.log("ON VALID CHANGE");
+              this.$emit("run-query");
           },
           getLimits :  function() {
               var r = [{'text':'Equals', 'value': 'EQUALS'},{'text':'Does not Equal', 'value': 'DOES_NOT_EQUAL'}];
@@ -131,7 +132,7 @@ Vue.use(VueResource);
               if (name == undefined || name == '') {
                   return "text";
               }
-// console.log(name, this.getFieldIndex(name));
+              // console.log(name, this.getFieldIndex(name));
               var f = this.fields[this.getFieldIndex(name)];
               if (f == undefined) {
                   return undefined;
@@ -163,7 +164,6 @@ Vue.use(VueResource);
               return fld.values;
           },
           setValue: function(val) {
-              // console.log('setValue:' + val);
               val = (val && val.id) ? val.value : val;
               this.parts[this.rowindex].value = val;
               Vue.set(this,'part.value', val);
@@ -181,14 +181,15 @@ Vue.use(VueResource);
               this.parts[this.rowindex].secondaryFieldName = undefined;
           },
           removePart: function(idx) {
-            this.parts.splice(idx ,1);
-            this.$emit("run-query");
+              this.parts.splice(idx ,1);
+              this.$emit("run-query");
           },
           typechange: function() {
-// console.log('catch typechange');
+              // console.log('catch typechange');
           },
           updateTest: function(val) {
-              this.parts[this.rowindex].value = (val && val.value) ? val.value : val;
+              val = (val && val.id) ? val.value : val;
+              this.parts[this.rowindex].value = val;
               this.$forceUpdate();
               this.$emit("run-query");
           },
@@ -304,28 +305,24 @@ var Hack = new Vue({
                       if (a.displayName > b.displayName)
                         return 1;
                       return 0;
-                    }
-//                  console.log(fields);
-                    fields.sort(compare);
-                    Vue.set(self, 'fields', fields);
-                    
-                    
-
+                  }
+                  fields.sort(compare);
+                  Vue.set(self, 'fields', fields);
               })
               .catch(function (err) {
                 Rollbar.error("error getting fields", err);
               });
 
             axios.get(getContextPath() + '/api/indicator',{params: {schema: s.name}})
-            .then(function (request) {
-//                console.log(JSON.stringify(request.data));
-                console.log("indicators:", request);
+            .then(function(request) {
                 Vue.set(self, 'indicators', request.data);
+                console.log("Indicator(s)", request.data);
             })
             .catch(function (err) {
                 Rollbar.error("error getting indicators", err);
+                console.log("Indicator(s) not retrieved", err);
             });
-            Vue.set(this,"selectedTopics",[]);
+            Vue.set(this, "selectedTopics", []);
             this.fetchTopics();
 
         },
@@ -333,7 +330,7 @@ var Hack = new Vue({
             var s = this.schema[this.currentSchema];
             axios.get(getContextPath() +"/api/topicmap/indicators", {params: {schemaId: s.id}})
             .then(function(request){
-                Vue.set(this,"topics",request.body);
+                Vue.set(this, "topics", request.data);
             })
             .catch(function(err) {
                 Rollbar.error("error getting topics", err);
@@ -349,7 +346,7 @@ var Hack = new Vue({
                     i.topicIdentifiers = idents;
                     idents.push("");
                 } 
-                Vue.set(this,"selectedTopics",idents);
+                Vue.set(this, "selectedTopics", idents);
                 this.runQuery();
             }
         },
@@ -369,7 +366,7 @@ var Hack = new Vue({
               return selectFieldByName(name);
             },
             getFieldIndex: function(name) {
-                for (var i=0; i< this.fields.length; i++){
+                for (var i=0; i<this.fields.length; i++){
                     if (this.fields[i].name===name) {
                         return i;
                     }
@@ -380,8 +377,8 @@ var Hack = new Vue({
                 var s = this.schema[this.currentSchema];
                 axios.get(getContextPath() + '/api/listDistinctValues',{params: {schema: s.name, field:name}})
                 .then(function (request) {
-                    console.log(JSON.stringify(request.body));
-                  Vue.set(this, 'uniqueValues', request.body);
+                    console.log(JSON.stringify(request.data));
+                  Vue.set(this, 'uniqueValues', request.data);
                 })
                 .catch(function (err) {
                     Rollbar.error("error getting unique field values", err);
@@ -390,24 +387,20 @@ var Hack = new Vue({
           runQuery: function() {
               var query = this.indicators[this.currentIndicator].query;
               var qs = JSON.stringify(query);
-              console.log(query, qs);
-              if (this.query == qs) {
-                  return;
-              }
-              this.query = qs;
-              window.console.log("RunQuery-->", qs);
+              if (this.query == qs) return;
+              else this.query = qs;
+              console.log("Run Query: ", this.query);
               
               var self = this;
               if (self.cancelToken != undefined) {
                   self.cancelToken.cancel();
               }
               var token = axios.CancelToken.source();
-              Vue.set(self, "cancelToken" ,token);
+              Vue.set(self, "cancelToken", token);
               
-              axios.post(getContextPath() + '/api/query/datastore', qs,{ headers: {'Content-Type':"application/json"},cancelToken: token.token }).then(function(res) {
-                  console.log(res);
-                  Vue.set(self, 'results',res.data);
-
+              axios.post(getContextPath() + '/api/query/datastore', this.query, { headers: {'Content-Type':"application/json"}, cancelToken: token.token }).then(function(res) {
+                  console.log("", res);
+                  Vue.set(self, 'results', res.data);
               }).catch(function(thrown) {
                   if (!axios.isCancel(thrown)) {
                       console.error(thrown);
@@ -417,11 +410,10 @@ var Hack = new Vue({
               });
           },
           resetSave: function() {
-              Vue.set(this,"saveStatus","");
+              Vue.set(this, "saveStatus", "");
           },
           saveIndicator: function() {
               var indicator = this.indicators[this.currentIndicator];
-              console.log(indicator);
               indicator.topicIdentifiers = [];
               this.selectedTopics.forEach(function(topic){
                   if (topic != undefined && topic != '' && !jQuery.isEmptyObject(topic)) {
@@ -429,34 +421,34 @@ var Hack = new Vue({
                   }
               });
               
-              Vue.set(this,"saveStatus","saving...");
+              var self = this;
+              Vue.set(self, "saveStatus", "Saving ...");
               var json = JSON.stringify(indicator);
               if (indicator.id == -1 || indicator.id == undefined) {
                   axios.post(getContextPath() + '/api/indicator/save' , json, {headers: {'Content-Type':"application/json"}})
                   .then(function (request) {
-                      console.log("indicator result: " + JSON.stringify(request.body));
-                      indicatorId = request.body;
-                      indicator.id = indicatorId;
-                      Vue.set(this, "indicatorId", request.body);
-                      Vue.set(this,"saveStatus", "successful ["+new Date()+"]");
+                      indicator.id = request.data;
+                      Vue.set(self, "indicatorId", indicator.id);
+                      Vue.set(self, "saveStatus", "Success! [" + new Date().toLocaleString() + "]");
+                      console.log("Indicator created", request.data);
                   })
                   .catch(function (err) {
-                      Rollbar.error("error saving indicator: " + json, err);
-                      Vue.set(this,"saveStatus",err  + " ["+new Date()+"]");
-
-                      Rollbar.errors(err);
+                      Rollbar.error("Error saving indicator: " + json, err);
+                      Vue.set(self, "saveStatus", "Error! [" + new Date().toLocaleString() + "] " + err);
+                      console.log("Indicator not created", err);
                   });
               } else {
-                  axios.put(getContextPath() + '/api/indicator/' + indicator.id , json, { headers: {'Content-Type':"application/json"} })
+                  axios.put(getContextPath() + '/api/indicator/' + indicator.id, json, { headers: {'Content-Type':"application/json"} })
                   .then(function (request) {
-                      console.log(JSON.stringify(request.body));
-                      Vue.set(this,"saveStatus", "successful ["+new Date()+"]");
-                      Vue.set(this, "indicatorId", request.body);
-                      indicator.id = request.body;
+                      indicator.id = request.data;
+                      Vue.set(self, "indicatorId", indicator.id);
+                      Vue.set(self, "saveStatus", "Success! [" + new Date().toLocaleString() + "]");
+                      console.log("Indicator saved", request.data);
                   })
                   .catch(function (err) {
-                      Vue.set(this,"saveStatus",err);
-                      Rollbar.error("error saving indicator: " + json, err);
+                      Rollbar.error("Error saving indicator: " + json, err);
+                      Vue.set(self, "saveStatus", "Error! [" + new Date().toLocaleString() + "] " + err);
+                      console.log("Indicator not saved", err);
                   });
                   
               }
@@ -468,7 +460,7 @@ var Hack = new Vue({
               if (indicator.id != -1 && indicator.id != undefined) {
                   axios.delete(getContextPath() + '/api/indicator/' + indicator.id , indicator,{ headers: {'Content-Type':"application/json"} })
                   .then(function (request) {
-                      console.log(JSON.stringify(request.body));
+                      console.log(JSON.stringify(request.data));
                   })
                   .catch(function (err) {
                       Rollbar.error("error deleting indicator: " + indicator.id, err);
