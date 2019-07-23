@@ -34,7 +34,7 @@ window.TDAR = {vuejs: {}};
 <link href="${contextPath}/css/mapping.css" rel="stylesheet" media="screen">
 <script src="${contextPath}/components/jquery/dist/jquery.js"></script>
 <script src="${contextPath}/components/bootstrap/dist/js/bootstrap.min.js"></script> 
-<script <script src="${contextPath}/components/handlebars/handlebars.js"></script>
+<script src="${contextPath}/components/handlebars/handlebars.js"></script>
 <link href="${contextPath}/css/typeahead.css" rel="stylesheet" media="screen">
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
