@@ -16,7 +16,7 @@
         <jackson.version>2.9.4</jackson.version>
         <geotools.version>18.1</geotools.version>
         <postgresql.jdbc.version>42.2.1</postgresql.jdbc.version>
-        <solr.version>7.4.0</solr.version>
+        <solr.version>8.4.1</solr.version>
         <hibernate.version>5.2.12.Final</hibernate.version>
         <sitemesh.version>3.0.1</sitemesh.version>
         <liquibase.version>3.5.3</liquibase.version>
