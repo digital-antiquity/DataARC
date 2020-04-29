@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/desandro/jquery-bridget",
   "dependencies": {
-    "jquery": ">=1.4.2 <3"
+    "jquery": ">=1.4.2 <4"
   }
 }
