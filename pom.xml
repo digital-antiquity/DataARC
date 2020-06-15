@@ -10,7 +10,7 @@
     <description>DataARC Prototype</description>
 
     <properties>
-        <spring.security>5.0.8.RELEASE</spring.security>
+        <spring.security>5.3.3.RELEASE</spring.security>
         <spring.framework.version>5.0.9.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.9.4</jackson.version>
