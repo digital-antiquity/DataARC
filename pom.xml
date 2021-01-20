@@ -13,7 +13,7 @@
         <spring.security>5.0.8.RELEASE</spring.security>
         <spring.framework.version>5.0.9.RELEASE</spring.framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.9.4</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
         <geotools.version>18.1</geotools.version>
         <postgresql.jdbc.version>42.2.1</postgresql.jdbc.version>
         <solr.version>7.4.0</solr.version>
